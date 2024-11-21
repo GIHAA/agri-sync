@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
+
 interface MenuOptionProps {
   icon: React.ReactNode;
   label: string;
@@ -29,7 +30,12 @@ const MenuOption: React.FC<MenuOptionProps> = ({ icon, label, onPress }) => (
     onPress={onPress}
   >
     <View className="items-center">
+      <View className="w-[72px] h-[72px]">
+
       {icon}
+      </View>
+
+
       <Text className="text-white text-sm mt-2 text-center">{label}</Text>
     </View>
   </TouchableOpacity>
@@ -67,26 +73,33 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   ];
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 gap-10">
       <View className="items-center pt-8 pb-4">
         <Image
           source={require("../../assets/images/app-icon.png")}
-          className="w-16 h-16"
+          className="w-[126p] h-[126px] mt-[35px]"
           resizeMode="contain"
         />
       </View>
 
-      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8">
-        <View className="absolute top-[-20px] left-1/2 transform -translate-x-1/2 px-6 w-full">
+      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
+
+        <View className="absolute top-[-35px]  left-4  transform px-6 w-full flex justify-center ">
           <TouchableOpacity
-            className="bg-white rounded-xl py-3 flex-row items-center justify-center shadow-lg"
+            className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
             onPress={onQRCodePress}
           >
+            <Image 
+             source={require("../../assets/images/qr.png")}
+            className="w-8 h-8" />
             <Text className="text-gray-800 font-medium">Show QR Code</Text>
           </TouchableOpacity>
         </View>
 
-        <View className="flex-row flex-wrap">
+        <View className="mt-[78px]">
+          
+          <View className="flex-row flex-wrap gap-y-[30px]">
+
           {menuItems.map((item, index) => (
             <MenuOption
               key={index}
@@ -95,6 +108,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
               onPress={item.onPress}
             />
           ))}
+          </View>
         </View>
       </View>
     </View>
@@ -102,3 +116,5 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 };
 
 export default HomeScreen;
+
+
