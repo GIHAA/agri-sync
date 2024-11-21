@@ -5,6 +5,13 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+const createScreenOptions = (title: string, focusedIcon: string, outlineIcon: string) => ({
+  title,
+  tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+    <TabBarIcon name={focused ? focusedIcon : outlineIcon as any} color={color} />
+  ),
+});
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -13,25 +20,10 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="rewards"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      /> 
+      }}
+    >
+      <Tabs.Screen name="index" options={createScreenOptions('Home', 'home', 'home-outline')} />
+      <Tabs.Screen name="rewards" options={createScreenOptions('Explore', 'gift', 'gift-outline')} />
     </Tabs>
   );
 }

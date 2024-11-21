@@ -76,8 +76,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         />
       </View>
 
-      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8">
-        <View className="absolute top-[-20px] left-1/2 transform -translate-x-1/2 px-6 w-full">
+      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8">        
+        <View className="absolute top-[-20px] left-1/2 transform  px-6 w-full">
           <TouchableOpacity
             className="bg-white rounded-xl py-3 flex-row items-center justify-center shadow-lg"
             onPress={onQRCodePress}
