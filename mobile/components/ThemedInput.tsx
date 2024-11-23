@@ -8,8 +8,8 @@ import DateTimePicker, {
 export type ThemedInputProps = {
   label: string;
   placeholder?: string;
-  value: string | boolean | Date |number;
-  onChangeText: (value: string | boolean | Date |number) => void;
+  value: any ,
+  onChangeText: (value: any) => void;
   lightColor?: string;
   darkColor?: string;
   inputStyle?: string ;

@@ -7,8 +7,9 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import MenuOption from "@/components/HomeOption";
 import { router } from "expo-router";
-
+import qr from "@/assets/images/qr.png";
 
 interface MenuOptionProps {
   icon: React.ReactNode;
@@ -16,40 +17,27 @@ interface MenuOptionProps {
   onPress?: () => void;
 }
 
-interface HomeScreenProps {
-  logoSource?: ImageSourcePropType;
-  onQRCodePress?: () => void;
-  onAddFarmingPress?: () => void;
-  onRewardPress?: () => void;
-  onPreferencePress?: () => void;
-  onLogoutPress?: () => void;
-}
+const HomeScreen: React.FC = ({}) => {
+  const onQRCodePress = () => {
+    console.log("QR Code Pressed");
+  };
 
-const MenuOption: React.FC<MenuOptionProps> = ({ icon, label, onPress }) => (
-  <TouchableOpacity
-    className="items-center justify-center p-4 w-1/2"
-    onPress={onPress}
-  >
-    <View className="items-center">
-      <View className="w-[72px] h-[72px]">
+  const onAddFarmingPress = () => {
+    console.log("Add Farming Data Pressed");
+  };
 
-      {icon}
-      </View>
+  const onRewardPress = () => {
+    router.replace("/(root)/screens/rewards");
+  };
 
+  const onPreferencePress = () => {
+    console.log("User Preference Pressed");
+  };
 
-      <Text className="text-white text-sm mt-2 text-center">{label}</Text>
-    </View>
-  </TouchableOpacity>
-);
+  const onLogoutPress = () => {
+    console.log("Logout Pressed");
+  };
 
-const HomeScreen: React.FC<HomeScreenProps> = ({
-  onQRCodePress,
-  onAddFarmingPress,
-  onRewardPress,
-  onPreferencePress,
-  onLogoutPress,
-}) => {
-  // Define menu items with their handlers
   const menuItems: Array<MenuOptionProps> = [
     {
       icon: <AntDesign name="pluscircleo" size={55} color="white" />,
@@ -64,7 +52,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     {
       icon: <AntDesign name="setting" size={55} color="white" />,
       label: "User Preference",
-      onPress: () => router.replace('/(root)/(screens)/user-preferences'),
+      onPress: onPreferencePress,
     },
     {
       icon: <AntDesign name="login" size={55} color="white" />,
@@ -84,39 +72,34 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       </View>
 
       <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
-
         <View className="absolute top-[-35px]  left-4  transform px-6 w-full flex justify-center ">
           <TouchableOpacity
             className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
             onPress={onQRCodePress}
           >
-            <Image 
-             source={require("../../../assets/images/qr.png")}
-            className="w-8 h-8" />
+            <Image
+              source={qr}
+              className="w-8 h-8"
+            />
             <Text className="text-gray-800 font-medium">Show QR Code</Text>
           </TouchableOpacity>
         </View>
 
         <View className="mt-[78px]">
-          
           <View className="flex-row flex-wrap gap-y-[30px]">
-
-          {menuItems.map((item, index) => (
-            <MenuOption
-              key={index}
-              icon={item.icon}
-              label={item.label}
-              onPress={item.onPress}
-            />
-          ))}
+            {menuItems.map((item, index) => (
+              <MenuOption
+                key={index}
+                icon={item.icon}
+                label={item.label}
+                onPress={item.onPress}
+              />
+            ))}
           </View>
         </View>
-        
       </View>
     </View>
   );
 };
 
 export default HomeScreen;
-
-
