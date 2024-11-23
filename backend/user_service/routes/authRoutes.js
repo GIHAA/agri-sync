@@ -24,7 +24,11 @@ router.post("/register", async (req, res) => {
     ]);
 
     if (userExists.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({
+        data: null,
+        message: "User already exists",
+        success: false,
+      });
     }
 
     // Hash the password
@@ -37,12 +41,17 @@ router.post("/register", async (req, res) => {
     );
 
     return res.status(201).json({
+      data: { id: newUser.rows[0].id, username, email },
       message: "User created successfully",
-      user: { id: newUser.rows[0].id, username, email },
+      success: true,
     });
   } catch (error) {
     console.error("Error in registration:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
   }
 });
 
@@ -55,13 +64,21 @@ router.post("/login", async (req, res) => {
     const user = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
     if (user.rows.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        data: null,
+        message: "User not found",
+        success: false,
+      });
     }
 
     // Validate password
     const validPassword = await bcrypt.compare(password, user.rows[0].password_hash);
     if (!validPassword) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({
+        data: null,
+        message: "Invalid password",
+        success: false,
+      });
     }
 
     // Generate token
@@ -70,10 +87,18 @@ router.post("/login", async (req, res) => {
       email: user.rows[0].email,
     });
 
-    return res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({
+      data: { token },
+      message: "Login successful",
+      success: true,
+    });
   } catch (error) {
     console.error("Error in login:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
   }
 });
 
@@ -99,7 +124,11 @@ router.post("/register-farmer", async (req, res) => {
     ]);
 
     if (userExists.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({
+        data: null,
+        message: "User already exists",
+        success: false,
+      });
     }
 
     // Hash the password
@@ -126,12 +155,17 @@ router.post("/register-farmer", async (req, res) => {
     );
 
     return res.status(201).json({
+      data: { id: userId, username, email },
       message: "Farmer registered successfully",
-      user: { id: userId, username, email },
+      success: true,
     });
   } catch (error) {
     console.error("Error in farmer registration:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
   }
 });
 
@@ -147,13 +181,25 @@ router.get("/preferences/:userId", async (req, res) => {
     );
 
     if (preferences.rows.length === 0) {
-      return res.status(404).json({ message: "Preferences not found for this user" });
+      return res.status(404).json({
+        data: null,
+        message: "Preferences not found for this user",
+        success: false,
+      });
     }
 
-    return res.status(200).json({ preferences: preferences.rows[0] });
+    return res.status(200).json({
+      data: preferences.rows[0],
+      message: "Preferences fetched successfully",
+      success: true,
+    });
   } catch (error) {
     console.error("Error fetching preferences:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
   }
 });
 
@@ -162,17 +208,29 @@ router.get("/validate", async (req, res) => {
   const authHeader = req.headers["authorization"];
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({
+      data: null,
+      message: "Unauthorized",
+      success: false,
+    });
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET || "defaultsecret");
-    return res.status(200).json({ message: "Token is valid", user });
+    return res.status(200).json({
+      data: user,
+      message: "Token is valid",
+      success: true,
+    });
   } catch (error) {
     console.error("Error in token validation:", error);
-    return res.status(403).json({ message: "Invalid or expired token" });
+    return res.status(403).json({
+      data: null,
+      message: "Invalid or expired token",
+      success: false,
+    });
   }
 });
 
