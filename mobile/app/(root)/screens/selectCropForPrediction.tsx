@@ -4,6 +4,7 @@ import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedSelect } from "@/components/ThemedSelect";
+import { router } from "expo-router";
 
 export default function SelectCropForPrediction() {
   const [whereToPlant, setWhereToPlant] =
@@ -22,6 +23,17 @@ export default function SelectCropForPrediction() {
       console.log("Please fill all fields");
       return;
     }
+    // Format the `whenToPlant` date as ISO or another suitable format
+    const formattedDate = whenToPlant.toISOString();
+
+    router.replace({
+      pathname: "/(root)/screens/pricePrediction",
+      params: {
+        whereToPlant,
+        whenToPlant: formattedDate,
+        whatToPlant,
+      },
+    });
   };
 
   return (
