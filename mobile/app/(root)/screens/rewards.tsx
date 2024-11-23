@@ -7,7 +7,6 @@ import { router } from "expo-router";
 import React from "react";
 
 export default function RewardsScreen() {
-
   type AntDesignIconName = "linechart" | "enviromento" | "API";
   const [points, setPoints] = React.useState(16969);
 
@@ -36,7 +35,7 @@ export default function RewardsScreen() {
       comingSoon: true,
       onPress: () => {
         alert("Coming Soon");
-      }
+      },
     },
     {
       id: 3,
@@ -51,27 +50,38 @@ export default function RewardsScreen() {
   ];
 
   return (
-    <ScrollView className="bg-gray-100 flex-1" contentContainerStyle={{ padding: 16 }}>
-            <ThemedText type="title">Rewards</ThemedText>
-      {/* Top Section */}
+    <ScrollView
+      className="bg-gray-100 flex-1"
+      contentContainerStyle={{ padding: 16 }}
+    >
+      {/* Go Back Button */}
+      <Pressable
+        className="flex-row items-center mb-4"
+        onPress={() => router.replace("/(root)/screens/home")}
+      >
+        <AntDesign name="arrowleft" size={24} color="black" />
+        <Text className="text-black ml-2 text-lg">Back</Text>
+      </Pressable>
+
+      <ThemedText type="title">Rewards</ThemedText>
+
       <View className="bg-white p-4 rounded-lg shadow-md mb-4">
         <View className="flex-row items-center justify-between">
           <View>
             <Text className="text-gray-600">Your points</Text>
-            
-            {/* <Text className="text-black font-bold text-lg">50/500</Text> */}
 
             <View className="flex-row items-center bg-white rounded-full px-2 py-1">
               <View className="bg-yellow-400 rounded-full p-3 mr-2">
                 <AntDesign name="heart" size={30} color="#A64B2A" />
               </View>
-              <Text className="text-green-600 font-bold text-4xl">{points}</Text>
+              <Text className="text-green-600 font-bold text-4xl">
+                {points}
+              </Text>
             </View>
           </View>
           <AntDesign name="right" size={20} color="gray" />
         </View>
 
-        {/* Buttons Section */}
         <View className="flex-row justify-between mt-4 flex-wrap">
           {/* History Button */}
           <Pressable className="w-[30%]  p-4 rounded-lg items-center">
@@ -94,7 +104,9 @@ export default function RewardsScreen() {
             <View className="bg-blue-100 p-4 rounded-full">
               <AntDesign name="staro" size={30} color="#3182CE" />
             </View>
-            <Text className="text-gray-700 mt-2 text-center">Explore rewards</Text>
+            <Text className="text-gray-700 mt-2 text-center">
+              Explore rewards
+            </Text>
           </Pressable>
         </View>
       </View>

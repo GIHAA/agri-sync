@@ -1,10 +1,11 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Pressable, Text } from "react-native";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedSelect } from "@/components/ThemedSelect";
 import { router } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function SelectCropForPrediction() {
   const [whereToPlant, setWhereToPlant] =
@@ -39,6 +40,15 @@ export default function SelectCropForPrediction() {
   return (
     <View className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
+
+      <Pressable
+        className="flex-row items-center mb-4"
+        onPress={() => router.back()}
+      >
+        <AntDesign name="arrowleft" size={24} color="black" />
+        <Text className="text-black ml-2 text-lg">Back</Text>
+      </Pressable>
+      
         <View>
           <ThemedText type="title" className="mb-4">
             Price Prediction
