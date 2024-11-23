@@ -26,13 +26,13 @@ export function ThemedButton({
   const getButtonClasses = () => {
     switch (variant) {
       case "primary":
-        return `bg-green-600 border-green-600 ${disabled ? "opacity-50" : ""}`;
+        return `bg-[#2F855A]  ${disabled ? "opacity-50" : ""}`;
       case "secondary":
         return `bg-green-200 border-green-300 ${disabled ? "opacity-50" : ""}`;
       case "outline":
         return `bg-transparent border-green-600 ${disabled ? "opacity-50" : ""}`;
       default:
-        return "";
+        return "bg-[#2F855A] ";
     }
   };
 
