@@ -1,0 +1,1094 @@
+2024-11-24 00:09:54,083 - INFO - Loading data from Excel file.
+2024-11-24 00:09:54,233 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:09:54,235 - INFO - Reshaping data to long format.
+2024-11-24 00:09:54,238 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:09:54,239 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:09:54,240 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:09:54,342 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:09:54,360 - INFO - Starting Flask app.
+2024-11-24 00:09:54,366 - WARNING -  * Debugger is active!
+2024-11-24 00:09:54,379 - INFO -  * Debugger PIN: 130-726-385
+2024-11-24 00:10:01,332 - INFO - Received prediction request.
+2024-11-24 00:10:01,333 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:10:01,362 - INFO - Prediction completed. Predicted price: 481.1390000000003
+2024-11-24 00:10:01,363 - INFO - 127.0.0.1 - - [24/Nov/2024 00:10:01] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:14:56,896 - INFO - Loading data from Excel file.
+2024-11-24 00:14:57,047 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:14:57,049 - INFO - Reshaping data to long format.
+2024-11-24 00:14:57,052 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:14:57,053 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:14:57,054 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:14:57,152 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:14:57,167 - INFO - Starting Flask app.
+2024-11-24 00:14:57,184 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-24 00:14:57,184 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-24 00:14:57,185 - INFO -  * Restarting with stat
+2024-11-24 00:15:07,074 - INFO - Loading data from Excel file.
+2024-11-24 00:15:07,207 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:15:07,209 - INFO - Reshaping data to long format.
+2024-11-24 00:15:07,213 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:15:07,214 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:15:07,215 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:15:07,362 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:15:07,377 - INFO - Starting Flask app.
+2024-11-24 00:15:07,393 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-24 00:15:07,393 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-24 00:15:07,394 - INFO -  * Restarting with stat
+2024-11-24 00:15:08,270 - INFO - Loading data from Excel file.
+2024-11-24 00:15:08,358 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:15:08,359 - INFO - Reshaping data to long format.
+2024-11-24 00:15:08,362 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:15:08,362 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:15:08,363 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:15:08,459 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:15:08,466 - INFO - Starting Flask app.
+2024-11-24 00:15:08,470 - WARNING -  * Debugger is active!
+2024-11-24 00:15:08,482 - INFO -  * Debugger PIN: 130-726-385
+2024-11-24 00:17:38,847 - INFO -  * Detected change in '/Users/gihan/Documents/y4s1/RP/agri-sync/backend/price-prediction/app.py', reloading
+2024-11-24 00:17:39,098 - INFO -  * Restarting with stat
+2024-11-24 00:18:01,792 - INFO - Loading data from Excel file.
+2024-11-24 00:18:01,947 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:18:01,949 - INFO - Reshaping data to long format.
+2024-11-24 00:18:01,952 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:18:01,953 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:18:01,955 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:18:02,057 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:18:02,067 - INFO - Starting Flask app.
+2024-11-24 00:18:02,087 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-11-24 00:18:02,088 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-24 00:18:02,088 - INFO -  * Restarting with stat
+2024-11-24 00:18:03,066 - INFO - Loading data from Excel file.
+2024-11-24 00:18:03,151 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:18:03,153 - INFO - Reshaping data to long format.
+2024-11-24 00:18:03,155 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:18:03,156 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:18:03,157 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:18:03,254 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:18:03,261 - INFO - Starting Flask app.
+2024-11-24 00:18:03,266 - WARNING -  * Debugger is active!
+2024-11-24 00:18:03,279 - INFO -  * Debugger PIN: 130-726-385
+2024-11-24 00:18:08,995 - INFO - Received prediction request.
+2024-11-24 00:18:08,997 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:18:09,043 - INFO - Prediction completed. Predicted price: 481.1390000000003
+2024-11-24 00:18:09,045 - INFO - 127.0.0.1 - - [24/Nov/2024 00:18:09] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:27:14,231 - INFO - Received prediction request.
+2024-11-24 00:27:14,234 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOESs'}
+2024-11-24 00:27:14,278 - ERROR - Encoding error: y contains previously unseen labels: 'TOMATOESS'
+2024-11-24 00:27:14,284 - INFO - 127.0.0.1 - - [24/Nov/2024 00:27:14] "[31m[1mPOST /predict HTTP/1.1[0m" 400 -
+2024-11-24 00:29:25,884 - INFO - Loading data from Excel file.
+2024-11-24 00:29:26,041 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:29:26,043 - INFO - Reshaping data to long format.
+2024-11-24 00:29:26,046 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:29:26,047 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:29:26,048 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:29:26,147 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:29:34,896 - INFO - Loading data from Excel file.
+2024-11-24 00:29:35,007 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:29:35,008 - INFO - Reshaping data to long format.
+2024-11-24 00:29:35,011 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:29:35,011 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:29:35,012 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:29:35,110 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:29:44,542 - INFO - Loading data from Excel file.
+2024-11-24 00:29:44,678 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:29:44,680 - INFO - Reshaping data to long format.
+2024-11-24 00:29:44,683 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:29:44,684 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:29:44,686 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:29:44,786 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:30:22,179 - INFO - Loading data from Excel file.
+2024-11-24 00:30:22,339 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:30:22,341 - INFO - Reshaping data to long format.
+2024-11-24 00:30:22,345 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:30:22,346 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:30:22,347 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:30:22,454 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:30:28,044 - INFO - Loading data from Excel file.
+2024-11-24 00:30:28,158 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:30:28,159 - INFO - Reshaping data to long format.
+2024-11-24 00:30:28,162 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:30:28,163 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:30:28,164 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:30:28,262 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:31:36,075 - INFO - Loading data from Excel file.
+2024-11-24 00:31:36,220 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:31:36,222 - INFO - Reshaping data to long format.
+2024-11-24 00:31:36,226 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:31:36,227 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:31:36,228 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:31:36,385 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:31:55,307 - INFO - Loading data from Excel file.
+2024-11-24 00:31:55,512 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:31:55,514 - INFO - Reshaping data to long format.
+2024-11-24 00:31:55,518 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:31:55,519 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:31:55,522 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:31:55,633 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:31:55,661 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.3:8080
+2024-11-24 00:31:55,661 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-24 00:32:10,333 - INFO - Received prediction request.
+2024-11-24 00:32:10,335 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:10,396 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:10,397 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:10] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:11,745 - INFO - Received prediction request.
+2024-11-24 00:32:11,745 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:11,759 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:11,761 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:11] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:12,096 - INFO - Received prediction request.
+2024-11-24 00:32:12,096 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:12,104 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:12,105 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:12,569 - INFO - Received prediction request.
+2024-11-24 00:32:12,570 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:12,593 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:12,594 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:12,746 - INFO - Received prediction request.
+2024-11-24 00:32:12,747 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:12,757 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:12,758 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:15,685 - INFO - Received prediction request.
+2024-11-24 00:32:15,685 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:15,700 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:15,701 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:15] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:15,879 - INFO - Received prediction request.
+2024-11-24 00:32:15,880 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:15,897 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:15,898 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:15] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:16,116 - INFO - Received prediction request.
+2024-11-24 00:32:16,116 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:16,128 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:16,129 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:16] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:16,395 - INFO - Received prediction request.
+2024-11-24 00:32:16,395 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:16,403 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:16,403 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:16] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:16,640 - INFO - Received prediction request.
+2024-11-24 00:32:16,640 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:16,657 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:16,657 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:16] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:17,053 - INFO - Received prediction request.
+2024-11-24 00:32:17,054 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:17,068 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:17,070 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:17,333 - INFO - Received prediction request.
+2024-11-24 00:32:17,333 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:17,348 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:17,350 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:17,569 - INFO - Received prediction request.
+2024-11-24 00:32:17,569 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:17,581 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:17,584 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:17,848 - INFO - Received prediction request.
+2024-11-24 00:32:17,849 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:17,867 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:17,869 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:18,135 - INFO - Received prediction request.
+2024-11-24 00:32:18,135 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:18,151 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:18,152 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:18] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:18,703 - INFO - Received prediction request.
+2024-11-24 00:32:18,703 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:18,732 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:18,733 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:18] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:19,204 - INFO - Received prediction request.
+2024-11-24 00:32:19,204 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:19,218 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:19,219 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:19,537 - INFO - Received prediction request.
+2024-11-24 00:32:19,537 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:19,553 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:19,554 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:19,844 - INFO - Received prediction request.
+2024-11-24 00:32:19,845 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:19,858 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:19,860 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:20,068 - INFO - Received prediction request.
+2024-11-24 00:32:20,069 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:20,077 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:20,078 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:20] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:20,955 - INFO - Received prediction request.
+2024-11-24 00:32:20,956 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:20,963 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:20,964 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:20] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:21,189 - INFO - Received prediction request.
+2024-11-24 00:32:21,189 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:21,200 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:21,202 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:21,438 - INFO - Received prediction request.
+2024-11-24 00:32:21,439 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:21,446 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:21,447 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:21,690 - INFO - Received prediction request.
+2024-11-24 00:32:21,690 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:21,703 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:21,705 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:21,932 - INFO - Received prediction request.
+2024-11-24 00:32:21,932 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:21,941 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:21,943 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:22,165 - INFO - Received prediction request.
+2024-11-24 00:32:22,166 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:22,183 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:22,184 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:22,408 - INFO - Received prediction request.
+2024-11-24 00:32:22,409 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:22,423 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:22,425 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:22,608 - INFO - Received prediction request.
+2024-11-24 00:32:22,608 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:22,620 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:22,622 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:22,874 - INFO - Received prediction request.
+2024-11-24 00:32:22,875 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:22,893 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:22,895 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:46,365 - INFO - Received prediction request.
+2024-11-24 00:32:46,368 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:46,400 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:46,407 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:46] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:46,548 - INFO - Received prediction request.
+2024-11-24 00:32:46,548 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:32:46,559 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:32:46,560 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:46] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:46,769 - INFO - Received prediction request.
+2024-11-24 00:32:46,769 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:32:46,784 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:32:46,785 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:46] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:47,003 - INFO - Received prediction request.
+2024-11-24 00:32:47,004 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:32:47,017 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:32:47,018 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:47,283 - INFO - Received prediction request.
+2024-11-24 00:32:47,284 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:47,302 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:47,304 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:47,507 - INFO - Received prediction request.
+2024-11-24 00:32:47,507 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:47,514 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:47,515 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:47,736 - INFO - Received prediction request.
+2024-11-24 00:32:47,737 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:47,743 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:47,744 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:47,953 - INFO - Received prediction request.
+2024-11-24 00:32:47,954 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:32:47,967 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:32:47,968 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:32:48,172 - INFO - Received prediction request.
+2024-11-24 00:32:48,173 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:32:48,179 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:32:48,180 - INFO - 192.168.1.2 - - [24/Nov/2024 00:32:48] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:57,515 - INFO - Received prediction request.
+2024-11-24 00:34:57,525 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:34:57,620 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:34:57,622 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:57] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:58,071 - INFO - Received prediction request.
+2024-11-24 00:34:58,071 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:34:58,082 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:34:58,083 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:58,580 - INFO - Received prediction request.
+2024-11-24 00:34:58,580 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:34:58,588 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:34:58,588 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:58,869 - INFO - Received prediction request.
+2024-11-24 00:34:58,870 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:34:58,887 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:34:58,889 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:59,139 - INFO - Received prediction request.
+2024-11-24 00:34:59,139 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:34:59,152 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:34:59,153 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:59,489 - INFO - Received prediction request.
+2024-11-24 00:34:59,489 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:34:59,506 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:34:59,508 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:59,685 - INFO - Received prediction request.
+2024-11-24 00:34:59,686 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:34:59,701 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:34:59,702 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:34:59,905 - INFO - Received prediction request.
+2024-11-24 00:34:59,906 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:34:59,919 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:34:59,925 - INFO - 192.168.1.2 - - [24/Nov/2024 00:34:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:00,154 - INFO - Received prediction request.
+2024-11-24 00:35:00,154 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:35:00,164 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:35:00,165 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:00] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:00,420 - INFO - Received prediction request.
+2024-11-24 00:35:00,420 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:35:00,437 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:35:00,438 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:00] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:00,690 - INFO - Received prediction request.
+2024-11-24 00:35:00,691 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:35:00,700 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:35:00,701 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:00] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:00,923 - INFO - Received prediction request.
+2024-11-24 00:35:00,923 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:35:00,936 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:35:00,938 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:00] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:01,148 - INFO - Received prediction request.
+2024-11-24 00:35:01,149 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:35:01,162 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:35:01,163 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:01] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:35:01,646 - INFO - Received prediction request.
+2024-11-24 00:35:01,646 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:35:01,660 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:35:01,661 - INFO - 192.168.1.2 - - [24/Nov/2024 00:35:01] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:14,901 - INFO - Received prediction request.
+2024-11-24 00:37:14,913 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:15,081 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:15,083 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:15] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:15,587 - INFO - Received prediction request.
+2024-11-24 00:37:15,587 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:15,601 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:15,602 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:15] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:16,154 - INFO - Received prediction request.
+2024-11-24 00:37:16,154 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:16,183 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:16,186 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:16] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:16,946 - INFO - Received prediction request.
+2024-11-24 00:37:16,947 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:16,963 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:16,964 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:16] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:17,371 - INFO - Received prediction request.
+2024-11-24 00:37:17,371 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:17,397 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:17,397 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:17,739 - INFO - Received prediction request.
+2024-11-24 00:37:17,739 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:17,762 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:17,764 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:18,022 - INFO - Received prediction request.
+2024-11-24 00:37:18,022 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:18,032 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:18,033 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:18] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:18,613 - INFO - Received prediction request.
+2024-11-24 00:37:18,613 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:18,622 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:18,623 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:18] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:19,051 - INFO - Received prediction request.
+2024-11-24 00:37:19,051 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:19,068 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:19,070 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:19,391 - INFO - Received prediction request.
+2024-11-24 00:37:19,391 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:19,404 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:19,406 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:19,780 - INFO - Received prediction request.
+2024-11-24 00:37:19,780 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:19,795 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:19,797 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:19,901 - INFO - Received prediction request.
+2024-11-24 00:37:19,902 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:19,916 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:19,917 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:31,066 - INFO - Received prediction request.
+2024-11-24 00:37:31,067 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:31,091 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:31,095 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:31] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:31,276 - INFO - Received prediction request.
+2024-11-24 00:37:31,276 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:31,290 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:31,291 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:31] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:31,526 - INFO - Received prediction request.
+2024-11-24 00:37:31,527 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:31,551 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:31,554 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:31] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:31,760 - INFO - Received prediction request.
+2024-11-24 00:37:31,760 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:31,775 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:31,777 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:31] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:32,217 - INFO - Received prediction request.
+2024-11-24 00:37:32,218 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:32,279 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:32,283 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:32] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:32,542 - INFO - Received prediction request.
+2024-11-24 00:37:32,543 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:32,562 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:32,564 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:32] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:32,882 - INFO - Received prediction request.
+2024-11-24 00:37:32,883 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:32,899 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:32,900 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:32] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:33,062 - INFO - Received prediction request.
+2024-11-24 00:37:33,063 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:33,220 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:33,220 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:33,305 - INFO - Received prediction request.
+2024-11-24 00:37:33,305 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:33,313 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:33,315 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:35,299 - INFO - Received prediction request.
+2024-11-24 00:37:35,301 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:35,342 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:35,343 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:35,584 - INFO - Received prediction request.
+2024-11-24 00:37:35,585 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:35,595 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:35,595 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:35,854 - INFO - Received prediction request.
+2024-11-24 00:37:35,855 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:35,880 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:35,881 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:36,135 - INFO - Received prediction request.
+2024-11-24 00:37:36,136 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:36,150 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:36,152 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:36,454 - INFO - Received prediction request.
+2024-11-24 00:37:36,455 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:36,470 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:36,471 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:36,874 - INFO - Received prediction request.
+2024-11-24 00:37:36,875 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:36,890 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:36,890 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:37,122 - INFO - Received prediction request.
+2024-11-24 00:37:37,122 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:37,133 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:37,134 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:37,490 - INFO - Received prediction request.
+2024-11-24 00:37:37,491 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:37,502 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:37,502 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:38,157 - INFO - Received prediction request.
+2024-11-24 00:37:38,157 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:38,170 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:38,171 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:38] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:38,821 - INFO - Received prediction request.
+2024-11-24 00:37:38,821 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:38,836 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:38,837 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:38] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:39,262 - INFO - Received prediction request.
+2024-11-24 00:37:39,262 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:39,272 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:39,273 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:39,742 - INFO - Received prediction request.
+2024-11-24 00:37:39,743 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:39,760 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:39,761 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:40,392 - INFO - Received prediction request.
+2024-11-24 00:37:40,392 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:40,400 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:40,401 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:40,628 - INFO - Received prediction request.
+2024-11-24 00:37:40,628 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:40,641 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:40,642 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:40,824 - INFO - Received prediction request.
+2024-11-24 00:37:40,824 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:40,833 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:40,833 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:41,046 - INFO - Received prediction request.
+2024-11-24 00:37:41,046 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:41,068 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:41,069 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:41,383 - INFO - Received prediction request.
+2024-11-24 00:37:41,383 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:41,398 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:41,399 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:41,605 - INFO - Received prediction request.
+2024-11-24 00:37:41,605 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:41,620 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:41,622 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:41,996 - INFO - Received prediction request.
+2024-11-24 00:37:41,996 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:42,060 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:42,061 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:42,155 - INFO - Received prediction request.
+2024-11-24 00:37:42,156 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:42,163 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:42,164 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:42,398 - INFO - Received prediction request.
+2024-11-24 00:37:42,398 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:42,410 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:42,412 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:42,821 - INFO - Received prediction request.
+2024-11-24 00:37:42,822 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:42,829 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:42,830 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:43,028 - INFO - Received prediction request.
+2024-11-24 00:37:43,029 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:43,041 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:43,042 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:43] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:43,332 - INFO - Received prediction request.
+2024-11-24 00:37:43,333 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:43,347 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:43,348 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:43] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:43,549 - INFO - Received prediction request.
+2024-11-24 00:37:43,549 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:43,568 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:43,569 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:43] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:43,782 - INFO - Received prediction request.
+2024-11-24 00:37:43,783 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:43,796 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:43,797 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:43] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:44,455 - INFO - Received prediction request.
+2024-11-24 00:37:44,456 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:44,470 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:44,470 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:44] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:44,625 - INFO - Received prediction request.
+2024-11-24 00:37:44,625 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:44,642 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:44,643 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:44] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:44,886 - INFO - Received prediction request.
+2024-11-24 00:37:44,886 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:44,894 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:44,895 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:44] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:45,101 - INFO - Received prediction request.
+2024-11-24 00:37:45,102 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:45,113 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:45,114 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:45] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:46,339 - INFO - Received prediction request.
+2024-11-24 00:37:46,339 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:37:46,355 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:37:46,356 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:46] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:46,642 - INFO - Received prediction request.
+2024-11-24 00:37:46,643 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:37:46,657 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:37:46,658 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:46] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:47,014 - INFO - Received prediction request.
+2024-11-24 00:37:47,014 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:37:47,021 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:37:47,022 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:47,257 - INFO - Received prediction request.
+2024-11-24 00:37:47,257 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:37:47,266 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:37:47,267 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:37:47,525 - INFO - Received prediction request.
+2024-11-24 00:37:47,525 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:37:47,552 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:37:47,553 - INFO - 192.168.1.2 - - [24/Nov/2024 00:37:47] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:01,475 - INFO - Received prediction request.
+2024-11-24 00:38:01,477 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:38:01,509 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:38:01,514 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:01] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:01,964 - INFO - Received prediction request.
+2024-11-24 00:38:01,965 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:38:01,980 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:38:01,981 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:01] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:02,141 - INFO - Received prediction request.
+2024-11-24 00:38:02,142 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:38:02,156 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:38:02,158 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:02] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:02,377 - INFO - Received prediction request.
+2024-11-24 00:38:02,377 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:38:02,392 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:38:02,395 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:02] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:02,610 - INFO - Received prediction request.
+2024-11-24 00:38:02,611 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:02,618 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:02,619 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:02] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:02,818 - INFO - Received prediction request.
+2024-11-24 00:38:02,818 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:38:02,831 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:38:02,832 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:02] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:03,029 - INFO - Received prediction request.
+2024-11-24 00:38:03,030 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:03,043 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:03,044 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:03] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:03,221 - INFO - Received prediction request.
+2024-11-24 00:38:03,221 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:03,232 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:03,233 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:03] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:03,446 - INFO - Received prediction request.
+2024-11-24 00:38:03,446 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:03,461 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:03,462 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:03] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:09,868 - INFO - Received prediction request.
+2024-11-24 00:38:09,870 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:38:09,923 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:38:09,936 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:09] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:10,238 - INFO - Received prediction request.
+2024-11-24 00:38:10,239 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:38:10,254 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:38:10,255 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:10] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:10,692 - INFO - Received prediction request.
+2024-11-24 00:38:10,693 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:38:10,705 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:38:10,706 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:10] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:11,133 - INFO - Received prediction request.
+2024-11-24 00:38:11,134 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:38:11,149 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:38:11,150 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:11] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:11,374 - INFO - Received prediction request.
+2024-11-24 00:38:11,374 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:11,390 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:11,391 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:11] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:11,727 - INFO - Received prediction request.
+2024-11-24 00:38:11,727 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:38:11,741 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:38:11,742 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:11] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:11,995 - INFO - Received prediction request.
+2024-11-24 00:38:11,996 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:38:12,005 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 00:38:12,016 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:12,310 - INFO - Received prediction request.
+2024-11-24 00:38:12,310 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:38:12,324 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:38:12,325 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:12,622 - INFO - Received prediction request.
+2024-11-24 00:38:12,622 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:38:12,631 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:38:12,632 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:38:12,893 - INFO - Received prediction request.
+2024-11-24 00:38:12,894 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:38:12,910 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:38:12,911 - INFO - 192.168.1.2 - - [24/Nov/2024 00:38:12] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:48:09,004 - INFO - Received prediction request.
+2024-11-24 00:48:09,017 - DEBUG - Request data: {'whenToPlant': '2', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:48:09,045 - ERROR - Invalid 'whenToPlant' format: Given date string "2" not likely a datetime, at position 0
+2024-11-24 00:48:09,053 - INFO - 192.168.1.2 - - [24/Nov/2024 00:48:09] "[31m[1mPOST /predict HTTP/1.1[0m" 400 -
+2024-11-24 00:48:12,820 - INFO - Received prediction request.
+2024-11-24 00:48:12,821 - DEBUG - Request data: {'whenToPlant': '2', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:48:12,822 - ERROR - Invalid 'whenToPlant' format: Given date string "2" not likely a datetime, at position 0
+2024-11-24 00:48:12,824 - INFO - 192.168.1.2 - - [24/Nov/2024 00:48:12] "[31m[1mPOST /predict HTTP/1.1[0m" 400 -
+2024-11-24 00:49:15,081 - INFO - Received prediction request.
+2024-11-24 00:49:15,084 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:49:15,208 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:49:15,211 - INFO - 192.168.1.2 - - [24/Nov/2024 00:49:15] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:49:19,669 - INFO - Received prediction request.
+2024-11-24 00:49:19,670 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:49:19,711 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:49:19,712 - INFO - 192.168.1.2 - - [24/Nov/2024 00:49:19] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:49:35,983 - INFO - Received prediction request.
+2024-11-24 00:49:35,985 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:49:36,020 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:49:36,022 - INFO - 192.168.1.2 - - [24/Nov/2024 00:49:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:49:51,714 - INFO - Received prediction request.
+2024-11-24 00:49:51,715 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:49:51,751 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:49:51,753 - INFO - 192.168.1.2 - - [24/Nov/2024 00:49:51] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:50:06,561 - INFO - Received prediction request.
+2024-11-24 00:50:06,562 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:50:06,581 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:50:06,594 - INFO - 192.168.1.2 - - [24/Nov/2024 00:50:06] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:50:24,139 - INFO - Received prediction request.
+2024-11-24 00:50:24,141 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:50:24,189 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:50:24,191 - INFO - 192.168.1.2 - - [24/Nov/2024 00:50:24] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:51:18,552 - INFO - Received prediction request.
+2024-11-24 00:51:18,554 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:51:18,570 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 00:51:18,571 - INFO - 192.168.1.2 - - [24/Nov/2024 00:51:18] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:51:58,525 - INFO - Received prediction request.
+2024-11-24 00:51:58,527 - DEBUG - Request data: {'whenToPlant': '2024-12-29T18:56:44.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:51:58,550 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 00:51:58,561 - INFO - 192.168.1.2 - - [24/Nov/2024 00:51:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:26,737 - INFO - Received prediction request.
+2024-11-24 00:52:26,739 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:52:26,762 - INFO - Prediction completed. Predicted price: 309.9539999999999
+2024-11-24 00:52:26,769 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:26] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:27,887 - INFO - Received prediction request.
+2024-11-24 00:52:27,888 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:52:27,898 - INFO - Prediction completed. Predicted price: 168.09300000000002
+2024-11-24 00:52:27,899 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:27] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:28,233 - INFO - Received prediction request.
+2024-11-24 00:52:28,233 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:52:28,242 - INFO - Prediction completed. Predicted price: 220.755
+2024-11-24 00:52:28,243 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:28] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:28,841 - INFO - Received prediction request.
+2024-11-24 00:52:28,841 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:52:28,857 - INFO - Prediction completed. Predicted price: 220.755
+2024-11-24 00:52:28,858 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:28] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:29,308 - INFO - Received prediction request.
+2024-11-24 00:52:29,309 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:52:29,324 - INFO - Prediction completed. Predicted price: 381.0093333333331
+2024-11-24 00:52:29,325 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:29] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:29,586 - INFO - Received prediction request.
+2024-11-24 00:52:29,587 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:52:29,603 - INFO - Prediction completed. Predicted price: 309.9539999999999
+2024-11-24 00:52:29,604 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:29] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:29,852 - INFO - Received prediction request.
+2024-11-24 00:52:29,852 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 00:52:29,865 - INFO - Prediction completed. Predicted price: 311.388
+2024-11-24 00:52:29,866 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:29] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:30,085 - INFO - Received prediction request.
+2024-11-24 00:52:30,085 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:52:30,097 - INFO - Prediction completed. Predicted price: 309.9539999999999
+2024-11-24 00:52:30,098 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:30] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:52:30,249 - INFO - Received prediction request.
+2024-11-24 00:52:30,249 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:52:30,264 - INFO - Prediction completed. Predicted price: 381.0093333333331
+2024-11-24 00:52:30,265 - INFO - 192.168.1.2 - - [24/Nov/2024 00:52:30] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:56:39,734 - INFO - Received prediction request.
+2024-11-24 00:56:39,739 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 00:56:39,818 - INFO - Prediction completed. Predicted price: 381.0093333333331
+2024-11-24 00:56:39,820 - INFO - 192.168.1.2 - - [24/Nov/2024 00:56:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:56:41,591 - INFO - Received prediction request.
+2024-11-24 00:56:41,592 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:56:41,619 - INFO - Prediction completed. Predicted price: 220.755
+2024-11-24 00:56:41,620 - INFO - 192.168.1.2 - - [24/Nov/2024 00:56:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:56:42,586 - INFO - Received prediction request.
+2024-11-24 00:56:42,599 - DEBUG - Request data: {'whenToPlant': '2025-06-24T19:22:21.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:56:42,611 - INFO - Prediction completed. Predicted price: 168.09300000000002
+2024-11-24 00:56:42,611 - INFO - 192.168.1.2 - - [24/Nov/2024 00:56:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:56:59,431 - INFO - Loading data from Excel file.
+2024-11-24 00:56:59,591 - INFO - Ensuring correct data types for months and year.
+2024-11-24 00:56:59,593 - INFO - Reshaping data to long format.
+2024-11-24 00:56:59,597 - INFO - Encoding categorical data for vegetables and months.
+2024-11-24 00:56:59,598 - INFO - Splitting data into training and testing sets.
+2024-11-24 00:56:59,599 - INFO - Training the Random Forest Regressor model.
+2024-11-24 00:56:59,753 - INFO - Saving the trained model and label encoders.
+2024-11-24 00:56:59,791 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.3:8080
+2024-11-24 00:56:59,791 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-24 00:57:17,422 - INFO - Received prediction request.
+2024-11-24 00:57:17,424 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 00:57:17,476 - INFO - Prediction completed. Predicted price: 481.1390000000003
+2024-11-24 00:57:17,477 - INFO - 127.0.0.1 - - [24/Nov/2024 00:57:17] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:57:34,530 - INFO - Received prediction request.
+2024-11-24 00:57:34,531 - DEBUG - Request data: {'whenToPlant': '2024-12-31T19:27:29.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 00:57:34,586 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 00:57:34,588 - INFO - 192.168.1.2 - - [24/Nov/2024 00:57:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 00:58:04,234 - INFO - Received prediction request.
+2024-11-24 00:58:04,236 - DEBUG - Request data: {'whenToPlant': '2024-12-23T19:27:57.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 00:58:04,267 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 00:58:04,270 - INFO - 192.168.1.2 - - [24/Nov/2024 00:58:04] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:02,258 - INFO - Received prediction request.
+2024-11-24 01:00:02,261 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:02,306 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:02,309 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:02] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:24,616 - INFO - Received prediction request.
+2024-11-24 01:00:24,618 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:24,660 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:24,664 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:24] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:25,178 - INFO - Received prediction request.
+2024-11-24 01:00:25,178 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:25,199 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:25,200 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:25] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:25,608 - INFO - Received prediction request.
+2024-11-24 01:00:25,608 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:00:25,618 - INFO - Prediction completed. Predicted price: 253.67000000000007
+2024-11-24 01:00:25,620 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:25] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:25,849 - INFO - Received prediction request.
+2024-11-24 01:00:25,849 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:00:25,858 - INFO - Prediction completed. Predicted price: 185.966
+2024-11-24 01:00:25,859 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:25] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:26,102 - INFO - Received prediction request.
+2024-11-24 01:00:26,103 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:00:26,116 - INFO - Prediction completed. Predicted price: 253.67000000000007
+2024-11-24 01:00:26,120 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:26] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:53,976 - INFO - Received prediction request.
+2024-11-24 01:00:53,979 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:54,041 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:54,056 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:54,380 - INFO - Received prediction request.
+2024-11-24 01:00:54,381 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:00:54,394 - INFO - Prediction completed. Predicted price: 245.0590000000001
+2024-11-24 01:00:54,395 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:54,688 - INFO - Received prediction request.
+2024-11-24 01:00:54,688 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:54,702 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:54,703 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:54,933 - INFO - Received prediction request.
+2024-11-24 01:00:54,933 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:00:54,942 - INFO - Prediction completed. Predicted price: 185.966
+2024-11-24 01:00:54,943 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:55,170 - INFO - Received prediction request.
+2024-11-24 01:00:55,170 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:00:55,178 - INFO - Prediction completed. Predicted price: 253.67000000000007
+2024-11-24 01:00:55,179 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:55] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:55,893 - INFO - Received prediction request.
+2024-11-24 01:00:55,894 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:00:55,920 - INFO - Prediction completed. Predicted price: 245.0590000000001
+2024-11-24 01:00:55,923 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:55] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:56,251 - INFO - Received prediction request.
+2024-11-24 01:00:56,251 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:56,266 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:56,267 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:56] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:56,501 - INFO - Received prediction request.
+2024-11-24 01:00:56,501 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:56,517 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:56,521 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:56] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:57,205 - INFO - Received prediction request.
+2024-11-24 01:00:57,205 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:00:57,220 - INFO - Prediction completed. Predicted price: 185.966
+2024-11-24 01:00:57,221 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:57] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:57,580 - INFO - Received prediction request.
+2024-11-24 01:00:57,581 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:00:57,594 - INFO - Prediction completed. Predicted price: 253.67000000000007
+2024-11-24 01:00:57,595 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:57] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:57,878 - INFO - Received prediction request.
+2024-11-24 01:00:57,879 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:57,894 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:57,895 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:57] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:58,083 - INFO - Received prediction request.
+2024-11-24 01:00:58,085 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:00:58,098 - INFO - Prediction completed. Predicted price: 245.0590000000001
+2024-11-24 01:00:58,100 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:58,306 - INFO - Received prediction request.
+2024-11-24 01:00:58,306 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:58,319 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:58,320 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:58,540 - INFO - Received prediction request.
+2024-11-24 01:00:58,541 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:58,557 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:58,559 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:58,789 - INFO - Received prediction request.
+2024-11-24 01:00:58,790 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:00:58,811 - INFO - Prediction completed. Predicted price: 253.67000000000007
+2024-11-24 01:00:58,833 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:58] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:59,003 - INFO - Received prediction request.
+2024-11-24 01:00:59,004 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:00:59,023 - INFO - Prediction completed. Predicted price: 185.966
+2024-11-24 01:00:59,023 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:59,414 - INFO - Received prediction request.
+2024-11-24 01:00:59,414 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:00:59,427 - INFO - Prediction completed. Predicted price: 245.0590000000001
+2024-11-24 01:00:59,428 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:59,502 - INFO - Received prediction request.
+2024-11-24 01:00:59,502 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:00:59,514 - INFO - Prediction completed. Predicted price: 263.4669999999997
+2024-11-24 01:00:59,515 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:00:59,807 - INFO - Received prediction request.
+2024-11-24 01:00:59,807 - DEBUG - Request data: {'whenToPlant': '2031-07-01T19:29:56.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:00:59,822 - INFO - Prediction completed. Predicted price: 395.6496666666662
+2024-11-24 01:00:59,824 - INFO - 192.168.1.2 - - [24/Nov/2024 01:00:59] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:03:32,988 - INFO - Received prediction request.
+2024-11-24 01:03:32,992 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:03:33,054 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:03:33,056 - INFO - 192.168.1.2 - - [24/Nov/2024 01:03:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:03:33,740 - INFO - Received prediction request.
+2024-11-24 01:03:33,740 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:03:33,750 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:03:33,750 - INFO - 192.168.1.2 - - [24/Nov/2024 01:03:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:03:34,009 - INFO - Received prediction request.
+2024-11-24 01:03:34,009 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:03:34,021 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:03:34,022 - INFO - 192.168.1.2 - - [24/Nov/2024 01:03:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:04:52,980 - INFO - Received prediction request.
+2024-11-24 01:04:52,982 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:04:53,004 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:04:53,005 - INFO - 192.168.1.2 - - [24/Nov/2024 01:04:53] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:04:53,367 - INFO - Received prediction request.
+2024-11-24 01:04:53,367 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:04:53,385 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:04:53,386 - INFO - 192.168.1.2 - - [24/Nov/2024 01:04:53] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:04:53,846 - INFO - Received prediction request.
+2024-11-24 01:04:53,846 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:04:53,862 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:04:53,863 - INFO - 192.168.1.2 - - [24/Nov/2024 01:04:53] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:04:54,130 - INFO - Received prediction request.
+2024-11-24 01:04:54,130 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:04:54,139 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:04:54,140 - INFO - 192.168.1.2 - - [24/Nov/2024 01:04:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:04:54,498 - INFO - Received prediction request.
+2024-11-24 01:04:54,498 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:04:54,512 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:04:54,513 - INFO - 192.168.1.2 - - [24/Nov/2024 01:04:54] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:21,783 - INFO - Received prediction request.
+2024-11-24 01:05:21,784 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:05:21,805 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:05:21,813 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:21,880 - INFO - Received prediction request.
+2024-11-24 01:05:21,880 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:21,904 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:21,905 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:21] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:22,157 - INFO - Received prediction request.
+2024-11-24 01:05:22,158 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:22,169 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:22,170 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:22,590 - INFO - Received prediction request.
+2024-11-24 01:05:22,590 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:05:22,607 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:05:22,608 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:22,777 - INFO - Received prediction request.
+2024-11-24 01:05:22,777 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:05:22,790 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:05:22,792 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:22] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:35,258 - INFO - Received prediction request.
+2024-11-24 01:05:35,260 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:35,289 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:35,292 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:35,626 - INFO - Received prediction request.
+2024-11-24 01:05:35,626 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:05:35,640 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:05:35,641 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:36,100 - INFO - Received prediction request.
+2024-11-24 01:05:36,103 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:36,121 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:36,126 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:36,412 - INFO - Received prediction request.
+2024-11-24 01:05:36,412 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:05:36,422 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:05:36,423 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:36,706 - INFO - Received prediction request.
+2024-11-24 01:05:36,706 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:05:36,715 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:05:36,716 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:37,001 - INFO - Received prediction request.
+2024-11-24 01:05:37,002 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:05:37,016 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:05:37,017 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:37,259 - INFO - Received prediction request.
+2024-11-24 01:05:37,259 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:37,272 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:37,273 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:37,463 - INFO - Received prediction request.
+2024-11-24 01:05:37,463 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:37,478 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:37,480 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:37,952 - INFO - Received prediction request.
+2024-11-24 01:05:37,955 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:05:37,973 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:05:37,974 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:38,127 - INFO - Received prediction request.
+2024-11-24 01:05:38,127 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:05:38,143 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:05:38,144 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:38] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:39,457 - INFO - Received prediction request.
+2024-11-24 01:05:39,458 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:39,474 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:39,476 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:39,975 - INFO - Received prediction request.
+2024-11-24 01:05:39,976 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:39,991 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:39,992 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:40,172 - INFO - Received prediction request.
+2024-11-24 01:05:40,172 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:05:40,184 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:05:40,185 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:40,364 - INFO - Received prediction request.
+2024-11-24 01:05:40,365 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:40,380 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:40,381 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:40,587 - INFO - Received prediction request.
+2024-11-24 01:05:40,587 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:40,600 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:40,601 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:40,798 - INFO - Received prediction request.
+2024-11-24 01:05:40,799 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:05:40,806 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:05:40,807 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:40] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:40,996 - INFO - Received prediction request.
+2024-11-24 01:05:40,997 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:05:41,013 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:05:41,014 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:41,415 - INFO - Received prediction request.
+2024-11-24 01:05:41,415 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:05:41,425 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:05:41,426 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:41,718 - INFO - Received prediction request.
+2024-11-24 01:05:41,718 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:41,731 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:41,732 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:41,939 - INFO - Received prediction request.
+2024-11-24 01:05:41,939 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:05:41,952 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:05:41,953 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:41] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:42,154 - INFO - Received prediction request.
+2024-11-24 01:05:42,154 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:05:42,168 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:05:42,170 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:42,744 - INFO - Received prediction request.
+2024-11-24 01:05:42,744 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:05:42,760 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:05:42,762 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:42] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:05:43,045 - INFO - Received prediction request.
+2024-11-24 01:05:43,046 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:05:43,060 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:05:43,062 - INFO - 192.168.1.2 - - [24/Nov/2024 01:05:43] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:32,910 - INFO - Received prediction request.
+2024-11-24 01:06:32,912 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:06:32,972 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:06:32,976 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:32] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:33,212 - INFO - Received prediction request.
+2024-11-24 01:06:33,212 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:06:33,224 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:06:33,225 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:33,605 - INFO - Received prediction request.
+2024-11-24 01:06:33,605 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:06:33,619 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:06:33,620 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:33,814 - INFO - Received prediction request.
+2024-11-24 01:06:33,815 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:06:33,832 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:06:33,833 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:33] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:34,039 - INFO - Received prediction request.
+2024-11-24 01:06:34,039 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:06:34,046 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:06:34,047 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:34,452 - INFO - Received prediction request.
+2024-11-24 01:06:34,453 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:06:34,465 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:06:34,466 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:34,667 - INFO - Received prediction request.
+2024-11-24 01:06:34,668 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:06:34,682 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:06:34,683 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:34,923 - INFO - Received prediction request.
+2024-11-24 01:06:34,923 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:06:34,932 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:06:34,933 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:34] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:35,136 - INFO - Received prediction request.
+2024-11-24 01:06:35,137 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:06:35,154 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:06:35,155 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:35,392 - INFO - Received prediction request.
+2024-11-24 01:06:35,393 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:06:35,405 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:06:35,406 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:35,684 - INFO - Received prediction request.
+2024-11-24 01:06:35,685 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:06:35,708 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:06:35,718 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:35,911 - INFO - Received prediction request.
+2024-11-24 01:06:35,912 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:06:35,922 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:06:35,924 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:35] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:36,166 - INFO - Received prediction request.
+2024-11-24 01:06:36,167 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:06:36,180 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:06:36,182 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:36,350 - INFO - Received prediction request.
+2024-11-24 01:06:36,351 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:06:36,368 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:06:36,369 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:36,610 - INFO - Received prediction request.
+2024-11-24 01:06:36,611 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:06:36,625 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:06:36,626 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:36] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:37,224 - INFO - Received prediction request.
+2024-11-24 01:06:37,224 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:06:37,236 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:06:37,238 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:37,392 - INFO - Received prediction request.
+2024-11-24 01:06:37,392 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:06:37,407 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:06:37,408 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:37,665 - INFO - Received prediction request.
+2024-11-24 01:06:37,666 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:06:37,679 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:06:37,681 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:37,813 - INFO - Received prediction request.
+2024-11-24 01:06:37,814 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:06:37,828 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:06:37,830 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:37] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:39,303 - INFO - Received prediction request.
+2024-11-24 01:06:39,304 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-11-24 01:06:39,318 - INFO - Prediction completed. Predicted price: 194.68166666666676
+2024-11-24 01:06:39,319 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:39,416 - INFO - Received prediction request.
+2024-11-24 01:06:39,417 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'BRINJALS'}
+2024-11-24 01:06:39,431 - INFO - Prediction completed. Predicted price: 257.2736666666667
+2024-11-24 01:06:39,432 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:39,647 - INFO - Received prediction request.
+2024-11-24 01:06:39,647 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CABBAGE'}
+2024-11-24 01:06:39,661 - INFO - Prediction completed. Predicted price: 247.89766666666665
+2024-11-24 01:06:39,662 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:39,868 - INFO - Received prediction request.
+2024-11-24 01:06:39,869 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'CARROT'}
+2024-11-24 01:06:39,884 - INFO - Prediction completed. Predicted price: 325.6793333333335
+2024-11-24 01:06:39,884 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:39] "POST /predict HTTP/1.1" 200 -
+2024-11-24 01:06:40,158 - INFO - Received prediction request.
+2024-11-24 01:06:40,158 - DEBUG - Request data: {'whenToPlant': '2030-12-31T19:32:59.000Z', 'whatToPlant': 'TOMATOES'}
+2024-11-24 01:06:40,173 - INFO - Prediction completed. Predicted price: 293.5570000000001
+2024-11-24 01:06:40,174 - INFO - 192.168.1.2 - - [24/Nov/2024 01:06:40] "POST /predict HTTP/1.1" 200 -
