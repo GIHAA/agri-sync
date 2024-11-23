@@ -8,11 +8,11 @@ import DateTimePicker, {
 export type ThemedInputProps = {
   label: string;
   placeholder?: string;
-  value: string | Date;
-  onChangeText: (value: string | Date) => void;
+  value: string | boolean | Date |number;
+  onChangeText: (value: string | boolean | Date |number) => void;
   lightColor?: string;
   darkColor?: string;
-  inputStyle?: string;
+  inputStyle?: string ;
   containerStyle?: string;
   error?: string;
   disabled?: boolean;
@@ -76,7 +76,7 @@ export function ThemedInput({
       ) : (
         <TextInput
           placeholder={placeholder}
-          value={value as string}
+          value={value as string }
           onChangeText={onChangeText}
           editable={!disabled}
           keyboardType={type === "number" ? "numeric" : "default"}

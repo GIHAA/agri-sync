@@ -7,6 +7,7 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { router } from "expo-router";
 
 
 interface MenuOptionProps {
@@ -63,7 +64,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     {
       icon: <AntDesign name="setting" size={55} color="white" />,
       label: "User Preference",
-      onPress: onPreferencePress,
+      onPress: () => router.replace('/(root)/(screens)/user-preferences'),
     },
     {
       icon: <AntDesign name="login" size={55} color="white" />,

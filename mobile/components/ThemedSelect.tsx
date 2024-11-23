@@ -5,9 +5,9 @@ import { Picker } from "@react-native-picker/picker";
 export type ThemedSelectProps = {
   label: string;
   placeholder?: string;
-  options: { label: string; value: string | number }[];
-  value: string | number;
-  onValueChange: (value: string | number) => void;
+  options: { label: string; value: string | number | boolean }[];
+  value: string | number |boolean;
+  onValueChange: (value: string | number |boolean) => void;
   containerStyle?: string;
   inputStyle?: string;
   error?: string;
