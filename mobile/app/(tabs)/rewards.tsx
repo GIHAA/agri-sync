@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, SafeAreaView } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useNavigation } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -35,33 +35,34 @@ export default function RewardsScreen() {
   ];
 
   return (
-    <View className="p-4 bg-gray-100 flex-1">
-      <ThemedText type="title">
-        Your Rewards
-      </ThemedText>
-      <View className="flex-row flex-wrap justify-between">
-        {rewards.map((reward) => (
-          <Pressable
-            key={reward.id}
-            className="w-[48%] bg-green-500 rounded-lg items-center mb-4"
-          >
-            <View className="bg-white p-4 rounded-full m-4">
-              <AntDesign name={reward.icon} size={24} color="#38A169" />
-            </View>
-
-            <View className="flex-row items-center bg-white rounded-full px-2 py-1 ">
-              <View className="bg-yellow-400 rounded-full p-1 mr-2">
-                <AntDesign name="heart" size={12} color="#A64B2A" />
+    <SafeAreaView className="flex-1 bg-gray-100">
+      <View className="p-4 flex-1">
+        <ThemedText type="title">Your Rewards</ThemedText>
+        <View className="flex-row flex-wrap justify-between mt-4">
+          {rewards.map((reward) => (
+            <Pressable
+              key={reward.id}
+              className="w-[48%] bg-green-500 rounded-lg items-center mb-4"
+              //onPress={() => navigation.navigate("RewardDetail", { title: reward.title })} // Add navigation behavior
+            >
+              <View className="bg-white p-4 rounded-full m-4">
+                <AntDesign name={reward.icon} size={24} color="#38A169" />
               </View>
-              <Text className="text-green-600 font-bold">{reward.coins}</Text>
-            </View>
 
-            <Text className="text-white font-bold text-[14px] m-2 text-center">
-              {reward.title}
-            </Text>
-          </Pressable>
-        ))}
+              <View className="flex-row items-center bg-white rounded-full px-2 py-1">
+                <View className="bg-yellow-400 rounded-full p-1 mr-2">
+                  <AntDesign name="heart" size={12} color="#A64B2A" />
+                </View>
+                <Text className="text-green-600 font-bold">{reward.coins}</Text>
+              </View>
+
+              <Text className="text-white font-bold text-[14px] m-2 text-center">
+                {reward.title}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
