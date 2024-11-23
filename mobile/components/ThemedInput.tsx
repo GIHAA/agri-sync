@@ -55,7 +55,7 @@ export function ThemedInput({
             style={{ color, ...(disabled ? { backgroundColor: 'rgba(0,0,0,0.1)' } : {}) }}
           > 
             {value}
-          </Text>/
+          </Text>
           {showDatePicker && (
             <DateTimePicker
               value={value as Date}
