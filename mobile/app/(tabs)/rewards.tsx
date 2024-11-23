@@ -8,7 +8,12 @@ export default function RewardsScreen() {
 
   type AntDesignIconName = "linechart" | "enviromento" | "API";
 
-  const rewards: { id: number; title: string; coins: number; icon: AntDesignIconName }[] = [
+  const rewards: {
+    id: number;
+    title: string;
+    coins: number;
+    icon: AntDesignIconName;
+  }[] = [
     {
       id: 1,
       title: "Price Prediction",
@@ -31,7 +36,7 @@ export default function RewardsScreen() {
 
   return (
     <View className="p-4 bg-gray-100 flex-1">
-      <ThemedText className="!text-black mb-4" type="title">
+      <ThemedText type="title">
         Your Rewards
       </ThemedText>
       <View className="flex-row flex-wrap justify-between">
