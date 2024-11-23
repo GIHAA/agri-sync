@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, View, Text, TextInputProps } from "react-native";
+import { TextInput, View, Text, TextInputProps, Platform } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -50,7 +50,7 @@ export function ThemedInput({
 
   return (
     <View className={`mb-4 ${containerStyle}`} style={{ width: "100%" }}>
-      <Text className="text-base font-semibold mb-2 text-black dark:text-white">
+      <Text className="text-base font-semibold mb-2 text-black ">
         {label}
       </Text>
       {type === "date" ? (
@@ -58,19 +58,19 @@ export function ThemedInput({
           style={{
             borderWidth: 1,
             borderRadius: 8,
-            borderColor: error ? "red" : "#d1d5db", // Error or default border
+            borderColor: error ? "red" : "#d1d5db", 
             backgroundColor: "#f3f4f6",
-            width: "100%", // Full width
+            width: "100%", 
             padding: 8,
           }}
         >
           <DateTimePicker
             value={value as Date}
             mode="date"
-            display="default"
+            display="spinner"
             onChange={handleDateChange}
-            style={{ width: "100%" }} 
-    
+            style={{ width: "100%"   }} 
+            {...(Platform.OS === "ios" && { textColor: "black" })} 
           />
         </View>
       ) : (
@@ -80,7 +80,7 @@ export function ThemedInput({
           onChangeText={onChangeText}
           editable={!disabled}
           keyboardType={type === "number" ? "numeric" : "default"}
-          className={`border rounded-lg p-4 mt-4 text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
+          className={`border rounded-lg  text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
             disabled ? "opacity-50" : ""
           } ${inputStyle}`}
           placeholderTextColor="gray"
