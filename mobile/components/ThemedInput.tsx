@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, View, Text, TextInputProps } from "react-native";
+import { TextInput, View, Text, TextInputProps, Platform } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -67,10 +67,10 @@ export function ThemedInput({
           <DateTimePicker
             value={value as Date}
             mode="date"
-            display="default"
+            display="spinner"
             onChange={handleDateChange}
-            style={{ width: "100%" }} 
-    
+            style={{ width: "100%"   }} 
+            {...(Platform.OS === "ios" && { textColor: "black" })} 
           />
         </View>
       ) : (
@@ -80,7 +80,7 @@ export function ThemedInput({
           onChangeText={onChangeText}
           editable={!disabled}
           keyboardType={type === "number" ? "numeric" : "default"}
-          className={`border rounded-lg p-4 mt-4 text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
+          className={`border rounded-lg  text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
             disabled ? "opacity-50" : ""
           } ${inputStyle}`}
           placeholderTextColor="gray"
