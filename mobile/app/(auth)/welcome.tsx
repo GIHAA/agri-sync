@@ -19,7 +19,7 @@ const Welcome = () => {
 
       <TouchableOpacity
       onPress={() => {
-        router.replace('/(root)/(tabs)/home')
+        router.replace('/(root)/(tabs)/selectCropForPrediction')
       }}
       className='w-1/2 bg-[#2F855A] p-8 rounded-lg mt-4 self-center'>
       <Text className='text-center'>Debug</Text>
