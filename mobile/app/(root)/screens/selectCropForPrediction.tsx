@@ -61,14 +61,14 @@ export default function SelectCropForPrediction() {
             onChangeText={(value) => setWhereToPlant(value as string)}
             className="mb-4"
           />
-          <ThemedInput
+          {/* <ThemedInput
             label="When Do You Wish to Plant?"
             placeholder="Select date"
             type="date"
             value={new Date(whenToPlant)}
             onChangeText={setWhenToPlant}
             className="mb-4"
-          />
+          /> */}
           <ThemedSelect
             label="Select a Vegetable"
             placeholder="Choose one"

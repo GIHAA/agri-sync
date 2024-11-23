@@ -22,7 +22,7 @@ export default function TabLayout() {
         headerShown: false,
       }}
     >
-      <Tabs.Screen name="index" options={createScreenOptions('Home', 'home', 'home-outline')} />
+      <Tabs.Screen name="home" options={{ ...createScreenOptions('Home', 'home', 'home-outline'), headerShown: false }} />
       <Tabs.Screen name="rewards" options={createScreenOptions('Explore', 'gift', 'gift-outline')} />
     </Tabs>
   );

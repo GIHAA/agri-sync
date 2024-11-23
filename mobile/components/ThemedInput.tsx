@@ -12,7 +12,7 @@ export type ThemedInputProps = {
   onChangeText: (value: any) => void;
   lightColor?: string;
   darkColor?: string;
-  inputStyle?: string;
+  inputStyle?: string ;
   containerStyle?: string;
   error?: string;
   disabled?: boolean;
@@ -76,7 +76,7 @@ export function ThemedInput({
       ) : (
         <TextInput
           placeholder={placeholder}
-          value={value as string}
+          value={value as string }
           onChangeText={onChangeText}
           editable={!disabled}
           keyboardType={type === "number" ? "numeric" : "default"}
