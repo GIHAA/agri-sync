@@ -1,0 +1,49 @@
+# General Node.js Ignored Files
+node_modules/         # Ignore all Node.js dependencies
+dist/                 # Ignore compiled build folders
+coverage/             # Ignore test coverage output
+.DS_Store             # Ignore macOS system metadata
+
+# Database Data Folder
+backend/db/db-data/   # Ignore the database data directory
+backend/db/.DS_Store  # Ignore macOS metadata inside backend/db/
+
+# Docker Ignored Files
+docker-compose.override.yml  # Ignore override files for Docker Compose
+
+# Environment Files
+*.env                # Ignore all environment files
+.env.local           # Local environment overrides
+.env.*.local         # Other environment overrides
+
+# Logs
+*.log                # Ignore all log files
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary Files
+*.tmp
+*.swp
+*.bak
+*.pid
+*.seed
+*.pid.lock
+
+# Ignore IDE/Editor Files
+.vscode/             # Ignore Visual Studio Code settings
+.idea/               # Ignore IntelliJ IDEA/WebStorm settings
+*.iml                # Ignore IDE module files
+
+# Admin Frontend Ignored Files
+front-end-admin/build/  # Ignore admin frontend build output
+
+# Mobile Project Ignored Files
+mobile/build/         # Ignore mobile project build output
+mobile/.expo/         # Ignore Expo-related files
+mobile/.cache/        # Ignore cache directories
+
+# Dependency Lock Files (Optional)
+package-lock.json     # Ignore npm lock file (if you're using Yarn or don't want lock files)
+yarn.lock             # Ignore Yarn lock file
