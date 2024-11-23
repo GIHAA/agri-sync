@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Alert} from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedInput } from "@/components/ThemedInput";
@@ -18,11 +18,11 @@ const UserPreferences = () => {
   const [useSymbolsWithColors, setUseSymbolsWithColors] = useState(false);
 
   function handleUpdate(): void {
-   Alert.alert("User Preferences Updated Successfully");
+    Alert.alert("User Preferences Updated Successfully");
   }
 
   function handleCancel(): void {
-    router.replace("/(root)/(tabs)/home");
+    router.replace("/(root)/(screens)/home");
   }
 
   function handleNavigate(): void {
@@ -33,14 +33,13 @@ const UserPreferences = () => {
     <SafeAreaView>
       <ScrollView>
         <View className="flex  p-[40px]">
-         
           <Text className="text-[32px]  text-left font-bold">User Profile</Text>
           <Text className="text-[16px]  mb-6 text-gray-600">
             You can edit your preferences here.
           </Text>
 
           <Text className="text-[20px] leading-[24px] font-bold mb-3 ">
-          Account Details
+            Account Details
           </Text>
 
           <ThemedInput
@@ -70,7 +69,7 @@ const UserPreferences = () => {
           />
 
           <Text className="text-[20px] leading-[24px] font-bold mb-3">
-          Preferences
+            Preferences
           </Text>
 
           <ThemedSelect
@@ -95,7 +94,7 @@ const UserPreferences = () => {
             ]}
             value={textSize}
             onValueChange={(value) => setTextSize(value as string)}
-             containerStyle="w-full"
+            containerStyle="w-full"
           />
 
           <ThemedSelect
@@ -107,7 +106,7 @@ const UserPreferences = () => {
             ]}
             value={colorBlindness}
             onValueChange={(value) => setColorBlindness(value as boolean)}
-             containerStyle="w-full"
+            containerStyle="w-full"
           />
 
           <ThemedSelect
@@ -142,36 +141,34 @@ const UserPreferences = () => {
               { label: "No", value: false },
             ]}
             value={useSymbolsWithColors}
-            onValueChange={(value) => setUseSymbolsWithColors(value as  boolean)}
+            onValueChange={(value) => setUseSymbolsWithColors(value as boolean)}
             containerStyle="w-full"
           />
 
           <View className="flex flex-row gap-[12px]">
-
-          <ThemedButton
-          label="Update"
-          variant='primary'
-          onPress={() => handleUpdate()}
-          textStyle="text-lg"
-          containerStyle='w-1/2  p-4 rounded-lg my-6'
-        />
-          <ThemedButton
-          label="Cancel"
-          variant='outline'
-          onPress={() => handleCancel()}
-          textStyle="text-lg"
-          containerStyle='w-1/2  p-4 rounded-lg my-6'
-        />
+            <ThemedButton
+              label="Update"
+              variant="primary"
+              onPress={() => handleUpdate()}
+              textStyle="text-lg"
+              containerStyle="w-1/2  p-4 rounded-lg my-6"
+            />
+            <ThemedButton
+              label="Cancel"
+              variant="outline"
+              onPress={() => handleCancel()}
+              textStyle="text-lg"
+              containerStyle="w-1/2  p-4 rounded-lg my-6"
+            />
           </View>
 
           <ThemedButton
-          label="Give Feedback about the app"
-          variant='primary'
-          onPress={() => handleNavigate()}
-          textStyle="text-lg"
-          containerStyle='w-full  p-4 rounded-lg my-6'
-        />
-   
+            label="Give Feedback about the app"
+            variant="primary"
+            onPress={() => handleNavigate()}
+            textStyle="text-lg"
+            containerStyle="w-full  p-4 rounded-lg my-6"
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

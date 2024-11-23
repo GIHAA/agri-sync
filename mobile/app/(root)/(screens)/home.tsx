@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ImageSourcePropType,
+  SafeAreaView,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MenuOption from "@/components/HomeOption";
@@ -27,15 +28,15 @@ const HomeScreen: React.FC = ({}) => {
   };
 
   const onRewardPress = () => {
-    router.replace("/(root)/screens/rewards");
+    router.replace("/(root)/(screens)/rewards");
   };
 
   const onPreferencePress = () => {
-    console.log("User Preference Pressed");
+    router.replace("/(root)/(screens)/user-preferences");
   };
 
   const onLogoutPress = () => {
-    console.log("Logout Pressed");
+    router.replace("/(auth)/sign-in");
   };
 
   const menuItems: Array<MenuOptionProps> = [
@@ -62,7 +63,7 @@ const HomeScreen: React.FC = ({}) => {
   ];
 
   return (
-    <View className="flex-1 gap-10">
+    <SafeAreaView className="flex-1 gap-10">
       <View className="items-center pt-8 pb-4">
         <Image
           source={require("../../../assets/images/app-icon.png")}
@@ -98,7 +99,7 @@ const HomeScreen: React.FC = ({}) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

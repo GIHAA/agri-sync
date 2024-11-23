@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView, SafeAreaView } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -24,7 +24,7 @@ export default function RewardsScreen() {
       coins: 100,
       icon: "linechart",
       onPress: () => {
-        router.replace("/(root)/screens/selectCropForPrediction");
+        router.replace("/(root)/(screens)/selectCropForPrediction");
       },
     },
     {
@@ -50,6 +50,7 @@ export default function RewardsScreen() {
   ];
 
   return (
+    <SafeAreaView className="flex-1 bg-white">
     <ScrollView
       className="bg-gray-100 flex-1"
       contentContainerStyle={{ padding: 16 }}
@@ -57,7 +58,7 @@ export default function RewardsScreen() {
       {/* Go Back Button */}
       <Pressable
         className="flex-row items-center mb-4"
-        onPress={() => router.replace("/(root)/screens/home")}
+        onPress={() => router.replace("/(root)/(screens)/home")}
       >
         <AntDesign name="arrowleft" size={24} color="black" />
         <Text className="text-black ml-2 text-lg">Back</Text>
@@ -159,5 +160,6 @@ export default function RewardsScreen() {
         ))}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }

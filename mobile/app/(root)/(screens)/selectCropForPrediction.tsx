@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Pressable, Text } from "react-native";
+import { View, ScrollView, Pressable, Text, SafeAreaView } from "react-native";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -28,7 +28,7 @@ export default function SelectCropForPrediction() {
     const formattedDate = whenToPlant.toISOString();
 
     router.replace({
-      pathname: "/(root)/screens/pricePrediction",
+      pathname: "/(root)/(screens)/pricePrediction",
       params: {
         whereToPlant,
         whenToPlant: formattedDate,
@@ -38,12 +38,12 @@ export default function SelectCropForPrediction() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
 
       <Pressable
         className="flex-row items-center mb-4"
-        onPress={() => router.back()}
+        onPress={() => router.replace("/(root)/(screens)/rewards")}
       >
         <AntDesign name="arrowleft" size={24} color="black" />
         <Text className="text-black ml-2 text-lg">Back</Text>
@@ -61,14 +61,14 @@ export default function SelectCropForPrediction() {
             onChangeText={(value) => setWhereToPlant(value as string)}
             className="mb-4"
           />
-          {/* <ThemedInput
+          <ThemedInput
             label="When Do You Wish to Plant?"
             placeholder="Select date"
             type="date"
             value={new Date(whenToPlant)}
             onChangeText={setWhenToPlant}
             className="mb-4"
-          /> */}
+          />
           <ThemedSelect
             label="Select a Vegetable"
             placeholder="Choose one"
@@ -95,6 +95,6 @@ export default function SelectCropForPrediction() {
           textStyle="text-lg"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

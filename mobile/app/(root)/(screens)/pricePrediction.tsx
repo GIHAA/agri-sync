@@ -1,13 +1,21 @@
 import { ThemedText } from "@/components/ThemedText";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, Pressable, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  Image,
+  SafeAreaView,
+} from "react-native";
 import Brinjals from "@/assets/images/vegitables/Brinjals.jpeg";
 import Cabbage from "@/assets/images/vegitables/Cabbage.jpg";
 import Carrot from "@/assets/images/vegitables/Carrot.webp";
 import Pumpkin from "@/assets/images/vegitables/Pumpkin.jpg";
 import Tomatoes from "@/assets/images/vegitables/Tomatoes.jpg";
 import { fetchPredictedPrice } from "@/api/predictionApiService";
+import { AntDesign } from "@expo/vector-icons";
 
 interface Vegetable {
   name: string;
@@ -27,12 +35,14 @@ const vegetableData: Vegetable[] = [
 export default function PricePredictionScreen() {
   const { whereToPlant, whenToPlant, whatToPlant } = useLocalSearchParams();
 
-  const [currentSelectedVegetable, setCurrentSelectedVegetable] = useState<string>(
-    whatToPlant.toString() || "Carrot"
-  );
-  const [currentSelectedVegetableImage, setCurrentSelectedVegetableImage] = useState<any>(
-    vegetableData.find((veg) => veg.name.toLowerCase() === whatToPlant.toString().toLowerCase() )?.image || Carrot
-  );
+  const [currentSelectedVegetable, setCurrentSelectedVegetable] =
+    useState<string>(whatToPlant.toString() || "Carrot");
+  const [currentSelectedVegetableImage, setCurrentSelectedVegetableImage] =
+    useState<any>(
+      vegetableData.find(
+        (veg) => veg.name.toLowerCase() === whatToPlant.toString().toLowerCase()
+      )?.image || Carrot
+    );
   const [currentPrice, setCurrentPrice] = useState<number>(
     vegetableData.find((veg) => veg.name === whatToPlant)?.currentPrice || 100
   );
@@ -47,7 +57,10 @@ export default function PricePredictionScreen() {
     setCurrentPrice(veg.currentPrice);
 
     try {
-      const predictedPrice = await fetchPredictedPrice(whenToPlant.toString(), veg.name);
+      const predictedPrice = await fetchPredictedPrice(
+        whenToPlant.toString(),
+        veg.name
+      );
       setPredictedPrice(predictedPrice);
     } catch (error) {
       console.error(error);
@@ -66,12 +79,24 @@ export default function PricePredictionScreen() {
   );
 
   return (
-    <View className="p-4 bg-gray-100 flex-1">
+    <SafeAreaView className="flex-1  bg-white">
+      <View className="p-4" >
+      <Pressable
+        className="flex-row items-center mb-4"
+        onPress={() => router.replace("/(root)/(screens)/home")}
+      >
+        <AntDesign name="arrowleft" size={24} color="black" />
+        <Text className="text-black ml-2 text-lg">Back</Text>
+      </Pressable>
+
       <ThemedText type="title">Price Prediction</ThemedText>
 
       <View className="bg-white rounded-lg shadow-md p-4 mb-6">
         <View className="flex-row items-center mb-4">
-          <Image source={currentSelectedVegetableImage} className="w-[120px] h-[100px] mr-4" />
+          <Image
+            source={currentSelectedVegetableImage}
+            className="w-[120px] h-[100px] mr-4"
+          />
           <Text className="text-lg font-bold">{currentSelectedVegetable}</Text>
         </View>
         <Text className="text-gray-600">Current Price: {currentPrice}</Text>
@@ -81,7 +106,9 @@ export default function PricePredictionScreen() {
       </View>
 
       <View className="flex-row items-center justify-between mb-4">
-        <Text className="text-gray-600">{remainingPredictions} Predictions Remaining</Text>
+        <Text className="text-gray-600">
+          {remainingPredictions} Predictions Remaining
+        </Text>
         <Pressable
           onPress={() => alert("Redirecting to purchase predictions...")}
           className="bg-green-500 px-4 py-2 rounded-md"
@@ -104,6 +131,7 @@ export default function PricePredictionScreen() {
           justifyContent: "space-evenly",
         }}
       />
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
