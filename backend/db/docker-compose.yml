@@ -12,5 +12,5 @@ services:
       POSTGRES_USER: user_db
       POSTGRES_PASSWORD: user_db_password
       POSTGRES_DB: user_service
-    volumes:
-      - ./db-data/user_db_server/:/var/lib/postgresql/data
+    # volumes:
+    #   - ./db-data/user_db_server/:/var/lib/postgresql/data

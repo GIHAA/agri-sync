@@ -76,7 +76,7 @@ router.get("/validate", async (req, res) => {
 module.exports = router;
 
 /*
-if you would like to use middleware to authorize routes, you can use the following code:
+
 
 // Middleware to authorize routes
 const requestAuthorizer = (req, res, next) => {
@@ -97,8 +97,7 @@ const requestAuthorizer = (req, res, next) => {
   });
 };
 
- 
-// Example of a protected route
+// protected route
  router.get("/profile", requestAuthorizer, async (req, res) => {
 
   // if user is authorized, their details will be available in req
