@@ -28,7 +28,7 @@ export function ThemedButton({
       case "primary":
         return `bg-green-600 border-green-600 ${disabled ? "opacity-50" : ""}`;
       case "secondary":
-        return `bg-gray-200 border-gray-300 ${disabled ? "opacity-50" : ""}`;
+        return `bg-green-200 border-green-300 ${disabled ? "opacity-50" : ""}`;
       case "outline":
         return `bg-transparent border-green-600 ${disabled ? "opacity-50" : ""}`;
       default:
@@ -41,7 +41,7 @@ export function ThemedButton({
       case "primary":
         return "text-white";
       case "secondary":
-        return "text-gray-800";
+        return "text-green-800";
       case "outline":
         return "text-green-600";
       default:

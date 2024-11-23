@@ -43,20 +43,26 @@ export default function SelectCropForPrediction() {
       <View className="flex space-x-4">
         <ThemedButton
           label="Submit"
-          onPress={() => console.log("Button Pressed")}
-          lightColor="#3b82f6"
-          darkColor="#2563eb"
+          onPress={() => console.log("Primary button pressed")}
           variant="primary"
-          disabled={false}
-          loading={false}
-          textStyle={{ fontSize: 18 }}
+          textStyle="text-lg"
         />
         <ThemedButton
           label="Cancel"
-          onPress={() => console.log("Cancel Button Pressed")}
+          onPress={() => console.log("Secondary button pressed")}
+          variant="secondary"
+        />
+        <ThemedButton
+          label="Delete"
+          onPress={() => console.log("Outline button pressed")}
           variant="outline"
-          disabled={false}
           loading={false}
+        />
+        <ThemedButton
+          label="Delete"
+          onPress={() => console.log("Outline button pressed")}
+          variant="outline"
+          loading={true}
         />
       </View>
     </View>
