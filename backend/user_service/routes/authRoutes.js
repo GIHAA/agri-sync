@@ -265,7 +265,7 @@ router.get("/farmers/:qr_code", async (req, res, next) => {
 });
 
 module.exports = router;
-
+/*
 // Middleware to authorize routes
 const requestAuthorizer = (req, res, next) => {
   const token = req.headers["authorization"];
@@ -299,4 +299,4 @@ const requestAuthorizer = (req, res, next) => {
     });
  });
  
-
+*/
