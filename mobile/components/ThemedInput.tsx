@@ -1,21 +1,22 @@
-import React from 'react';
-import { TextInput, View, Text, TextInputProps } from 'react-native';
-// Example date picker library
-import { useThemeColor } from '@/hooks/useThemeColor';
-import DatePicker from 'react-native-date-picker';
+import React from "react";
+import { TextInput, View, Text, TextInputProps, Platform } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 
 export type ThemedInputProps = {
   label: string;
   placeholder?: string;
-  value: string | Date;
-  onChangeText: (value: string | Date) => void;
+  value: any ,
+  onChangeText: (value: any) => void;
   lightColor?: string;
   darkColor?: string;
-  inputStyle?: string;
+  inputStyle?: string ;
   containerStyle?: string;
   error?: string;
   disabled?: boolean;
-  type?: 'text' | 'number' | 'date';
+  type?: "text" | "number" | "date";
 } & TextInputProps;
 
 export function ThemedInput({
@@ -25,40 +26,72 @@ export function ThemedInput({
   onChangeText,
   lightColor,
   darkColor,
-  inputStyle = '',
-  containerStyle = '',
+  inputStyle = "",
+  containerStyle = "",
   error,
   disabled = false,
-  type = 'text',
+  type = "text",
   ...rest
 }: ThemedInputProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-  const borderColor = error ? 'border-red-500' : 'border-gray-300';
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+  const borderColor = error ? "border-red-500" : "border-gray-300";
+
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
+
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      onChangeText(selectedDate);
+    }
+  };
 
   return (
-    <View className={`mb-4 ${containerStyle}`}>
-      <Text className="text-base font-semibold mb-2 text-black dark:text-white">{label}</Text>
-      {type === 'date' ? (
-        <DatePicker
-          date={typeof value === 'string' ? new Date(value) : value}
-          mode="date"
-          minimumDate={new Date('2000-01-01')}
-          maximumDate={new Date('2100-12-31')}
-          confirmText="Confirm"
-          cancelText="Cancel"
-          onDateChange={(date) => onChangeText(date)}
-          is24hourSource={disabled ? 'locale' : 'device'}
-        />
+    <View className={`mb-4 ${containerStyle}`} style={{ width: "100%" }}>
+      <Text className="text-base font-semibold mb-2 text-black ">
+        {label}
+      </Text>
+      {type === "date" ? (
+        <View
+          style={{
+            borderWidth: 1,
+            borderRadius: 8,
+            borderColor: error ? "red" : "#d1d5db", 
+            backgroundColor: "#f3f4f6",
+            width: "100%", 
+            padding: 8,
+          }}
+        >
+          <DateTimePicker
+            value={value as Date}
+            mode="date"
+            display="spinner"
+            onChange={handleDateChange}
+            style={{ width: "100%"   }} 
+            {...(Platform.OS === "ios" && { textColor: "black" })} 
+          />
+        </View>
       ) : (
         <TextInput
           placeholder={placeholder}
-          value={value}
+          value={value as string }
           onChangeText={onChangeText}
           editable={!disabled}
-          keyboardType={type === 'number' ? 'numeric' : 'default'}
-          className={`border rounded-lg p-4 mt-4 text-black dark:text-white text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${disabled ? 'opacity-50' : ''} ${inputStyle}`}
+          keyboardType={type === "number" ? "numeric" : "default"}
+          className={`border rounded-lg  text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
+            disabled ? "opacity-50" : ""
+          } ${inputStyle}`}
           placeholderTextColor="gray"
-          style={{ color, ...(disabled ? { backgroundColor: 'rgba(0,0,0,0.1)' } : {}) }}
+          style={{
+            borderWidth: 1,
+            borderRadius: 8,
+            borderColor: error ? "red" : "#d1d5db",
+            backgroundColor: "#f3f4f6",
+            width: "100%", 
+            padding: 16,
+          }}
           {...rest}
         />
       )}
