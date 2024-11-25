@@ -11,17 +11,21 @@ export const createSeedTransaction = async (data: {
   location: string;
 }) => {
   try {
-    const transactionId = await transactionRepository.insertSeedTransaction(data);
+    const transaction = await transactionRepository.createOrUpdateSeedTransaction({
+      ...data,
+      blockchainTxId: null, 
+    });
 
     const totalPrice = data.quantity * data.pricePerUnit;
+
     const blockchainTxId = await logTransactionOnBlockchain({
-      id: transactionId,
+      id: transaction.id,
       ...data,
       totalPrice,
     });
 
     const updatedTransaction = await transactionRepository.updateBlockchainTransactionId(
-      transactionId,
+      transaction.id,
       blockchainTxId
     );
 
@@ -46,15 +50,6 @@ export const getTransactions = async () => {
     return await transactionRepository.getAllSeedTransactions();
   } catch (error) {
     console.error("Error fetching all transactions:", error);
-    throw error;
-  }
-};
-
-export const fetchFarmerDetails = async (qrCodeHash: string) => {
-  try {
-    return await transactionRepository.getFarmerDetails(qrCodeHash);
-  } catch (error) {
-    console.error(`Error fetching farmer details for QR code hash ${qrCodeHash}:`, error);
     throw error;
   }
 };

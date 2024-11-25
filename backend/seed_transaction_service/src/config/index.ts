@@ -1,12 +1,12 @@
 export const config = {
-  // Database Configuration
   db: {
-    connectionString: process.env.DATABASE_URL || "postgres://user:password@localhost:5432/seed_transactions",
-    user: process.env.DB_USER || "user",
+    connectionString:
+      process.env.DATABASE_URL || "postgres://user_db:transaction_db_password@localhost:5433/transaction_service",
+    user: process.env.DB_USER || "user_db",
     host: process.env.DB_HOST || "localhost",
-    name: process.env.DB_NAME || "seed_transactions",
-    password: process.env.DB_PASSWORD || "password",
-    port: Number(process.env.DB_PORT) || 5432,
+    name: process.env.DB_NAME || "transaction_service",
+    password: process.env.DB_PASSWORD || "transaction_db_password",
+    port: Number(process.env.DB_PORT) || 5433,
     pool: {
       max: parseInt(process.env.DB_POOL_MAX || "10", 10),
       min: parseInt(process.env.DB_POOL_MIN || "2", 10),
@@ -42,7 +42,6 @@ export const config = {
     logFilePath: process.env.LOG_FILE_PATH || "./logs/app.log",
     logToConsole: process.env.LOG_TO_CONSOLE !== "false",
   },
-
 
   security: {
     enableRateLimiting: process.env.ENABLE_RATE_LIMITING === "true",

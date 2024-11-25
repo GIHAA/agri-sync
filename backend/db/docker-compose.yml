@@ -1,16 +1,42 @@
-version: "3"
+version: "3.8"
 
 services:
-  postgres:
+  # User Service Database
+  user_db_server:
     image: "postgres:16.0"
+    container_name: "user_db_server"
     ports:
-      - "5432:5432"
-    deploy:
-      mode: replicated
-      replicas: 1
+      - "5432:5432" # Map the PostgreSQL port for user service
     environment:
       POSTGRES_USER: user_db
       POSTGRES_PASSWORD: user_db_password
       POSTGRES_DB: user_service
     volumes:
-      - ./db-data/user_db_server/:/var/lib/postgresql/data
+      - user_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  # Transaction Service Database
+  transaction_db_server:
+    image: "postgres:16.0"
+    container_name: "transaction_db_server"
+    ports:
+      - "5433:5432" # Map the PostgreSQL port for transaction service
+    environment:
+      POSTGRES_USER: transaction_db
+      POSTGRES_PASSWORD: transaction_db_password
+      POSTGRES_DB: transaction_service
+    volumes:
+      - transaction_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+# Volumes to persist database data
+volumes:
+  user_db_data:
+  transaction_db_data:
+
+# Shared network for all services
+networks:
+  app_network:
+    driver: bridge

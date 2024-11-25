@@ -1,10 +1,12 @@
 import express from "express";
 import transactionRoutes from "./api/seedTransaction.routes";
-import { errorHandler } from "./utils/error/errorHandler";
+import { httpLogger, HandleErrorWithLogger } from "./utils";
 
 const app = express();
 app.use(express.json());
+app.use(httpLogger);
 app.use("/seed-transactions", transactionRoutes);
-app.use(errorHandler);
+
+app.use(HandleErrorWithLogger);
 
 export default app;

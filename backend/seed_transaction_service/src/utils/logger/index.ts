@@ -1,10 +1,20 @@
-import { createLogger, format, transports } from "winston";
+import { pinoHttp } from "pino-http";
+import pino from "pino";
 
-export const logger = createLogger({
+export const logger = pino({
   level: "info",
-  format: format.combine(
-    format.timestamp(),
-    format.printf(({ level, message, timestamp }) => `[${timestamp}] ${level.toUpperCase()}: ${message}`)
-  ),
-  transports: [new transports.Console()],
+  base: {
+    serviceName: "catalog-service",
+  },
+  serializers: pino.stdSerializers,
+  timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`,
+  transport: {
+    target: "pino-pretty",
+    level: "error",
+  },
+});
+
+export const httpLogger = pinoHttp({
+  level: "error",
+  logger,
 });

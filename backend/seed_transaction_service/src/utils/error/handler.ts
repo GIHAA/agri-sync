@@ -10,32 +10,29 @@ export const HandleErrorWithLogger = (
    error: Error,
    req: Request,
    res: Response,
-   next: NextFunction,
-) => {
+   next: NextFunction
+ ) => {
    let reportError = true;
    let status = 500;
-   let data = error.message;
-
-   // skip common / known errors
-   [NotFoundError, ValidationError, AuthorizeError].forEach(
-      (typeOfError) => {
-         if (error instanceof typeOfError) {
-            reportError = false;
-            status = error.status;
-            data = error.message;
-         }
-      },
-   );
-
+   let data = { message: error.message };
+ 
+   // Handle known error types
+   [NotFoundError, ValidationError, AuthorizeError].forEach((typeOfError) => {
+     if (error instanceof typeOfError) {
+       reportError = false;
+       status = (error as any).status || 400; // Ensure the status is extracted
+       data = { message: error.message };
+     }
+   });
+ 
    if (reportError) {
-      // error reporting tools implementation eg: Cloudwatch,Sentry etc;
-      logger.error(error);
+     logger.error(error); // Log unexpected errors
    } else {
-      logger.warn(error); // ignore common errors caused by user
+     logger.warn(error); // Log user-caused errors with a warning
    }
-
-   return res.status(status).json(data);
-};
+ 
+   res.status(status).json(data);
+ };
 
 export const HandleUnCaughtException = async (
    error: Error,

@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 import { config } from "../config";
 
 const pool = new Pool({
@@ -11,6 +11,9 @@ const pool = new Pool({
       database: config.db.name,
       password: config.db.password,
       port: config.db.port,
+      max: config.db.pool.max || 10,
+      min: config.db.pool.min || 2,
+      idleTimeoutMillis: config.db.pool.idle || 10000,
     }),
 });
 
@@ -20,7 +23,11 @@ export const query = async (text: string, params?: any[]): Promise<any> => {
   try {
     const result = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log("Executed query", { text, duration, rows: result.rowCount });
+
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Executed query", { text, duration, rows: result.rowCount });
+    }
+
     return result;
   } catch (error) {
     console.error("Database query error:", { text, error });
@@ -28,8 +35,7 @@ export const query = async (text: string, params?: any[]): Promise<any> => {
   }
 };
 
-
-export const connect = async () => {
+export const connect = async (): Promise<PoolClient> => {
   try {
     const client = await pool.connect();
     return client;
@@ -39,4 +45,22 @@ export const connect = async () => {
   }
 };
 
-export default { query, connect };
+export const transaction = async <T>(
+  callback: (client: PoolClient) => Promise<T>
+): Promise<T> => {
+  const client = await connect();
+  try {
+    await client.query("BEGIN");
+    const result = await callback(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Transaction failed. Rolled back changes:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export default { query, connect, transaction };

@@ -3,8 +3,7 @@ import express from "express";
 import {
   createSeedTransaction,
   getTransactionById,
-  getTransactions,
-  fetchFarmerDetails,
+  getTransactions
 } from "../services/seedTransaction.service";
 
 const router = express.Router();
@@ -39,14 +38,5 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// Fetch Farmer Details
-router.get("/farmers/:qr_code", async (req, res, next) => {
-  try {
-    const farmer = await fetchFarmerDetails(req.params.qr_code);
-    res.status(200).json({ success: true, data: farmer });
-  } catch (error) {
-    next(error);
-  }
-});
 
 export default router;

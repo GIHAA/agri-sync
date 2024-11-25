@@ -1,5 +1,5 @@
 export interface ITransactionRepository {
-  insertSeedTransaction(data: {
+  createOrUpdateSeedTransaction(data: {
     farmerId: number;
     seedType: string;
     quantity: number;
@@ -13,5 +13,5 @@ export interface ITransactionRepository {
 
   getAllSeedTransactions(): Promise<any[]>;
 
-  getFarmerDetails(qrCodeHash: string): Promise<any>;
+//  getFarmerDetails(qrCodeHash: string): Promise<any>;
 }
