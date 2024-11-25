@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 require("dotenv").config();
+const crypto = require("crypto");
 
 const router = express.Router();
 
@@ -11,6 +12,11 @@ const generateToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET || "defaultsecret", {
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
   });
+};
+
+// Function to generate a unique QR code hash
+const generateQrCodeHash = (email) => {
+  return crypto.createHash("sha256").update(email).digest("hex");
 };
 
 // Register User
@@ -134,10 +140,13 @@ router.post("/register-farmer", async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Generate a unique QR code hash
+    const qrCodeHash = generateQrCodeHash(email);
+
     // Insert new user into the database
     const newUser = await db.query(
-      "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING *",
-      [username, email, hashedPassword]
+      "INSERT INTO users (name, email, password_hash, qr_code_hash) VALUES ($1, $2, $3, $4) RETURNING *",
+      [username, email, hashedPassword, qrCodeHash]
     );
 
     const userId = newUser.rows[0].id;
@@ -155,7 +164,7 @@ router.post("/register-farmer", async (req, res) => {
     );
 
     return res.status(201).json({
-      data: { id: userId, username, email },
+      data: { id: userId, username, email, qr_code_hash: qrCodeHash },
       message: "Farmer registered successfully",
       success: true,
     });
@@ -234,4 +243,100 @@ router.get("/validate", async (req, res) => {
   }
 });
 
+const fetchFarmerDetails = async (qrCode) => {
+  try {
+    const query = `
+      SELECT 
+        u.id AS user_id, 
+        u.name, 
+        u.email, 
+        f.age, 
+        f.vision_problems, 
+        f.color_blindness, 
+        a.text_size, 
+        a.layout, 
+        a.color_friendly_scheme, 
+        a.use_symbols_with_colors 
+      FROM users u
+      LEFT JOIN farmer_details f ON u.id = f.user_id
+      LEFT JOIN accessibility_settings a ON u.id = a.user_id
+      WHERE u.qr_code_hash = $1
+    `;
+
+    const result = await db.query(query, [qrCode]);
+
+    if (result.rows.length === 0) {
+      return null; // Farmer not found
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error in fetchFarmerDetails:", error);
+    throw new Error("Error fetching farmer details");
+  }
+};
+
+// Fetch Farmer Details
+router.get("/farmers/:qr_code", async (req, res, next) => {
+  try {
+    const farmer = await fetchFarmerDetails(req.params.qr_code);
+
+    if (!farmer) {
+      return res.status(404).json({
+        success: false,
+        message: "Farmer not found",
+        data: null,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Farmer details fetched successfully",
+      data: farmer,
+    });
+  } catch (error) {
+    console.error("Error fetching farmer details:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching farmer details",
+      data: null,
+    });
+  }
+});
+
 module.exports = router;
+/*
+// Middleware to authorize routes
+const requestAuthorizer = (req, res, next) => {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({ message: "No token provided" });
+  }
+
+  const tokenData = token.split(" ")[1];
+  jwt.verify(tokenData, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    req.user = decoded;
+    next();
+  });
+};
+
+ 
+// Example of a protected route
+ router.get("/profile", requestAuthorizer, async (req, res) => {
+
+  // if user is authorized, their details will be available in req
+  const authorisedUser = req.user;
+
+    
+   return res.json({ 
+      message: "User profile fetched successfully",
+      user: req.user,
+    });
+ });
+ 
+*/
