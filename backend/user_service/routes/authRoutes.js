@@ -19,7 +19,47 @@ const generateQrCodeHash = (email) => {
   return crypto.createHash("sha256").update(email).digest("hex");
 };
 
+// Register User
+router.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
 
+  try {
+    // Check if user already exists
+    const userExists = await db.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({
+        data: null,
+        message: "User already exists",
+        success: false,
+      });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert new user into database
+    const newUser = await db.query(
+      "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING *",
+      [username, email, hashedPassword]
+    );
+
+    return res.status(201).json({
+      data: { id: newUser.rows[0].id, username, email },
+      message: "User created successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error in registration:", error);
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
+  }
+});
 
 // Login User
 router.post("/login", async (req, res) => {
