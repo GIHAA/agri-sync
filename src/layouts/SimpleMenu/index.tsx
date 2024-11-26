@@ -17,7 +17,7 @@ import Lucide from '../../components/common/lucide'
 // import DarkModeSwitcher from '../../components/dark-mode-switcher'
 // import MainColorSwitcher from '../../components/MainColorSwitcher'
 import SideMenuTooltip from '../../components/SideMenuTooltip'
-import logoUrl from '../../assets/images/tip-app-logo.png'
+import logoUrl from '../../assets/images/LogoAgri.png'
 
 function Main() {
   const location = useLocation()
@@ -52,7 +52,7 @@ function Main() {
               src={logoUrl}
             /> */}
             <span className="ml-3 hidden text-lg font-normal text-[#fff] xl:block">
-              Tip App
+              Agri App
             </span>
           </Link>
           <Devider type="div" className="my-6" />

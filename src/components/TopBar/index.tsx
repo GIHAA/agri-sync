@@ -12,7 +12,7 @@ import Lucide from '../../components/common/lucide'
 import Breadcrumb from '../../base-components/Breadcrumb'
 import { FormInput } from '../common/form-elements/components'
 import { Menu, Popover } from '../common/headless'
-import PreviewImage from '../../../src/assets/images/tip-app-logo.png'
+import PreviewImage from '../../../src/assets/images/LogoAgri.png'
 import SocketClient from '../../hooks/SocketClient'
 import { useGetNotificationsList } from '../../api/notification'
 import NoDataFound from '../../assets/images/NoDataFound.png'
@@ -70,7 +70,7 @@ function Main() {
         <SocketClient email={user.Email} role={user.Role} />
         {/* BEGIN: Breadcrumb */}
         <Breadcrumb className="-intro-x mr-auto hidden sm:flex">
-          <Breadcrumb.Link to="/">TipApp</Breadcrumb.Link>
+          <Breadcrumb.Link to="/">AgriApp</Breadcrumb.Link>
           <Breadcrumb.Link to={pathname} active>
             {breadcrumbLabel}
           </Breadcrumb.Link>

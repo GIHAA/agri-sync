@@ -17,6 +17,8 @@ import Tabulator from '../pages/tabulator'
 import Drag from '../pages/drag/drag'
 import Table from '../pages/table'
 import PrivateRoute from './PrivateRoute'
+import Scanner from '../pages/qr-scanner/FarmerDetails'
+
 import {
   CommonComponent,
   DatepickerComponent,
@@ -45,8 +47,12 @@ function Router() {
       children: [
         {
           path: '/',
-          element: <Dashboard />,
+          element: <Scanner />,
         },
+        // {
+        //   path: '/qr-scanner',
+        //   element: <Scanner />,
+        // },
         {
           path: 'form',
           element: <FormComponent />,

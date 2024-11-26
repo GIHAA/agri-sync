@@ -16,9 +16,9 @@ export default defineConfig({
         'robots.txt',
       ],
       manifest: {
-        name: 'Tipapp',
-        short_name: 'Tipapp',
-        description: 'Tipapp frontend',
+        name: 'Agriapp',
+        short_name: 'Agriapp',
+        description: 'Agriapp frontend',
         theme_color: '#ffffff',
         icons: [
           {
