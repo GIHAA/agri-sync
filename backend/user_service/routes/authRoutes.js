@@ -19,6 +19,26 @@ const generateQrCodeHash = (email) => {
   return crypto.createHash("sha256").update(email).digest("hex");
 };
 
+
+const base64UrlDecode = (str) => {
+
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+
+  const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
+  str += padding;
+
+  const buffer = Buffer.from(str, 'base64');
+  return buffer.toString('utf-8');
+};
+
+const base64UrlEncode = (str) => {
+  const buffer = Buffer.from(str, 'utf-8');
+  let base64 = buffer.toString('base64');
+
+  base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return base64;
+};
+
 // Register User
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
@@ -93,8 +113,27 @@ router.post("/login", async (req, res) => {
       email: user.rows[0].email,
     });
 
+    // Fetch the user's role name
+    const role = await db.query("SELECT role_name FROM roles WHERE id = $1", [user.rows[0].role_id]);
+
+    // Fetch farmer details and accessibility settings if applicable
+    const userId = user.rows[0].id;
+    const farmerDetails = await db.query("SELECT * FROM farmer_details WHERE user_id = $1", [userId]);
+    const accessibilitySettings = await db.query("SELECT * FROM accessibility_settings WHERE user_id = $1", [userId]);
+
+    // Combine all user data
+    const fullUserDetails = {
+      id: user.rows[0].id,
+      username: user.rows[0].name,
+      email: user.rows[0].email,
+      role: role.rows.length > 0 ? role.rows[0].role_name : 'UNKNOWN',  // User role
+      farmerDetails: farmerDetails.rows.length > 0 ? farmerDetails.rows[0] : null,
+      accessibilitySettings: accessibilitySettings.rows.length > 0 ? accessibilitySettings.rows[0] : null,
+      token: token,
+    };
+
     return res.status(200).json({
-      data: { token },
+      data: fullUserDetails,
       message: "Login successful",
       success: true,
     });
@@ -107,6 +146,7 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
 
 // Register Farmer with Preferences
 router.post("/register-farmer", async (req, res) => {
@@ -227,6 +267,11 @@ router.get("/validate", async (req, res) => {
   const token = authHeader.split(" ")[1];
 
   try {
+    // Decode the JWT token's payload before verifying
+    const decodedPayload = base64UrlDecode(token.split('.')[1]); // Decode payload only
+    console.log("Decoded Payload:", decodedPayload);
+
+    // Verify token
     const user = jwt.verify(token, process.env.JWT_SECRET || "defaultsecret");
     return res.status(200).json({
       data: user,
@@ -242,39 +287,6 @@ router.get("/validate", async (req, res) => {
     });
   }
 });
-
-const fetchFarmerDetails = async (qrCode) => {
-  try {
-    const query = `
-      SELECT 
-        u.id AS user_id, 
-        u.name, 
-        u.email, 
-        f.age, 
-        f.vision_problems, 
-        f.color_blindness, 
-        a.text_size, 
-        a.layout, 
-        a.color_friendly_scheme, 
-        a.use_symbols_with_colors 
-      FROM users u
-      LEFT JOIN farmer_details f ON u.id = f.user_id
-      LEFT JOIN accessibility_settings a ON u.id = a.user_id
-      WHERE u.qr_code_hash = $1
-    `;
-
-    const result = await db.query(query, [qrCode]);
-
-    if (result.rows.length === 0) {
-      return null; // Farmer not found
-    }
-
-    return result.rows[0];
-  } catch (error) {
-    console.error("Error in fetchFarmerDetails:", error);
-    throw new Error("Error fetching farmer details");
-  }
-};
 
 // Fetch Farmer Details
 router.get("/farmers/:qr_code", async (req, res, next) => {
@@ -295,48 +307,26 @@ router.get("/farmers/:qr_code", async (req, res, next) => {
       data: farmer,
     });
   } catch (error) {
-    console.error("Error fetching farmer details:", error);
+    console.error("Error in fetching farmer details:", error);
     res.status(500).json({
       success: false,
-      message: "Server error while fetching farmer details",
+      message: "Internal server error",
       data: null,
     });
   }
 });
 
-module.exports = router;
-/*
-// Middleware to authorize routes
-const requestAuthorizer = (req, res, next) => {
-  const token = req.headers["authorization"];
 
-  if (!token) {
-    return res.status(403).json({ message: "No token provided" });
-  }
-
-  const tokenData = token.split(" ")[1];
-  jwt.verify(tokenData, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-
-    req.user = decoded;
-    next();
-  });
+const fetchFarmerDetails = async (qrCode) => {
+  const query = `
+    SELECT u.id, u.name, u.email, f.age, f.vision_problems, f.color_blindness, a.text_size, a.layout, a.color_friendly_scheme, a.use_symbols_with_colors
+    FROM users u
+    INNER JOIN farmer_details f ON u.id = f.user_id
+    INNER JOIN accessibility_settings a ON u.id = a.user_id
+    WHERE u.qr_code_hash = $1
+  `;
+  const result = await db.query(query, [qrCode]);
+  return result.rows[0];
 };
 
- 
-// Example of a protected route
- router.get("/profile", requestAuthorizer, async (req, res) => {
-
-  // if user is authorized, their details will be available in req
-  const authorisedUser = req.user;
-
-    
-   return res.json({ 
-      message: "User profile fetched successfully",
-      user: req.user,
-    });
- });
- 
-*/
+module.exports = router;
