@@ -64,7 +64,8 @@ export default function RewardsScreen() {
         <Text className="text-black ml-2 text-lg">Back</Text>
       </Pressable>
 
-      <ThemedText type="title">Rewards</ThemedText>
+      <ThemedText userId={10} type="title" className="mb-4">Rewards</ThemedText>
+      <ThemedText userId={100} type="title" className="mb-4">Rewards</ThemedText>
 
       <View className="bg-white p-4 rounded-lg shadow-md mb-4">
         <View className="flex-row items-center justify-between">

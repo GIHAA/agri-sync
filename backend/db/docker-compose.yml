@@ -9,8 +9,8 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      POSTGRES_USER: user_db
-      POSTGRES_PASSWORD: user_db_password
-      POSTGRES_DB: user_service
-    volumes:
-      - ./db-data/user_db_server/:/var/lib/postgresql/data
+      POSTGRES_USER: admin 
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: agri
+    # volumes:
+    #   - ./db-data/user_db_server/:/var/lib/postgresql/data

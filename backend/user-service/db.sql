@@ -1,3 +1,16 @@
+-- Create Roles table for defining user roles
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_tables WHERE schemaname = 'public' AND tablename = 'roles') THEN
+        CREATE TABLE roles (
+            id SERIAL PRIMARY KEY,
+            role_name VARCHAR(50) NOT NULL UNIQUE
+        );
+        INSERT INTO roles (role_name) VALUES ('SUPER_ADMIN'), ('SEED_PROVIDER'), ('FARMER');
+    END IF;
+END $$;
+
+
 -- Create Users table for basic user information
 DO $$
 BEGIN
@@ -7,7 +20,10 @@ BEGIN
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
             password_hash VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            qr_code_hash VARCHAR(255) UNIQUE,
+            role_id INT NOT NULL DEFAULT 1, -- Default to 'superadmin' for the first user
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
         );
     END IF;
 END $$;
@@ -40,5 +56,14 @@ BEGIN
             use_symbols_with_colors BOOLEAN DEFAULT FALSE,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
+    END IF;
+END $$;
+
+-- Assign the first user as 'superadmin' role (role_id = 1)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM users) THEN
+        INSERT INTO users (name, email, password_hash, role_id)
+        VALUES ('Default Superadmin', 'admin@example.com', 'hashed_password', 1);
     END IF;
 END $$;
