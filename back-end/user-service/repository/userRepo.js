@@ -1,43 +1,38 @@
-const db = require("../config/db");
+// repository/userRepo.js
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
+const FarmerDetails = require("../models/FarmerDetails");
+const AccessibilitySettings = require("../models/AccessibilitySettings");
 
-// Function to check if the user already exists by email
+// Function to find a user by email
 const findUserByEmail = async (email) => {
-  const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
-  return result.rows[0];
+  return await User.findOne({ where: { email } });
 };
 
-// Function to insert a new user into the database
+// Function to create a new user
 const createUser = async (username, email, hashedPassword) => {
-  const result = await db.query(
-    "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING *",
-    [username, email, hashedPassword]
-  );
-  return result.rows[0];
+  return await User.create({ username, email, password_hash: hashedPassword });
 };
 
-// Function to insert farmer details
+// Function to create farmer details
 const createFarmerDetails = async (userId, age, visionProblems, colorBlindness) => {
-  await db.query(
-    "INSERT INTO farmer_details (user_id, age, vision_problems, color_blindness) VALUES ($1, $2, $3, $4)",
-    [userId, age, visionProblems, colorBlindness]
-  );
+  return await FarmerDetails.create({ user_id: userId, age, vision_problems: visionProblems, color_blindness: colorBlindness });
 };
 
-// Function to insert accessibility settings for a user
+// Function to create accessibility settings
 const createAccessibilitySettings = async (userId, textSize, layout, colorScheme, useSymbols) => {
-  await db.query(
-    "INSERT INTO accessibility_settings (user_id, text_size, layout, color_friendly_scheme, use_symbols_with_colors) VALUES ($1, $2, $3, $4, $5)",
-    [userId, textSize, layout, colorScheme, useSymbols]
-  );
+  return await AccessibilitySettings.create({
+    user_id: userId,
+    text_size: textSize,
+    layout,
+    color_friendly_scheme: colorScheme,
+    use_symbols_with_colors: useSymbols,
+  });
 };
 
-// Function to fetch user preferences
+// Function to get user preferences
 const getUserPreferences = async (userId) => {
-  const result = await db.query(
-    "SELECT * FROM accessibility_settings WHERE user_id = $1",
-    [userId]
-  );
-  return result.rows[0];
+  return await AccessibilitySettings.findOne({ where: { user_id: userId } });
 };
 
 module.exports = {
@@ -45,5 +40,5 @@ module.exports = {
   createUser,
   createFarmerDetails,
   createAccessibilitySettings,
-  getUserPreferences
+  getUserPreferences,
 };
