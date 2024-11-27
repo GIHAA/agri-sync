@@ -92,7 +92,7 @@ function RegisterDetails() {
           <div className="flex w-full sm:mt-0 sm:w-auto">
             <div className=" font-medium">
               {`${t('registerForm.fields.email.label')}`} :
-              {' support@storemate.lk '}
+              {' support@agrisync.lk '}
             </div>
           </div>
         </div>

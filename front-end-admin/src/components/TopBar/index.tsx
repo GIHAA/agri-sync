@@ -104,7 +104,7 @@ function Main() {
         </Menu> */}
         {/* <Tippy
           as="a"
-          href="https://projects.storemate.lk/customer"
+          href="https://projects.agrisync.lk/customer"
           className="zoom-in mr-2 flex h-8 w-8 items-center justify-center rounded-full border bg-primary bg-opacity-90 text-white dark:border-darkmode-400"
           content="Support"
         >
