@@ -1,16 +1,17 @@
+// service/userService.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userRepo = require("../repository/userRepo");
 require("dotenv").config();
 
-// Function to generate JWT token
+// Generate JWT token
 const generateToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET || "defaultsecret", {
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
   });
 };
 
-// Function to register a user
+// Register user
 const registerUser = async (username, email, password) => {
   try {
     const existingUser = await userRepo.findUserByEmail(email);
@@ -32,7 +33,7 @@ const registerUser = async (username, email, password) => {
   }
 };
 
-// Function to login user
+// Login user
 const loginUser = async (email, password) => {
   try {
     const user = await userRepo.findUserByEmail(email);
@@ -58,7 +59,7 @@ const loginUser = async (email, password) => {
   }
 };
 
-// Function to register a farmer with preferences
+// Register farmer with preferences
 const registerFarmer = async (username, email, password, age, visionProblems, colorBlindness, textSize, layout, colorScheme, useSymbols) => {
   try {
     const existingUser = await userRepo.findUserByEmail(email);
@@ -84,7 +85,7 @@ const registerFarmer = async (username, email, password, age, visionProblems, co
   }
 };
 
-// Function to get user preferences
+// Get user preferences
 const getUserPreferences = async (userId) => {
   try {
     const preferences = await userRepo.getUserPreferences(userId);
@@ -103,5 +104,5 @@ module.exports = {
   registerUser,
   loginUser,
   registerFarmer,
-  getUserPreferences
+  getUserPreferences,
 };
