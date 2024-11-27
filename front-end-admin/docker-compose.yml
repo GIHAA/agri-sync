@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: storemate_v8_react
+    image: stormate-v8
+    build:
+      context: .
+    ports:
+      - "8080:80"

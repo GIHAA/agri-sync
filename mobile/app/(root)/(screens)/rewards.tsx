@@ -8,7 +8,7 @@ import React from "react";
 
 export default function RewardsScreen() {
   type AntDesignIconName = "linechart" | "enviromento" | "API";
-  const [points, setPoints] = React.useState(16969);
+  const [points, setPoints] = React.useState(40200);
 
   const rewards: {
     id: number;

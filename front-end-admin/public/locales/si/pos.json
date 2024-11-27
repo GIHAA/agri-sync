@@ -1,0 +1,169 @@
+{
+  "common": {
+    "button": {
+      "save": "save",
+      "cancel": "cancel"
+    },
+    "notification": {
+      "error": "Something went wrong."
+    }
+  },
+  "customerForm": {
+    "title": "Customer Information",
+    "fields": {
+      "contactType": {
+        "label": "Contact Type"
+      },
+      "contactId": {
+        "label": "Contact ID",
+        "placeolder": "Contact ID"
+      },
+      "customerGroup": {
+        "label": "Customer Group"
+      },
+      "businessName": {
+        "label": "Business Name",
+        "placeolder": "Business Name"
+      },
+      "prefix": {
+        "label": "Prefix",
+        "placeolder": "Mr / Mrs / Miss",
+        "tooltip": "Tooltip"
+      },
+      "firstName": {
+        "label": "First Name",
+        "placeolder": "First Name",
+        "validationMessage": "This field is required."
+      },
+      "middleName": {
+        "label": "Middle Name",
+        "placeolder": "Middle Name",
+        "tooltip": "Tooltip"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeolder": "Last Name"
+      },
+      "contactNo": {
+        "label": "Mobile No",
+        "placeolder": "Mobile No",
+        "validationMessage": "This field is required.",
+        "tooltip": "Tooltip"
+      },
+      "alternativeNo": {
+        "label": "Alternative No",
+        "placeolder": "Alternative No"
+      },
+      "landLine": {
+        "label": "Land Line",
+        "placeolder": "Land Line"
+      },
+      "email": {
+        "label": "Email",
+        "placeolder": "Email"
+      }
+    }
+  },
+  "productForm": {
+    "title": "Product Information",
+    "fields": {
+      "productName": {
+        "label": "Product Name",
+        "placeolder": "Product Name",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "barcodeType": {
+        "label": "Barcode Type",
+        "placeolder": "Barcode Type",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "skuBarcodeNo": {
+        "label": "SKU Barcode No",
+        "placeolder": "SKU (Barcode Number)"
+      },
+      "unit": {
+        "label": "Unit",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "brand": {
+        "label": "Brand"
+      },
+      "businessLocation": {
+        "label": "Business Location"
+      },
+      "category": {
+        "label": "Category"
+      },
+      "subCategory": {
+        "label": "Sub Category"
+      },
+      "manageStock": {
+        "label": "Manage Stock",
+        "placeolder": "Enable stock management at product level"
+      },
+      "alertQuantity": {
+        "label": "Alert Quantity",
+        "placeolder": "Alert Quantity"
+      },
+      "productDescription": {
+        "label": "Product Description",
+        "placeolder": "Content of the editor"
+      },
+      "productImage": {
+        "label": "Product Image :",
+        "placeolder": "Upload a file",
+        "placeolderImage": "",
+        "imageAlt": "Product Image"
+      },
+      "applicableTax": {
+        "label": "Applicable Tax"
+      },
+      "sellingPriceTaxType": {
+        "label": "Selling Price Tax Type"
+      },
+      "productType": {
+        "label": "Product Type"
+      },
+      "addVariation": {
+        "label": "Add Variation :"
+      },
+      "enableProductDescription": {
+        "label": "Enable Product Description",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "notForSelling": {
+        "label": "Not For Selling",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "enableB2bProductShare": {
+        "label": "Enable B2B Product Share"
+      },
+      "desableWoocommerceSync": {
+        "label": "Desable Woocommerce Sync",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "enableImei": {
+        "label": "Enable IMEI",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "weight": {
+        "label": "Weight"
+      },
+      "maximumSalesQuantity": {
+        "label": "Maximum Sales Quantity: ",
+        "validationMessage": "This field is required.",
+        "tooltip": "Add some description"
+      },
+      "customerField": {
+        "label": "Customer Field"
+      }
+    }
+  }
+}

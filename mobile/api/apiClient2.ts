@@ -9,7 +9,7 @@ export interface ApiResponse<T = any> {
 
 // Create an Axios instance
 const apiClient: AxiosInstance = axios.create({
-  baseURL: 'http://192.168.1.3:8080', 
+  baseURL: 'http://192.168.1.2:3000', 
   timeout: 10000, 
   headers: {
     'Content-Type': 'application/json',
