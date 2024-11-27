@@ -11,7 +11,7 @@ import Table from '../../../components/common/table'
 import { SetStateAction, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '../../../components/common/button'
-import Tippy from '../../../components/common/tippy'
+import Agrisyncpy from '../../../components/common/agrisyncpy'
 import Lucide from '../../../components/common/lucide'
 import {
   Menu,
@@ -148,7 +148,7 @@ function Main() {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false)
   const deleteButtonRef = useRef(null)
 
-  const [tooltipContent2] = useState(
+  const [toolagrisyncContent2] = useState(
     'Stock transfer will not be editable if status is completed'
   )
   const [checked, setChecked] = useState(false)
@@ -199,14 +199,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Send Ledger')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -300,14 +300,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('New Sale')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -323,14 +323,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Reminder')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -346,14 +346,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Payment Received')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -369,14 +369,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Payment Reminder')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -392,14 +392,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('New Booking')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -415,14 +415,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('New Quotation')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -438,14 +438,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('New Final')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -1086,14 +1086,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('New Order')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -1109,14 +1109,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Payment Paid')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -1132,14 +1132,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Item received')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>
@@ -1155,14 +1155,14 @@ function Main() {
                   ])}
                   as="button"
                 >
-                  <Tippy
+                  <Agrisyncpy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Item Pending')}`}</div>
-                  </Tippy>
+                  </Agrisyncpy>
                 </Tab.Button>
               )}
             </Tab>

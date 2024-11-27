@@ -424,8 +424,8 @@ const initialState: SimpleMenuState = {
         },
         {
           icon: "Activity",
-          pathname: "/simple-menu/tooltip",
-          title: "Tooltip",
+          pathname: "/simple-menu/toolagrisync",
+          title: "Toolagrisync",
         },
         {
           icon: "Activity",

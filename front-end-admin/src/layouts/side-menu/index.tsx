@@ -15,7 +15,7 @@ import { selectSideMenu } from '../../stores/sideMenuSlice'
 import { useAppSelector } from '../../stores/hooks'
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from './side-menu'
 import Lucide from '../../components/common/lucide'
-import SideMenuTooltip from '../../components/SideMenuTooltip'
+import SideMenuToolagrisync from '../../components/SideMenuToolagrisync'
 
 function Main() {
   const location = useLocation()
@@ -151,7 +151,7 @@ function Menu(props: {
   const [formattedMenu, setFormattedMenu] = props.formattedMenuState
 
   return (
-    <SideMenuTooltip
+    <SideMenuToolagrisync
       as="a"
       content={props.menu.title}
       href={props.menu.subMenu ? '#' : props.menu.pathname}
@@ -216,7 +216,7 @@ function Menu(props: {
           </div>
         )}
       </div>
-    </SideMenuTooltip>
+    </SideMenuToolagrisync>
   )
 }
 

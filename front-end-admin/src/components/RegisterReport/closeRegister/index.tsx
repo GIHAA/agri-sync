@@ -27,7 +27,7 @@ import {
   Disclosure,
 } from '../../common/headless'
 import Table from '../../common/table'
-import Tippy from '../../common/tippy'
+import Agrisyncpy from '../../common/agrisyncpy'
 
 
 function CloseRegisterDetails() {
@@ -179,7 +179,7 @@ function CloseRegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Tippy
+                                <Agrisyncpy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -187,7 +187,7 @@ function CloseRegisterDetails() {
                                 >
 
                                Sales
-                                </Tippy>
+                                </Agrisyncpy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -203,7 +203,7 @@ function CloseRegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Tippy
+                                <Agrisyncpy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -211,7 +211,7 @@ function CloseRegisterDetails() {
                                 >
 
                                   Credi Received
-                                </Tippy>
+                                </Agrisyncpy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -227,7 +227,7 @@ function CloseRegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Tippy
+                                <Agrisyncpy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -235,7 +235,7 @@ function CloseRegisterDetails() {
                                 >
 
                             Sales Return
-                                </Tippy>
+                                </Agrisyncpy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -251,7 +251,7 @@ function CloseRegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Tippy
+                                <Agrisyncpy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -259,7 +259,7 @@ function CloseRegisterDetails() {
                                 >
 
                             Expenses
-                                </Tippy>
+                                </Agrisyncpy>
                             </Tab.Button>
                         )}
                     </Tab>

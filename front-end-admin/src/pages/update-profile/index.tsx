@@ -20,7 +20,7 @@ import {
   FormTextarea,
   TomSelect,
 } from '../../components/common/form-elements/components'
-import Tippy from '../../components/common/tippy'
+import Agrisyncpy from '../../components/common/agrisyncpy'
 import { DateElement, InputElement, SelectElement, TextareaElement } from '../../components/common/form-elements'
 import PreviewImage3 from '../../assets/images/fakers/image2.jpg'
 import { AlignmentTypes } from '../../constants/common-enums'
@@ -201,13 +201,13 @@ function Main() {
                             className="rounded-md"
                             alt=""
                             src={PreviewImage3} />
-                          <Tippy
+                          <Agrisyncpy
                             as="div"
                             content="Remove this profile photo?"
                             className="absolute right-0 top-0 -mr-2 -mt-2 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-white"
                           >
                             <Lucide icon="X" className="h-4 w-4" />
-                          </Tippy>
+                          </Agrisyncpy>
                         </div>
                         <div className="relative mx-auto mt-5 cursor-pointer">
                           <Button
@@ -547,7 +547,7 @@ function Main() {
             // )}`}
             id="bankIdCode"
             info={`${t(
-              'userManagement.fields.bankDetails.fields.bankIdCode.tooltip'
+              'userManagement.fields.bankDetails.fields.bankIdCode.toolagrisync'
             )}`}
           />
           <InputElement
@@ -574,7 +574,7 @@ function Main() {
             // )}`}
             id="taxPayerID"
             info={`${t(
-              'userManagement.fields.bankDetails.fields.taxPayerID.tooltip'
+              'userManagement.fields.bankDetails.fields.taxPayerID.toolagrisync'
             )}`}
           />
           </div>

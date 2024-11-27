@@ -60,8 +60,8 @@ const initialState: SideMenuState = {
       subMenu: [
         {
           icon: 'Activity',
-          pathname: '/tip-setting',
-          title: 'Tip Settings',
+          pathname: '/agrisync-setting',
+          title: 'Agrisync Settings',
         },
         {
           icon: 'Activity',

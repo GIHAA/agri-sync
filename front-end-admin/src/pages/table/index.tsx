@@ -19,7 +19,7 @@ import Button from "../../components/common/button";
 import Pagination from "../../components/common/pagination";
 import { FormCheck, FormInput, FormSelect } from "../../components/common/form-elements/components";
 import Lucide from "../../components/common/lucide";
-import Tippy from "../../components/common/tippy";
+import Agrisyncpy from "../../components/common/agrisyncpy";
 import { Dialog, Menu } from "../../components/common/headless";
 import Table from "../../base-components/Table";
 import PreviewImage from '../../../src/assets/images/fakers/image2.jpg'

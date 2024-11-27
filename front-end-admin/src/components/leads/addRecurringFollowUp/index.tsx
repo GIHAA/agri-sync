@@ -44,7 +44,7 @@ function AddRecurringFollowUp() {
     { id: 3, name: 'Dates' },
   ])
   const [select, setSelect] = useState('1')
-  const [selectMultiple, setSelectMultiple] = useState(['1', '3'])
+  const [selectMulagrisyncle, setSelectMulagrisyncle] = useState(['1', '3'])
   const [selectHeader, setSelectHeader] = useState(['2', '3', '5'])
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -255,8 +255,8 @@ function AddRecurringFollowUp() {
             </FormCheck.Label>
             <div className="mx-1 mr-5 flex">
               <FormInfo
-                tooltip={`${t(
-                  'lead.fields.sendNotification.tooltip'
+                toolagrisync={`${t(
+                  'lead.fields.sendNotification.toolagrisync'
                 )}`}
               />
             </div>

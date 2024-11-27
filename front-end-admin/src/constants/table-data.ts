@@ -282,7 +282,7 @@ export const TableReviewFeedbackHeadings = [
   },
 ]
 
-export const TipHeadings = [
+export const AgrisyncHeadings = [
   {
     key: 1,
     label: 'TIP REFERENCE',

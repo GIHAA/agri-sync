@@ -96,7 +96,7 @@ function InputElement({
                 )}
                 {info && (
                   <div className="flex sm:mx-2">
-                    <FormInfo tooltip={info} />
+                    <FormInfo toolagrisync={info} />
                   </div>
                 )}
               </div>

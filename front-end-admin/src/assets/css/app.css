@@ -44,10 +44,10 @@
 /* @import "zoom-vanilla.js/dist/zoom.css"; */
 @import "toastify-js/src/toastify.css";
 /* @import "highlight.js/styles/github.css"; */
-@import "tippy.js/dist/tippy.css";
-@import "tippy.js/themes/light.css";
-@import "tippy.js/dist/svg-arrow.css";
-@import "tippy.js/animations/shift-away.css";
+@import "agrisyncpy.js/dist/agrisyncpy.css";
+@import "agrisyncpy.js/themes/light.css";
+@import "agrisyncpy.js/dist/svg-arrow.css";
+@import "agrisyncpy.js/animations/shift-away.css";
 /* @import "tiny-slider/dist/tiny-slider.css"; */
 
 /*
@@ -65,7 +65,7 @@
 @import "./components/_scrollbar-hidden.css";
 @import "./components/_box.css";
 @import "./components/_tiny-slider.css";
-@import "./components/_tippy.css";
+@import "./components/_agrisyncpy.css";
 @import "./components/_toastify.css";
 @import "./components/_zoom-vanilla.css";
 @import "./components/_tom-select.css";

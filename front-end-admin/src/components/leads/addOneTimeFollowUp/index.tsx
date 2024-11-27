@@ -146,7 +146,7 @@ function AddOneTimeFollowUp() {
   }
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false)
   const deleteButtonRef = useRef(null)
-  const [selectMultipleOne, setSelectMultipleOne] = useState<string>('0');
+  const [selectMulagrisyncleOne, setSelectMulagrisyncleOne] = useState<string>('0');
   const [selectOne, setSelectOne] = useState<string[]>([])
   const [selectOneCustomer, setSelectOneCustomer] = useState<string[]>([])
   const [showSecondTomSelect, setShowSecondTomSelect] = useState(false);
@@ -157,8 +157,8 @@ function AddOneTimeFollowUp() {
   const [deselectAllChecked, setDeselectAllChecked] = useState(false);
   const [deselectAllCustomerChecked, setDeselectAllCustomerChecked] = useState(false);
 
-  const handleSelectMultipleOneChange = (newValue: string) => {
-    setSelectMultipleOne(newValue);
+  const handleSelectMulagrisyncleOneChange = (newValue: string) => {
+    setSelectMulagrisyncleOne(newValue);
 
     const isPaymentStatusSelected = ['1', '2', '3', '4'].includes(newValue);
     setShowSecondTomSelect(isPaymentStatusSelected);
@@ -234,8 +234,8 @@ function AddOneTimeFollowUp() {
       <div className="relative font-medium sm:mt-0">
       <div  className="mb-4 "> <div className="mt-0.5 ">{`${t('Follow Up By')}`}</div></div> 
        <TomSelect
-  value={selectMultipleOne}
-  onChange={handleSelectMultipleOneChange}
+  value={selectMulagrisyncleOne}
+  onChange={handleSelectMulagrisyncleOneChange}
   options={{
     placeholder: 'Select an option',
   }}
@@ -271,7 +271,7 @@ function AddOneTimeFollowUp() {
                   placeholder: 'Please Select ',
                 }}
                 className="sm:w-auto"
-                multiple
+                mulagrisyncle
               >
                 <option value="1">0234 Partial(Mr.Rimzi)</option>
                 <option value="2">4536 Partial(Mr.Shani)</option>
@@ -298,7 +298,7 @@ function AddOneTimeFollowUp() {
                 placeholder: 'Please Select ',
               }}
               className="sm:w-auto"
-              multiple
+              mulagrisyncle
             >
               <option value="5">Walking Customer</option>
               <option value="6">Mr.Shani</option>
@@ -807,7 +807,7 @@ function AddOneTimeFollowUp() {
                 </FormCheck.Label>
                 <div className="mx-1 mr-5 flex">
                   <FormInfo
-                    tooltip={`${t('lead.fields.sendNotification.tooltip')}`} />
+                    toolagrisync={`${t('lead.fields.sendNotification.toolagrisync')}`} />
                 </div>
               </FormCheck>
               {isChecked && (

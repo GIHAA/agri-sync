@@ -1,6 +1,6 @@
 import Button from '../button'
 import Lucide from '../lucide'
-import Tippy from '../tippy'
+import Agrisyncpy from '../agrisyncpy'
 import { FormInput } from './components'
 
 interface ImageUploadProps {
@@ -26,13 +26,13 @@ function ImageUploadElement({
             <div className="image-fit zoom-in relative mx-auto h-40 cursor-pointer">
               <img className="rounded-md" alt={alt} src={image} />
               {removeImageContent ? (
-                <Tippy
+                <Agrisyncpy
                   as="div"
                   content={String(removeImageContent)}
                   className="absolute right-0 top-0 -mr-2 -mt-2 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-white"
                 >
                   <Lucide icon="X" className="h-4 w-4" />
-                </Tippy>
+                </Agrisyncpy>
               ) : (
                 ''
               )}

@@ -86,7 +86,7 @@ const UserTrendChart: React.FC = () => {
       } else if (selectedType === 'Service Providers') {
         thisMonthCount = getMonthCount(spData, currentMonth)
         lastMonthCount = getMonthCount(spData, lastMonth)
-      } else if (selectedType === 'Tippers') {
+      } else if (selectedType === 'Agrisyncpers') {
         thisMonthCount = getMonthCount(tpData, currentMonth)
         lastMonthCount = getMonthCount(tpData, lastMonth)
       } else if (selectedType === 'Both') {
@@ -163,7 +163,7 @@ const UserTrendChart: React.FC = () => {
         },
       },
       {
-        name: 'Tippers',
+        name: 'Agrisyncpers',
         type: 'line',
         data: tpYAxisData,
         smooth: true,
@@ -211,10 +211,10 @@ const UserTrendChart: React.FC = () => {
         },
       },
     ]
-  } else if (selectedType === 'Tippers') {
+  } else if (selectedType === 'Agrisyncpers') {
     seriesData = [
       {
-        name: 'Tippers',
+        name: 'Agrisyncpers',
         type: 'line',
         data: tpYAxisData,
         smooth: true,
@@ -250,7 +250,7 @@ const UserTrendChart: React.FC = () => {
   }
 
   const option = {
-    tooltip: {
+    toolagrisync: {
       trigger: 'axis',
     },
 
@@ -368,7 +368,7 @@ const UserTrendChart: React.FC = () => {
                 >
                   <option value="All">All</option>
                   <option value="Service Providers">Service Providers</option>
-                  <option value="Tippers">Tippers</option>
+                  <option value="Agrisyncpers">Agrisyncpers</option>
                   <option value="Both">Both</option>
                 </select>
               </div>

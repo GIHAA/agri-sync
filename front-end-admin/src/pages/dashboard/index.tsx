@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import UserTrendChart from '../../components/e-charts/user-trend-chart/user-trend'
 import DashboardTilesCard from '../../components/dashboard/dashboard-tiles-card'
-import TopTippers from '../../components/dashboard/top-tippers'
+import TopAgrisyncpers from '../../components/dashboard/top-agrisyncpers'
 import TopServiceProviders from '../../components/dashboard/top-service-providers'
 import UserCountChart from '../../components/e-charts/user-count-chart/user-count-chart'
-import TipsAndWithdrawalsChart from '../../components/e-charts/tips-withdrawals-chart/tips-withdrawals-chart'
+import AgrisyncsAndWithdrawalsChart from '../../components/e-charts/agrisyncs-withdrawals-chart/agrisyncs-withdrawals-chart'
 import UserAgeRangeChart from '../../components/e-charts/user-age-range-chart/user-age-range-chart'
 
 function Main() {
@@ -24,7 +24,7 @@ function Main() {
       <div className="flex flex-col gap-[25px] lg:flex-row">
         <div className="flex w-full flex-col gap-[30px] md:flex-row lg:w-3/4">
           <div className="w-full md:w-1/2">
-            <TopTippers />
+            <TopAgrisyncpers />
           </div>
           <div className="mb-[150px] w-full md:w-1/2">
             <TopServiceProviders />
@@ -35,7 +35,7 @@ function Main() {
         </div>
       </div>
       <div className="w-full">
-        <TipsAndWithdrawalsChart />
+        <AgrisyncsAndWithdrawalsChart />
       </div>
     </div>
   )

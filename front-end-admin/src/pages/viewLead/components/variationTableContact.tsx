@@ -286,8 +286,8 @@ function VariationTableContact() {
                               >
                                 <div className="mx-1 -ml-1 flex">
                                   <FormInfo
-                                    tooltip={`${t(
-                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.tooltip'
+                                    toolagrisync={`${t(
+                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.toolagrisync'
                                     )}`}
                                   />
                                 </div>
@@ -463,8 +463,8 @@ function VariationTableContact() {
                               >
                                 <div className="mx-1 -ml-1 flex">
                                   <FormInfo
-                                    tooltip={`${t(
-                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.tooltip'
+                                    toolagrisync={`${t(
+                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.toolagrisync'
                                     )}`}
                                   />
                                 </div>

@@ -1,16 +1,16 @@
 import { Icons } from '../../../constants'
 import Lucide from '../lucide'
-import TippyContent from '../tippy-content'
+import AgrisyncpyContent from '../agrisyncpy-content'
 
 function ShortcutKeyCode() {
   return (
     <>
-      <div className="border-0 p-0" data-tooltip="custom-tooltip-content">
+      <div className="border-0 p-0" data-toolagrisync="custom-toolagrisync-content">
         <Lucide icon={Icons.KEYBOARD} className="h-5 w-8 hover:text-primary" />
       </div>
 
-      <div className="tooltip-content">
-        <TippyContent to="custom-tooltip-content">
+      <div className="toolagrisync-content">
+        <AgrisyncpyContent to="custom-toolagrisync-content">
           <div className="relative flex items-center py-1">
             <div className="flex flex-col">
               <div className="font-medium leading-relaxed dark:text-slate-200">
@@ -23,7 +23,7 @@ function ShortcutKeyCode() {
               </div>
             </div>
           </div>
-        </TippyContent>
+        </AgrisyncpyContent>
       </div>
     </>
   )

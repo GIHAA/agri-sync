@@ -2,14 +2,14 @@ import React from 'react'
 import DashboardTile from '../../dashboard/dashboard-tiles'
 import DashboardTileSeconary from '../../dashboard/dashboard-tiles-secondary'
 
-interface TipCardProps {
+interface AgrisyncCardProps {
   title: string
   amount?: number
 
   icon?: string
 }
 
-const TipCard: React.FC<TipCardProps> = ({
+const AgrisyncCard: React.FC<AgrisyncCardProps> = ({
   title,
   amount,
 
@@ -20,11 +20,11 @@ const TipCard: React.FC<TipCardProps> = ({
       <DashboardTileSeconary
         amount={amount ? Number(amount).toFixed(2).toLocaleString() : '0.00'}
         label={title}
-        tooltipText="Higher than last month"
+        toolagrisyncText="Higher than last month"
         icon={icon}
       />
     </div>
   )
 }
 
-export default TipCard
+export default AgrisyncCard

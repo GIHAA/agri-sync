@@ -258,8 +258,8 @@ function AddFollowUp() {
             </FormCheck.Label>
             <div className="mx-1 mr-5 flex">
               <FormInfo
-                tooltip={`${t(
-                  'lead.fields.sendNotification.tooltip'
+                toolagrisync={`${t(
+                  'lead.fields.sendNotification.toolagrisync'
                 )}`}
               />
             </div>

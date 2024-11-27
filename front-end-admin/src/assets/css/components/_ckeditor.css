@@ -184,7 +184,7 @@
       .ck-toolbar__separator {
         background-color: theme("colors.darkmode.800");
       }
-      .ck-tooltip .ck-tooltip__text {
+      .ck-toolagrisync .ck-toolagrisync__text {
         color: theme("colors.slate.200");
         background-color: theme("colors.darkmode.800");
         &:after {
@@ -256,7 +256,7 @@
         .ck-toolbar__separator {
           background-color: theme("colors.darkmode.800");
         }
-        .ck-tooltip .ck-tooltip__text {
+        .ck-toolagrisync .ck-toolagrisync__text {
           color: theme("colors.slate.200");
           background-color: theme("colors.darkmode.800");
           &:after {

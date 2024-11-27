@@ -1,6 +1,6 @@
 import DashboardTile from './dashboard-tiles'
 import {
-  GetWeeklyTotalAndDifferenceTips,
+  GetWeeklyTotalAndDifferenceAgrisyncs,
   GetWeeklyTotalAndDifferenceWD,
 } from '../../api/dashboard/dashboard'
 import TileSVG1 from '../../assets/images/dashboard/tile1.svg'
@@ -11,10 +11,10 @@ import { formatAmount, formatTiles } from '../../hooks/formatter'
 
 function DashboardTilesCard() {
   const {
-    data: tipsData,
-    isLoading: tipsLoading,
-    error: tipsError,
-  } = GetWeeklyTotalAndDifferenceTips()
+    data: agrisyncsData,
+    isLoading: agrisyncsLoading,
+    error: agrisyncsError,
+  } = GetWeeklyTotalAndDifferenceAgrisyncs()
   const {
     data: withdrawalsData,
     isLoading: wdLoading,
@@ -25,7 +25,7 @@ function DashboardTilesCard() {
     return percentage >= 0 ? 'bg-success' : 'bg-danger'
   }
 
-  const TipsAmount = formatAmount(tipsData?.totalLast7DaysTips || 0)
+  const AgrisyncsAmount = formatAmount(agrisyncsData?.totalLast7DaysAgrisyncs || 0)
   const WithdrawAmount = formatAmount(
     withdrawalsData?.totalLast7DaysWithdrawals || 0
   )
@@ -34,38 +34,38 @@ function DashboardTilesCard() {
     <div>
       <div className="intro-y block h-fit items-center sm:flex ">
         <h2 className="mt-[30px] w-fit text-[19px] text-lg font-medium text-[#2D3748]">
-          Tips Overview
+          Agrisyncs Overview
         </h2>
       </div>
       <div className="mt-5 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[39px]">
         <DashboardTile
-          amount={`AED ${TipsAmount}`}
+          amount={`AED ${AgrisyncsAmount}`}
           percentage={formatTiles(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
+            agrisyncsData?.dailyAverageComparisonPercentageAgrisyncs || 0.00
           )}
-          label="Tips Received"
-          tooltipText={`${formatTiles(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
+          label="Agrisyncs Received"
+          toolagrisyncText={`${formatTiles(
+            agrisyncsData?.dailyAverageComparisonPercentageAgrisyncs || 0.00
           )}% than last month`}
-          tippyBgColor={getBgColor(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
+          agrisyncpyBgColor={getBgColor(
+            agrisyncsData?.dailyAverageComparisonPercentageAgrisyncs || 0.00
           )}
           icon={TileSVG1}
         />
         <DashboardTile
           amount="AED 0.00"
           percentage="0.00"
-          label="Tip Commission"
-          tooltipText="than last month"
-          tippyBgColor="bg-success"
+          label="Agrisync Commission"
+          toolagrisyncText="than last month"
+          agrisyncpyBgColor="bg-success"
           icon={TileSVG2}
         />
         <DashboardTile
           amount="AED 0.00"
           percentage="0.00"
           label="Amount Pending "
-          tooltipText="than last month"
-          tippyBgColor="bg-success"
+          toolagrisyncText="than last month"
+          agrisyncpyBgColor="bg-success"
           icon={TileSVG3}
         />
         <DashboardTile
@@ -74,10 +74,10 @@ function DashboardTilesCard() {
             withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
           )}
           label="Amount Received "
-          tooltipText={`${formatTiles(
+          toolagrisyncText={`${formatTiles(
             withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
           )}% than last month`}
-          tippyBgColor={getBgColor(
+          agrisyncpyBgColor={getBgColor(
             withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
           )}
           icon={TileSVG4}

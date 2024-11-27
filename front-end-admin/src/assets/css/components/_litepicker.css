@@ -271,7 +271,7 @@
         color: theme("colors.slate.300");
       }
     }
-    .container__tooltip {
+    .container__toolagrisync {
       background-color: theme("colors.darkmode.400");
       &:before,
       &:after {

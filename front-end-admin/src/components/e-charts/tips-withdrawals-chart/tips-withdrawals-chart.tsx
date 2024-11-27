@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react'
 import ReactECharts from 'echarts-for-react'
 import {
   GetWithdrawalsPerMonth,
-  GetTipsPerMonth,
+  GetAgrisyncsPerMonth,
 } from '../../../api/dashboard/dashboard'
 import { monthNames } from '../../../constants/months'
 import { formatThousands } from '../../../hooks/formatter'
 import NoDataFound from '../../../assets/images/NoDataFound.png'
 import Lucide from '../../common/lucide'
 
-const TipsAndWithdrawalsChart: React.FC = () => {
+const AgrisyncsAndWithdrawalsChart: React.FC = () => {
   const withdrawalsQuery = GetWithdrawalsPerMonth()
-  const tipsQuery = GetTipsPerMonth()
+  const agrisyncsQuery = GetAgrisyncsPerMonth()
 
   const [withdrawalsData, setWithdrawalsData] = useState<
     { month: string; totalWithdrawal: string }[] | undefined
   >()
-  const [tipsData, setTipsData] = useState<
-    { month: string; totalTips: string }[] | undefined
+  const [agrisyncsData, setAgrisyncsData] = useState<
+    { month: string; totalAgrisyncs: string }[] | undefined
   >()
 
   const [selectedType, setSelectedType] = useState('All')
@@ -31,32 +31,32 @@ const TipsAndWithdrawalsChart: React.FC = () => {
     if (withdrawalsQuery.data) {
       setWithdrawalsData(withdrawalsQuery.data.totalsByMonth)
     }
-    if (tipsQuery.data) {
-      setTipsData(tipsQuery.data.totalsByMonth)
+    if (agrisyncsQuery.data) {
+      setAgrisyncsData(agrisyncsQuery.data.totalsByMonth)
     }
 
-    if (withdrawalsQuery.data && tipsQuery.data) {
+    if (withdrawalsQuery.data && agrisyncsQuery.data) {
       calculateTotals(
         withdrawalsQuery.data.totalsByMonth,
-        tipsQuery.data.totalsByMonth,
+        agrisyncsQuery.data.totalsByMonth,
         selectedType,
         selectedYear
       )
     }
-  }, [withdrawalsQuery.data, tipsQuery.data, selectedType, selectedYear])
+  }, [withdrawalsQuery.data, agrisyncsQuery.data, selectedType, selectedYear])
 
   const calculateTotals = (
     withdrawals: { month: string; totalWithdrawal: string }[] | undefined,
-    tips: { month: string; totalTips: string }[] | undefined,
+    agrisyncs: { month: string; totalAgrisyncs: string }[] | undefined,
     type: string,
     year: string
   ) => {
     let thisMonthWithdrawal = 0
     let lastMonthWithdrawal = 0
-    let thisMonthTips = 0
-    let lastMonthTips = 0
+    let thisMonthAgrisyncs = 0
+    let lastMonthAgrisyncs = 0
 
-    if (withdrawals && tips) {
+    if (withdrawals && agrisyncs) {
       const currentDate = new Date()
       const currentMonth = (currentDate.getMonth() + 1)
         .toString()
@@ -72,14 +72,14 @@ const TipsAndWithdrawalsChart: React.FC = () => {
       const thisMonthWithdrawalData = withdrawals.find(
         (data) => data.month === `${year}-${currentMonth}`
       )
-      const thisMonthTipsData = tips.find(
+      const thisMonthAgrisyncsData = agrisyncs.find(
         (data) => data.month === `${year}-${currentMonth}`
       )
 
       const lastMonthWithdrawalData = withdrawals.find(
         (data) => data.month === `${year}-${lastMonth}`
       )
-      const lastMonthTipsData = tips.find(
+      const lastMonthAgrisyncsData = agrisyncs.find(
         (data) => data.month === `${year}-${lastMonth}`
       )
 
@@ -91,11 +91,11 @@ const TipsAndWithdrawalsChart: React.FC = () => {
           lastMonthWithdrawalData?.totalWithdrawal || '0'
         )
 
-        thisMonthTips = parseFloat(thisMonthTipsData?.totalTips || '0')
-        lastMonthTips = parseFloat(lastMonthTipsData?.totalTips || '0')
+        thisMonthAgrisyncs = parseFloat(thisMonthAgrisyncsData?.totalAgrisyncs || '0')
+        lastMonthAgrisyncs = parseFloat(lastMonthAgrisyncsData?.totalAgrisyncs || '0')
 
-        setThisMonthTotal(thisMonthWithdrawal + thisMonthTips)
-        setLastMonthTotal(lastMonthWithdrawal + lastMonthTips)
+        setThisMonthTotal(thisMonthWithdrawal + thisMonthAgrisyncs)
+        setLastMonthTotal(lastMonthWithdrawal + lastMonthAgrisyncs)
       } else if (type === 'Withdrawals') {
         thisMonthWithdrawal = parseFloat(
           thisMonthWithdrawalData?.totalWithdrawal || '0'
@@ -106,12 +106,12 @@ const TipsAndWithdrawalsChart: React.FC = () => {
 
         setThisMonthTotal(thisMonthWithdrawal)
         setLastMonthTotal(lastMonthWithdrawal)
-      } else if (type === 'Tips') {
-        thisMonthTips = parseFloat(thisMonthTipsData?.totalTips || '0')
-        lastMonthTips = parseFloat(lastMonthTipsData?.totalTips || '0')
+      } else if (type === 'Agrisyncs') {
+        thisMonthAgrisyncs = parseFloat(thisMonthAgrisyncsData?.totalAgrisyncs || '0')
+        lastMonthAgrisyncs = parseFloat(lastMonthAgrisyncsData?.totalAgrisyncs || '0')
 
-        setThisMonthTotal(thisMonthTips)
-        setLastMonthTotal(lastMonthTips)
+        setThisMonthTotal(thisMonthAgrisyncs)
+        setLastMonthTotal(lastMonthAgrisyncs)
       }
     }
   }
@@ -127,11 +127,11 @@ const TipsAndWithdrawalsChart: React.FC = () => {
     )
   })
 
-  const tipsYAxisData = xAxisData.map((month, index) => {
+  const agrisyncsYAxisData = xAxisData.map((month, index) => {
     const monthString = (index + 1).toString().padStart(2, '0')
     return (
-      tipsData?.find((data) => data.month === `${selectedYear}-${monthString}`)
-        ?.totalTips || 0
+      agrisyncsData?.find((data) => data.month === `${selectedYear}-${monthString}`)
+        ?.totalAgrisyncs || 0
     )
   })
 
@@ -171,9 +171,9 @@ const TipsAndWithdrawalsChart: React.FC = () => {
         },
       },
       {
-        name: 'Tips',
+        name: 'Agrisyncs',
         type: 'line',
-        data: tipsYAxisData,
+        data: agrisyncsYAxisData,
         smooth: true,
         lineStyle: {
           color: '#010048',
@@ -204,12 +204,12 @@ const TipsAndWithdrawalsChart: React.FC = () => {
         },
       },
     ]
-  } else if (selectedType === 'Tips') {
+  } else if (selectedType === 'Agrisyncs') {
     seriesData = [
       {
-        name: 'Tips',
+        name: 'Agrisyncs',
         type: 'line',
-        data: tipsYAxisData,
+        data: agrisyncsYAxisData,
         smooth: true,
         lineStyle: {
           color: '#010048',
@@ -225,7 +225,7 @@ const TipsAndWithdrawalsChart: React.FC = () => {
   }
 
   const option = {
-    tooltip: {
+    toolagrisync: {
       trigger: 'axis',
     },
     grid: {
@@ -281,7 +281,7 @@ const TipsAndWithdrawalsChart: React.FC = () => {
   return (
     <div className="mt-[30px]">
       {(!withdrawalsData || withdrawalsData.length === 0) &&
-      (!tipsData || tipsData.length === 0) ? (
+      (!agrisyncsData || agrisyncsData.length === 0) ? (
         <div>
           <h2 className="mr-5 text-[19px] text-lg font-medium text-[#2D3748] sm:mt-[20px]">
             Withdrawal & Received Trend
@@ -347,7 +347,7 @@ const TipsAndWithdrawalsChart: React.FC = () => {
                 >
                   <option value="All">All</option>
                   <option value="Withdrawals">Withdrawals</option>
-                  <option value="Tips">Tips</option>
+                  <option value="Agrisyncs">Agrisyncs</option>
                 </select>
               </div>
             </div>
@@ -372,4 +372,4 @@ const TipsAndWithdrawalsChart: React.FC = () => {
   )
 }
 
-export default TipsAndWithdrawalsChart
+export default AgrisyncsAndWithdrawalsChart

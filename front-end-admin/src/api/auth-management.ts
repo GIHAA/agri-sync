@@ -39,7 +39,7 @@ export const useUploadImage = () => {
         data,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "mulagrisyncart/form-data",
           },
         }
       );

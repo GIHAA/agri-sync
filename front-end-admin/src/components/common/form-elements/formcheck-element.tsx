@@ -66,7 +66,7 @@ function FormCheckElement({
                   {required ? <FormRequiredIcon /> : ''}
                 </div>
                 <div className={`${required || info ? 'mr-2' : 'mr-0'} flex`}>
-                  {info ? <FormInfo tooltip={info} /> : ''}
+                  {info ? <FormInfo toolagrisync={info} /> : ''}
                 </div>
               </div>
             </div>

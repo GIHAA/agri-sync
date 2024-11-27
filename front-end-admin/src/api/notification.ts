@@ -9,8 +9,8 @@ export interface PushNotificationType {
   Message?: string
   NotificationDate?: string
   IsRead?: boolean
-  TipperProfilePictureUrl?: string
-  tipper: UserType
+  AgrisyncperProfilePictureUrl?: string
+  agrisyncper: UserType
 }
 
 export interface UserType {

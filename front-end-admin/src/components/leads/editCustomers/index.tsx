@@ -142,7 +142,7 @@ function EditCustomers() {
             name="prefix"
             placeholder={`${t('contactManagement.fields.customers.fields.prefix.placeolder')}`}
             id="prefix"
-            // info={`${t('customerForm.fields.prefix.tooltip')}`}
+            // info={`${t('customerForm.fields.prefix.toolagrisync')}`}
           />
           <InputElement
             label={`${t('contactManagement.fields.customers.fields.firstName.label')}`}
@@ -176,7 +176,7 @@ function EditCustomers() {
             name="contactNo"
             placeholder={`${t('contactManagement.fields.customers.fields.contactNo.placeolder')}`}
             id="contactNo"
-            info={`${t('contactManagement.fields.customers.fields.contactNo.tooltip')}`}
+            info={`${t('contactManagement.fields.customers.fields.contactNo.toolagrisync')}`}
             error={errors.contactNo}
             required
           />
@@ -341,7 +341,7 @@ function EditCustomers() {
             name="payTerm"
             placeholder={`${t('contactManagement.fields.customers.fields.financeForm.fields.payTerm.placeolder')}`}
             id="payTerm"
-            info={`${t('contactManagement.fields.customers.fields.financeForm.fields.payTerm.tooltip')}`}
+            info={`${t('contactManagement.fields.customers.fields.financeForm.fields.payTerm.toolagrisync')}`}
             
            
           />

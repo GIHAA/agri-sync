@@ -45,10 +45,10 @@ function ViewUser() {
   const schema = yup
     .object({
       prefix: yup.string().when('_', {
-        is: () => 'tooltip',
+        is: () => 'toolagrisync',
         then: yup
           .string()
-          .required(`${t('customerForm.fields.prefix.tooltip')}`),
+          .required(`${t('customerForm.fields.prefix.toolagrisync')}`),
         otherwise: yup.string().notRequired(),
       }),
     })
@@ -691,7 +691,7 @@ function ViewUser() {
             <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  tooltip={`${t('viewUserManagementNotes.fields.activeStatus.tooltip')}`}
+                  toolagrisync={`${t('viewUserManagementNotes.fields.activeStatus.toolagrisync')}`}
                 />
               </div>
             </FormCheck.Label>

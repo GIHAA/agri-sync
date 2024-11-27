@@ -1,22 +1,22 @@
-.tooltip-content {
+.toolagrisync-content {
   left: 10000px;
   position: fixed;
 }
-.tippy-box {
+.agrisyncpy-box {
   border-radius: theme("borderRadius.md");
-  .tippy-content {
+  .agrisyncpy-content {
     padding: theme("spacing.[1.5]") theme("spacing.3");
   }
 }
-.tippy-popper {
+.agrisyncpy-popper {
   &[x-placement="left"],
   &[x-placement="right"],
   &[x-placement="left-start"],
   &[x-placement="left-end"],
   &[x-placement="right-start"],
   &[x-placement="right-end"] {
-    .tippy-roundarrow,
-    .tippy-arrow {
+    .agrisyncpy-roundarrow,
+    .agrisyncpy-arrow {
       top: 0;
       bottom: 0;
       margin-top: auto;
@@ -29,8 +29,8 @@
   &[x-placement="top-end"],
   &[x-placement="bottom-start"],
   &[x-placement="bottom-end"] {
-    .tippy-roundarrow,
-    .tippy-arrow {
+    .agrisyncpy-roundarrow,
+    .agrisyncpy-arrow {
       left: 0;
       right: 0;
       margin-left: auto;
@@ -40,12 +40,12 @@
 }
 
 .dark {
-  .tippy-box {
+  .agrisyncpy-box {
     box-shadow: 0 0 20px 4px #00000026, 0 4px 80px -8px #24282f40,
       0 4px 4px -2px #5b5e6926;
     color: theme("colors.slate.300");
     background-color: theme("colors.darkmode.300");
-    & > .tippy-svg-arrow {
+    & > .agrisyncpy-svg-arrow {
       fill: theme("colors.darkmode.300");
     }
   }

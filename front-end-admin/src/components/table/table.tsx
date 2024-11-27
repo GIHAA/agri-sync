@@ -11,7 +11,7 @@ import { FormInput, FormSelect } from '../common/form-elements/components'
 import Lucide from '../common/lucide'
 import FilterIcon from '../../assets/images/icons/filter-icon.svg'
 import PreviewImage from '../../assets/images/fakers/image2.jpg'
-import Tippy from '../common/tippy'
+import Agrisyncpy from '../common/agrisyncpy'
 import Table from '../common/table'
 import { TableProps } from '../../types/common'
 import Pagination from '../pagination/pagination-sample'
@@ -78,7 +78,7 @@ function BasicTable({
                   <Table.Td className="w-40 border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
                     <div className="flex">
                       <div className="image-fit zoom-in h-10 w-10 rounded-full">
-                        <Tippy
+                        <Agrisyncpy
                           as="img"
                           alt="Midone Tailwind HTML Admin Template"
                           className="rounded-full shadow-[0px_0px_0px_2px_#fff,_1px_1px_5px_rgba(0,0,0,0.32)] dark:shadow-[0px_0px_0px_2px_#3f4865,_1px_1px_5px_rgba(0,0,0,0.32)]"

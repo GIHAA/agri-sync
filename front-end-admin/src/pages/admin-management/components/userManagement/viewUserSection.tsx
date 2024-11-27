@@ -18,7 +18,7 @@ import { useGetUserById, useActivateUser, useDeactivateUser } from '../../../../
 import Button from '../../../../components/common/button'
 import { FormInline } from '../../../../components/common/form-elements/components'
 import { Icons, NotificationTypes } from '../../../../constants'
-import { TipItem } from '../../../../types/tpandsptype'
+import { AgrisyncItem } from '../../../../types/tpandsptype'
 import Toast from '../../../../utils/notification'
 import PreviewImage from '../../../../assets/images/profile.svg'
 import SharedDataContainer from '../../../../containers/sharedData'
@@ -41,7 +41,7 @@ function ViewUserSection(props: ViewUserProps) {
     isError,
     error,
     refetch,
-  }: UseQueryResult<TipItem> = useGetUserById(props.userId)
+  }: UseQueryResult<AgrisyncItem> = useGetUserById(props.userId)
   // const {
   //   data: userData,
   //   isLoading: isFetchingUserData,
@@ -52,10 +52,10 @@ function ViewUserSection(props: ViewUserProps) {
   const schema = yup
     .object({
       prefix: yup.string().when('_', {
-        is: () => 'tooltip',
+        is: () => 'toolagrisync',
         then: yup
           .string()
-          .required(`${t('customerForm.fields.prefix.tooltip')}`),
+          .required(`${t('customerForm.fields.prefix.toolagrisync')}`),
         otherwise: yup.string().notRequired(),
       }),
     })

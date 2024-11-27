@@ -1,13 +1,13 @@
 import { createRef, useEffect } from 'react'
-import tippy, {
+import agrisyncpy, {
   PopperElement,
   Props,
   roundArrow,
   animateFill as animateFillPlugin,
-} from 'tippy.js'
+} from 'agrisyncpy.js'
 import clsx from 'clsx'
 
-type TippyProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
+type AgrisyncpyProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,
   {
     getRef?: (el: PopperElement | null) => void
@@ -19,9 +19,9 @@ type TippyProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
 
 const init = <C extends React.ElementType>(
   el: PopperElement,
-  props: TippyProps<C>
+  props: AgrisyncpyProps<C>
 ) => {
-  tippy(el, {
+  agrisyncpy(el, {
     plugins: [animateFillPlugin],
     content: props.content,
     arrow: roundArrow,
@@ -41,8 +41,8 @@ const init = <C extends React.ElementType>(
   })
 }
 
-function Tippy<C extends React.ElementType = 'span'>(props: TippyProps<C>) {
-  const tippyRef = createRef<PopperElement>()
+function Agrisyncpy<C extends React.ElementType = 'span'>(props: AgrisyncpyProps<C>) {
+  const agrisyncpyRef = createRef<PopperElement>()
 
   const {
     content,
@@ -58,18 +58,18 @@ function Tippy<C extends React.ElementType = 'span'>(props: TippyProps<C>) {
 
   useEffect(() => {
     if (getRef) {
-      getRef(tippyRef.current)
+      getRef(agrisyncpyRef.current)
     }
 
-    if (tippyRef.current !== null) {
-      init<C>(tippyRef.current, props)
+    if (agrisyncpyRef.current !== null) {
+      init<C>(agrisyncpyRef.current, props)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content])
 
   return (
     <Component
-      ref={tippyRef}
+      ref={agrisyncpyRef}
       className={clsx(['cursor-pointer', className])}
       {...computedProps}
     >
@@ -78,4 +78,4 @@ function Tippy<C extends React.ElementType = 'span'>(props: TippyProps<C>) {
   )
 }
 
-export default Tippy
+export default Agrisyncpy

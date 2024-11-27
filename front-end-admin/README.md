@@ -1,5 +1,5 @@
-# TipApp
-TipApp Admin Portal Front-End
+# AgrisyncApp
+AgrisyncApp Admin Portal Front-End
 
 ## Getting Started
 

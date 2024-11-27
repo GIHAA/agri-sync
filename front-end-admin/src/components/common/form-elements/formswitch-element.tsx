@@ -60,7 +60,7 @@ function FormSwitchElement({
                   {required ? <FormRequiredIcon /> : ''}
                 </div>
                 <div className="flex sm:mx-2">
-                  {info ? <FormInfo tooltip={info} /> : ''}
+                  {info ? <FormInfo toolagrisync={info} /> : ''}
                 </div>
               </div>
             </div>
