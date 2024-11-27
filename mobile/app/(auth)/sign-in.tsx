@@ -1,33 +1,45 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   Image,
-  TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedInput } from "@/components/ThemedInput";
 import { router } from "expo-router";
 import { ThemedButton } from "@/components/ThemedButton";
+import farmerData from "@/data";
+
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleLogIn(): void {
-    router.replace("/(root)/(screens)/home");
+   
+    const user = farmerData.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (user) {
+     
+      router.replace("/(root)/(screens)/home");
+    } else {
+    
+      Alert.alert("Invalid Credentials", "Please check your email or password.");
+    }
   }
 
   return (
     <SafeAreaView>
       <ScrollView>
-        <View className="felx justify-center items-center mx-[40px] ">
+        <View className="flex justify-center items-center mx-[40px]">
           <View>
             <Image
               source={require("../../assets/images/reg-header-img.png")}
-              className=" w-screen h-[191px]"
+              className="w-screen h-[191px]"
             />
           </View>
           <Text className="text-[32px] text-center mt-[50px]">Log In</Text>
@@ -54,9 +66,9 @@ const SignIn = () => {
           <ThemedButton
             label="Log In"
             variant="primary"
-            onPress={() => handleLogIn()}
+            onPress={handleLogIn}
             textStyle="text-lg"
-            containerStyle="w-full  p-4 rounded-lg my-6"
+            containerStyle="w-full p-4 rounded-lg my-6"
           />
         </View>
       </ScrollView>

@@ -1,0 +1,15 @@
+
+R² Score: 0.3820
+Mean Squared Error (MSE): 5187.9121
+Root Mean Squared Error (RMSE): 72.0272
+Mean Absolute Error (MAE): 49.7300
+
+
+
+R² Score: 0.3820: This indicates that approximately 38.2% of the variance in the price is explained by the model. While this isn't very high, it's not necessarily bad for a complex task like predicting prices with multiple features. However, there might be room for improvement, depending on the context of the problem.
+
+Mean Squared Error (MSE): 5187.9121: This is the average squared difference between the predicted and actual prices. The value indicates that the model's predictions are off by around 5187 units squared. A lower MSE would be preferable.
+
+Root Mean Squared Error (RMSE): 72.0272: The RMSE value provides a more interpretable measure in terms of the original units of the target variable (price). This means that, on average, the predicted price is off by about 72 units. Whether this is acceptable depends on the scale and variance of the price values in your data.
+
+Mean Absolute Error (MAE): 49.7300: This metric shows that, on average, the model's price predictions are off by about 49.73 units. MAE is often easier to interpret because it represents the absolute error in the same units as the target.

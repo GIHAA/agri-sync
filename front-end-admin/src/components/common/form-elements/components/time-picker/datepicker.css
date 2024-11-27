@@ -1,0 +1,35 @@
+/* DatePicker CSS */
+.datepicker-container {
+  display: flex;
+  gap: 8px;
+}
+
+.year-select,
+.month-select,
+.day-input,
+.time-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 100px;
+}
+
+/* Limit the height of the year dropdown */
+.year-select {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Optional: Style the scrollbar for better visibility */
+.year-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.year-select::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.year-select::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
