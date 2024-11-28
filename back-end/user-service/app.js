@@ -1,21 +1,34 @@
+// server.js
 const express = require("express");
-const cors = require("cors"); 
+const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
+const rewardRoutes = require("./routes/rewardRoutes");
+const logger = require("./utils/logger"); 
+
 require("dotenv").config();
 const sequelize = require("./config/database");
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/rewards", rewardRoutes);
 
-sequelize.sync({ force: true }).then(() => {
-  console.log("Database synced");
-});
+// Syncing the database with logging
+sequelize.sync({ alter: true })
+  .then(() => {
+    logger.info("Database synced successfully.");
+  })
+  .catch((error) => {
+    logger.error(`Database sync error: ${error.message}`);
+  });
 
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });

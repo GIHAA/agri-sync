@@ -1,6 +1,7 @@
 // config/database.js
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
+const logger = require("../utils/logger"); // Add the logger
 
 const sequelize = new Sequelize({
   host: process.env.DB_HOST || "localhost",
@@ -11,12 +12,13 @@ const sequelize = new Sequelize({
   dialect: "postgres",
 });
 
+// Test the connection and log the result
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection to the database has been established successfully.");
+    logger.info("Connection to the database has been established successfully.");
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    logger.error(`Unable to connect to the database: ${error.message}`);
   }
 };
 
