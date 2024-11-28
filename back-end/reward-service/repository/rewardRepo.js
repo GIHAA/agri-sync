@@ -35,7 +35,6 @@ const createUserPoints = async (userId, points) => {
   });
 };
 
-// This function records an activity in the RewardActivity table
 const addActivityHistory = async (userId, activityType, pointsEarned, description) => {
   logger.info(`Recording activity for user ${userId}: ${activityType} (${pointsEarned} points)`);
   await RewardActivity.create({

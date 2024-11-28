@@ -17,13 +17,13 @@ app.use(express.json());
 app.use("/rewards", rewardRoutes);
 
 // Syncing the database with logging
-sequelize.sync({ alter: true })
-  .then(() => {
-    logger.info("Database synced successfully.");
-  })
-  .catch((error) => {
-    logger.error(`Database sync error: ${error.message}`);
-  });
+// sequelize.sync({ alter: true })
+//   .then(() => {
+//     logger.info("Database synced successfully.");
+//   })
+//   .catch((error) => {
+//     logger.error(`Database sync error: ${error.message}`);
+//   });
 
 // Start the server
 const PORT = process.env.PORT || 5000;

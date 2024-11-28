@@ -1,16 +1,12 @@
 // models/RewardPoints.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const User = require("./User");
 const logger = require("../utils/logger");
 
 const RewardPoints = sequelize.define("RewardPoints", {
   user_id: {
     type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: "id"
-    }
+    allowNull: false
   },
   total_points: {
     type: DataTypes.INTEGER,
