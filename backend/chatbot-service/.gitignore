@@ -1,0 +1,21 @@
+# Ignore virtual environments
+venv/
+*.venv/
+env/
+.env/
+
+# Ignore Python bytecode files
+_pycache_/
+*.pyc
+
+# Ignore package distribution
+*.egg-info/
+dist/
+build/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore system files
+.DS_Store  # For macOS
+Thumbs.db  # For Windows
