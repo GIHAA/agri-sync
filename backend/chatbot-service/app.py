@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import json
-from typing import List, Dict
+from flask import Flask, request, jsonify
 import pinecone
 from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone, ServerlessSpec
@@ -15,12 +15,15 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 # Load environment variables from .env file
 load_dotenv()
 
+# Initialize Flask application
+app = Flask(__name__)
+
 class SeedDataProcessor:
     def __init__(self, 
-             data_directory: str = "data",
-             pinecone_api_key: str = None,
-             openai_api_key: str = None,
-             pinecone_index_name: str = "chatbot-index"):
+                 data_directory: str = "data",
+                 pinecone_api_key: str = None,
+                 openai_api_key: str = None,
+                 pinecone_index_name: str = "chatbot-index"):
         """
         Initialize the seed data processor with local JSON data and Pinecone configurations.
         """
@@ -222,36 +225,26 @@ class SeedDataProcessor:
         
         return qa_chain
 
-def main():
-    # Initialize processor with local data directory
+# Initialize processor once Flask app is started
+processor = SeedDataProcessor(data_directory="documents")
+
+@app.route('/query', methods=['POST'])
+def query_seed():
     try:
-        processor = SeedDataProcessor(data_directory="documents")
+        # Get query from user input
+        user_query = request.json.get('query', '')
         
-        # Fetch data from PDF files
-        pdf_documents = processor.read_doc('data/')
-        print(f"Total PDF documents loaded: {len(pdf_documents)}")
+        if not user_query:
+            return jsonify({"error": "Query parameter is required."}), 400
         
-        # Chunk the documents into smaller pieces
-        chunked_documents = processor.chunk_data(docs=pdf_documents)
-        print(f"Total chunks created: {len(chunked_documents)}")
+        # Fetch result from SeedDataProcessor
+        result = processor.query_seed_data(user_query)
         
-        # Embed and store in Pinecone
-        processor.embed_and_store_data(chunked_documents)
-        
-        # Example queries
-        queries = [
-            "How have climate change and land degradation impacted the agricultural sector in Sri Lanka, and what measures have been taken by the government to address these challenges?",
-            "What role do traditional farming methods and the adoption of modern agricultural technologies play in Sri Lanka's agricultural productivity, and how can the government facilitate the transition to more efficient practices?",
-            "In what ways does the diversity of Sri Lanka's agricultural products, such as rice, tea, and coconut, contribute to the nation's economy, and what are the potential risks and benefits of focusing on sustainable agricultural practices??"
-        ]
-        
-        for query in queries:
-            print(f"\nQuery: {query}")
-            result = processor.query_seed_data(query)
-            print(f"Answer: {result}")
-    
+        return jsonify({"query": user_query, "result": result}), 200
+
     except Exception as e:
-        print(f"An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    main()
+    # Run the Flask app
+    app.run(debug=True, host='0.0.0.0', port=5000)

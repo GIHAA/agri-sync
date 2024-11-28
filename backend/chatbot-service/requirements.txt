@@ -13,4 +13,4 @@ sentence-transformers
 pinecone
 langchain_pinecone
 langchain-pinecone
-pymongo
+flask
