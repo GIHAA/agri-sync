@@ -47,3 +47,9 @@ mobile/.cache/        # Ignore cache directories
 # Dependency Lock Files (Optional)
 package-lock.json     # Ignore npm lock file (if you're using Yarn or don't want lock files)
 yarn.lock             # Ignore Yarn lock file
+
+
+*.pyc
+__pycache__/
+*.py[cod]
+venv/

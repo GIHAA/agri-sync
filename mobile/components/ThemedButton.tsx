@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { getUiRecommendation, trackInteraction } from "@/api/reinforceUI";
+import { router } from "expo-router";
 
 export type ThemedButtonProps = {
   label: string;
@@ -49,9 +51,27 @@ export function ThemedButton({
     }
   };
 
+
+  const [buttonClicks, setButtonClicks] = useState(0);
+  const [uiAction, setUiAction] = useState<string | null>(null);
+
+   // Function to simulate button clicks and track them
+   const handleButtonClick = async () => {
+    setButtonClicks(buttonClicks + 1);
+    const response = await trackInteraction(buttonClicks + 1); // Send the number of clicks to the backend
+
+    // Fetch the UI recommendation (action to adjust UI)
+    const recommendation = await getUiRecommendation();
+    setUiAction(recommendation.action); // Adjust UI based on the response
+    console.log('UI recommendation:', recommendation.action);
+  };
+
   return (
     <TouchableOpacity
-      onPress={onPress}
+    onPress={() => {
+      onPress();
+      handleButtonClick();
+    }}
       disabled={disabled || loading}
       className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${containerStyle}`}
     >
