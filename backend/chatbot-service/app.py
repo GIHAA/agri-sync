@@ -1,26 +1,36 @@
 import os
-import json
-import re
 from dotenv import load_dotenv
-from pymongo import MongoClient
-from langchain_openai import ChatOpenAI
-from langchain.schema import AIMessage
+import json
+from typing import List, Dict
+import pinecone
+from sentence_transformers import SentenceTransformer
+from pinecone import Pinecone, ServerlessSpec
+from langchain_community.vectorstores import Pinecone as LangchainPinecone
+from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # Load environment variables from .env file
 load_dotenv()
 
-class MongoDBQueryProcessor:
-    def __init__(self, mongo_uri: str = None, database_name: str = "test", openai_api_key: str = None):
+class SeedDataProcessor:
+    def __init__(self, 
+             data_directory: str = "data",
+             pinecone_api_key: str = None,
+             openai_api_key: str = None,
+             pinecone_index_name: str = "chatbot-index"):
         """
-        Initialize the MongoDB Query Processor with MongoDB URI and OpenAI API key.
+        Initialize the seed data processor with local JSON data and Pinecone configurations.
         """
-        # Validate MongoDB URI
-        if not mongo_uri:
-            mongo_uri = os.getenv('MONGO_URI')
+        # Validate Pinecone API Key
+        if not pinecone_api_key:
+            pinecone_api_key = os.getenv('PINECONE_API_KEY')
         
-        if not mongo_uri:
+        if not pinecone_api_key:
             raise ValueError(
-                "MongoDB URI is required. "
+                "Pinecone API key is required. "
                 "Please set it in the .env file or environment variables."
             )
         
@@ -34,231 +44,212 @@ class MongoDBQueryProcessor:
                 "Please set it in the .env file or environment variables."
             )
         
+        # Data Directory
+        self.data_directory = data_directory
+        
+        # Embedding Model
+        self.embedding_model = OpenAIEmbeddings()
+        
+        # Store the Pinecone index name
+        self.pinecone_index_name = pinecone_index_name
+        
+        # Initialize Pinecone client
+        self.pinecone_client = Pinecone(api_key=pinecone_api_key)
+
+        # Pinecone Setup
+        try:
+            # Check if the index exists, create if it doesn't
+            if self.pinecone_index_name not in self.pinecone_client.list_indexes().names():
+                print(f"Creating new index: {self.pinecone_index_name}")
+                self.pinecone_client.create_index(
+                    name=self.pinecone_index_name,
+                    dimension=1536,  # OpenAI embedding dimension
+                    metric='cosine',
+                    spec=ServerlessSpec(
+                        cloud='aws',
+                        region='us-east-1'
+                    )
+                )
+
+            # Connect to the existing or newly created index
+            self.pinecone_index = self.pinecone_client.Index(self.pinecone_index_name)
+            
+            # Create PineconeVectorStore
+            self.vector_store = LangchainPinecone.from_existing_index(
+                index_name=self.pinecone_index_name,
+                embedding=self.embedding_model
+            )
+
+        except Exception as e:
+            print(f"Error initializing Pinecone: {e}")
+            raise
+
         # Set OpenAI API Key
         os.environ['OPENAI_API_KEY'] = openai_api_key
 
-        # Initialize OpenAI LLM
-        self.llm = ChatOpenAI(
-            model="gpt-3.5-turbo",
-            temperature=0.2,
-            max_tokens=100
+    def read_doc(self, directory):
+        """
+        Load all PDF documents from the specified directory.
+        """
+        file_loader = PyPDFDirectoryLoader(directory)
+        documents = file_loader.load()
+        return documents
+
+    def chunk_data(self, docs, chunk_size=800, chunk_overlap=50):
+        """
+        Split documents into smaller chunks based on the specified chunk size and overlap.
+        """
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+        chunks = text_splitter.split_documents(docs)
+        return chunks
+
+    def embed_and_store_data(self, documents):
+        """
+        Embed documents and store them in Pinecone.
+        
+        Args:
+            documents (List[Dict]): List of seed documents
+        """
+        if not documents:
+            print("No documents to embed and store.")
+            return
+
+        try:
+            # Clear existing data in the index
+            self.pinecone_client.Index(self.pinecone_index_name).delete(delete_all=True)
+            print("Cleared the existing index.")
+        except Exception as e:
+            print(f"Error clearing Pinecone index: {e}")
+
+        # Add documents to the vector store
+        texts = []
+        metadatas = []
+        for doc in documents:
+            # Create a comprehensive text representation
+            text = doc.page_content  # Assuming page_content holds the extracted text
+            
+            # Create metadata with the full text
+            metadata = {
+                "source": doc.metadata.get('source', 'Unknown'),
+                "full_text": text
+            }
+
+            texts.append(text)
+            metadatas.append(metadata)
+
+        # Use Langchain's add_texts method
+        LangchainPinecone.from_texts(
+            texts=texts, 
+            embedding=self.embedding_model, 
+            index_name=self.pinecone_index_name,
+            metadatas=metadatas
         )
 
-        # Initialize MongoDB client
-        self.client = MongoClient(mongo_uri)
-        self.database = self.client[database_name]
-        print(f"Connected to MongoDB database: {database_name}")
+        print(f"Embedded and stored {len(documents)} documents in Pinecone")
 
-    def interpret_query(self, user_query: str) -> dict:
+
+    def query_seed_data(self, query: str):
         """
-        Interpret user query to dynamically create a MongoDB aggregation query.
+        Query the seed database.
         
         Args:
-            user_query (str): User's natural language query.
+            query (str): User's query about seeds
         
         Returns:
-            dict: MongoDB query based on the user's request.
+            str: Comprehensive answer
         """
-        prompt = f"""
-        You are an expert MongoDB query generator. Please interpret the following user query and generate a valid MongoDB query.
-
-        The collection stores planting data with the following structure:
-        {{
-            "_id": "60b5f96c9d29b82879fbd1e6",
-            "location": {{
-                "latitude": 7.8731,
-                "longitude": 80.7718,
-                "address": "Kurunegala, Sri Lanka"
-            }},
-            "seed": {{
-                "name": "Chili",
-                "category": "Spice"
-            }},
-            "planted_qty": 250,
-            "plantedAt": "2024-11-16T12:00:00Z",
-            "farmer": {{
-                "name": "Nathan Perera"
-            }}
-        }}
-
-        Query: "{user_query}"
-
-        Please generate the MongoDB aggregation query in JSON format. If the query mentions comparing quantities or sums, make sure the query groups by the relevant field (like seed.name) and aggregates using the appropriate operation (e.g., sum, max, min). Ensure to use the correct collection and return the most relevant document.
-        """
-        
-        # Get the response from LLM (a MongoDB query generation prompt)
-        response = self.llm.invoke(prompt)  # Ensure the response is the raw content
-        
-        # Print the raw response for debugging purposes
-        print(f"LLM Response: {response}")
-        
         try:
-            # Handle the response assuming it might be in an AIMessage format
-            if isinstance(response, AIMessage):
-                raw_content = response.content
-            else:
-                raw_content = response  # Handle as a plain string
-
-            # Fix the response to use double quotes for JSON keys and values
-            raw_content = raw_content.replace("'", '"')
-
-            # Try parsing the fixed response as valid JSON
-            mongo_query = json.loads(raw_content)
+            qa_chain = self.create_retrieval_chain()
             
-            # Modify the query dynamically based on field detection
-            if "aggregate" in mongo_query:
-                mongo_query["aggregate"] = "planting_data"  # Ensure aggregate uses the correct collection
-                    
-                # Look for field and aggregation type based on user query
-                aggregation_field = "$seed.name"  # Default aggregation field
-                aggregation_type = "$sum"  # Default aggregation operation is sum
-                sort_order = -1  # Default sort order (descending)
-                    
-                if "planted_qty" in user_query.lower():
-                    aggregation_field = "$planted_qty"
-                    aggregation_type = "$sum"  # Summing quantities
-                elif "seed" in user_query.lower():
-                    aggregation_field = "$seed.name"
-                    aggregation_type = "$sum"  # Summing planted quantities per seed
-                elif "category" in user_query.lower():
-                    aggregation_field = "$seed.category"
-                    aggregation_type = "$sum"  # Summing quantities per category
-
-                # Handle aggregation based on the user's request (e.g., max, min)
-                if "max" in user_query.lower():
-                    aggregation_type = "$max"
-                elif "min" in user_query.lower():
-                    aggregation_type = "$min"
-                    
-                # Construct aggregation pipeline dynamically
-                mongo_query["pipeline"] = [
-                    { 
-                        "$group": { 
-                            "_id": aggregation_field,  # Dynamically group by the detected field
-                            "aggregated_value": { aggregation_type: aggregation_field }  # Dynamic aggregation type
-                        }
-                    },
-                    { 
-                        "$sort": { "aggregated_value": sort_order }  # Sort based on aggregation value
-                    },
-                    { 
-                        "$limit": 1  # Return the top result
-                    }
-                ]
-                
-            if "collection" not in mongo_query:  # If the collection is not provided, add it
-                mongo_query["collection"] = "planting_data"
-                
-            print(f"Generated MongoDB Query: {mongo_query}")
-            return mongo_query
-        except json.JSONDecodeError as e:
-            # If response is not valid JSON, print error and return failure
-            print(f"Error parsing response as JSON: {e}")
-            return {"error": f"Could not parse the query: {raw_content}"}
+            # First, retrieve the context documents
+            retrieved_docs = self.vector_store.similarity_search(query, k=5)
+            print("\n--- Retrieved Documents ---")
+            for i, doc in enumerate(retrieved_docs, 1):
+                print(f"Document {i}:")
+                print(f"Content: {doc.page_content}")
+                print(f"Metadata: {doc.metadata}\n")
+            
+            # Then run the query
+            result = qa_chain({"query": query})
+            return result['result']
         except Exception as e:
-            # Handle unexpected errors
-            print(f"Unexpected error interpreting query: {e}")
-            return {"error": str(e)}
+            print(f"Error querying seed data: {e}")
+            return "Sorry, I couldn't retrieve an answer at this moment."
 
-
-    def execute_query(self, collection_name: str, query: dict):
+    def create_retrieval_chain(self):
         """
-        Execute the interpreted MongoDB query.
-        
-        Args:
-            collection_name (str): Name of the MongoDB collection to query.
-            query (dict): MongoDB query object.
+        Create a LangChain retrieval and query system.
         
         Returns:
-            list: Query results.
+            Runnable chain for querying
         """
-        if not collection_name:
-            raise ValueError("Collection name is required to execute the query.")
+        # Create the RetrievalQA chain
+        retriever = self.vector_store.as_retriever(
+            search_kwargs={
+                "k": 5  # Increase number of retrieved documents
+            }
+        )
         
-        collection = self.database[collection_name]
-        results = list(collection.find(query))
-        print(f"Query executed. Retrieved {len(results)} documents.")
-        return results
+        prompt_template = PromptTemplate(
+            template="""You are an expert seed and agricultural database assistant. 
+            Use the following context to provide a comprehensive and precise answer to the question.
+            If the context does not contain sufficient information, state that clearly.
 
-    def generate_response(self, query_results: list, user_query: str) -> str:
-        """
-        Use LLM to generate a human-friendly response based on query results.
-        
-        Args:
-            query_results (list): Results from the MongoDB query.
-            user_query (str): Original user query.
-        
-        Returns:
-            str: LLM-generated response.
-        """
-        prompt = f"""
-        The user asked: "{user_query}"
+            Context:
+            {context}
 
-        The MongoDB query returned the following results:
-        {query_results}
+            Question: {question}
 
-        Write a concise, user-friendly response summarizing the results. 
-        If no results are found, politely inform the user.
-        """
-        response = self.llm.invoke(prompt)  # Use invoke instead of predict
-        return response
-
-    def process_query(self, user_query: str):
-        """
-        Process the user query end-to-end: interpret, execute, and respond.
+            Helpful and Detailed Answer:""",
+            input_variables=["context", "question"]
+        )
         
-        Args:
-            user_query (str): User's natural language query.
+        llm = ChatOpenAI(
+            model="gpt-3.5-turbo", 
+            temperature=0.2,
+            max_tokens=100  # Increase max token output
+        )
         
-        Returns:
-            str: Human-friendly response generated by LLM.
-        """
-        # Interpret user query
-        interpreted_query = self.interpret_query(user_query)
+        qa_chain = RetrievalQA.from_chain_type(
+            llm=llm,
+            chain_type="stuff",
+            retriever=retriever,
+            chain_type_kwargs={
+                "prompt": prompt_template,
+                "verbose": True  # Enable verbose mode for debugging
+            }
+        )
         
-        # Check for errors in query interpretation
-        if "error" in interpreted_query:
-            return f"Error interpreting query: {interpreted_query['error']}"
-        
-        # Extract collection name and query filter
-        collection_name = interpreted_query.get("collection", "planting_data")  # Default to planting_data
-        query_filter = interpreted_query.get("filter", {})
-        
-        if not collection_name:
-            return "Error: The interpreted query did not include a collection name."
-
-        # Execute the query on MongoDB
-        query_results = self.execute_query(collection_name, query_filter)
-
-        # Log raw query and results for debugging
-        print(f"Raw MongoDB Query: {json.dumps(query_filter, indent=2)}")
-        print(f"Query Results: {json.dumps(query_results, indent=2)}")
-        
-        # Generate and return the final response
-        final_response = self.generate_response(query_results, user_query)
-        return final_response
-
-
+        return qa_chain
 
 def main():
-    # Load environment variables and initialize the processor
+    # Initialize processor with local data directory
     try:
-        processor = MongoDBQueryProcessor(
-            mongo_uri=os.getenv("MONGO_URI"),
-            database_name="seed_data",  # Example database
-            openai_api_key=os.getenv("OPENAI_API_KEY")
-        )
+        processor = SeedDataProcessor(data_directory="documents")
         
-        # Example user queries
-        user_queries = [
-            "What are the most commonly planted seeds ?"
+        # Fetch data from PDF files
+        pdf_documents = processor.read_doc('data/')
+        print(f"Total PDF documents loaded: {len(pdf_documents)}")
+        
+        # Chunk the documents into smaller pieces
+        chunked_documents = processor.chunk_data(docs=pdf_documents)
+        print(f"Total chunks created: {len(chunked_documents)}")
+        
+        # Embed and store in Pinecone
+        processor.embed_and_store_data(chunked_documents)
+        
+        # Example queries
+        queries = [
+            "How have climate change and land degradation impacted the agricultural sector in Sri Lanka, and what measures have been taken by the government to address these challenges?",
+            "What role do traditional farming methods and the adoption of modern agricultural technologies play in Sri Lanka's agricultural productivity, and how can the government facilitate the transition to more efficient practices?",
+            "In what ways does the diversity of Sri Lanka's agricultural products, such as rice, tea, and coconut, contribute to the nation's economy, and what are the potential risks and benefits of focusing on sustainable agricultural practices??"
         ]
         
-        for query in user_queries:
-            print(f"\nUser Query: {query}")
-            response = processor.process_query(query)
-            print(f"Response: {response}")
-
+        for query in queries:
+            print(f"\nQuery: {query}")
+            result = processor.query_seed_data(query)
+            print(f"Answer: {result}")
+    
     except Exception as e:
         print(f"An error occurred: {e}")
 
