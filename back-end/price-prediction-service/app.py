@@ -143,7 +143,7 @@ def get_options():
 
 if __name__ == '__main__':
     logging.info("Starting Flask app.")
-    app.run(host='0.0.0.0', port=3000) 
+    app.run(host='0.0.0.0', port=3001) 
 
 
 # flask run --host=0.0.0.0 --port=3000

@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ip } from './ip';
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore to retrieve token
 
 // Define a generic API response type
 export interface ApiResponse<T = any> {
@@ -9,7 +11,7 @@ export interface ApiResponse<T = any> {
 
 // Create an Axios instance
 const apiClient: AxiosInstance = axios.create({
-  baseURL: 'http://192.168.1.2:3000', 
+  baseURL: `${ip}:3000`, 
   timeout: 10000, 
   headers: {
     'Content-Type': 'application/json',
@@ -18,10 +20,19 @@ const apiClient: AxiosInstance = axios.create({
 
 // Request interceptor
 apiClient.interceptors.request.use(
-  (config: any) => {
-    // Add custom logic, e.g., attach authentication tokens
-    console.log('Request:', config);
-    return config; // Must return AxiosRequestConfig
+  async (config: any) => {
+    // Retrieve the token from SecureStore (or other storage)
+    const token = await SecureStore.getItemAsync('auth_token'); 
+
+    if (token) {
+      // Add the token to the Authorization header
+      config.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      console.log("No token found");
+    }
+
+    console.log('Request:', config); // Log the request details
+    return config; // Return the modified config
   },
   (error) => {
     console.error('Request Error:', error);

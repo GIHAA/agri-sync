@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import MenuOption from "@/components/HomeOption";
 import { router } from "expo-router";
 import qr from "@/assets/images/qr.png";
+import * as SecureStore from "expo-secure-store";
 
 interface MenuOptionProps {
   icon: React.ReactNode;
@@ -18,9 +19,18 @@ interface MenuOptionProps {
   onPress?: () => void;
 }
 
+interface User {
+  email: string;
+  username: string;
+}
+
 const HomeScreen: React.FC = ({}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [openQR, setOpenQR] = useState<boolean>(false);
+
   const onQRCodePress = () => {
     console.log("QR Code Pressed");
+    setOpenQR(!openQR);
   };
 
   const onAddFarmingPress = () => {
@@ -62,6 +72,15 @@ const HomeScreen: React.FC = ({}) => {
     },
   ];
 
+  // get user from store
+  useEffect(() => {
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 gap-10">
       <View className="items-center pt-8 pb-4">
@@ -78,26 +97,27 @@ const HomeScreen: React.FC = ({}) => {
             className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
             onPress={onQRCodePress}
           >
-            <Image
-              source={qr}
-              className="w-8 h-8"
-            />
-            <Text className="text-gray-800 font-medium">Show QR Code</Text>
+            <Image source={qr} className="w-8 h-8" />
+            <Text className="text-gray-800 font-medium">Show QR Code </Text>
           </TouchableOpacity>
         </View>
 
-        <View className="mt-[78px]">
-          <View className="flex-row flex-wrap gap-y-[30px]">
-            {menuItems.map((item, index) => (
-              <MenuOption
-                key={index}
-                icon={item.icon}
-                label={item.label}
-                onPress={item.onPress}
-              />
-            ))}
+        {openQR ? (
+          <></>
+        ) : (
+          <View className="mt-[78px]">
+            <View className="flex-row flex-wrap gap-y-[30px]">
+              {menuItems.map((item, index) => (
+                <MenuOption
+                  key={index}
+                  icon={item.icon}
+                  label={item.label}
+                  onPress={item.onPress}
+                />
+              ))}
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </SafeAreaView>
   );
