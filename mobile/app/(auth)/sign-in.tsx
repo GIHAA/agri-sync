@@ -11,24 +11,33 @@ import { ThemedInput } from "@/components/ThemedInput";
 import { router } from "expo-router";
 import { ThemedButton } from "@/components/ThemedButton";
 import farmerData from "@/data";
-
+import { useLoginUser } from "@/api/auth";
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("gihansad@g.com");
+  const [password, setPassword] = useState("gihan123");
 
-  function handleLogIn(): void {
-   
-    const user = farmerData.find(
-      (user) => user.email === email && user.password === password
-    );
+  async function handleLogIn(): Promise<void> {
+    try {
+      // Get token from API call
+      const token = await useLoginUser(email, password);
+      // decode and get payload and parse json it 
 
-    if (user) {
-     
-      router.replace("/(root)/(screens)/home");
-    } else {
-    
-      Alert.alert("Invalid Credentials", "Please check your email or password.");
+
+      if (token) {
+        await SecureStore.setItemAsync('auth_token', token); 
+        const payload = token.split('.')[1];
+        const decodedPayload = atob(payload);
+        const parsedPayload = JSON.parse(decodedPayload);
+        await SecureStore.setItemAsync('user', JSON.stringify(parsedPayload));
+        router.replace("/(root)/(screens)/home");
+      } else {
+        Alert.alert("Invalid Credentials", "Please check your email or password.");
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      Alert.alert("Error", "An error occurred while logging in.");
     }
   }
 

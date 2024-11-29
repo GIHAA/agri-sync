@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  # User service (auth backend)
+  user_service:
+    build:
+      context: ./user-service  # Path to the user service folder
+    container_name: user_service
+    networks:
+      - app-network
+    environment:
+      - PORT=5000
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=postgres  
+      - DB_PORT=6000
+      - DB_NAME=agri
+      - JWT_SECRET=your_jwt_secret
+      - JWT_EXPIRES_IN=30d
+    expose:
+      - "5000"
+    depends_on:
+      - postgres  # Ensure postgres service is up before starting the user service
+
+  # Reward service (reward and farming backend)
+  reward_service:
+    build:
+      context: ./reward-service  # Path to the reward service folder
+    container_name: reward_service
+    networks:
+      - app-network
+    environment:
+      - PORT=5000
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=postgres  
+      - DB_PORT=6000
+      - DB_NAME=agri
+      - JWT_SECRET=your_jwt_secret
+      - JWT_EXPIRES_IN=30d
+    expose:
+      - "5000"
+    depends_on:
+      - postgres  # Ensure postgres service is up before starting the reward service
+
+  # PostgreSQL database service
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    networks:
+      - app-network
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: agri
+    ports:
+      - "6000:5432"  # Expose port 6000 for external access (optional)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist database data
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"  # Expose port 80 to access via localhost:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Mount the nginx config
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:  # Define a volume to persist PostgreSQL data
+
+networks:
+  app-network:
+    driver: bridge

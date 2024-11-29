@@ -12,15 +12,14 @@ const Welcome = () => {
   const [buttonClicks, setButtonClicks] = useState(0);
   const [uiAction, setUiAction] = useState<string | null>(null);
 
-   // Function to simulate button clicks and track them
    const handleButtonClick = async () => {
     setButtonClicks(buttonClicks + 1);
-    const response = await trackInteraction(buttonClicks + 1); // Send the number of clicks to the backend
+    const response = await trackInteraction(buttonClicks + 1); 
 
-    // Fetch the UI recommendation (action to adjust UI)
     const recommendation = await getUiRecommendation();
-    setUiAction(recommendation.action); // Adjust UI based on the response
-    console.log('UI recommendation:', recommendation.action);
+    console.log('Recommendation:', recommendation);
+    setUiAction(recommendation.action); 
+ 
     router.replace('/(auth)/sign-up');
   };
 

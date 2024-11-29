@@ -46,7 +46,7 @@ const loginUser = async (email, password) => {
       return { success: false, statusCode: 400, message: "Invalid password" };
     }
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = generateToken({ id: user.id, email: user.email , username: user.username });
 
     return {
       success: true,

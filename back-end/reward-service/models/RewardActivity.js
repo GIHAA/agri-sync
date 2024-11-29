@@ -1,16 +1,12 @@
 // models/RewardActivity.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const User = require("./User");
 const logger = require("../utils/logger");
 
 const RewardActivity = sequelize.define("RewardActivity", {
   user_id: {
     type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: "id"
-    }
+    allowNull: false
   },
   activity_type: {
     type: DataTypes.STRING,

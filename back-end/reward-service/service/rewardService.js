@@ -32,7 +32,6 @@ const redeemPoints = async (userId, rewardType) => {
   }
   await rewardRepo.deductPoints(userId, pointsRequired[rewardType]);
 
-  // Add activity history
   await rewardRepo.addActivityHistory(userId, "Reward Redemption", -pointsRequired[rewardType], `Redeemed ${rewardType} reward`);
 
   logger.info(`User ${userId} successfully redeemed ${rewardType} reward`);
@@ -41,6 +40,13 @@ const redeemPoints = async (userId, rewardType) => {
     message: `Redeemed ${rewardType} reward`
   };
 };
+
+const addFarmingDataReward = async (userId ) => { 
+   // todo : get the point for the farming data
+  const pointsToAdd = 100;
+  logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
+  return addPoints(userId, pointsToAdd);
+}
 
 const addPoints = async (userId, pointsToAdd) => {
   logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
@@ -91,5 +97,6 @@ module.exports = {
   getActivityHistory,
   redeemPoints,
   addPoints,
-  updatePoints
+  updatePoints,
+  addFarmingDataReward
 };

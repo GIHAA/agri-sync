@@ -4,7 +4,7 @@ const logger = require("../utils/logger");
 
 const getUserPoints = async (req, res) => {
   try {
-    const userId = req.user.id; // From authentication middleware
+    const userId = req.user.id; 
     logger.info(`Fetching points for user ${userId}`);
     const points = await rewardService.getUserPoints(userId);
     return res.status(200).json({

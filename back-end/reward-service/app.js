@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const rewardRoutes = require("./routes/rewardRoutes");
+const farmingRoutes = require("./routes/farmingRoutes");
 const logger = require("./utils/logger"); 
 
 require("dotenv").config();
@@ -15,8 +16,13 @@ app.use(express.json());
 
 
 app.use("/rewards", rewardRoutes);
+app.use("/farming", farmingRoutes);
 
-// Syncing the database with logging
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+//Syncing the database with logging
 sequelize.sync({ alter: true })
   .then(() => {
     logger.info("Database synced successfully.");

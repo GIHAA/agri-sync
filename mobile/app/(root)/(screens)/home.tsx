@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Image,
-  ImageSourcePropType,
   SafeAreaView,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import MenuOption from "@/components/HomeOption";
 import { router } from "expo-router";
-import qr from "@/assets/images/qr.png";
+import * as SecureStore from "expo-secure-store";
+import QRCode from "react-native-qrcode-svg"; // Import QRCode component
+import MenuOption from "@/components/HomeOption";
 
 interface MenuOptionProps {
   icon: React.ReactNode;
@@ -18,13 +18,22 @@ interface MenuOptionProps {
   onPress?: () => void;
 }
 
+interface User {
+  email: string;
+  username: string;
+}
+
 const HomeScreen: React.FC = ({}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [openQR, setOpenQR] = useState<boolean>(false);
+
   const onQRCodePress = () => {
-    console.log("QR Code Pressed");
+    setOpenQR(!openQR); // Toggle QR code visibility
   };
 
   const onAddFarmingPress = () => {
     console.log("Add Farming Data Pressed");
+    router.replace("/(root)/(screens)/addFarmingData");
   };
 
   const onRewardPress = () => {
@@ -62,6 +71,15 @@ const HomeScreen: React.FC = ({}) => {
     },
   ];
 
+  // get user from store
+  useEffect(() => {
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 gap-10">
       <View className="items-center pt-8 pb-4">
@@ -73,31 +91,39 @@ const HomeScreen: React.FC = ({}) => {
       </View>
 
       <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
-        <View className="absolute top-[-35px]  left-4  transform px-6 w-full flex justify-center ">
+        <View className="absolute top-[-35px] left-4 transform px-6 w-full flex justify-center ">
           <TouchableOpacity
             className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
             onPress={onQRCodePress}
           >
             <Image
-              source={qr}
+              source={require("@/assets/images/qr.png")}
               className="w-8 h-8"
             />
-            <Text className="text-gray-800 font-medium">Show QR Code</Text>
+            <Text className="text-gray-800 font-medium">Show QR Code </Text>
           </TouchableOpacity>
         </View>
 
-        <View className="mt-[78px]">
-          <View className="flex-row flex-wrap gap-y-[30px]">
-            {menuItems.map((item, index) => (
-              <MenuOption
-                key={index}
-                icon={item.icon}
-                label={item.label}
-                onPress={item.onPress}
-              />
-            ))}
+        {openQR && user ? (
+          <View className="mt-[78px] items-center">
+            <View className="bg-white p-4 rounded-xl  ">
+              <QRCode value={user.email} size={220} color="green" />
+            </View>
           </View>
-        </View>
+        ) : (
+          <View className="mt-[78px]">
+            <View className="flex-row flex-wrap gap-y-[30px]">
+              {menuItems.map((item, index) => (
+                <MenuOption
+                  key={index}
+                  icon={item.icon}
+                  label={item.label}
+                  onPress={item.onPress}
+                />
+              ))}
+            </View>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );

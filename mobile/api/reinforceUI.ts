@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_URL = 'http://192.168.8.165:5000'; 
+import apiClient from "./apiClientRein";
 
 export const trackInteraction = async (buttonClicks: number) => {
   try {
-    const response = await axios.post(`${API_URL}/track-interaction`, {
-      buttonClicks
+    const response = await apiClient.post(`track-interaction`, {
+      buttonClicks,
     });
     return response.data; // Contains the action and exploration rate
   } catch (error) {
@@ -15,7 +13,8 @@ export const trackInteraction = async (buttonClicks: number) => {
 
 export const getUiRecommendation = async () => {
   try {
-    const response = await axios.get(`${API_URL}/get-ui-recommendation`);
+    const response = await apiClient.get(`/get-ui-recommendation`);
+    console.log("UI recommendation response:", response);
     return response.data; // Contains the action (UI recommendation)
   } catch (error) {
     console.error("Error fetching UI recommendation:", error);
