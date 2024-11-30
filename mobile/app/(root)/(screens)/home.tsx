@@ -7,6 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from '@expo/vector-icons/Entypo';
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import QRCode from "react-native-qrcode-svg"; // Import QRCode component
@@ -44,6 +45,10 @@ const HomeScreen: React.FC = ({}) => {
     router.replace("/(root)/(screens)/user-preferences");
   };
 
+  const onChatbotPress = () => {
+    router.replace("/(root)/(screens)/chatbot");
+  };
+
   const onLogoutPress = () => {
     router.replace("/(auth)/sign-in");
   };
@@ -63,6 +68,11 @@ const HomeScreen: React.FC = ({}) => {
       icon: <AntDesign name="setting" size={55} color="white" />,
       label: "User Preference",
       onPress: onPreferencePress,
+    },
+    {
+      icon: <Entypo name="chat" size={55} color="white" />,
+      label: "Chat",
+      onPress: onChatbotPress,
     },
     {
       icon: <AntDesign name="login" size={55} color="white" />,

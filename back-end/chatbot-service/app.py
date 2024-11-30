@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import json
 from flask import Flask, request, jsonify
 import pinecone
-from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone, ServerlessSpec
 from langchain_community.vectorstores import Pinecone as LangchainPinecone
 from langchain.prompts import PromptTemplate
