@@ -17,7 +17,7 @@ import {
   import FontAwesome from "@expo/vector-icons/FontAwesome";
   
   export default function Chat() {
-    const backendUrl = "http://192.168.217.3:5000/query"; // Update with your machine's local IP
+    const backendUrl = "http://192.168.92.3:5000/query"; 
 
     const [chatText, setChatText] = useState("");
     const [textInputHeight, setTextInputHeight] = useState(60);
@@ -84,7 +84,7 @@ import {
                 <View
                   style={{
                     padding: 10,
-                    backgroundColor: message.role === "user" ? "#cce5ff" : "#f1f1f1",
+                    backgroundColor: message.role === "user" ? "#22c55e" : "#e7e5e4",
                     borderRadius: 10,
                     maxWidth: "80%",
                   }}
@@ -100,7 +100,6 @@ import {
               flexDirection: "row",
               alignItems: "center",
               padding: 10,
-              backgroundColor: "#fff",
               borderTopWidth: 1,
               borderTopColor: "#ccc",
             }}
@@ -111,8 +110,10 @@ import {
                 height: textInputHeight,
                 borderColor: "#ccc",
                 borderWidth: 1,
-                borderRadius: 10,
+                borderRadius: 20,
                 paddingLeft: 10,
+                paddingRight: 10,
+                backgroundColor: "#fff",
               }}
               value={chatText}
               onChangeText={setChatText}
@@ -122,7 +123,7 @@ import {
             <Pressable
               onPress={sendChatQuery}
               style={{
-                backgroundColor: "#007bff",
+                backgroundColor: "#22c55e",
                 padding: 10,
                 marginLeft: 10,
                 borderRadius: 10,
