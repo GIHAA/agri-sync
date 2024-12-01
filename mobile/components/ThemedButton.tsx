@@ -70,7 +70,7 @@ export function ThemedButton({
     <TouchableOpacity
     onPress={() => {
       onPress();
-      handleButtonClick();
+      // handleButtonClick();
     }}
       disabled={disabled || loading}
       className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${containerStyle}`}

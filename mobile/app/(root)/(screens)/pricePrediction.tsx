@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  LogBox,
 } from "react-native";
 import Brinjals from "@/assets/images/vegitables/Brinjals.jpeg";
 import Cabbage from "@/assets/images/vegitables/Cabbage.jpg";
@@ -16,6 +17,8 @@ import Pumpkin from "@/assets/images/vegitables/Pumpkin.jpg";
 import Tomatoes from "@/assets/images/vegitables/Tomatoes.jpg";
 import { fetchPredictedPrice } from "@/api/predictionApiService";
 import { AntDesign } from "@expo/vector-icons";
+import { usePostRedeemReward } from "@/api/rewardService";
+import { useGetRewardPoints } from "@/api/rewardService";
 
 interface Vegetable {
   name: string;
@@ -51,17 +54,35 @@ export default function PricePredictionScreen() {
   );
   const [remainingPredictions, setRemainingPredictions] = useState<number>(10);
 
-  const handleVegetableSelect = async (veg: Vegetable) => {
-    setCurrentSelectedVegetable(veg.name);
-    setCurrentSelectedVegetableImage(veg.image);
-    setCurrentPrice(veg.currentPrice);
+  const fetchPoints = async () => {
+    const points = await useGetRewardPoints();
+    setRemainingPredictions(points);
+  };
+  useEffect(() => {
 
+    fetchPoints();
+  }, []);
+
+  const handleVegetableSelect = async (veg: Vegetable) => {
     try {
-      const predictedPrice = await fetchPredictedPrice(
-        whenToPlant.toString(),
-        veg.name
-      );
-      setPredictedPrice(predictedPrice);
+      LogBox.ignoreAllLogs();
+      try {
+        await usePostRedeemReward({
+          rewardType: "premium_prediction",
+        });
+        setCurrentSelectedVegetable(veg.name);
+        setCurrentSelectedVegetableImage(veg.image);
+        setCurrentPrice(veg.currentPrice);
+
+        const predictedPrice = await fetchPredictedPrice(
+          whenToPlant.toString(),
+          veg.name
+        );
+        setPredictedPrice(predictedPrice);
+        fetchPoints();
+      } catch (error) {
+        alert("Could not redeem reward. insufficient points.");
+      }
     } catch (error) {
       console.error(error);
       alert("Could not fetch the predicted price. Please try again.");
@@ -109,7 +130,7 @@ export default function PricePredictionScreen() {
 
         <View className="flex-row items-center justify-between mb-4">
           <Text className="text-gray-600">
-            {remainingPredictions} Predictions Remaining
+            {remainingPredictions} Remaining Points
           </Text>
           <Pressable
             onPress={() => alert("Redirecting to purchase predictions...")}
