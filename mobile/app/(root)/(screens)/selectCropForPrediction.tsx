@@ -14,10 +14,7 @@ export default function SelectCropForPrediction() {
   const [whatToPlant, setWhatToPlant] = React.useState<string>("");
 
   const handleGetPrediction = () => {
-    // log state values
-    console.log("whereToPlant", whereToPlant);
-    console.log("whenToPlant", whenToPlant);
-    console.log("whatToPlant", whatToPlant);
+
 
     // make them required
     if (!whereToPlant || !whenToPlant || !whatToPlant) {

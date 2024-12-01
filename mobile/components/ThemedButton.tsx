@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { getUiRecommendation, trackInteraction } from "@/api/reinforceUI";
-import { router } from "expo-router";
+
 
 export type ThemedButtonProps = {
   label: string;
@@ -70,7 +70,7 @@ export function ThemedButton({
     <TouchableOpacity
     onPress={() => {
       onPress();
-      handleButtonClick();
+      // handleButtonClick();
     }}
       disabled={disabled || loading}
       className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${containerStyle}`}
