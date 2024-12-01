@@ -27,7 +27,7 @@ const MenuOptionML: React.FC<MenuOptionProps> = ({ icon, label, onPress, age }) 
         <View style={{ width: "100%" }}>
           {icon}
         </View>
-        <Text style={{ color: textColor, fontSize: textSize, marginTop: 8, textAlign: "center" }}>
+        <Text style={{ color: textColor, fontSize: textSize, marginTop: 8, textAlign: "center" }} className="text-white">
           {label}
         </Text>
       </View>

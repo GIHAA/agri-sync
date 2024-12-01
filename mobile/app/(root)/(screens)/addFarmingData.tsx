@@ -74,7 +74,6 @@ export default function AddFarmData() {
     });
   }, []);
 
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
