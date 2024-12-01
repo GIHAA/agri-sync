@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { trackInteraction, getUiRecommendation } from "../../api/reinforceUI";
 import { ThemedButtonWithML } from "@/components/ThemedButtonWithML";
+import { ThemedButton } from "@/components/ThemedButton";
 
 const Welcome = () => {
   const [buttonClicks, setButtonClicks] = useState(0);
@@ -32,13 +33,6 @@ const Welcome = () => {
         {uiAction && <Text>Recommended Action: {uiAction}</Text>}
 
         <Text className=" text-[32px]">welocme</Text>
-        <TouchableOpacity
-          onPress={handleButtonClick}
-          style={buttonStyles}
-          className="w-1/2 bg-[#2F855A] p-8 rounded-lg mt-4 self-center"
-        >
-          <Text className="text-center">NEXT</Text>
-        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
@@ -49,12 +43,20 @@ const Welcome = () => {
           <Text className="text-center">Debug</Text>
         </TouchableOpacity>
 
+        <ThemedButton
+          label="Sign In"
+          onPress={() => {
+            router.replace("/(auth)/sign-in");
+          }}
+        />
+
         <ThemedButtonWithML
           label="Sign Up"
           onPress={() => {
             console.log("Sign Up Pressed");
           }}
           buttonId={"Sign up"}
+          missClickTrackingArea={0}
         />
 
         <ThemedButtonWithML
@@ -63,9 +65,8 @@ const Welcome = () => {
             router.replace("/(demo)/welcome");
           }}
           buttonId={"UI_demo"}
+          missClickTrackingArea={0}
         />
-
-
       </View>
     </SafeAreaView>
   );

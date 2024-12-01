@@ -1,4 +1,4 @@
-import apiClient, { ApiResponse } from './apiClientAuth';
+import apiClient, { ApiResponse } from './apiClientPrediction';
 
 /**
  * Fetch the predicted price for a vegetable.

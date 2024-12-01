@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  LogBox,
 } from "react-native";
 import Brinjals from "@/assets/images/vegitables/Brinjals.jpeg";
 import Cabbage from "@/assets/images/vegitables/Cabbage.jpg";
@@ -16,6 +17,8 @@ import Pumpkin from "@/assets/images/vegitables/Pumpkin.jpg";
 import Tomatoes from "@/assets/images/vegitables/Tomatoes.jpg";
 import { fetchPredictedPrice } from "@/api/predictionApiService";
 import { AntDesign } from "@expo/vector-icons";
+import { usePostRedeemReward } from "@/api/rewardService";
+import { useGetRewardPoints } from "@/api/rewardService";
 
 interface Vegetable {
   name: string;
@@ -51,17 +54,35 @@ export default function PricePredictionScreen() {
   );
   const [remainingPredictions, setRemainingPredictions] = useState<number>(10);
 
-  const handleVegetableSelect = async (veg: Vegetable) => {
-    setCurrentSelectedVegetable(veg.name);
-    setCurrentSelectedVegetableImage(veg.image);
-    setCurrentPrice(veg.currentPrice);
+  const fetchPoints = async () => {
+    const points = await useGetRewardPoints();
+    setRemainingPredictions(points);
+  };
+  useEffect(() => {
 
+    fetchPoints();
+  }, []);
+
+  const handleVegetableSelect = async (veg: Vegetable) => {
     try {
-      const predictedPrice = await fetchPredictedPrice(
-        whenToPlant.toString(),
-        veg.name
-      );
-      setPredictedPrice(predictedPrice);
+      LogBox.ignoreAllLogs();
+      try {
+        await usePostRedeemReward({
+          rewardType: "premium_prediction",
+        });
+        setCurrentSelectedVegetable(veg.name);
+        setCurrentSelectedVegetableImage(veg.image);
+        setCurrentPrice(veg.currentPrice);
+
+        const predictedPrice = await fetchPredictedPrice(
+          whenToPlant.toString(),
+          veg.name
+        );
+        setPredictedPrice(predictedPrice);
+        fetchPoints();
+      } catch (error) {
+        alert("Could not redeem reward. insufficient points.");
+      }
     } catch (error) {
       console.error(error);
       alert("Could not fetch the predicted price. Please try again.");
@@ -80,57 +101,59 @@ export default function PricePredictionScreen() {
 
   return (
     <SafeAreaView className="flex-1  bg-white">
-      <View className="p-4" >
-      <Pressable
-        className="flex-row items-center mb-4"
-        onPress={() => router.replace("/(root)/(screens)/home")}
-      >
-        <AntDesign name="arrowleft" size={24} color="black" />
-        <Text className="text-black ml-2 text-lg">Back</Text>
-      </Pressable>
-
-      <ThemedText type="title">Price Prediction</ThemedText>
-
-      <View className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <View className="flex-row items-center mb-4">
-          <Image
-            source={currentSelectedVegetableImage}
-            className="w-[120px] h-[100px] mr-4"
-          />
-          <Text className="text-lg font-bold">{currentSelectedVegetable}</Text>
-        </View>
-        <Text className="text-gray-600">Current Price: {currentPrice}</Text>
-        <Text className="text-green-600 font-bold text-2xl">
-          Predicted Price: Rs: {predictedPrice.toPrecision(8)}
-        </Text>
-      </View>
-
-      <View className="flex-row items-center justify-between mb-4">
-        <Text className="text-gray-600">
-          {remainingPredictions} Predictions Remaining
-        </Text>
+      <View className="p-4">
         <Pressable
-          onPress={() => alert("Redirecting to purchase predictions...")}
-          className="bg-green-500 px-4 py-2 rounded-md"
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/home")}
         >
-          <Text className="text-white font-bold">Get More</Text>
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
         </Pressable>
-      </View>
 
-      <Text className="text-lg font-bold mb-4 text-center">
-        Select a Different Vegetable
-      </Text>
+        <ThemedText type="title">Price Prediction</ThemedText>
 
-      <FlatList
-        data={vegetableData}
-        numColumns={3}
-        renderItem={renderVegetableTile}
-        keyExtractor={(item) => item.name}
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: "space-evenly",
-        }}
-      />
+        <View className="bg-white rounded-lg shadow-md p-4 mb-6">
+          <View className="flex-row items-center mb-4">
+            <Image
+              source={currentSelectedVegetableImage}
+              className="w-[120px] h-[100px] mr-4"
+            />
+            <Text className="text-lg font-bold">
+              {currentSelectedVegetable}
+            </Text>
+          </View>
+          <Text className="text-gray-600">Current Price: {currentPrice}</Text>
+          <Text className="text-green-600 font-bold text-2xl">
+            Predicted Price: Rs: {predictedPrice.toPrecision(8)}
+          </Text>
+        </View>
+
+        <View className="flex-row items-center justify-between mb-4">
+          <Text className="text-gray-600">
+            {remainingPredictions} Remaining Points
+          </Text>
+          <Pressable
+            onPress={() => alert("Redirecting to purchase predictions...")}
+            className="bg-green-500 px-4 py-2 rounded-md"
+          >
+            <Text className="text-white font-bold">Get More</Text>
+          </Pressable>
+        </View>
+
+        <Text className="text-lg font-bold mb-4 text-center">
+          Select a Different Vegetable
+        </Text>
+
+        <FlatList
+          data={vegetableData}
+          numColumns={3}
+          renderItem={renderVegetableTile}
+          keyExtractor={(item) => item.name}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "space-evenly",
+          }}
+        />
       </View>
     </SafeAreaView>
   );
