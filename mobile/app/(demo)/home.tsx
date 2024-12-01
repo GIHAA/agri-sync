@@ -10,7 +10,10 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import QRCode from "react-native-qrcode-svg"; // Import QRCode component
-import MenuOption from "@/components/HomeOption";
+import MenuOption from "@/components/HomeOptionML";
+
+
+
 
 interface MenuOptionProps {
   icon: React.ReactNode;
@@ -80,6 +83,9 @@ const HomeScreen: React.FC = ({}) => {
     });
   }, []);
 
+  const userAge = 25; 
+
+
   return (
     <SafeAreaView className="flex-1 gap-10">
       <View className="items-center pt-8 pb-4">
@@ -119,6 +125,7 @@ const HomeScreen: React.FC = ({}) => {
                   icon={item.icon}
                   label={item.label}
                   onPress={item.onPress}
+                  age={userAge}
                 />
               ))}
             </View>
