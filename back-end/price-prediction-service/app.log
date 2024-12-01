@@ -1180,3 +1180,16 @@
  * Running on http://127.0.0.1:3000
  * Running on http://192.168.1.2:3000
 2024-12-01 00:50:23,976 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-01 18:13:07,681 - INFO - Loading data from Excel file.
+2024-12-01 18:13:07,805 - INFO - Ensuring correct data types for months and year.
+2024-12-01 18:13:07,807 - INFO - Reshaping data to long format.
+2024-12-01 18:13:07,810 - INFO - Encoding categorical data for vegetables and months.
+2024-12-01 18:13:07,811 - INFO - Splitting data into training and testing sets.
+2024-12-01 18:13:07,813 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-01 18:13:07,857 - INFO - Saving the trained model and label encoders.
+2024-12-01 18:13:07,863 - INFO - Starting Flask app.
+2024-12-01 18:13:07,874 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-01 18:13:07,874 - INFO - [33mPress CTRL+C to quit[0m

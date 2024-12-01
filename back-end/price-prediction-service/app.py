@@ -2,7 +2,7 @@ import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor  # Changed from RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 import pickle
 import logging
@@ -57,9 +57,9 @@ y = df_long['Price']
 logging.info("Splitting data into training and testing sets.")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train a Random Forest Regressor
-logging.info("Training the Random Forest Regressor model.")
-model = RandomForestRegressor(random_state=42)
+# Train a Gradient Boosting Regressor (instead of Random Forest)
+logging.info("Training the Gradient Boosting Regressor model.")
+model = GradientBoostingRegressor(random_state=42)  # Changed from RandomForestRegressor
 model.fit(X_train, y_train)
 
 # Save the trained model and label encoders
@@ -80,7 +80,7 @@ def predict():
     data = request.get_json()
     logging.debug(f"Request data: {data}")
     
-    # Extract year and month from `whenToPlant`
+    # Extract year and month from whenToPlant
     when_to_plant = data.get("whenToPlant", "")
     try:
         date = pd.to_datetime(when_to_plant)
@@ -140,12 +140,10 @@ def get_options():
         return jsonify({'data': None, 'message': f"Error retrieving options: {str(e)}", 'success': False}), 500
 
 
-
 if __name__ == '__main__':
     logging.info("Starting Flask app.")
-    app.run(host='0.0.0.0', port=3001) 
+    app.run(host='0.0.0.0', port=3001)
 
-
-# flask run --host=0.0.0.0 --port=3000
+# flask run --host=0.0.0.0 --port=3001
 
 
