@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedButtonWithML } from "@/components/ThemedButtonWithML";
+import { router } from "expo-router";
 
 const Welcome = () => {
   const [events, setEvents] = useState<string[]>([]);
@@ -78,10 +79,17 @@ const Welcome = () => {
           />
         </View>
 
-        <View className=" mt-[100px]">
+        <View className=" mt-[50px] flex flex-row max-w-[100px] items-center justify-center">
           <ThemedButtonWithML
             label="Reset"
             onPress={() => setEvents([])}
+            buttonId={"Sign up"}
+            containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
+            viewStyle="flex flex-col justify-center items-center"
+          />
+           <ThemedButtonWithML
+            label="Log In"
+            onPress={() => router.replace("/home")}
             buttonId={"Sign up"}
             containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
             viewStyle="flex flex-col justify-center items-center"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { getUiRecommendation, trackInteraction } from "@/api/reinforceUI";
-import { router } from "expo-router";
+
 
 export type ThemedButtonProps = {
   label: string;
