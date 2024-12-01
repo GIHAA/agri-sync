@@ -57,6 +57,15 @@ const Welcome = () => {
           buttonId={"Sign up"}
         />
 
+        <ThemedButtonWithML
+          label="UI Demo"
+          onPress={() => {
+            router.replace("/(demo)/welcome");
+          }}
+          buttonId={"UI_demo"}
+        />
+
+
       </View>
     </SafeAreaView>
   );
