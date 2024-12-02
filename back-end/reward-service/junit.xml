@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="10" failures="0" errors="0" time="0.527">
+  <testsuite name="Reward Service" errors="0" failures="0" skipped="0" timestamp="2024-12-02T19:16:31" time="0.471" tests="10">
+    <testcase classname="Reward Service getUserPoints should return user points when user exists" name="Reward Service getUserPoints should return user points when user exists" time="0.003">
+    </testcase>
+    <testcase classname="Reward Service getUserPoints should return 0 when user does not exist" name="Reward Service getUserPoints should return 0 when user does not exist" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service getActivityHistory should return activity history for user" name="Reward Service getActivityHistory should return activity history for user" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should successfully redeem points when user has sufficient balance" name="Reward Service redeemPoints should successfully redeem points when user has sufficient balance" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should return insufficient points error when balance is low" name="Reward Service redeemPoints should return insufficient points error when balance is low" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should handle non-existent user" name="Reward Service redeemPoints should handle non-existent user" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service addPoints should update points for existing user" name="Reward Service addPoints should update points for existing user" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service updatePoints should successfully update points" name="Reward Service updatePoints should successfully update points" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service updatePoints should handle non-existent user" name="Reward Service updatePoints should handle non-existent user" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service addFarmingDataReward should add farming data reward points" name="Reward Service addFarmingDataReward should add farming data reward points" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

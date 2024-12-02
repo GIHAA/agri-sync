@@ -58,7 +58,7 @@ const addPoints = async (userId, pointsToAdd) => {
   } else {
     userPoints.total_points += pointsToAdd;
     await userPoints.save();
-    logger.info(`Updated points for user ${userId}. New total: ${userPoints.total_points}`);
+    logger.info(`Updated points for user ${userId}. New total: ${pointsToAdd}`);
   }
 
   // Add activity history
