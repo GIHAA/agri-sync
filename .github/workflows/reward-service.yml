@@ -19,14 +19,19 @@ jobs:
         run: npm ci
       - name: Run tests
         working-directory: back-end/reward-service
-        run: npm test
+        run: npm test -- --reporters=default --reporters=jest-junit
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: test-results
+          path: back-end/reward-service/jest-results.xml
       - name: Process test results
         id: test-results
         run: |
-          if grep -q "PASS" back-end/reward-service/test-results.txt; then
+          if grep -q "success" back-end/reward-service/jest-results.xml; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -c "✓" back-end/reward-service/test-results.txt)" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -c "testcase" back-end/reward-service/jest-results.xml)" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
@@ -36,7 +41,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('back-end/reward-service/test-results.txt', 'utf8');
+            const results = fs.readFileSync('back-end/reward-service/jest-results.xml', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
             
@@ -48,5 +53,5 @@ jobs:
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body: `${header}\`\`\`\n${results}\n\`\`\``
+              body: `${header}\`\`\`xml\n${results}\n\`\`\``
             });
