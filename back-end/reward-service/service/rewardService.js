@@ -16,7 +16,7 @@ const getActivityHistory = async (userId) => {
 const redeemPoints = async (userId, rewardType) => {
   const pointsRequired = {
     'market_insight': 100,
-    'premium_prediction': 250,
+    'premium_prediction': 100,
     'consultation': 500
   };
 
