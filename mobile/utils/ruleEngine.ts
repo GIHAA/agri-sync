@@ -8,7 +8,7 @@ export const rulesEngine = {
 
   color_friendly_scheme: {
         "Red_Green_Safe": {
-        color:  "text-black "
+        color:  "text-black ",
         },
         "Blue_Yellow_Safe":{
         color:  "text-blue-600"
