@@ -66,7 +66,7 @@ const addPoints = async (userId, pointsToAdd) => {
 
   return {
     success: true,
-    message: `Added ${pointsToAdd} points.`
+    message: `Added ${pointsToAdd} points. New total: ${userPoints.total_points}`
   };
 };
 
