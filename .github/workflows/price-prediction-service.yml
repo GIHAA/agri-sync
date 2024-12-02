@@ -23,32 +23,29 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install flask flask-cors pandas scikit-learn openpyxl
+          python -m pip install --upgrade pip
+          pip install flask flask-cors pandas scikit-learn openpyxl pytest
 
       - name: Copy test data
         run: |
-          mkdir -p data
-          cp back-end/price-prediction-service/data.xlsx ./data.xlsx
+          mkdir -p back-end/price-prediction-service/data
+          cp back-end/price-prediction-service/data.xlsx back-end/price-prediction-service/
 
-      - name: Train model
+      - name: Set Python path
         run: |
-          source .venv/bin/activate
-          python back-end/price-prediction-service/app.py &
-          sleep 15
+          echo "PYTHONPATH=$PYTHONPATH:${{ github.workspace }}/back-end/price-prediction-service" >> $GITHUB_ENV
 
-      - name: Run Flask app
+      - name: Train and start Flask app
         run: |
-          source .venv/bin/activate
-          flask run --host=0.0.0.0 --port=3001 &
+          cd back-end/price-prediction-service
+          python app.py &
           echo "Waiting for Flask to start..."
           timeout 30 bash -c 'until curl -s http://localhost:3001/health; do sleep 2; done'
 
       - name: Run tests
         run: |
-          source .venv/bin/activate
-          python -m unittest back-end/price-prediction-service/test_app.py
+          cd back-end/price-prediction-service
+          python -m pytest test_app.py -v
 
       - name: Cleanup
         if: always()
