@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watch",
     "dev": "nodemon app.js"
   },
   "keywords": [],
@@ -11,7 +12,11 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "jest": "^29.7.0",
+    "mockdate": "^3.0.5",
+    "nodemon": "^3.1.7",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
