@@ -1,4 +1,4 @@
-name: Price Prediction Service - Flask API Test Workflow
+name: Price Prediction Service - Test
 
 on:
   pull_request:
