@@ -50,4 +50,4 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-flask run --host=0.0.0.0 --port=3004
+#flask run --host=0.0.0.0 --port=3004
