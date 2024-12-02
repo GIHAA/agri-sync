@@ -8,9 +8,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
-
+      
       - uses: actions/setup-python@v4
         with:
           python-version: 3.12
@@ -20,10 +22,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install flask flask-cors pandas scikit-learn openpyxl
 
-      - name: Set PYTHONPATH
-        run: |
-          echo "PYTHONPATH=${{ github.workspace }}/back-end/price-prediction-service" >> $GITHUB_ENV
-
       - name: Train model
         working-directory: back-end/price-prediction-service
         run: |
@@ -31,30 +29,23 @@ jobs:
           sleep 15
           pkill -f flask || true
 
-      - name: Run tests with HTML report
+      - name: Run tests
         working-directory: back-end/price-prediction-service
         run: |
           python -m unittest test_app.py -v 2>&1 | tee test-results.txt
 
-      - name: Format test results
-        if: always()
-        working-directory: back-end/price-prediction-service
-        run: |
-          echo "### Price Prediction Service Test Results" > formatted-results.md
-          echo "\`\`\`" >> formatted-results.md
-          cat test-results.txt >> formatted-results.md
-          echo "\`\`\`" >> formatted-results.md
-
-      - name: Post test results
-        if: always()
+      - name: Post test results to PR
         uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('back-end/price-prediction-service/formatted-results.md', 'utf8');
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
+            const results = fs.readFileSync('back-end/price-prediction-service/test-results.txt', 'utf8');
+            
+            github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.name,
-              body: results
+              issue_number: context.issue.number,
+              body: `### Test Results\n\`\`\`\n${results}\n\`\`\``
             });
