@@ -1,0 +1,52 @@
+name: Reward Service - Node.js Test Workflow
+on:
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        working-directory: back-end/reward-service
+        run: npm ci
+      - name: Run tests
+        working-directory: back-end/reward-service
+        run: npm test
+      - name: Process test results
+        id: test-results
+        run: |
+          if grep -q "PASS" back-end/reward-service/test-results.txt; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "tests_passed=true" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -c "✓" back-end/reward-service/test-results.txt)" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Comment PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('back-end/reward-service/test-results.txt', 'utf8');
+            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+            
+            const header = testsPassed 
+              ? '### ✅ All Tests Passed! 🎉\n\n' +
+                `${totalTests} tests completed successfully ⭐\n\n`
+              : '### ❌ Tests Failed\n\n';
+            
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `${header}\`\`\`\n${results}\n\`\`\``
+            });
