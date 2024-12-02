@@ -1,58 +1,60 @@
-name: Price Prediction Service - Test
+name: Price Prediction Service - Flask API Test Workflow
 
 on:
   pull_request:
     branches: [develop]
+    types: [opened, synchronize]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flask flask-cors pandas scikit-learn openpyxl pytest
+          pip install flask flask-cors pandas scikit-learn openpyxl
 
       - name: Set PYTHONPATH
         run: |
           echo "PYTHONPATH=${{ github.workspace }}/back-end/price-prediction-service" >> $GITHUB_ENV
 
-      - name: Start Flask app
+      - name: Train model
         working-directory: back-end/price-prediction-service
         run: |
-          python app.py > flask.log 2>&1 &
-          timeout 30 bash -c 'until curl -s http://localhost:3001/health; do sleep 2; done'
+          python app.py &
+          sleep 15
+          pkill -f flask || true
 
-      - name: Run tests
+      - name: Run tests with HTML report
         working-directory: back-end/price-prediction-service
-        run: pytest test_app.py -v > result.log; tail -n 10 result.log  # Capture results and show last 10 lines
+        run: |
+          python -m unittest test_app.py -v 2>&1 | tee test-results.txt
 
-      - name: Post test results as comment on PR
-        if: success() || failure()
+      - name: Format test results
+        if: always()
+        working-directory: back-end/price-prediction-service
+        run: |
+          echo "### Price Prediction Service Test Results" > formatted-results.md
+          echo "\`\`\`" >> formatted-results.md
+          cat test-results.txt >> formatted-results.md
+          echo "\`\`\`" >> formatted-results.md
+
+      - name: Post test results
+        if: always()
         uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('./back-end/price-prediction-service/result.log', 'utf-8');
-            const prNumber = ${{ github.event.pull_request.number }};
-            const message = `## Test Results for PR #${prNumber}\n\n\`\`\`\n${results}\n\`\`\``;
-
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-            await octokit.rest.issues.createComment({
+            const results = fs.readFileSync('back-end/price-prediction-service/formatted-results.md', 'utf8');
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: message,
+              repo: context.repo.name,
+              body: results
             });
-
-      - name: Cleanup
-        if: always()
-        run: pkill -f flask || true
