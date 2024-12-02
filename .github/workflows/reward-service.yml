@@ -1,4 +1,4 @@
-name: Reward Service - Node.js Test Workflow
+name: Reward Service - Test
 on:
   pull_request:
     branches: [develop]
