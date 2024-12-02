@@ -139,6 +139,9 @@ def get_options():
         logging.error(f"Error retrieving options: {str(e)}")
         return jsonify({'data': None, 'message': f"Error retrieving options: {str(e)}", 'success': False}), 500
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'data': None, 'message': "Healthy", 'success': True}) 
 
 if __name__ == '__main__':
     logging.info("Starting Flask app.")
