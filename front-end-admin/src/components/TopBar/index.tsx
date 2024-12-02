@@ -13,7 +13,7 @@ import Breadcrumb from '../../base-components/Breadcrumb'
 import { FormInput } from '../common/form-elements/components'
 import { Menu, Popover } from '../common/headless'
 import PreviewImage from '../../../src/assets/images/LogoAgri.png'
-import SocketClient from '../../hooks/SocketClient'
+// import SocketClient from '../../hooks/SocketClient'
 import { useGetNotificationsList } from '../../api/notification'
 import NoDataFound from '../../assets/images/NoDataFound.png'
 
@@ -67,7 +67,7 @@ function Main() {
     <>
       {/* BEGIN: Top Bar */}
       <div className="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
-        <SocketClient email={user.Email} role={user.Role} />
+        {/* <SocketClient email={user.Email} role={user.Role} /> */}
         {/* BEGIN: Breadcrumb */}
         <Breadcrumb className="-intro-x mr-auto hidden sm:flex">
           <Breadcrumb.Link to="/">AgriApp</Breadcrumb.Link>

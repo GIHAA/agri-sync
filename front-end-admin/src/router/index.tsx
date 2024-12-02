@@ -40,19 +40,21 @@ function Router() {
     {
       path: '/',
       element: (
-        <PrivateRoute>
-          <SideMenu />
-        </PrivateRoute>
+        // <PrivateRoute>
+          
+        // </PrivateRoute>
+
+        <SideMenu />
       ),
       children: [
-        {
-          path: '/',
-          element: <Scanner />,
-        },
         // {
-        //   path: '/qr-scanner',
+        //   path: '/',
         //   element: <Scanner />,
         // },
+        {
+          path: '/qr-scanner',
+          element: <Scanner />,
+        },
         {
           path: 'form',
           element: <FormComponent />,

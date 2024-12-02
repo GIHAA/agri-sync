@@ -1,29 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
-import { useLogin } from '../../api/auth-management';
 import Toast from '../../utils/notification';
 import illustrationUrl from '../../assets/images/final-logo.svg';
 import Button from '../../components/common/button';
-import { FormCheck, FormInput } from '../../components/common/form-elements/components';
+import { FormInput } from '../../components/common/form-elements/components';
 import SharedDataContainer from '../../containers/sharedData';
 import { Icons, NotificationTypes } from '../../constants';
 
 function Main() {
-  const { setNotification, handleSlider } = SharedDataContainer.useContainer();
+  const { setNotification } = SharedDataContainer.useContainer();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { mutate, data, isSuccess, isError, error } = useLogin();
-
+  // Validate inputs
   const validateInputs = () => {
     let isValid = true;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailPattern.test(email)) {
       setEmailError('Please enter a valid email address');
+      console.log('Invalid email address:', email); // Debug log for invalid email
       isValid = false;
     } else {
       setEmailError('');
@@ -31,60 +31,79 @@ function Main() {
 
     if (!password) {
       setPasswordError('Password is required');
+      console.log('Password is empty'); // Debug log for empty password
       isValid = false;
     } else {
       setPasswordError('');
     }
 
+    console.log('Inputs validation result:', isValid); // Debug log for input validation result
     return isValid;
   };
 
-  const loginHandler = () => {
+  // Handle login
+  const loginHandler = async () => {
     if (!validateInputs()) return;
 
     setIsLoading(true);
+    console.log('Attempting login with email:', email); // Debug log for login attempt
 
-    mutate(
-      { email, password },
-      {
-        onSuccess: (data) => {
-          const { token, validationToken, name, role } = data.data;
+    try {
+      // Make the login API request
+      const response = await axios.post(`http://localhost:9000/auth/login`, {
+        email,
+        password,
+      });
 
-          // Save user data and tokens to local storage
-          localStorage.setItem('jwtToken', token);
-          localStorage.setItem('validationToken', validationToken);
-          localStorage.setItem('user', JSON.stringify({ name, role }));
+      console.log('Login API response:', response.data); // Debug log for API response
 
-          // Show success notification
-          setNotification({
-            title: 'Successfully Logged In',
-            message: `Welcome back, ${name}!`,
-            icon: Icons.CHECKCIRCLE,
-            type: NotificationTypes.SUCCESS,
-          });
-          Toast();
+      // Check if login was successful
+      if (response.data.success) {
+        const { token, farmerDetails, accessibilitySettings, role, username, email, id } = response.data.data;
+        console.log('Login successful:', { token, username, role, farmerDetails, accessibilitySettings });
 
-          // Redirect user after login
-          setTimeout(() => {
-            window.location.href = '/dashboard';
-          }, 800);
-        },
-        onError: (error) => {
-          const errorMessage =
-            error.response?.data?.message || 'Invalid login credentials.';
-          setNotification({
-            title: 'Login Failed',
-            message: errorMessage,
-            icon: Icons.XCIRCLE,
-            type: NotificationTypes.ERROR,
-          });
-          Toast();
-        },
-        onSettled: () => {
-          setIsLoading(false);
-        },
+        // Store JWT token, user details, and role in localStorage
+        localStorage.setItem('jwtToken', token);
+        localStorage.setItem('user', JSON.stringify({ id, username, email, role, farmerDetails, accessibilitySettings }));
+
+        // Show success notification
+        setNotification({
+          title: 'Successfully Logged In',
+          message: `Welcome back, ${username}!`,
+          icon: Icons.CHECKCIRCLE,
+          type: NotificationTypes.SUCCESS,
+        });
+        Toast();
+
+        // Redirect user to the dashboard
+        setTimeout(() => {
+          console.log('Redirecting to /dashboard'); // Debug log before redirect
+          window.location.href = '/dashboard';
+        }, 800);
+      } else {
+        console.log('Login failed:', response.data.message); // Debug log for failed login
+        // Show error notification if login fails
+        setNotification({
+          title: 'Login Failed',
+          message: response.data.message || 'Invalid login credentials.',
+          icon: Icons.XCIRCLE,
+          type: NotificationTypes.ERROR,
+        });
+        Toast();
       }
-    );
+    } catch (error) {
+      console.error('Login error:', error); // Debug log for any error during the API request
+      setNotification({
+        title: 'Login Failed',
+        message: 'An error occurred during login. Please try again.',
+        icon: Icons.XCIRCLE,
+        type: NotificationTypes.ERROR,
+      });
+      Toast();
+    } finally {
+      setIsLoading(false);
+      console.log('Login request completed'); // Debug log when the request is completed
+    }
   };
 
   return (

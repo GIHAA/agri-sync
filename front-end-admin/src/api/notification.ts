@@ -43,11 +43,11 @@ export const useGetNotificationsList =
   (): UseQueryResult<GetPushNotificationType> => {
     return useQuery({
       queryKey: ['get_push_notification_list'],
-      queryFn: async () => {
-        return await authFetch.get(`/notifications`, {})
-      },
-      select(data) {
-        return data?.data?.data || []
-      },
+      // queryFn: async () => {
+      //   return await authFetch.get(``, {})
+      // },
+      // select(data) {
+      //   return data?.data?.data || []
+      // },
     })
-}
+  }

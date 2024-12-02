@@ -1,10 +1,7 @@
 import clsx from 'clsx'
-
 import {
   FieldError,
-  FieldErrorsImpl,
   FieldValues,
-  Merge,
   UseFormRegister,
 } from 'react-hook-form'
 import {
@@ -21,7 +18,7 @@ import { AlignmentTypes } from '../../../constants/common-enums'
 interface InputProps {
   id?: string
   label?: string
-  name?: string
+  name: string
   type?: 'text' | 'password' | 'email' | 'number'
   placeholder?: string
   register: UseFormRegister<FieldValues>
@@ -35,7 +32,7 @@ interface InputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   iconRight?: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
+  error?: FieldError
   value?: string | number
   labelAlignment?: AlignmentTypes
 }
@@ -44,19 +41,19 @@ function InputElement({
   id,
   label,
   name,
-  type,
-  placeholder,
+  type = 'text',
+  placeholder = '',
   register,
-  disabled,
-  formInputSize,
-  rounded,
-  required,
+  disabled = false,
+  formInputSize = 'sm' ,
+  rounded = false,
+  required = false,
   info,
   iconLeft,
   iconRight,
   error,
   value,
-  labelAlignment,
+  labelAlignment = AlignmentTypes.ININE,
 }: InputProps) {
   // Handler to block non-numeric input
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -69,22 +66,14 @@ function InputElement({
     <div
       className={
         label
-          ? `grid sm:grid-cols-5 ${
-              labelAlignment === AlignmentTypes.BLOCK
-                ? 'flow-cols-grid grid-cols-12'
-                : 'grid-flow-row grid-cols-1'
-            }`
+          ? `grid sm:grid-cols-5 ${labelAlignment === AlignmentTypes.BLOCK ? 'flow-cols-grid grid-cols-12' : 'grid-flow-row grid-cols-1'}`
           : ''
       }
     >
       <div
-        className={`grid ${
-          labelAlignment === AlignmentTypes.BLOCK
-            ? 'col-span-12 mb-2'
-            : 'col-span-2'
-        }`}
+        className={`grid ${labelAlignment === AlignmentTypes.BLOCK ? 'col-span-12 mb-2' : 'col-span-2'}`}
       >
-        {label ? (
+        {label && (
           <FormLabel
             htmlFor={id}
             className="m-0 mb-2 flex h-full max-h-[38px] items-center sm:mb-0"
@@ -93,37 +82,33 @@ function InputElement({
               <div className="flex items-center">
                 <div className="font-medium">{label}</div>
                 <div className="ml-1 hidden sm:flex">
-                  {required ? <FormRequiredLabel /> : ''}
+                  {required && <FormRequiredLabel />}
                 </div>
                 <div className="mx-2 sm:hidden">
-                  {required ? <FormRequiredIcon /> : ''}
+                  {required && <FormRequiredIcon />}
                 </div>
                 <div className="flex sm:mx-2">
-                  {info ? <FormInfo tooltip={info} /> : ''}
+                  {info && <FormInfo tooltip={info} />}
                 </div>
               </div>
             </div>
           </FormLabel>
-        ) : (
-          ''
         )}
       </div>
+
       <div
-        className={`grid md:h-10 ${
-          labelAlignment === AlignmentTypes.BLOCK ? 'col-span-12' : 'col-span-3'
-        }`}
+        className={`grid md:h-10 ${labelAlignment === AlignmentTypes.BLOCK ? 'col-span-12' : 'col-span-3'}`}
       >
         <InputGroup className="">
-          {iconLeft ? (
+          {iconLeft && (
             <InputGroup.Text>
               <Lucide icon={iconLeft} className="h-4 w-4" />
             </InputGroup.Text>
-          ) : (
-            ''
           )}
+
           <FormInput
-            {...register(`${name}`)}
-            className={clsx({
+            {...register(name)}  // Spread the register props for proper binding
+            className={clsx('form-input', {
               'border-danger': error,
             })}
             id={id}
@@ -133,22 +118,22 @@ function InputElement({
             disabled={disabled}
             formInputSize={formInputSize}
             rounded={rounded}
-            value={value && value}
+            value={value || ''}
             onKeyDown={handleKeyDown}
             inputMode={type === 'number' ? 'numeric' : undefined}
             pattern={type === 'number' ? '[0-9]*' : undefined}
           />
-          {iconRight ? (
+
+          {iconRight && (
             <InputGroup.Text>
               <Lucide icon={iconRight} className="h-4 w-4" />
             </InputGroup.Text>
-          ) : (
-            ''
           )}
         </InputGroup>
+
         {error && (
           <div className="mb-2 mt-1 h-2 text-danger">
-            {typeof error?.message === 'string' && error?.message}
+            {error?.message}
           </div>
         )}
       </div>
@@ -161,7 +146,6 @@ export default InputElement
 InputElement.defaultProps = {
   id: '',
   label: '',
-  name: '',
   type: 'text',
   placeholder: '',
   disabled: false,
@@ -171,7 +155,7 @@ InputElement.defaultProps = {
   info: '',
   iconLeft: undefined,
   iconRight: undefined,
-  error: '',
+  error: undefined,
   value: undefined,
   labelAlignment: AlignmentTypes.ININE,
 }

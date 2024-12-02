@@ -35,6 +35,8 @@ import Tippy from '../../components/common/tippy'
 import fakerData from '../../assets/images/fakers/image-placeholder-1.png'
 import Lucide from '../../components/common/lucide'
 import ProgressBar from '../../components/common/progress-bar'
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function CommonComponent() {
   return (
@@ -1109,8 +1111,11 @@ function WysiwygEditor() {
   )
 }
 
-function FormComponent() {
-  const [date, setDate] = useState('')
+const FormComponent = () => {
+  const [date, setDate] = useState('');
+  const [farmerDetails, setFarmerDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const schema = yup
     .object({
       name: yup.string().required().min(2),
@@ -1119,115 +1124,205 @@ function FormComponent() {
         .required()
         .test(
           'len',
-          'age must be less than or equal to 3',
+          'Age must be less than or equal to 3 digits',
           (val) => !!(val && val.toString().length <= 3)
         ),
       comment: yup.string().required().min(10),
+      seedType: yup.string().required(),
+      quantity: yup
+        .number()
+        .required()
+        .positive()
+        .integer(),
+      pricePerUnit: yup
+        .number()
+        .required()
+        .positive(),
+      location: yup.string().required(),
     })
-    .required()
+    .required();
 
   const {
     register,
-    trigger,
+    handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(schema),
-  })
+  });
 
-  const onSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    await trigger()
-  }
+  // Fetch farmer details from the backend using the QR code hash (assuming it's passed to the component)
+  const fetchFarmerDetails = async (qrCodeHash: string) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:9000/auth/farmers/${qrCodeHash}`);
+      if (response.data.success) {
+        setFarmerDetails(response.data.data);
+        setValue('name', response.data.data.name);  // Auto-fill the form with fetched data
+        setValue('location', response.data.data.location);
+      } else {
+        toast.error(response.data.message || "Farmer not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching farmer details:", error);
+      toast.error("Failed to fetch farmer details.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const options = [
-    { id: 1, name: 'Chris Evans' },
-    { id: 2, name: 'iam Neeson' },
-    { id: 3, name: 'Daniel Craig' },
-  ]
+  // Handle form submission and create/update the seed transaction
+  const onSubmit = async (data: any) => {
+    setLoading(true);
+    try {
+      // Use the fetched farmerId (Assuming it's present in the form or fetched)
+      const response = await axios.post('http://localhost:3045/seed-transactions', {
+        farmerId: data.farmerId,  // Make sure the farmerId is passed correctly
+        seedType: data.seedType,
+        quantity: data.quantity,
+        pricePerUnit: data.pricePerUnit,
+        location: data.location,
+      });
+
+      if (response.data.success) {
+        toast.success(`Seed transaction created/updated successfully.`);
+      } else {
+        toast.error("Failed to create/update seed transaction.");
+      }
+    } catch (error) {
+      console.error("Error creating/updating seed transaction:", error);
+      toast.error("Failed to create/update seed transaction.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle QR Code scanning (assuming a QR code hash is passed in some way)
+  const handleQRScan = (qrCodeHash: string) => {
+    fetchFarmerDetails(qrCodeHash);
+  };
+
+  const seedTypes = [
+    { id: 1, name: 'Wheat' },
+    { id: 2, name: 'Rice' },
+    { id: 3, name: 'Corn' },
+  ];
 
   return (
     <div className="mt-5 grid grid-cols-12 gap-6">
-      <div className="intro-y col-span-12 lg:col-span-6">
-        <PreviewComponent className="intro-y box">
-          <div className="p-5">
-            <Preview>
-              <form className="validate-form" onSubmit={onSubmit}>
-                <div className="input-form">
-                  <InputElement
-                    label="Name"
-                    register={register}
-                    name="name"
-                    placeholder="Your Name"
-                    id="name"
-                    error={errors.name}
-                  />
-                  <InputElement
-                    label="Age"
-                    register={register}
-                    name="age"
-                    placeholder="Your Age"
-                    id="age"
-                    error={errors.age}
-                    type="number"
-                  />
-                  <TextareaElement
-                    label="comments"
-                    register={register}
-                    required
-                    name="comment"
-                    placeholder="Your Comment"
-                    id="comment"
-                    error={errors.comment}
-                  />
-                  <DateElement
-                    label="DOB"
-                    name="dob"
-                    placeholder="Your DOB"
-                    id="dob"
-                    options={{
-                      autoApply: false,
-                      showWeekNumbers: true,
-                      dropdowns: {
-                        minYear: 1990,
-                        maxYear: null,
-                        months: true,
-                        years: true,
-                      },
-                    }}
-                    error={errors.dob}
-                    required
-                    value={date}
-                    onChange={setDate}
-                    info="This is a Tooltip"
-                  />
-                  <SelectElement
-                    label="actors"
-                    register={register}
-                    required
-                    name="actors"
-                    id="actors"
-                    error={errors.actors}
-                    options={options}
-                  />
-                </div>
-                <div className="mt-5">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    className="mb-2 mr-1 w-24"
-                  >
-                    Register
-                  </Button>
-                </div>
-              </form>
-            </Preview>
-          </div>
-        </PreviewComponent>
-      </div>
+    <div className="intro-y col-span-12 lg:col-span-6">
+      <PreviewComponent className="intro-y box">
+        <div className="p-5">
+          <Preview>
+            <form className="validate-form" onSubmit={handleSubmit(onSubmit)}>
+              <div className="input-form">
+                {/* Name Input */}
+                <InputElement
+                  label="Farmer Name"
+                  register={register}
+                  name="name"
+                  placeholder="Farmer Name"
+                  id="name"
+                  error={errors.name}
+                />
+
+                {/* Age Input */}
+                <InputElement
+                  label="Farmer Age"
+                  register={register}
+                  name="age"
+                  placeholder="Farmer Age"
+                  id="age"
+                  error={errors.age}
+                  type="number"
+                />
+
+                {/* Comments */}
+                <TextareaElement
+                  label="Comments"
+                  register={register}
+                  required
+                  name="comment"
+                  placeholder="Comment"
+                  id="comment"
+                  error={errors.comment}
+                />
+
+                {/* Date of Birth */}
+                <DateElement
+                  label="DOB"
+                  name="dob"
+                  placeholder="Farmer DOB"
+                  id="dob"
+                  error={errors.dob}
+                  required
+                  value={date}
+                  onChange={setDate}
+                />
+
+                {/* Seed Type Selection */}
+                <SelectElement
+                  label="Seed Type"
+                  register={register}
+                  name="seedType"
+                  options={seedTypes}
+                  id="seedType"
+                  error={errors.seedType}
+                  required
+                />
+
+                {/* Quantity Input */}
+                <InputElement
+                  label="Quantity"
+                  register={register}
+                  name="quantity"
+                  placeholder="Quantity"
+                  id="quantity"
+                  error={errors.quantity}
+                  type="number"
+                />
+
+                {/* Price Per Unit */}
+                <InputElement
+                  label="Price per Unit"
+                  register={register}
+                  name="pricePerUnit"
+                  placeholder="Price per Unit"
+                  id="pricePerUnit"
+                  error={errors.pricePerUnit}
+                  type="number"
+                />
+
+                {/* Location */}
+                <InputElement
+                  label="Location"
+                  register={register}
+                  name="location"
+                  placeholder="Location"
+                  id="location"
+                  error={errors.location}
+                />
+              </div>
+              <div className="mt-5">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="mb-2 mr-1 w-24"
+                  disabled={loading}
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </Preview>
+        </div>
+      </PreviewComponent>
     </div>
-  )
-}
+  </div>
+  );
+};
+
 
 function ButtonCom() {
   return (
