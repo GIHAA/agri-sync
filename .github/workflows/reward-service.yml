@@ -24,14 +24,14 @@ jobs:
         if: ${{ failure() }}
         with:
           name: test-results
-          path: back-end/reward-service/jest-results.xml
+          path: back-end/reward-service/junit.xml
       - name: Process test results
         id: test-results
         run: |
-          if grep -q "success" back-end/reward-service/jest-results.xml; then
+          if grep -q "success" back-end/reward-service/junit.xml; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -c "testcase" back-end/reward-service/jest-results.xml)" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -c "testcase" back-end/reward-service/junit.xml)" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
@@ -41,7 +41,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('back-end/reward-service/jest-results.xml', 'utf8');
+            const results = fs.readFileSync('back-end/reward-service/junit.xml', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
             
