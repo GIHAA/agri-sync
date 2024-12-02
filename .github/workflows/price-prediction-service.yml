@@ -1,0 +1,58 @@
+name: Price Prediction Service - Flask API Test Workflow
+
+on:
+  push:
+    branches:
+      - add-geo-fencing  # Trigger the workflow on push to the main branch
+  pull_request:
+    branches:
+      - add-geo-fencing   # Trigger the workflow on pull requests targeting the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      # Service for running the Flask API locally for testing
+      flask:
+        image: python:3.12
+        options: --health-cmd="curl --silent --fail http://localhost:3001/health || exit 1" --health-interval=5s --health-timeout=5s --health-retries=3
+        ports:
+          - 3001:3001
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt  # Ensure you have a requirements.txt with Flask, scikit-learn, and other dependencies
+
+    - name: Set up environment variables
+      run: |
+        echo "FLASK_APP=back-end/price-prediction-service/app.py" >> $GITHUB_ENV
+        echo "FLASK_ENV=development" >> $GITHUB_ENV
+        echo "FLASK_RUN_PORT=3001" >> $GITHUB_ENV
+
+    - name: Run Flask app in background
+      run: |
+        nohup flask run --host=0.0.0.0 --port=3001 &
+        sleep 10  # Wait for the Flask app to be fully started
+
+    - name: Run tests
+      run: |
+        source .venv/bin/activate
+        pip install -r requirements.txt  # Ensure all dependencies are installed
+        python -m unittest back-end/price-prediction-service/test_app.py  # Run your unit tests
+
+    - name: Check if Flask app is running
+      run: |
+        curl --fail http://localhost:3001/ || exit 1  # Make sure Flask is up and running
