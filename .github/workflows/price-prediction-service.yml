@@ -1,10 +1,10 @@
-name: Price Prediction Service - Flask API Test Workflow
+name: Price Prediction Service - Test
 
 on:
   push:
-    branches: [feat/add-geo-fencing]
+    branches: [develop]
   pull_request:
-    branches: [feat/add-geo-fencing]
+    branches: [develop]
 
 jobs:
   test:
