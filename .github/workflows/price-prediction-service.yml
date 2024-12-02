@@ -2,22 +2,17 @@ name: Price Prediction Service - Flask API Test Workflow
 
 on:
   push:
-    branches:
-      - feat/add-geo-fencing
+    branches: [feat/add-geo-fencing]
   pull_request:
-    branches:
-      - feat/add-geo-fencing
+    branches: [feat/add-geo-fencing]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
@@ -26,28 +21,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install flask flask-cors pandas scikit-learn openpyxl pytest
 
-      - name: Copy test data
+      - name: Set PYTHONPATH
         run: |
-          mkdir -p back-end/price-prediction-service/data
-          cp back-end/price-prediction-service/data.xlsx back-end/price-prediction-service/
+          echo "PYTHONPATH=${{ github.workspace }}/back-end/price-prediction-service" >> $GITHUB_ENV
 
-      - name: Set Python path
+      - name: Start Flask app
+        working-directory: back-end/price-prediction-service
         run: |
-          echo "PYTHONPATH=$PYTHONPATH:${{ github.workspace }}/back-end/price-prediction-service" >> $GITHUB_ENV
-
-      - name: Train and start Flask app
-        run: |
-          cd back-end/price-prediction-service
           python app.py &
-          echo "Waiting for Flask to start..."
           timeout 30 bash -c 'until curl -s http://localhost:3001/health; do sleep 2; done'
 
       - name: Run tests
-        run: |
-          cd back-end/price-prediction-service
-          python -m pytest test_app.py -v
+        working-directory: back-end/price-prediction-service
+        run: pytest test_app.py -v
 
       - name: Cleanup
         if: always()
-        run: |
-          pkill -f flask || true
+        run: pkill -f flask || true
