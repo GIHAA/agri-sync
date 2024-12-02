@@ -37,15 +37,14 @@ export default function SelectCropForPrediction() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
+        <Pressable
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </Pressable>
 
-      <Pressable
-        className="flex-row items-center mb-4"
-        onPress={() => router.replace("/(root)/(screens)/rewards")}
-      >
-        <AntDesign name="arrowleft" size={24} color="black" />
-        <Text className="text-black ml-2 text-lg">Back</Text>
-      </Pressable>
-      
         <View>
           <ThemedText type="title" className="mb-4">
             Price Prediction

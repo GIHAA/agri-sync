@@ -83,7 +83,8 @@ const HomeScreen: React.FC = ({}) => {
     });
   }, []);
 
-  const userAge = 25; 
+  const userAge = 65; 
+  const colorSchema ="green";
 
 
   return (
