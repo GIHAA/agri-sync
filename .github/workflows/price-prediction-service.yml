@@ -1,8 +1,6 @@
 name: Price Prediction Service - Test
 
 on:
-  push:
-    branches: [develop]
   pull_request:
     branches: [develop]
 
@@ -10,9 +8,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
@@ -28,12 +28,30 @@ jobs:
       - name: Start Flask app
         working-directory: back-end/price-prediction-service
         run: |
-          python app.py &
+          python app.py > flask.log 2>&1 &
           timeout 30 bash -c 'until curl -s http://localhost:3001/health; do sleep 2; done'
 
       - name: Run tests
         working-directory: back-end/price-prediction-service
-        run: pytest test_app.py -v
+        run: pytest test_app.py -v > result.log; tail -n 10 result.log  # Capture results and show last 10 lines
+
+      - name: Post test results as comment on PR
+        if: success() || failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('./back-end/price-prediction-service/result.log', 'utf-8');
+            const prNumber = ${{ github.event.pull_request.number }};
+            const message = `## Test Results for PR #${prNumber}\n\n\`\`\`\n${results}\n\`\`\``;
+
+            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+            await octokit.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: message,
+            });
 
       - name: Cleanup
         if: always()
