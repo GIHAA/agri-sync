@@ -7,7 +7,7 @@ import { ThemedSelect } from "@/components/ThemedSelect";
 import { router } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Circle } from "react-native-maps";
 import { usePostFarmingData } from "@/api/rewardService";
 import * as SecureStore from "expo-secure-store";
 
@@ -15,8 +15,8 @@ const GEO_FENCE_LATITUDE = 7.050308;
 const GEO_FENCE_LONGITUDE = 79.937582;
 const GEO_FENCE_RADIUS = 5; // in kilometers
 
-function isLocationInRadius(latitude, longitude) {
-  return isLocationInRadiuss(
+function isLocationInRadius(latitude : number , longitude : number) {
+  return isLocationWithinRadius(
     latitude,
     longitude,
     GEO_FENCE_LATITUDE,
@@ -25,7 +25,7 @@ function isLocationInRadius(latitude, longitude) {
   );
 }
 
-function isLocationInRadiuss(latitude, longitude, geoFenceLatitude, geoFenceLongitude, radius) {
+function isLocationWithinRadius(latitude : number, longitude : number, geoFenceLatitude : number, geoFenceLongitude : number, radius : number) {
   const R = 6371; // Earth's radius in kilometers
   const dLat = deg2rad(geoFenceLatitude - latitude);
   const dLon = deg2rad(geoFenceLongitude - longitude);
@@ -38,7 +38,7 @@ function isLocationInRadiuss(latitude, longitude, geoFenceLatitude, geoFenceLong
   return distance <= radius;
 }
 
-function deg2rad(deg) {
+function deg2rad(deg : number) {
   return deg * (Math.PI / 180);
 }
 
@@ -155,6 +155,16 @@ export default function AddFarmData() {
                     const { latitude, longitude } = e.nativeEvent.coordinate;
                     setLocation({ latitude, longitude });
                   }}
+                />
+                <Circle
+                  center={{
+                    latitude: GEO_FENCE_LATITUDE,
+                    longitude: GEO_FENCE_LONGITUDE,
+                  }}
+                  radius={GEO_FENCE_RADIUS * 1000} 
+                  fillColor="rgba(0, 0, 255, 0.1)"
+                  strokeColor="rgba(0, 0, 255, 0.5)"
+                  strokeWidth={2}
                 />
               </MapView>
             ) : (
