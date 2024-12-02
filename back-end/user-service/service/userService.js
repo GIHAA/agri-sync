@@ -2,6 +2,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userRepo = require("../repository/userRepo");
+const FarmerDetails = require("../models/FarmerDetails");
+
 require("dotenv").config();
 
 // Generate JWT token
@@ -40,13 +42,18 @@ const loginUser = async (email, password) => {
     if (!user) {
       return { success: false, statusCode: 404, message: "User not found" };
     }
+    console.log(user);
+
+    const famer = await FarmerDetails.findOne({ where: { user_id: user.id } });
+    
+    console.log(famer);
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
       return { success: false, statusCode: 400, message: "Invalid password" };
     }
 
-    const token = generateToken({ id: user.id, email: user.email , username: user.username });
+    const token = generateToken({ id: user.id, email: user.email , username: user.username , age : famer?.age ? famer?.age : 0 , visionProblems : famer?.vision_problems ? famer?.vision_problems : false , colorBlindness : famer?.color_blindness ? famer?.color_blindness : false });
 
     return {
       success: true,
