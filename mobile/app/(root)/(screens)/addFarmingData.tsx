@@ -11,6 +11,37 @@ import MapView, { Marker } from "react-native-maps";
 import { usePostFarmingData } from "@/api/rewardService";
 import * as SecureStore from "expo-secure-store";
 
+const GEO_FENCE_LATITUDE = 7.050308;
+const GEO_FENCE_LONGITUDE = 79.937582;
+const GEO_FENCE_RADIUS = 5; // in kilometers
+
+function isLocationInRadius(latitude, longitude) {
+  return isLocationInRadiuss(
+    latitude,
+    longitude,
+    GEO_FENCE_LATITUDE,
+    GEO_FENCE_LONGITUDE,
+    GEO_FENCE_RADIUS
+  );
+}
+
+function isLocationInRadiuss(latitude, longitude, geoFenceLatitude, geoFenceLongitude, radius) {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = deg2rad(geoFenceLatitude - latitude);
+  const dLon = deg2rad(geoFenceLongitude - longitude);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(geoFenceLatitude)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in km
+  return distance <= radius;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
 export default function AddFarmData() {
   const [whenToPlant, setWhenToPlant] = useState<Date>(new Date());
   const [whatToPlant, setWhatToPlant] = useState<string>("");
@@ -40,6 +71,11 @@ export default function AddFarmData() {
   const handleSubmit = async () => {
     if (!location || !whatToPlant || !amount) {
       alert("Please provide a location, vegetable selection, and amount.");
+      return;
+    }
+
+    if (!isLocationInRadius(location.latitude, location.longitude)) {
+      alert("The selected location is outside the allowed geo-fence radius.");
       return;
     }
 
@@ -73,7 +109,6 @@ export default function AddFarmData() {
       }
     });
   }, []);
-
 
   return (
     <SafeAreaView className="flex-1 bg-white">
