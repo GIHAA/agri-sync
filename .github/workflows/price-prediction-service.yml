@@ -3,10 +3,10 @@ name: Price Prediction Service - Flask API Test Workflow
 on:
   push:
     branches:
-      - add-geo-fencing  # Trigger the workflow on push to the main branch
+      - feat/add-geo-fencing  # Trigger the workflow on push to the main branch
   pull_request:
     branches:
-      - add-geo-fencing   # Trigger the workflow on pull requests targeting the main branch
+      - feat/add-geo-fencing   # Trigger the workflow on pull requests targeting the main branch
 
 jobs:
   test:
