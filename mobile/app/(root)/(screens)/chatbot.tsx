@@ -18,7 +18,7 @@ import {
   import FontAwesome from "@expo/vector-icons/FontAwesome";
   
   export default function Chat() {
-    const backendUrl = `${ip}:5000/query`; 
+    const backendUrl = `${ip}:3007/query`; 
 
     const [chatText, setChatText] = useState("");
     const [textInputHeight, setTextInputHeight] = useState(60);
