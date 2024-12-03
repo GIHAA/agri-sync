@@ -298,58 +298,59 @@ class UIOptimizationModel {
       this.isModelReady = false;
     }
   
+
     async initialize() {
-      try {
-        let needsCompilation = true;
-  
-        // Create models directory if it doesn't exist
-        if (!fs.existsSync(path.join(__dirname, 'models'))) {
-          fs.mkdirSync(path.join(__dirname, 'models'), { recursive: true });
-        }
-  
         try {
-          if (fs.existsSync(path.join(this.modelPath, 'model.json'))) {
-            this.model = await tf.loadLayersModel(
-              tf.io.fileSystem(path.join(this.modelPath, 'model.json'))
-            );
-            console.log('Loaded existing model');
-            needsCompilation = true;
-          } else {
-            throw new Error('Model not found');
+          let needsCompilation = true;
+    
+          // Create models directory if it doesn't exist
+          if (!fs.existsSync(path.join(__dirname, 'models'))) {
+            fs.mkdirSync(path.join(__dirname, 'models'), { recursive: true });
           }
+    
+          try {
+            if (fs.existsSync(path.join(this.modelPath, 'model.json'))) {
+              // Load the model using localstorage
+              this.model = await tf.loadLayersModel('indexeddb://ui-model');
+              console.log('Loaded existing model');
+              needsCompilation = true;
+            } else {
+              throw new Error('Model not found');
+            }
+          } catch (error) {
+            console.log('Creating new model...');
+            this.model = this.createModel();
+            needsCompilation = false;
+          }
+    
+          if (needsCompilation) {
+            this.model.compile({
+              optimizer: tf.train.adam(0.001),
+              loss: 'meanSquaredError',
+              metrics: ['mse']
+            });
+            console.log('Model compiled');
+          }
+    
+          if (!needsCompilation) {
+            // Save using indexeddb
+            await this.model.save('indexeddb://ui-model');
+            console.log('New model saved');
+          }
+    
+          const isWorking = await this.verifyModel();
+          if (!isWorking) {
+            throw new Error('Model verification failed after initialization');
+          }
+    
+          this.isModelReady = true;
+          console.log('Model initialization completed successfully');
         } catch (error) {
-          console.log('Creating new model...');
-          this.model = this.createModel();
-          needsCompilation = false;
+          console.error('Error in model initialization:', error);
+          this.isModelReady = false;
+          throw error;
         }
-  
-        if (needsCompilation) {
-          this.model.compile({
-            optimizer: tf.train.adam(0.001),
-            loss: 'meanSquaredError',
-            metrics: ['mse']
-          });
-          console.log('Model compiled');
-        }
-  
-        if (!needsCompilation) {
-          await this.model.save(tf.io.fileSystem(this.modelPath));
-          console.log('New model saved to disk');
-        }
-  
-        const isWorking = await this.verifyModel();
-        if (!isWorking) {
-          throw new Error('Model verification failed after initialization');
-        }
-  
-        this.isModelReady = true;
-        console.log('Model initialization completed successfully');
-      } catch (error) {
-        console.error('Error in model initialization:', error);
-        this.isModelReady = false;
-        throw error;
       }
-    }
   
     createModel() {
       const model = tf.sequential();
@@ -613,8 +614,8 @@ app.post('/api/train', async (req, res) => {
       
       try {
         const history = await mlModel.trainModel(interactions);
-        // Update model saving here
-        await mlModel.model.save(tf.io.fileSystem(mlModel.modelPath));
+        // Update model saving
+        await mlModel.model.save('indexeddb://ui-model');
         
         res.json({ 
           message: 'Model trained successfully',
@@ -643,7 +644,6 @@ app.post('/api/train', async (req, res) => {
       });
     }
   });
-
 app.post('/api/predict', async (req, res) => {
   const { metrics } = req.body;
   
