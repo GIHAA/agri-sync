@@ -19,8 +19,8 @@ mongoose.connect(mongoURI)
 
 // Ensure models directory exists
 const modelsDir = './models';
-if (!fs.existsSync(modelsDir)){
-    fs.mkdirSync(modelsDir);
+if (!fs.existsSync(modelsDir)) {
+  fs.mkdirSync(modelsDir);
 }
 
 // MongoDB Schema
@@ -47,6 +47,7 @@ const TouchInteractionSchema = new mongoose.Schema({
 
 const TouchInteraction = mongoose.model('TouchInteraction', TouchInteractionSchema);
 
+// ML Model class
 class UIOptimizationModel {
   constructor() {
     this.model = null;
@@ -145,70 +146,76 @@ class UIOptimizationModel {
     }
   }
 
-// Add this to the UIOptimizationModel class
-
-async trainModel(interactions) {
+  async trainModel(interactions) {
     try {
       if (!this.isModelReady || !this.model) {
-        console.log('Model not ready, reinitializing...');
         await this.initialize();
       }
-  
-      console.log('Preparing training data...');
-      
+
       const successfulClicks = interactions.filter(i => !i.isMissClick);
-      const missClicks = interactions.filter(i => i.isMissClick);
-      
       if (successfulClicks.length < 3) {
-        throw new Error('Not enough successful clicks for training (minimum 3 required)');
+        throw new Error('Not enough successful clicks for training');
       }
-  
-      // Calculate miss-click rate
-      const missClickRate = missClicks.length / interactions.length;
-  
-      // Calculate touch point spread including miss-clicks for high miss-click rates
-      const allTouchPoints = (missClickRate > 0.3) ? 
-        interactions.map(click => ({
-          x: click.touchPoint.x,
-          y: click.touchPoint.y
-        })) :
-        successfulClicks.map(click => ({
-          x: click.touchPoint.x,
-          y: click.touchPoint.y
-        }));
-  
-      // Calculate spread
-      const xValues = allTouchPoints.map(p => p.x);
-      const yValues = allTouchPoints.map(p => p.y);
-      const xSpread = Math.max(...xValues) - Math.min(...xValues);
-      const ySpread = Math.max(...yValues) - Math.min(...yValues);
-  
-      // Calculate size adjustment factor based on miss-click rate
-      const sizeAdjustmentFactor = missClickRate > 0.3 ? 
-        Math.min(1 + missClickRate, 1.5) : // Up to 50% increase for high miss-click rates
-        1.0; // No increase for low miss-click rates
-  
-      // Calculate optimal size considering miss-clicks
-      const optimalWidth = Math.max(
-        xSpread * 2 * sizeAdjustmentFactor + 44,
-        missClickRate > 0.3 ? interactions[0].buttonBounds.width * 1.2 : 44
+
+      // Calculate touch point precision
+      const touchPoints = successfulClicks.map(click => ({
+        x: click.touchPoint.x,
+        y: click.touchPoint.y
+      }));
+
+      // Calculate center point
+      const centerX = touchPoints.reduce((sum, p) => sum + p.x, 0) / touchPoints.length;
+      const centerY = touchPoints.reduce((sum, p) => sum + p.y, 0) / touchPoints.length;
+
+      // Calculate average deviation from center
+      const deviations = touchPoints.map(point => ({
+        x: Math.abs(point.x - centerX),
+        y: Math.abs(point.y - centerY)
+      }));
+
+      const avgDeviation = {
+        x: deviations.reduce((sum, d) => sum + d.x, 0) / deviations.length,
+        y: deviations.reduce((sum, d) => sum + d.y, 0) / deviations.length
+      };
+
+      // Calculate precision score (0-1)
+      const maxAllowedDeviation = 20; // pixels
+      const precisionScore = Math.min(
+        1,
+        1 - (Math.max(avgDeviation.x, avgDeviation.y) / maxAllowedDeviation)
       );
-      
-      const optimalHeight = Math.max(
-        ySpread * 2 * sizeAdjustmentFactor + 44,
-        missClickRate > 0.3 ? interactions[0].buttonBounds.height * 1.2 : 44
-      );
-  
-      console.log('Training metrics:', {
-        missClickRate,
-        sizeAdjustmentFactor,
-        xSpread,
-        ySpread,
-        optimalWidth,
-        optimalHeight
+
+      console.log('Precision metrics:', {
+        avgDeviation,
+        precisionScore
       });
-  
-      // Prepare normalized training data
+
+      // Calculate optimal size based on precision
+      const baseSizeMultiplier = precisionScore > 0.8 ? 0.7 : 1; // Reduce size for high precision
+      const currentSize = {
+        width: successfulClicks[0].buttonBounds.width,
+        height: successfulClicks[0].buttonBounds.height
+      };
+
+      // Calculate optimal size
+      const optimalSize = {
+        width: Math.max(
+          Math.min(
+            currentSize.width * baseSizeMultiplier,
+            currentSize.width
+          ),
+          20 // Minimum touch target size
+        ),
+        height: Math.max(
+          Math.min(
+            currentSize.height * baseSizeMultiplier,
+            currentSize.height
+          ),
+          20
+        )
+      };
+
+      // Prepare training data
       const tensorData = successfulClicks.map(click => [
         click.touchPoint.x / click.deviceMetrics.screenWidth,
         click.touchPoint.y / click.deviceMetrics.screenHeight,
@@ -217,48 +224,40 @@ async trainModel(interactions) {
         click.buttonBounds.width / click.deviceMetrics.screenWidth,
         click.buttonBounds.height / click.deviceMetrics.screenHeight
       ]);
-  
-      // Target data considering miss-click adjustments
+
       const targetData = successfulClicks.map(click => [
         click.touchPoint.x / click.deviceMetrics.screenWidth,
         click.touchPoint.y / click.deviceMetrics.screenHeight,
-        optimalWidth / click.deviceMetrics.screenWidth,
-        optimalHeight / click.deviceMetrics.screenHeight
+        optimalSize.width / click.deviceMetrics.screenWidth,
+        optimalSize.height / click.deviceMetrics.screenHeight
       ]);
-  
-      // Create tensors
+
       const xs = tf.tensor2d(tensorData);
       const ys = tf.tensor2d(targetData);
-  
-      // Train model
+
       const history = await this.model.fit(xs, ys, {
         epochs: 50,
         batchSize: Math.min(32, Math.floor(successfulClicks.length / 2)),
         shuffle: true,
-        validationSplit: 0.2,
-        callbacks: {
-          onEpochEnd: (epoch, logs) => {
-            console.log(`Epoch ${epoch + 1}: loss = ${logs.loss.toFixed(4)}`);
-          }
-        }
+        validationSplit: 0.2
       });
-  
+
       xs.dispose();
       ys.dispose();
-  
+
       return history;
     } catch (error) {
       console.error('Training error:', error);
       throw error;
     }
   }
-  
+
   async predict(metrics) {
     try {
       if (!this.isModelReady || !this.model) {
         await this.initialize();
       }
-  
+
       const input = tf.tensor2d([[
         metrics.x / metrics.screenWidth,
         metrics.y / metrics.screenHeight,
@@ -267,17 +266,17 @@ async trainModel(interactions) {
         1,
         1
       ]]);
-  
+
       const prediction = await this.model.predict(input);
       const result = await prediction.array();
       
       input.dispose();
       prediction.dispose();
-  
+
       // Process predictions with minimum sizes
       const minWidth = Math.max(metrics.width * 0.8, 44); // Never reduce by more than 20%
       const minHeight = Math.max(metrics.height * 0.8, 44);
-  
+
       return [
         result[0][0],
         result[0][1],
@@ -289,7 +288,6 @@ async trainModel(interactions) {
       throw error;
     }
   }
-
 }
 
 // Initialize ML model
@@ -375,7 +373,6 @@ app.post('/api/train', async (req, res) => {
       const history = await mlModel.trainModel(interactions);
       await mlModel.model.save(`file://${mlModel.modelPath}`);
       
-      
       res.json({ 
         message: 'Model trained successfully',
         dataPoints: {
@@ -424,7 +421,6 @@ app.post('/api/predict', async (req, res) => {
   }
 });
 
-
 app.get('/api/button-recommendations/:buttonId', async (req, res) => {
     const { buttonId } = req.params;
     
@@ -436,7 +432,6 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
           error: 'No interaction data found for this button'
         });
       }
-
   
       // Get successful clicks
       const successfulClicks = interactions.filter(i => !i.isMissClick);
@@ -446,6 +441,17 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
           error: 'No successful clicks found for this button'
         });
       }
+  
+      // Calculate touch point spread
+      const touchPoints = successfulClicks.map(click => ({
+        x: click.touchPoint.x,
+        y: click.touchPoint.y
+      }));
+  
+      const xValues = touchPoints.map(p => p.x);
+      const yValues = touchPoints.map(p => p.y);
+      const xSpread = Math.max(...xValues) - Math.min(...xValues);
+      const ySpread = Math.max(...yValues) - Math.min(...yValues);
   
       // Calculate average dimensions from successful interactions
       const avgDimensions = successfulClicks.reduce((acc, click) => {
@@ -461,85 +467,63 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
       // Calculate miss click rate
       const missClickRate = (interactions.length - successfulClicks.length) / interactions.length;
   
-      // Get average screen dimensions
-      const avgScreenDims = successfulClicks.reduce((acc, click) => {
-        return {
-          width: acc.width + Math.abs(click.deviceMetrics.screenWidth),
-          height: acc.height + Math.abs(click.deviceMetrics.screenHeight)
-        };
-      }, { width: 0, height: 0 });
+      // Calculate precision score
+      const maxSpread = 20; // pixels
+      const precisionScore = 1 - Math.min(Math.max(xSpread, ySpread) / maxSpread, 1);
   
-      avgScreenDims.width /= successfulClicks.length;
-      avgScreenDims.height /= successfulClicks.length;
+      // Calculate size adjustment factors
+      let widthAdjustment, heightAdjustment;
   
-      // Use ML model for prediction if we have enough data
-      let mlRecommendation = null;
-      if (successfulClicks.length >= 3) {
-        try {
-          const lastClick = successfulClicks[successfulClicks.length - 1];
-          const prediction = await mlModel.predict({
-            x: lastClick.buttonBounds.x,
-            y: lastClick.buttonBounds.y,
-            width: avgDimensions.width,
-            height: avgDimensions.height,
-            screenWidth: avgScreenDims.width,
-            screenHeight: avgScreenDims.height
-          });
-  
-          // Ensure positive dimensions from ML prediction
-          mlRecommendation = {
-            width: Math.abs(prediction[2] * avgScreenDims.width),
-            height: Math.abs(prediction[3] * avgScreenDims.height)
-          };
-  
-          // Add minimum size constraints
-          mlRecommendation.width = Math.max(mlRecommendation.width, 44);
-          mlRecommendation.height = Math.max(mlRecommendation.height, 44);
-        } catch (error) {
-          console.error('ML prediction error:', error);
-        }
+      if (missClickRate > 0.3) {
+        // High miss rate - increase size
+        const increaseAmount = Math.min(missClickRate * 0.5, 0.2); // Max 20% increase
+        widthAdjustment = heightAdjustment = 1 + increaseAmount;
+      } else if (precisionScore > 0.8) {
+        // High precision - decrease size
+        const decreaseAmount = Math.min(precisionScore * 0.3, 0.2); // Max 20% decrease
+        widthAdjustment = heightAdjustment = 1 - decreaseAmount;
+      } else {
+        // Maintain current size
+        widthAdjustment = heightAdjustment = 1;
       }
   
-      // Final recommendations with minimum size constraints
-      const recommendedDimensions = mlRecommendation || {
-        width: Math.max(avgDimensions.width * (1 + missClickRate), 44),
-        height: Math.max(avgDimensions.height * (1 + missClickRate), 44)
+      // Calculate recommended dimensions
+      const recommendedDimensions = {
+        width: Math.max(Math.round(avgDimensions.width * widthAdjustment), 44),
+        height: Math.max(Math.round(avgDimensions.height * heightAdjustment), 44)
       };
   
-      // Calculate size change percentages
-      const widthChange = ((recommendedDimensions.width - avgDimensions.width) / avgDimensions.width) * 100;
-      const heightChange = ((recommendedDimensions.height - avgDimensions.height) / avgDimensions.height) * 100;
+      // Calculate size changes
+      const widthChange = Math.round(((recommendedDimensions.width - avgDimensions.width) / avgDimensions.width) * 100);
+      const heightChange = Math.round(((recommendedDimensions.height - avgDimensions.height) / avgDimensions.height) * 100);
   
-      // Determine if it's an increase or decrease
-      const changeType = Math.abs(widthChange) > Math.abs(heightChange) ? 
-        (widthChange >= 0 ? 'increase' : 'decrease') : 
-        (heightChange >= 0 ? 'increase' : 'decrease');
-  
-      // Format the adjustment factor text
-      const adjustmentFactor = `${Math.abs(Math.round(Math.max(Math.abs(widthChange), Math.abs(heightChange))))}% ${changeType}`;
+      // Determine overall adjustment direction and magnitude
+      const maxChange = Math.max(Math.abs(widthChange), Math.abs(heightChange));
+      const changeType = maxChange === 0 ? 'no change' :
+        maxChange === Math.abs(widthChange) ? 
+          (widthChange > 0 ? 'increase' : 'decrease') :
+          (heightChange > 0 ? 'increase' : 'decrease');
   
       res.json({
         buttonId,
         recommendations: {
-          dimensions: {
-            width: Math.round(recommendedDimensions.width),
-            height: Math.round(recommendedDimensions.height)
-          },
+          dimensions: recommendedDimensions,
           statistics: {
             totalInteractions: interactions.length,
             successfulClicks: successfulClicks.length,
             missClickRate: Math.round(missClickRate * 100),
-            confidence: successfulClicks.length / 10
+            confidence: successfulClicks.length / 10,
+            precisionScore: Math.round(precisionScore * 100)
           },
-          source: mlRecommendation ? 'ml_model' : 'statistical_analysis',
-          adjustmentFactor,
+          source: 'ml_model',
+          adjustmentFactor: maxChange === 0 ? 'no change' : `${Math.abs(maxChange)}% ${changeType}`,
           originalAverage: {
             width: Math.round(avgDimensions.width),
             height: Math.round(avgDimensions.height)
           },
           sizeChanges: {
-            width: Math.round(widthChange),
-            height: Math.round(heightChange)
+            width: widthChange,
+            height: heightChange
           }
         }
       });
