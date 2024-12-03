@@ -538,7 +538,7 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
   });
   
 // Initialize server and model
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6000;
 app.listen(PORT, async () => {
   try {
     await mlModel.initialize();
