@@ -4,7 +4,8 @@
     "start:price": "cd price-prediction-service && flask run --host=0.0.0.0 --port=3001",
     "start:rein": "cd reinforce-ui-service",
     "start:reward": "cd reward-service &&  npm run dev",
-    "start:inter": "cd user-interaction-tracking-service && flask run --host=0.0.0.0 --port=3004",
+    "start:inter": "cd user-interaction-tracking-service/v1 && flask run --host=0.0.0.0 --port=3004",
+    "start:inter2": "cd user-interaction-tracking-service/v2 && npm run dev",
     "start:mobile": "cd ../ && cd mobile && npx expo start",
     "start:all": "npm-run-all --parallel start:user start:price start:rein start:reward start:inter start:mobile"
   },
