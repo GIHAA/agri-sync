@@ -2823,3 +2823,137 @@
 2024-12-01 19:13:29,292 - DEBUG - Request data: {'whenToPlant': '2027-02-03T13:43:20.000Z', 'whatToPlant': 'BRINJALS'}
 2024-12-01 19:13:29,376 - INFO - Prediction completed. Predicted price: 432.5169630397774
 2024-12-01 19:13:29,382 - INFO - 192.168.1.5 - - [01/Dec/2024 19:13:29] "POST /predict HTTP/1.1" 200 -
+2024-12-02 21:18:19,277 - INFO - Loading data from Excel file.
+2024-12-02 21:18:19,481 - INFO - Ensuring correct data types for months and year.
+2024-12-02 21:18:19,483 - INFO - Reshaping data to long format.
+2024-12-02 21:18:19,487 - INFO - Encoding categorical data for vegetables and months.
+2024-12-02 21:18:19,488 - INFO - Splitting data into training and testing sets.
+2024-12-02 21:18:19,489 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-02 21:18:19,535 - INFO - Saving the trained model and label encoders.
+2024-12-02 21:18:19,558 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-02 21:18:19,558 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 21:20:43,609 - INFO - Loading data from Excel file.
+2024-12-02 21:20:43,734 - INFO - Ensuring correct data types for months and year.
+2024-12-02 21:20:43,736 - INFO - Reshaping data to long format.
+2024-12-02 21:20:43,740 - INFO - Encoding categorical data for vegetables and months.
+2024-12-02 21:20:43,741 - INFO - Splitting data into training and testing sets.
+2024-12-02 21:20:43,743 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-02 21:20:43,807 - INFO - Saving the trained model and label encoders.
+2024-12-02 21:20:43,841 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-02 21:20:43,841 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 21:22:40,593 - INFO - Loading data from Excel file.
+2024-12-02 21:22:40,736 - INFO - Ensuring correct data types for months and year.
+2024-12-02 21:22:40,740 - INFO - Reshaping data to long format.
+2024-12-02 21:22:40,751 - INFO - Encoding categorical data for vegetables and months.
+2024-12-02 21:22:40,753 - INFO - Splitting data into training and testing sets.
+2024-12-02 21:22:40,756 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-02 21:22:40,803 - INFO - Saving the trained model and label encoders.
+2024-12-02 21:22:40,811 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-02 21:22:40,812 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 21:31:13,672 - INFO - Received prediction request.
+2024-12-02 21:31:13,681 - DEBUG - Request data: {'whenToPlant': '2027-01-04T16:01:06.000Z', 'whatToPlant': 'CABBAGE'}
+2024-12-02 21:31:13,795 - INFO - Prediction completed. Predicted price: 499.9505303829853
+2024-12-02 21:31:13,798 - INFO - 192.168.1.5 - - [02/Dec/2024 21:31:13] "POST /predict HTTP/1.1" 200 -
+2024-12-02 21:31:14,224 - INFO - Received prediction request.
+2024-12-02 21:31:14,225 - DEBUG - Request data: {'whenToPlant': '2027-01-04T16:01:06.000Z', 'whatToPlant': 'CARROT'}
+2024-12-02 21:31:14,232 - INFO - Prediction completed. Predicted price: 623.6372150454804
+2024-12-02 21:31:14,232 - INFO - 192.168.1.5 - - [02/Dec/2024 21:31:14] "POST /predict HTTP/1.1" 200 -
+2024-12-02 21:38:20,166 - INFO - Loading data from Excel file.
+2024-12-02 21:38:20,306 - INFO - Ensuring correct data types for months and year.
+2024-12-02 21:38:20,308 - INFO - Reshaping data to long format.
+2024-12-02 21:38:20,312 - INFO - Encoding categorical data for vegetables and months.
+2024-12-02 21:38:20,313 - INFO - Splitting data into training and testing sets.
+2024-12-02 21:38:20,315 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-02 21:38:20,360 - INFO - Saving the trained model and label encoders.
+2024-12-02 21:38:20,374 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-02 21:38:20,374 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 23:10:52,574 - INFO - Loading data from Excel file.
+2024-12-02 23:10:53,228 - INFO - Ensuring correct data types for months and year.
+2024-12-02 23:10:53,230 - INFO - Reshaping data to long format.
+2024-12-02 23:10:53,233 - INFO - Encoding categorical data for vegetables and months.
+2024-12-02 23:10:53,234 - INFO - Splitting data into training and testing sets.
+2024-12-02 23:10:53,235 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-02 23:10:53,276 - INFO - Saving the trained model and label encoders.
+2024-12-02 23:10:53,303 - INFO - Received request for options.
+2024-12-02 23:10:53,314 - INFO - Options retrieved successfully.
+2024-12-02 23:10:53,316 - INFO - Received prediction request.
+2024-12-02 23:10:53,316 - DEBUG - Request data: {'whatToPlant': 'Carrot', 'whenToPlant': 'invalid-date'}
+2024-12-02 23:10:53,317 - ERROR - Invalid 'whenToPlant' format: Unknown datetime string format, unable to parse: invalid-date, at position 0
+2024-12-02 23:10:53,318 - INFO - Received prediction request.
+2024-12-02 23:10:53,318 - DEBUG - Request data: {'whatToPlant': '', 'whenToPlant': '2024-03-15'}
+2024-12-02 23:10:53,320 - ERROR - 'whatToPlant' is missing from the request.
+2024-12-02 23:10:53,321 - INFO - Received prediction request.
+2024-12-02 23:10:53,321 - DEBUG - Request data: {'whatToPlant': 'Carrot', 'whenToPlant': '2024-03-15'}
+2024-12-02 23:10:53,325 - INFO - Prediction completed. Predicted price: 341.63687281864264
+2024-12-03 00:23:05,965 - INFO - Loading data from Excel file.
+2024-12-03 00:23:07,283 - INFO - Ensuring correct data types for months and year.
+2024-12-03 00:23:07,291 - INFO - Reshaping data to long format.
+2024-12-03 00:23:07,302 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 00:23:07,304 - INFO - Splitting data into training and testing sets.
+2024-12-03 00:23:07,306 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 00:23:07,435 - INFO - Saving the trained model and label encoders.
+2024-12-03 00:23:07,473 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-03 00:23:07,474 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 00:29:37,513 - INFO - Loading data from Excel file.
+2024-12-03 00:29:37,678 - INFO - Ensuring correct data types for months and year.
+2024-12-03 00:29:37,680 - INFO - Reshaping data to long format.
+2024-12-03 00:29:37,684 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 00:29:37,685 - INFO - Splitting data into training and testing sets.
+2024-12-03 00:29:37,687 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 00:29:37,732 - INFO - Saving the trained model and label encoders.
+2024-12-03 00:29:37,742 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-03 00:29:37,743 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 00:29:53,468 - INFO - Received prediction request.
+2024-12-03 00:29:53,470 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'CARROT'}
+2024-12-03 00:29:53,496 - INFO - Prediction completed. Predicted price: 612.0433175312488
+2024-12-03 00:29:53,497 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:53] "POST /predict HTTP/1.1" 200 -
+2024-12-03 00:29:54,207 - INFO - Received prediction request.
+2024-12-03 00:29:54,207 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'BRINJALS'}
+2024-12-03 00:29:54,211 - INFO - Prediction completed. Predicted price: 432.5169630397774
+2024-12-03 00:29:54,212 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:54] "POST /predict HTTP/1.1" 200 -
+2024-12-03 00:29:54,926 - INFO - Received prediction request.
+2024-12-03 00:29:54,927 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'CABBAGE'}
+2024-12-03 00:29:54,933 - INFO - Prediction completed. Predicted price: 488.35663286875365
+2024-12-03 00:29:54,933 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:54] "POST /predict HTTP/1.1" 200 -
+2024-12-03 00:29:55,427 - INFO - Received prediction request.
+2024-12-03 00:29:55,427 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'PUMPKIN'}
+2024-12-03 00:29:55,432 - INFO - Prediction completed. Predicted price: 407.7682937129341
+2024-12-03 00:29:55,433 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:55] "POST /predict HTTP/1.1" 200 -
+2024-12-03 00:29:55,845 - INFO - Received prediction request.
+2024-12-03 00:29:55,846 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'TOMATOES'}
+2024-12-03 00:29:55,852 - INFO - Prediction completed. Predicted price: 493.6762578927062
+2024-12-03 00:29:55,852 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:55] "POST /predict HTTP/1.1" 200 -
+2024-12-03 00:29:56,326 - INFO - Received prediction request.
+2024-12-03 00:29:56,326 - DEBUG - Request data: {'whenToPlant': '2025-02-03T18:59:47.000Z', 'whatToPlant': 'CARROT'}
+2024-12-03 00:29:56,329 - INFO - Prediction completed. Predicted price: 612.0433175312488
+2024-12-03 00:29:56,329 - INFO - 192.168.1.5 - - [03/Dec/2024 00:29:56] "POST /predict HTTP/1.1" 200 -
+2024-12-03 01:44:17,000 - INFO - Loading data from Excel file.
+2024-12-03 01:44:18,190 - INFO - Ensuring correct data types for months and year.
+2024-12-03 01:44:18,193 - INFO - Reshaping data to long format.
+2024-12-03 01:44:18,199 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 01:44:18,201 - INFO - Splitting data into training and testing sets.
+2024-12-03 01:44:18,204 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 01:44:18,282 - INFO - Saving the trained model and label encoders.
+2024-12-03 01:44:18,297 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.3:3001
+2024-12-03 01:44:18,297 - INFO - [33mPress CTRL+C to quit[0m

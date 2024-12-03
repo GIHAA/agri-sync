@@ -16,7 +16,7 @@ const getActivityHistory = async (userId) => {
 const redeemPoints = async (userId, rewardType) => {
   const pointsRequired = {
     'market_insight': 100,
-    'premium_prediction': 250,
+    'premium_prediction': 100,
     'consultation': 500
   };
 
@@ -58,7 +58,7 @@ const addPoints = async (userId, pointsToAdd) => {
   } else {
     userPoints.total_points += pointsToAdd;
     await userPoints.save();
-    logger.info(`Updated points for user ${userId}. New total: ${userPoints.total_points}`);
+    logger.info(`Updated points for user ${userId}. New total: ${pointsToAdd}`);
   }
 
   // Add activity history
