@@ -145,22 +145,70 @@ class UIOptimizationModel {
     }
   }
 
-  async trainModel(interactions) {
+// Add this to the UIOptimizationModel class
+
+async trainModel(interactions) {
     try {
       if (!this.isModelReady || !this.model) {
         console.log('Model not ready, reinitializing...');
         await this.initialize();
       }
-
+  
       console.log('Preparing training data...');
       
-      // First, filter successful clicks
       const successfulClicks = interactions.filter(i => !i.isMissClick);
+      const missClicks = interactions.filter(i => i.isMissClick);
+      
       if (successfulClicks.length < 3) {
         throw new Error('Not enough successful clicks for training (minimum 3 required)');
       }
-
-      // Prepare input data only from successful clicks
+  
+      // Calculate miss-click rate
+      const missClickRate = missClicks.length / interactions.length;
+  
+      // Calculate touch point spread including miss-clicks for high miss-click rates
+      const allTouchPoints = (missClickRate > 0.3) ? 
+        interactions.map(click => ({
+          x: click.touchPoint.x,
+          y: click.touchPoint.y
+        })) :
+        successfulClicks.map(click => ({
+          x: click.touchPoint.x,
+          y: click.touchPoint.y
+        }));
+  
+      // Calculate spread
+      const xValues = allTouchPoints.map(p => p.x);
+      const yValues = allTouchPoints.map(p => p.y);
+      const xSpread = Math.max(...xValues) - Math.min(...xValues);
+      const ySpread = Math.max(...yValues) - Math.min(...yValues);
+  
+      // Calculate size adjustment factor based on miss-click rate
+      const sizeAdjustmentFactor = missClickRate > 0.3 ? 
+        Math.min(1 + missClickRate, 1.5) : // Up to 50% increase for high miss-click rates
+        1.0; // No increase for low miss-click rates
+  
+      // Calculate optimal size considering miss-clicks
+      const optimalWidth = Math.max(
+        xSpread * 2 * sizeAdjustmentFactor + 44,
+        missClickRate > 0.3 ? interactions[0].buttonBounds.width * 1.2 : 44
+      );
+      
+      const optimalHeight = Math.max(
+        ySpread * 2 * sizeAdjustmentFactor + 44,
+        missClickRate > 0.3 ? interactions[0].buttonBounds.height * 1.2 : 44
+      );
+  
+      console.log('Training metrics:', {
+        missClickRate,
+        sizeAdjustmentFactor,
+        xSpread,
+        ySpread,
+        optimalWidth,
+        optimalHeight
+      });
+  
+      // Prepare normalized training data
       const tensorData = successfulClicks.map(click => [
         click.touchPoint.x / click.deviceMetrics.screenWidth,
         click.touchPoint.y / click.deviceMetrics.screenHeight,
@@ -169,24 +217,20 @@ class UIOptimizationModel {
         click.buttonBounds.width / click.deviceMetrics.screenWidth,
         click.buttonBounds.height / click.deviceMetrics.screenHeight
       ]);
-
-      // Prepare target data from the same successful clicks
+  
+      // Target data considering miss-click adjustments
       const targetData = successfulClicks.map(click => [
         click.touchPoint.x / click.deviceMetrics.screenWidth,
         click.touchPoint.y / click.deviceMetrics.screenHeight,
-        click.buttonBounds.width / click.deviceMetrics.screenWidth * 1.1, // Slightly larger for better clickability
-        click.buttonBounds.height / click.deviceMetrics.screenHeight * 1.1
+        optimalWidth / click.deviceMetrics.screenWidth,
+        optimalHeight / click.deviceMetrics.screenHeight
       ]);
-
-      console.log(`Training with ${successfulClicks.length} successful interactions`);
-
+  
       // Create tensors
       const xs = tf.tensor2d(tensorData);
       const ys = tf.tensor2d(targetData);
-
-      console.log('Starting training...');
-      
-      // Train the model with early stopping
+  
+      // Train model
       const history = await this.model.fit(xs, ys, {
         epochs: 50,
         batchSize: Math.min(32, Math.floor(successfulClicks.length / 2)),
@@ -194,29 +238,27 @@ class UIOptimizationModel {
         validationSplit: 0.2,
         callbacks: {
           onEpochEnd: (epoch, logs) => {
-            console.log(`Epoch ${epoch + 1}: loss = ${logs.loss.toFixed(4)}, val_loss = ${logs.val_loss?.toFixed(4) || 'N/A'}`);
+            console.log(`Epoch ${epoch + 1}: loss = ${logs.loss.toFixed(4)}`);
           }
         }
       });
-
-      // Clean up tensors
+  
       xs.dispose();
       ys.dispose();
-
-      console.log('Training completed successfully');
+  
       return history;
     } catch (error) {
       console.error('Training error:', error);
       throw error;
     }
   }
-
+  
   async predict(metrics) {
     try {
       if (!this.isModelReady || !this.model) {
         await this.initialize();
       }
-
+  
       const input = tf.tensor2d([[
         metrics.x / metrics.screenWidth,
         metrics.y / metrics.screenHeight,
@@ -225,19 +267,29 @@ class UIOptimizationModel {
         1,
         1
       ]]);
-
+  
       const prediction = await this.model.predict(input);
       const result = await prediction.array();
       
       input.dispose();
       prediction.dispose();
-
-      return result[0];
+  
+      // Process predictions with minimum sizes
+      const minWidth = Math.max(metrics.width * 0.8, 44); // Never reduce by more than 20%
+      const minHeight = Math.max(metrics.height * 0.8, 44);
+  
+      return [
+        result[0][0],
+        result[0][1],
+        Math.max(result[0][2] * metrics.screenWidth, minWidth) / metrics.screenWidth,
+        Math.max(result[0][3] * metrics.screenHeight, minHeight) / metrics.screenHeight
+      ];
     } catch (error) {
       console.error('Prediction error:', error);
       throw error;
     }
   }
+
 }
 
 // Initialize ML model
