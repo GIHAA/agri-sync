@@ -3,6 +3,7 @@ venv/
 *.venv/
 env/
 .env/
+/.env
 
 # Ignore Python bytecode files
 _pycache_/

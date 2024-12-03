@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import json
 from flask import Flask, request, jsonify
 import pinecone
-from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone, ServerlessSpec
 from langchain_community.vectorstores import Pinecone as LangchainPinecone
 from langchain.prompts import PromptTemplate
@@ -247,4 +246,4 @@ def query_seed():
 
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=3007)

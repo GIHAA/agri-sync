@@ -42,6 +42,7 @@
     "react-native-date-picker": "^5.0.7",
     "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "~2.20.2",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "1.18.0",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-qrcode-svg": "^6.3.12",
