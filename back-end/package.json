@@ -8,6 +8,7 @@
     "start:inter2": "cd user-interaction-tracking-service/v2 && npm run dev",
     "start:mobile": "cd ../ && cd mobile && npx expo start",
     "start:age": "cd age-detect-service && flask run --host=0.0.0.0 --port=3006",
+    "start:chat": "cd chatbot-service && flask run --host=0.0.0.0 --port=3007",
     "start:all": "npm-run-all --parallel start:user start:price start:rein start:reward start:inter start:inter2 start:age start:mobile"
   },
   "devDependencies": {
