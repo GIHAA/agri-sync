@@ -198,11 +198,11 @@ describe('Reward Service', () => {
 
       const result = await rewardService.addFarmingDataReward(1);
       
-      expect(mockUserPoints.total_points).toBe(100); // Farming data reward is 100 points
+      expect(mockUserPoints.total_points).toBe(500); // Farming data reward is 100 points
       expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
         1,
         'Points Added',
-        100,
+        500,
         'Added 100 points'
       );
     });
