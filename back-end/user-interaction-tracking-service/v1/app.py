@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from services.interaction_service import InteractionService
 import logging
 from logging.handlers import RotatingFileHandler
+from utils.mongo_utils import get_mongo_client
 import os
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ app.logger.setLevel(logging.INFO)
 
 # Instantiate the service
 interaction_service = InteractionService()
+
 
 @app.route('/track_interaction', methods=['POST'])
 def log_interaction():
