@@ -375,6 +375,7 @@ app.post('/api/train', async (req, res) => {
       const history = await mlModel.trainModel(interactions);
       await mlModel.model.save(`file://${mlModel.modelPath}`);
       
+      
       res.json({ 
         message: 'Model trained successfully',
         dataPoints: {
@@ -422,7 +423,8 @@ app.post('/api/predict', async (req, res) => {
     });
   }
 });
-// Updated recommendations endpoint with proper dimension handling
+
+
 app.get('/api/button-recommendations/:buttonId', async (req, res) => {
     const { buttonId } = req.params;
     
@@ -434,6 +436,7 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
           error: 'No interaction data found for this button'
         });
       }
+
   
       // Get successful clicks
       const successfulClicks = interactions.filter(i => !i.isMissClick);
