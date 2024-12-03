@@ -5,7 +5,7 @@ import numpy as np
 import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-CORS(app)
+
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG,
@@ -13,6 +13,8 @@ logging.basicConfig(level=logging.DEBUG,
                     handlers=[logging.StreamHandler()])
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Load the pre-trained models
 faceProto = "opencv_face_detector.pbtxt"

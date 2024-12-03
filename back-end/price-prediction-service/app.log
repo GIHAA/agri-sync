@@ -3033,3 +3033,51 @@
  * Running on http://127.0.0.1:3001
  * Running on http://192.168.1.2:3001
 2024-12-03 19:48:53,171 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 19:53:54,114 - INFO - Loading data from Excel file.
+2024-12-03 19:53:55,529 - INFO - Ensuring correct data types for months and year.
+2024-12-03 19:53:55,536 - INFO - Reshaping data to long format.
+2024-12-03 19:53:55,546 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 19:53:55,548 - INFO - Splitting data into training and testing sets.
+2024-12-03 19:53:55,551 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 19:53:55,665 - INFO - Saving the trained model and label encoders.
+2024-12-03 19:53:55,688 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.2:3001
+2024-12-03 19:53:55,688 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 19:56:13,754 - INFO - Loading data from Excel file.
+2024-12-03 19:56:13,994 - INFO - Ensuring correct data types for months and year.
+2024-12-03 19:56:13,997 - INFO - Reshaping data to long format.
+2024-12-03 19:56:14,002 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 19:56:14,004 - INFO - Splitting data into training and testing sets.
+2024-12-03 19:56:14,006 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 19:56:14,086 - INFO - Saving the trained model and label encoders.
+2024-12-03 19:56:14,102 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.2:3001
+2024-12-03 19:56:14,103 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 20:03:46,610 - INFO - Loading data from Excel file.
+2024-12-03 20:03:46,869 - INFO - Ensuring correct data types for months and year.
+2024-12-03 20:03:46,872 - INFO - Reshaping data to long format.
+2024-12-03 20:03:46,878 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 20:03:46,879 - INFO - Splitting data into training and testing sets.
+2024-12-03 20:03:46,881 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 20:03:47,181 - INFO - Saving the trained model and label encoders.
+2024-12-03 20:03:47,242 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.2:3001
+2024-12-03 20:03:47,242 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-03 20:05:27,168 - INFO - Loading data from Excel file.
+2024-12-03 20:05:28,346 - INFO - Ensuring correct data types for months and year.
+2024-12-03 20:05:28,352 - INFO - Reshaping data to long format.
+2024-12-03 20:05:28,358 - INFO - Encoding categorical data for vegetables and months.
+2024-12-03 20:05:28,361 - INFO - Splitting data into training and testing sets.
+2024-12-03 20:05:28,363 - INFO - Training the Gradient Boosting Regressor model.
+2024-12-03 20:05:28,431 - INFO - Saving the trained model and label encoders.
+2024-12-03 20:05:28,447 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3001
+ * Running on http://192.168.1.2:3001
+2024-12-03 20:05:28,447 - INFO - [33mPress CTRL+C to quit[0m
