@@ -371,6 +371,111 @@ app.post('/api/predict', async (req, res) => {
   }
 });
 
+app.get('/api/button-recommendations/:buttonId', async (req, res) => {
+    const { buttonId } = req.params;
+    
+    try {
+      const interactions = await TouchInteraction.find({ buttonId });
+      
+      if (interactions.length === 0) {
+        return res.status(404).json({
+          error: 'No interaction data found for this button'
+        });
+      }
+  
+      const successfulClicks = interactions.filter(i => !i.isMissClick);
+      
+      if (successfulClicks.length === 0) {
+        return res.status(404).json({
+          error: 'No successful clicks found for this button'
+        });
+      }
+  
+      const avgDimensions = successfulClicks.reduce((acc, click) => {
+        return {
+          width: acc.width + click.buttonBounds.width,
+          height: acc.height + click.buttonBounds.height
+        };
+      }, { width: 0, height: 0 });
+  
+      avgDimensions.width /= successfulClicks.length;
+      avgDimensions.height /= successfulClicks.length;
+  
+      const missClickRate = (interactions.length - successfulClicks.length) / interactions.length;
+  
+      const adjustmentFactor = 1 + (missClickRate > 0.2 ? 0.2 : missClickRate); // Max 20% increase
+  
+      const avgScreenDims = successfulClicks.reduce((acc, click) => {
+        return {
+          width: acc.width + click.deviceMetrics.screenWidth,
+          height: acc.height + click.deviceMetrics.screenHeight
+        };
+      }, { width: 0, height: 0 });
+  
+      avgScreenDims.width /= successfulClicks.length;
+      avgScreenDims.height /= successfulClicks.length;
+  
+      // Use ML model for prediction if we have enough data
+      let mlRecommendation = null;
+      if (successfulClicks.length >= 3) {
+        try {
+          const lastClick = successfulClicks[successfulClicks.length - 1];
+          const prediction = await mlModel.predict({
+            x: lastClick.buttonBounds.x,
+            y: lastClick.buttonBounds.y,
+            width: avgDimensions.width,
+            height: avgDimensions.height,
+            screenWidth: avgScreenDims.width,
+            screenHeight: avgScreenDims.height
+          });
+  
+          mlRecommendation = {
+            width: prediction[2] * avgScreenDims.width,
+            height: prediction[3] * avgScreenDims.height
+          };
+        } catch (error) {
+          console.error('ML prediction error:', error);
+          // Continue with statistical recommendation if ML fails
+        }
+      }
+  
+      // Final recommendations
+      const recommendedDimensions = mlRecommendation || {
+        width: avgDimensions.width * adjustmentFactor,
+        height: avgDimensions.height * adjustmentFactor
+      };
+  
+      res.json({
+        buttonId,
+        recommendations: {
+          dimensions: {
+            width: Math.round(recommendedDimensions.width),
+            height: Math.round(recommendedDimensions.height)
+          },
+          statistics: {
+            totalInteractions: interactions.length,
+            successfulClicks: successfulClicks.length,
+            missClickRate: Math.round(missClickRate * 100),
+            confidence: successfulClicks.length / 10 // Simple confidence score (0-1)
+          },
+          source: mlRecommendation ? 'ml_model' : 'statistical_analysis',
+          adjustmentFactor: Math.round(adjustmentFactor * 100 - 100) + '% increase',
+          originalAverage: {
+            width: Math.round(avgDimensions.width),
+            height: Math.round(avgDimensions.height)
+          }
+        }
+      });
+  
+    } catch (error) {
+      console.error('Error getting button recommendations:', error);
+      res.status(500).json({
+        error: 'Error analyzing button interactions',
+        details: error.message
+      });
+    }
+  });
+
 // Initialize server and model
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
