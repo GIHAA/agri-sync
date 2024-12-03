@@ -218,12 +218,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Define models to compare
 models = {
     "Linear Regression": LinearRegression(),
-    "Decision Tree": DecisionTreeRegressor(),
     "Random Forest": RandomForestRegressor(),
-    "Support Vector Regressor (SVR)": SVR(),
     "K-Nearest Neighbors": KNeighborsRegressor(),
-    "Gradient Boosting": GradientBoostingRegressor(),
-    "XGBoost": XGBRegressor()
+    "Gradient Boosting": GradientBoostingRegressor()
 }
 
 # Store results for comparison
