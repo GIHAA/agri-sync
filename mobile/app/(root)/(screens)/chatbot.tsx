@@ -12,12 +12,13 @@ import {
   } from "react-native";
   import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
   import { useEffect, useRef, useState } from "react";
+  import { ip } from '../../../api/ip'
   
   import { Feather } from "@expo/vector-icons";
   import FontAwesome from "@expo/vector-icons/FontAwesome";
   
   export default function Chat() {
-    const backendUrl = "http://192.168.92.3:5000/query"; 
+    const backendUrl = `${ip}:5000/query`; 
 
     const [chatText, setChatText] = useState("");
     const [textInputHeight, setTextInputHeight] = useState(60);
