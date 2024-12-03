@@ -447,8 +447,8 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
       // Calculate average dimensions from successful interactions
       const avgDimensions = successfulClicks.reduce((acc, click) => {
         return {
-          width: acc.width + Math.abs(click.buttonBounds.width), // Ensure positive width
-          height: acc.height + Math.abs(click.buttonBounds.height) // Ensure positive height
+          width: acc.width + Math.abs(click.buttonBounds.width),
+          height: acc.height + Math.abs(click.buttonBounds.height)
         };
       }, { width: 0, height: 0 });
   
@@ -457,9 +457,6 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
   
       // Calculate miss click rate
       const missClickRate = (interactions.length - successfulClicks.length) / interactions.length;
-  
-      // Adjust dimensions based on miss click rate (20% max increase)
-      const adjustmentFactor = Math.min(1 + (missClickRate > 0.2 ? 0.2 : missClickRate), 1.2);
   
       // Get average screen dimensions
       const avgScreenDims = successfulClicks.reduce((acc, click) => {
@@ -493,19 +490,30 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
           };
   
           // Add minimum size constraints
-          mlRecommendation.width = Math.max(mlRecommendation.width, 44); // iOS minimum touch target
+          mlRecommendation.width = Math.max(mlRecommendation.width, 44);
           mlRecommendation.height = Math.max(mlRecommendation.height, 44);
         } catch (error) {
           console.error('ML prediction error:', error);
-          // Continue with statistical recommendation if ML fails
         }
       }
   
       // Final recommendations with minimum size constraints
       const recommendedDimensions = mlRecommendation || {
-        width: Math.max(avgDimensions.width * adjustmentFactor, 44),
-        height: Math.max(avgDimensions.height * adjustmentFactor, 44)
+        width: Math.max(avgDimensions.width * (1 + missClickRate), 44),
+        height: Math.max(avgDimensions.height * (1 + missClickRate), 44)
       };
+  
+      // Calculate size change percentages
+      const widthChange = ((recommendedDimensions.width - avgDimensions.width) / avgDimensions.width) * 100;
+      const heightChange = ((recommendedDimensions.height - avgDimensions.height) / avgDimensions.height) * 100;
+  
+      // Determine if it's an increase or decrease
+      const changeType = Math.abs(widthChange) > Math.abs(heightChange) ? 
+        (widthChange >= 0 ? 'increase' : 'decrease') : 
+        (heightChange >= 0 ? 'increase' : 'decrease');
+  
+      // Format the adjustment factor text
+      const adjustmentFactor = `${Math.abs(Math.round(Math.max(Math.abs(widthChange), Math.abs(heightChange))))}% ${changeType}`;
   
       res.json({
         buttonId,
@@ -518,13 +526,17 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
             totalInteractions: interactions.length,
             successfulClicks: successfulClicks.length,
             missClickRate: Math.round(missClickRate * 100),
-            confidence: successfulClicks.length / 10 // Simple confidence score (0-1)
+            confidence: successfulClicks.length / 10
           },
           source: mlRecommendation ? 'ml_model' : 'statistical_analysis',
-          adjustmentFactor: Math.round((adjustmentFactor - 1) * 100) + '% increase',
+          adjustmentFactor,
           originalAverage: {
             width: Math.round(avgDimensions.width),
             height: Math.round(avgDimensions.height)
+          },
+          sizeChanges: {
+            width: Math.round(widthChange),
+            height: Math.round(heightChange)
           }
         }
       });
@@ -537,7 +549,7 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
       });
     }
   });
-
+  
 // Initialize server and model
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
