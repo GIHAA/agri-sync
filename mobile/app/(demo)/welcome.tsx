@@ -89,7 +89,7 @@ const Welcome = () => {
           />
            <ThemedButtonWithML
             label="Log In"
-            onPress={() => router.replace("/home")}
+            onPress={() => router.replace("/ageDetect")}
             buttonId={"Sign up"}
             containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
             viewStyle="flex flex-col justify-center items-center"
