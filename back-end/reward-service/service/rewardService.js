@@ -43,7 +43,7 @@ const redeemPoints = async (userId, rewardType) => {
 
 const addFarmingDataReward = async (userId ) => { 
    // todo : get the point for the farming data
-  const pointsToAdd = 100;
+  const pointsToAdd = 500;
   logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
   return addPoints(userId, pointsToAdd);
 }
