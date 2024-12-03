@@ -197,7 +197,7 @@ export default function AddFarmData() {
           />
 
           <ThemedInput
-            label="Amount to Plant"
+            label="Amount (gram)"
             placeholder="Enter amount"
             keyboardType="numeric"
             value={amount.toString()}
