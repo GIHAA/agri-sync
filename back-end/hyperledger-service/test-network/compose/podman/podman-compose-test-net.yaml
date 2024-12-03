@@ -1,0 +1,13 @@
+#
+
+version: '3.7'
+
+services:
+  peer0.org1.example.com:
+    volumes:
+      - ./podman/peercfg:/etc/hyperledger/peercfg
+
+  peer0.org2.example.com:
+    volumes:
+      - ./podman/peercfg:/etc/hyperledger/peercfg
+
