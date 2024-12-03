@@ -48,247 +48,439 @@ const TouchInteractionSchema = new mongoose.Schema({
 const TouchInteraction = mongoose.model('TouchInteraction', TouchInteractionSchema);
 
 // ML Model class
-class UIOptimizationModel {
-  constructor() {
-    this.model = null;
-    this.modelPath = './models/ui-model';
-    this.isModelReady = false;
-  }
+// class UIOptimizationModel {
+//   constructor() {
+//     this.model = null;
+//     this.modelPath = './models/ui-model';
+//     this.isModelReady = false;
+//   }
 
-  async initialize() {
-    try {
-      let needsCompilation = true;
+//   async initialize() {
+//     try {
+//       let needsCompilation = true;
 
-      try {
-        this.model = await tf.loadLayersModel(`file://${this.modelPath}/model.json`);
-        console.log('Loaded existing model');
-        needsCompilation = true;
-      } catch (error) {
-        console.log('Creating new model...');
-        this.model = this.createModel();
-        needsCompilation = false;
-      }
+//       try {
+//         this.model = await tf.loadLayersModel(`file://${this.modelPath}/model.json`);
+//         console.log('Loaded existing model');
+//         needsCompilation = true;
+//       } catch (error) {
+//         console.log('Creating new model...');
+//         this.model = this.createModel();
+//         needsCompilation = false;
+//       }
 
-      if (needsCompilation) {
-        this.model.compile({
-          optimizer: tf.train.adam(0.001),
-          loss: 'meanSquaredError',
-          metrics: ['mse']
-        });
-        console.log('Model compiled');
-      }
+//       if (needsCompilation) {
+//         this.model.compile({
+//           optimizer: tf.train.adam(0.001),
+//           loss: 'meanSquaredError',
+//           metrics: ['mse']
+//         });
+//         console.log('Model compiled');
+//       }
 
-      if (!needsCompilation) {
-        await this.model.save(`file://${this.modelPath}`);
-        console.log('New model saved to disk');
-      }
+//       if (!needsCompilation) {
+//         await this.model.save(`file://${this.modelPath}`);
+//         console.log('New model saved to disk');
+//       }
 
-      const isWorking = await this.verifyModel();
-      if (!isWorking) {
-        throw new Error('Model verification failed after initialization');
-      }
+//       const isWorking = await this.verifyModel();
+//       if (!isWorking) {
+//         throw new Error('Model verification failed after initialization');
+//       }
 
-      this.isModelReady = true;
-      console.log('Model initialization completed successfully');
-    } catch (error) {
-      console.error('Error in model initialization:', error);
-      this.isModelReady = false;
-      throw error;
-    }
-  }
+//       this.isModelReady = true;
+//       console.log('Model initialization completed successfully');
+//     } catch (error) {
+//       console.error('Error in model initialization:', error);
+//       this.isModelReady = false;
+//       throw error;
+//     }
+//   }
 
-  createModel() {
-    const model = tf.sequential();
+//   createModel() {
+//     const model = tf.sequential();
     
-    model.add(tf.layers.dense({
-      inputShape: [6],
-      units: 32,
-      activation: 'relu',
-      kernelInitializer: 'glorotNormal'
-    }));
+//     model.add(tf.layers.dense({
+//       inputShape: [6],
+//       units: 32,
+//       activation: 'relu',
+//       kernelInitializer: 'glorotNormal'
+//     }));
     
-    model.add(tf.layers.dense({
-      units: 16,
-      activation: 'relu',
-      kernelInitializer: 'glorotNormal'
-    }));
+//     model.add(tf.layers.dense({
+//       units: 16,
+//       activation: 'relu',
+//       kernelInitializer: 'glorotNormal'
+//     }));
     
-    model.add(tf.layers.dense({
-      units: 4,
-      activation: 'linear',
-      kernelInitializer: 'glorotNormal'
-    }));
+//     model.add(tf.layers.dense({
+//       units: 4,
+//       activation: 'linear',
+//       kernelInitializer: 'glorotNormal'
+//     }));
 
-    model.compile({
-      optimizer: tf.train.adam(0.001),
-      loss: 'meanSquaredError',
-      metrics: ['mse']
-    });
+//     model.compile({
+//       optimizer: tf.train.adam(0.001),
+//       loss: 'meanSquaredError',
+//       metrics: ['mse']
+//     });
 
-    console.log('Model created and compiled successfully');
-    return model;
-  }
+//     console.log('Model created and compiled successfully');
+//     return model;
+//   }
 
-  async verifyModel() {
-    try {
-      const testInput = tf.tensor2d([[0.5, 0.5, 0.2, 0.2, 0.1, 0.1]]);
-      const prediction = await this.model.predict(testInput);
-      const shape = prediction.shape;
-      if (shape[1] !== 4) {
-        throw new Error(`Invalid prediction shape: expected [n,4], got [${shape}]`);
-      }
-      testInput.dispose();
-      prediction.dispose();
-      return true;
-    } catch (error) {
-      console.error('Model verification failed:', error);
-      return false;
-    }
-  }
+//   async verifyModel() {
+//     try {
+//       const testInput = tf.tensor2d([[0.5, 0.5, 0.2, 0.2, 0.1, 0.1]]);
+//       const prediction = await this.model.predict(testInput);
+//       const shape = prediction.shape;
+//       if (shape[1] !== 4) {
+//         throw new Error(`Invalid prediction shape: expected [n,4], got [${shape}]`);
+//       }
+//       testInput.dispose();
+//       prediction.dispose();
+//       return true;
+//     } catch (error) {
+//       console.error('Model verification failed:', error);
+//       return false;
+//     }
+//   }
 
-  async trainModel(interactions) {
-    try {
-      if (!this.isModelReady || !this.model) {
-        await this.initialize();
-      }
+//   async trainModel(interactions) {
+//     try {
+//       if (!this.isModelReady || !this.model) {
+//         await this.initialize();
+//       }
 
-      const successfulClicks = interactions.filter(i => !i.isMissClick);
-      if (successfulClicks.length < 3) {
-        throw new Error('Not enough successful clicks for training');
-      }
+//       const successfulClicks = interactions.filter(i => !i.isMissClick);
+//       if (successfulClicks.length < 3) {
+//         throw new Error('Not enough successful clicks for training');
+//       }
 
-      // Calculate touch point precision
-      const touchPoints = successfulClicks.map(click => ({
-        x: click.touchPoint.x,
-        y: click.touchPoint.y
-      }));
+//       // Calculate touch point precision
+//       const touchPoints = successfulClicks.map(click => ({
+//         x: click.touchPoint.x,
+//         y: click.touchPoint.y
+//       }));
 
-      // Calculate center point
-      const centerX = touchPoints.reduce((sum, p) => sum + p.x, 0) / touchPoints.length;
-      const centerY = touchPoints.reduce((sum, p) => sum + p.y, 0) / touchPoints.length;
+//       // Calculate center point
+//       const centerX = touchPoints.reduce((sum, p) => sum + p.x, 0) / touchPoints.length;
+//       const centerY = touchPoints.reduce((sum, p) => sum + p.y, 0) / touchPoints.length;
 
-      // Calculate average deviation from center
-      const deviations = touchPoints.map(point => ({
-        x: Math.abs(point.x - centerX),
-        y: Math.abs(point.y - centerY)
-      }));
+//       // Calculate average deviation from center
+//       const deviations = touchPoints.map(point => ({
+//         x: Math.abs(point.x - centerX),
+//         y: Math.abs(point.y - centerY)
+//       }));
 
-      const avgDeviation = {
-        x: deviations.reduce((sum, d) => sum + d.x, 0) / deviations.length,
-        y: deviations.reduce((sum, d) => sum + d.y, 0) / deviations.length
-      };
+//       const avgDeviation = {
+//         x: deviations.reduce((sum, d) => sum + d.x, 0) / deviations.length,
+//         y: deviations.reduce((sum, d) => sum + d.y, 0) / deviations.length
+//       };
 
-      // Calculate precision score (0-1)
-      const maxAllowedDeviation = 20; // pixels
-      const precisionScore = Math.min(
-        1,
-        1 - (Math.max(avgDeviation.x, avgDeviation.y) / maxAllowedDeviation)
-      );
+//       // Calculate precision score (0-1)
+//       const maxAllowedDeviation = 20; // pixels
+//       const precisionScore = Math.min(
+//         1,
+//         1 - (Math.max(avgDeviation.x, avgDeviation.y) / maxAllowedDeviation)
+//       );
 
-      console.log('Precision metrics:', {
-        avgDeviation,
-        precisionScore
-      });
+//       console.log('Precision metrics:', {
+//         avgDeviation,
+//         precisionScore
+//       });
 
-      // Calculate optimal size based on precision
-      const baseSizeMultiplier = precisionScore > 0.8 ? 0.7 : 1; // Reduce size for high precision
-      const currentSize = {
-        width: successfulClicks[0].buttonBounds.width,
-        height: successfulClicks[0].buttonBounds.height
-      };
+//       // Calculate optimal size based on precision
+//       const baseSizeMultiplier = precisionScore > 0.8 ? 0.7 : 1; // Reduce size for high precision
+//       const currentSize = {
+//         width: successfulClicks[0].buttonBounds.width,
+//         height: successfulClicks[0].buttonBounds.height
+//       };
 
-      // Calculate optimal size
-      const optimalSize = {
-        width: Math.max(
-          Math.min(
-            currentSize.width * baseSizeMultiplier,
-            currentSize.width
-          ),
-          20 // Minimum touch target size
-        ),
-        height: Math.max(
-          Math.min(
-            currentSize.height * baseSizeMultiplier,
-            currentSize.height
-          ),
-          20
-        )
-      };
+//       // Calculate optimal size
+//       const optimalSize = {
+//         width: Math.max(
+//           Math.min(
+//             currentSize.width * baseSizeMultiplier,
+//             currentSize.width
+//           ),
+//           20 // Minimum touch target size
+//         ),
+//         height: Math.max(
+//           Math.min(
+//             currentSize.height * baseSizeMultiplier,
+//             currentSize.height
+//           ),
+//           20
+//         )
+//       };
 
-      // Prepare training data
-      const tensorData = successfulClicks.map(click => [
-        click.touchPoint.x / click.deviceMetrics.screenWidth,
-        click.touchPoint.y / click.deviceMetrics.screenHeight,
-        click.buttonBounds.x / click.deviceMetrics.screenWidth,
-        click.buttonBounds.y / click.deviceMetrics.screenHeight,
-        click.buttonBounds.width / click.deviceMetrics.screenWidth,
-        click.buttonBounds.height / click.deviceMetrics.screenHeight
-      ]);
+//       // Prepare training data
+//       const tensorData = successfulClicks.map(click => [
+//         click.touchPoint.x / click.deviceMetrics.screenWidth,
+//         click.touchPoint.y / click.deviceMetrics.screenHeight,
+//         click.buttonBounds.x / click.deviceMetrics.screenWidth,
+//         click.buttonBounds.y / click.deviceMetrics.screenHeight,
+//         click.buttonBounds.width / click.deviceMetrics.screenWidth,
+//         click.buttonBounds.height / click.deviceMetrics.screenHeight
+//       ]);
 
-      const targetData = successfulClicks.map(click => [
-        click.touchPoint.x / click.deviceMetrics.screenWidth,
-        click.touchPoint.y / click.deviceMetrics.screenHeight,
-        optimalSize.width / click.deviceMetrics.screenWidth,
-        optimalSize.height / click.deviceMetrics.screenHeight
-      ]);
+//       const targetData = successfulClicks.map(click => [
+//         click.touchPoint.x / click.deviceMetrics.screenWidth,
+//         click.touchPoint.y / click.deviceMetrics.screenHeight,
+//         optimalSize.width / click.deviceMetrics.screenWidth,
+//         optimalSize.height / click.deviceMetrics.screenHeight
+//       ]);
 
-      const xs = tf.tensor2d(tensorData);
-      const ys = tf.tensor2d(targetData);
+//       const xs = tf.tensor2d(tensorData);
+//       const ys = tf.tensor2d(targetData);
 
-      const history = await this.model.fit(xs, ys, {
-        epochs: 50,
-        batchSize: Math.min(32, Math.floor(successfulClicks.length / 2)),
-        shuffle: true,
-        validationSplit: 0.2
-      });
+//       const history = await this.model.fit(xs, ys, {
+//         epochs: 50,
+//         batchSize: Math.min(32, Math.floor(successfulClicks.length / 2)),
+//         shuffle: true,
+//         validationSplit: 0.2
+//       });
 
-      xs.dispose();
-      ys.dispose();
+//       xs.dispose();
+//       ys.dispose();
 
-      return history;
-    } catch (error) {
-      console.error('Training error:', error);
-      throw error;
-    }
-  }
+//       return history;
+//     } catch (error) {
+//       console.error('Training error:', error);
+//       throw error;
+//     }
+//   }
 
-  async predict(metrics) {
-    try {
-      if (!this.isModelReady || !this.model) {
-        await this.initialize();
-      }
+//   async predict(metrics) {
+//     try {
+//       if (!this.isModelReady || !this.model) {
+//         await this.initialize();
+//       }
 
-      const input = tf.tensor2d([[
-        metrics.x / metrics.screenWidth,
-        metrics.y / metrics.screenHeight,
-        metrics.width / metrics.screenWidth,
-        metrics.height / metrics.screenHeight,
-        1,
-        1
-      ]]);
+//       const input = tf.tensor2d([[
+//         metrics.x / metrics.screenWidth,
+//         metrics.y / metrics.screenHeight,
+//         metrics.width / metrics.screenWidth,
+//         metrics.height / metrics.screenHeight,
+//         1,
+//         1
+//       ]]);
 
-      const prediction = await this.model.predict(input);
-      const result = await prediction.array();
+//       const prediction = await this.model.predict(input);
+//       const result = await prediction.array();
       
-      input.dispose();
-      prediction.dispose();
+//       input.dispose();
+//       prediction.dispose();
 
-      // Process predictions with minimum sizes
-      const minWidth = Math.max(metrics.width * 0.8, 44); // Never reduce by more than 20%
-      const minHeight = Math.max(metrics.height * 0.8, 44);
+//       // Process predictions with minimum sizes
+//       const minWidth = Math.max(metrics.width * 0.8, 44); // Never reduce by more than 20%
+//       const minHeight = Math.max(metrics.height * 0.8, 44);
 
-      return [
-        result[0][0],
-        result[0][1],
-        Math.max(result[0][2] * metrics.screenWidth, minWidth) / metrics.screenWidth,
-        Math.max(result[0][3] * metrics.screenHeight, minHeight) / metrics.screenHeight
-      ];
-    } catch (error) {
-      console.error('Prediction error:', error);
-      throw error;
+//       return [
+//         result[0][0],
+//         result[0][1],
+//         Math.max(result[0][2] * metrics.screenWidth, minWidth) / metrics.screenWidth,
+//         Math.max(result[0][3] * metrics.screenHeight, minHeight) / metrics.screenHeight
+//       ];
+//     } catch (error) {
+//       console.error('Prediction error:', error);
+//       throw error;
+//     }
+//   }
+// }
+
+
+class UIOptimizationModel {
+    constructor() {
+      this.model = null;
+      this.modelPath = path.join(__dirname, 'models', 'ui-model');
+      this.isModelReady = false;
+    }
+  
+    async initialize() {
+      try {
+        let needsCompilation = true;
+  
+        // Create models directory if it doesn't exist
+        if (!fs.existsSync(path.join(__dirname, 'models'))) {
+          fs.mkdirSync(path.join(__dirname, 'models'), { recursive: true });
+        }
+  
+        try {
+          if (fs.existsSync(path.join(this.modelPath, 'model.json'))) {
+            this.model = await tf.loadLayersModel(
+              tf.io.fileSystem(path.join(this.modelPath, 'model.json'))
+            );
+            console.log('Loaded existing model');
+            needsCompilation = true;
+          } else {
+            throw new Error('Model not found');
+          }
+        } catch (error) {
+          console.log('Creating new model...');
+          this.model = this.createModel();
+          needsCompilation = false;
+        }
+  
+        if (needsCompilation) {
+          this.model.compile({
+            optimizer: tf.train.adam(0.001),
+            loss: 'meanSquaredError',
+            metrics: ['mse']
+          });
+          console.log('Model compiled');
+        }
+  
+        if (!needsCompilation) {
+          await this.model.save(tf.io.fileSystem(this.modelPath));
+          console.log('New model saved to disk');
+        }
+  
+        const isWorking = await this.verifyModel();
+        if (!isWorking) {
+          throw new Error('Model verification failed after initialization');
+        }
+  
+        this.isModelReady = true;
+        console.log('Model initialization completed successfully');
+      } catch (error) {
+        console.error('Error in model initialization:', error);
+        this.isModelReady = false;
+        throw error;
+      }
+    }
+  
+    createModel() {
+      const model = tf.sequential();
+      
+      model.add(tf.layers.dense({
+        inputShape: [6],
+        units: 32,
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+      }));
+      
+      model.add(tf.layers.dense({
+        units: 16,
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+      }));
+      
+      model.add(tf.layers.dense({
+        units: 4,
+        activation: 'linear',
+        kernelInitializer: 'glorotNormal'
+      }));
+  
+      model.compile({
+        optimizer: tf.train.adam(0.001),
+        loss: 'meanSquaredError',
+        metrics: ['mse']
+      });
+  
+      console.log('Model created and compiled successfully');
+      return model;
+    }
+  
+    async verifyModel() {
+      try {
+        const testInput = tf.tensor2d([[0.5, 0.5, 0.2, 0.2, 0.1, 0.1]]);
+        const prediction = this.model.predict(testInput);
+        const shape = prediction.shape;
+        const isValid = shape[1] === 4;
+        
+        testInput.dispose();
+        prediction.dispose();
+        
+        return isValid;
+      } catch (error) {
+        console.error('Model verification failed:', error);
+        return false;
+      }
+    }
+  
+    async trainModel(interactions) {
+      try {
+        if (!this.isModelReady || !this.model) {
+          await this.initialize();
+        }
+  
+        const successfulClicks = interactions.filter(i => !i.isMissClick);
+        if (successfulClicks.length < 3) {
+          throw new Error('Not enough successful clicks for training');
+        }
+  
+        // Prepare training data
+        const tensorData = successfulClicks.map(click => [
+          click.touchPoint.x / click.deviceMetrics.screenWidth,
+          click.touchPoint.y / click.deviceMetrics.screenHeight,
+          click.buttonBounds.x / click.deviceMetrics.screenWidth,
+          click.buttonBounds.y / click.deviceMetrics.screenHeight,
+          click.buttonBounds.width / click.deviceMetrics.screenWidth,
+          click.buttonBounds.height / click.deviceMetrics.screenHeight
+        ]);
+  
+        const targetData = successfulClicks.map(click => [
+          click.touchPoint.x / click.deviceMetrics.screenWidth,
+          click.touchPoint.y / click.deviceMetrics.screenHeight,
+          click.buttonBounds.width / click.deviceMetrics.screenWidth,
+          click.buttonBounds.height / click.deviceMetrics.screenHeight
+        ]);
+  
+        const xs = tf.tensor2d(tensorData);
+        const ys = tf.tensor2d(targetData);
+  
+        const history = await this.model.fit(xs, ys, {
+          epochs: 50,
+          batchSize: Math.min(32, Math.floor(successfulClicks.length / 2)),
+          shuffle: true,
+          validationSplit: 0.2
+        });
+  
+        xs.dispose();
+        ys.dispose();
+  
+        return history;
+      } catch (error) {
+        console.error('Training error:', error);
+        throw error;
+      }
+    }
+  
+    async predict(metrics) {
+      try {
+        if (!this.isModelReady || !this.model) {
+          await this.initialize();
+        }
+  
+        const input = tf.tensor2d([[
+          metrics.x / metrics.screenWidth,
+          metrics.y / metrics.screenHeight,
+          metrics.width / metrics.screenWidth,
+          metrics.height / metrics.screenHeight,
+          1,
+          1
+        ]]);
+  
+        const prediction = this.model.predict(input);
+        const result = await prediction.array();
+        
+        input.dispose();
+        prediction.dispose();
+  
+        return [
+          result[0][0],
+          result[0][1],
+          Math.max(result[0][2] * metrics.screenWidth, 44) / metrics.screenWidth,
+          Math.max(result[0][3] * metrics.screenHeight, 44) / metrics.screenHeight
+        ];
+      } catch (error) {
+        console.error('Prediction error:', error);
+        throw error;
+      }
     }
   }
-}
 
 // Initialize ML model
 const mlModel = new UIOptimizationModel();
@@ -352,54 +544,105 @@ app.post('/api/bulk-touch-interactions', async (req, res) => {
   }
 });
 
-app.post('/api/train', async (req, res) => {
-  const { buttonId } = req.body;
+// app.post('/api/train', async (req, res) => {
+//   const { buttonId } = req.body;
   
-  try {
-    const interactions = await TouchInteraction.find({ buttonId });
-    const successfulClicks = interactions.filter(i => !i.isMissClick);
+//   try {
+//     const interactions = await TouchInteraction.find({ buttonId });
+//     const successfulClicks = interactions.filter(i => !i.isMissClick);
 
-    if (successfulClicks.length < 3) {
-      return res.status(400).json({ 
-        error: 'Not enough successful clicks for training',
-        requiredSamples: 3,
-        currentSamples: successfulClicks.length
-      });
-    }
+//     if (successfulClicks.length < 3) {
+//       return res.status(400).json({ 
+//         error: 'Not enough successful clicks for training',
+//         requiredSamples: 3,
+//         currentSamples: successfulClicks.length
+//       });
+//     }
 
-    console.log(`Training model with ${successfulClicks.length} successful interactions out of ${interactions.length} total`);
+//     console.log(`Training model with ${successfulClicks.length} successful interactions out of ${interactions.length} total`);
+    
+//     try {
+//       const history = await mlModel.trainModel(interactions);
+//       await mlModel.model.save(`file://${mlModel.modelPath}`);
+      
+//       res.json({ 
+//         message: 'Model trained successfully',
+//         dataPoints: {
+//           total: interactions.length,
+//           successful: successfulClicks.length
+//         },
+//         history: history.history,
+//         metrics: {
+//           finalLoss: history.history.loss[history.history.loss.length - 1],
+//           finalValidationLoss: history.history.val_loss?.[history.history.val_loss.length - 1]
+//         }
+//       });
+//     } catch (trainingError) {
+//       console.error('Training error:', trainingError);
+//       res.status(500).json({ 
+//         error: 'Error during model training',
+//         details: trainingError.message 
+//       });
+//     }
+//   } catch (error) {
+//     console.error('Database error:', error);
+//     res.status(500).json({ 
+//       error: 'Error accessing training data',
+//       details: error.message 
+//     });
+//   }
+// });
+
+
+app.post('/api/train', async (req, res) => {
+    const { buttonId } = req.body;
     
     try {
-      const history = await mlModel.trainModel(interactions);
-      await mlModel.model.save(`file://${mlModel.modelPath}`);
+      const interactions = await TouchInteraction.find({ buttonId });
+      const successfulClicks = interactions.filter(i => !i.isMissClick);
+  
+      if (successfulClicks.length < 3) {
+        return res.status(400).json({ 
+          error: 'Not enough successful clicks for training',
+          requiredSamples: 3,
+          currentSamples: successfulClicks.length
+        });
+      }
+  
+      console.log(`Training model with ${successfulClicks.length} successful interactions out of ${interactions.length} total`);
       
-      res.json({ 
-        message: 'Model trained successfully',
-        dataPoints: {
-          total: interactions.length,
-          successful: successfulClicks.length
-        },
-        history: history.history,
-        metrics: {
-          finalLoss: history.history.loss[history.history.loss.length - 1],
-          finalValidationLoss: history.history.val_loss?.[history.history.val_loss.length - 1]
-        }
-      });
-    } catch (trainingError) {
-      console.error('Training error:', trainingError);
+      try {
+        const history = await mlModel.trainModel(interactions);
+        // Update model saving here
+        await mlModel.model.save(tf.io.fileSystem(mlModel.modelPath));
+        
+        res.json({ 
+          message: 'Model trained successfully',
+          dataPoints: {
+            total: interactions.length,
+            successful: successfulClicks.length
+          },
+          history: history.history,
+          metrics: {
+            finalLoss: history.history.loss[history.history.loss.length - 1],
+            finalValidationLoss: history.history.val_loss?.[history.history.val_loss.length - 1]
+          }
+        });
+      } catch (trainingError) {
+        console.error('Training error:', trainingError);
+        res.status(500).json({ 
+          error: 'Error during model training',
+          details: trainingError.message 
+        });
+      }
+    } catch (error) {
+      console.error('Database error:', error);
       res.status(500).json({ 
-        error: 'Error during model training',
-        details: trainingError.message 
+        error: 'Error accessing training data',
+        details: error.message 
       });
     }
-  } catch (error) {
-    console.error('Database error:', error);
-    res.status(500).json({ 
-      error: 'Error accessing training data',
-      details: error.message 
-    });
-  }
-});
+  });
 
 app.post('/api/predict', async (req, res) => {
   const { metrics } = req.body;
