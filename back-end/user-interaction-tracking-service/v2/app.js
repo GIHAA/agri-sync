@@ -370,7 +370,7 @@ app.post('/api/predict', async (req, res) => {
     });
   }
 });
-
+// Updated recommendations endpoint with proper dimension handling
 app.get('/api/button-recommendations/:buttonId', async (req, res) => {
     const { buttonId } = req.params;
     
@@ -383,6 +383,7 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
         });
       }
   
+      // Get successful clicks
       const successfulClicks = interactions.filter(i => !i.isMissClick);
       
       if (successfulClicks.length === 0) {
@@ -391,24 +392,28 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
         });
       }
   
+      // Calculate average dimensions from successful interactions
       const avgDimensions = successfulClicks.reduce((acc, click) => {
         return {
-          width: acc.width + click.buttonBounds.width,
-          height: acc.height + click.buttonBounds.height
+          width: acc.width + Math.abs(click.buttonBounds.width), // Ensure positive width
+          height: acc.height + Math.abs(click.buttonBounds.height) // Ensure positive height
         };
       }, { width: 0, height: 0 });
   
       avgDimensions.width /= successfulClicks.length;
       avgDimensions.height /= successfulClicks.length;
   
+      // Calculate miss click rate
       const missClickRate = (interactions.length - successfulClicks.length) / interactions.length;
   
-      const adjustmentFactor = 1 + (missClickRate > 0.2 ? 0.2 : missClickRate); // Max 20% increase
+      // Adjust dimensions based on miss click rate (20% max increase)
+      const adjustmentFactor = Math.min(1 + (missClickRate > 0.2 ? 0.2 : missClickRate), 1.2);
   
+      // Get average screen dimensions
       const avgScreenDims = successfulClicks.reduce((acc, click) => {
         return {
-          width: acc.width + click.deviceMetrics.screenWidth,
-          height: acc.height + click.deviceMetrics.screenHeight
+          width: acc.width + Math.abs(click.deviceMetrics.screenWidth),
+          height: acc.height + Math.abs(click.deviceMetrics.screenHeight)
         };
       }, { width: 0, height: 0 });
   
@@ -429,20 +434,25 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
             screenHeight: avgScreenDims.height
           });
   
+          // Ensure positive dimensions from ML prediction
           mlRecommendation = {
-            width: prediction[2] * avgScreenDims.width,
-            height: prediction[3] * avgScreenDims.height
+            width: Math.abs(prediction[2] * avgScreenDims.width),
+            height: Math.abs(prediction[3] * avgScreenDims.height)
           };
+  
+          // Add minimum size constraints
+          mlRecommendation.width = Math.max(mlRecommendation.width, 44); // iOS minimum touch target
+          mlRecommendation.height = Math.max(mlRecommendation.height, 44);
         } catch (error) {
           console.error('ML prediction error:', error);
           // Continue with statistical recommendation if ML fails
         }
       }
   
-      // Final recommendations
+      // Final recommendations with minimum size constraints
       const recommendedDimensions = mlRecommendation || {
-        width: avgDimensions.width * adjustmentFactor,
-        height: avgDimensions.height * adjustmentFactor
+        width: Math.max(avgDimensions.width * adjustmentFactor, 44),
+        height: Math.max(avgDimensions.height * adjustmentFactor, 44)
       };
   
       res.json({
@@ -459,7 +469,7 @@ app.get('/api/button-recommendations/:buttonId', async (req, res) => {
             confidence: successfulClicks.length / 10 // Simple confidence score (0-1)
           },
           source: mlRecommendation ? 'ml_model' : 'statistical_analysis',
-          adjustmentFactor: Math.round(adjustmentFactor * 100 - 100) + '% increase',
+          adjustmentFactor: Math.round((adjustmentFactor - 1) * 100) + '% increase',
           originalAverage: {
             width: Math.round(avgDimensions.width),
             height: Math.round(avgDimensions.height)
