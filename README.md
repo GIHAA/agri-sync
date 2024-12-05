@@ -14,10 +14,11 @@ Agri Sync is an advanced platform aimed at enhancing the agricultural value chai
 - Adaptive User Interfaces
 - AI chatbot and data visualization
 - Blockchain integration for vegetable seed transactions
+- Python flask server usage
 - RAG based chatbot
 - Neural network-based model
 - Microservice Architecture
   
-l
+
 
 
