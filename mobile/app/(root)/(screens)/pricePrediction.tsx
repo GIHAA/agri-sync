@@ -122,7 +122,7 @@ export default function PricePredictionScreen() {
               {currentSelectedVegetable}
             </Text>
           </View>
-          <Text className="text-gray-600">Current Price: {currentPrice}</Text>
+          {/* <Text className="text-gray-600">Current Price: {currentPrice}</Text> */}
           <Text className="text-green-600 font-bold text-2xl">
             Predicted Price: Rs: {predictedPrice.toPrecision(8)}
           </Text>
