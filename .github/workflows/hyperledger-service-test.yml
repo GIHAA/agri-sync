@@ -17,6 +17,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Debug Directory Structure
       - name: Debug Directory Structure
         run: |
           echo "Printing directory structure..."
@@ -33,6 +34,11 @@ jobs:
           # Set FABRIC_BIN_PATH to the downloaded 'bin' directory
           export FABRIC_BIN_PATH=$PWD/bin
           export PATH=$FABRIC_BIN_PATH:$PATH  # Ensure binaries are in PATH
+          
+          # Check if binaries are installed correctly
+          echo "Checking Fabric binaries..."
+          ls -l $FABRIC_BIN_PATH  # List the files in the bin directory
+          peer version || echo "Peer command not found!"
           
           echo "Fabric binaries installed successfully."
           echo "Fabric version:"
