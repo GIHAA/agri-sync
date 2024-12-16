@@ -1,3 +1,10 @@
+name: Hyperledger Service - Test
+
+on:
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,14 +23,15 @@ jobs:
           echo "Printing directory structure..."
           ls -R
 
-      # Step 3: Install Hyperledger Fabric Binaries
+      # Step 3: Install Fabric Binaries
       - name: Install Hyperledger Fabric Binaries
         run: |
-          echo "Downloading Hyperledger Fabric binaries..."
-          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.0
+          echo "Installing Hyperledger Fabric binaries..."
+          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           export PATH=$PWD/bin:$PATH
-          export FABRIC_CFG_PATH=$PWD/config/
           echo "Fabric binaries installed successfully."
+          echo "Fabric version:"
+          peer version
 
       # Step 4: Install Dependencies
       - name: Install Dependencies
@@ -111,4 +119,4 @@ jobs:
       - name: Teardown Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          ./network.sh down
+            ./network.sh down
