@@ -17,8 +17,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Download Matching Fabric Binaries and Images
-      - name: Download Fabric Binaries and Images
+      # Step 2: Download and Install Fabric Binaries
+      - name: Download and Install Fabric Binaries
         run: |
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           export PATH=$PWD/bin:$PATH
