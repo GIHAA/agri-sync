@@ -1,5 +1,3 @@
-
-
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { Contract } from 'fabric-network';
@@ -103,11 +101,7 @@ SeedsRouter.options('/:SeedId', async (req: Request, res: Response) => {
         const mspId = req.user as string;
         const contract = req.app.locals[mspId]?.SeedContract as Contract;
 
-        const data = await evatuateTransaction(
-            contract,
-            'SeedExists',
-            SeedId
-        );
+        const data = await evatuateTransaction(contract, 'SeedExists', SeedId);
         const exists = data.toString() === 'true';
 
         if (exists) {

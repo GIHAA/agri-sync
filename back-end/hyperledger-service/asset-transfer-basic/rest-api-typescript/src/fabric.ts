@@ -1,5 +1,3 @@
-
-
 import {
     Contract,
     DefaultEventHandlerStrategies,
@@ -16,7 +14,6 @@ import Long from 'long';
 import * as config from './config';
 import { handleError } from './errors';
 import { logger } from './logger';
-
 
 export const createWallet = async (): Promise<Wallet> => {
     const wallet = await Wallets.newInMemoryWallet();

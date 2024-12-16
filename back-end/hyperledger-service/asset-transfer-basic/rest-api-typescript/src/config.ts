@@ -1,12 +1,9 @@
-
-
 import * as env from 'env-var';
 
 export const ORG1 = 'Org1';
 export const ORG2 = 'Org2';
 
 export const JOB_QUEUE_NAME = 'submit';
-
 
 export const logLevel = env
     .get('LOG_LEVEL')
@@ -19,12 +16,10 @@ export const port = env
     .example('3000')
     .asPortNumber();
 
-
 export const submitJobBackoffType = env
     .get('SUBMIT_JOB_BACKOFF_TYPE')
     .default('fixed')
     .asEnum(['fixed', 'exponential']);
-
 
 export const submitJobBackoffDelay = env
     .get('SUBMIT_JOB_BACKOFF_DELAY')
@@ -32,13 +27,11 @@ export const submitJobBackoffDelay = env
     .example('3000')
     .asIntPositive();
 
-
 export const submitJobAttempts = env
     .get('SUBMIT_JOB_ATTEMPTS')
     .default('5')
     .example('5')
     .asIntPositive();
-
 
 export const submitJobConcurrency = env
     .get('SUBMIT_JOB_CONCURRENCY')
@@ -46,13 +39,11 @@ export const submitJobConcurrency = env
     .example('5')
     .asIntPositive();
 
-
 export const maxCompletedSubmitJobs = env
     .get('MAX_COMPLETED_SUBMIT_JOBS')
     .default('1000')
     .example('1000')
     .asIntPositive();
-
 
 export const maxFailedSubmitJobs = env
     .get('MAX_FAILED_SUBMIT_JOBS')
@@ -60,13 +51,11 @@ export const maxFailedSubmitJobs = env
     .example('1000')
     .asIntPositive();
 
-
 export const submitJobQueueScheduler = env
     .get('SUBMIT_JOB_QUEUE_SCHEDULER')
     .default('true')
     .example('true')
     .asBoolStrict();
-
 
 export const asLocalhost = env
     .get('AS_LOCAL_HOST')
@@ -92,13 +81,11 @@ export const mspIdOrg2 = env
     .example(`${ORG2}MSP`)
     .asString();
 
-
 export const channelName = env
     .get('HLF_CHANNEL_NAME')
-    .default('mychannel')
-    .example('mychannel')
+    .default('seedtransectionchannel')
+    .example('seedtransectionchannel')
     .asString();
-
 
 export const chaincodeName = env
     .get('HLF_CHAINCODE_NAME')
@@ -106,13 +93,11 @@ export const chaincodeName = env
     .example('basic')
     .asString();
 
-
 export const commitTimeout = env
     .get('HLF_COMMIT_TIMEOUT')
     .default('300')
     .example('300')
     .asIntPositive();
-
 
 export const endorseTimeout = env
     .get('HLF_ENDORSE_TIMEOUT')
@@ -226,13 +211,11 @@ export const redisUsername = env
  */
 export const redisPassword = env.get('REDIS_PASSWORD').asString();
 
-
 export const org1ApiKey = env
     .get('ORG1_APIKEY')
     .required()
     .example('123')
     .asString();
-
 
 export const org2ApiKey = env
     .get('ORG2_APIKEY')

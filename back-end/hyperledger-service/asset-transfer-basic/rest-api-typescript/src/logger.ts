@@ -1,5 +1,3 @@
-
-
 import pino from 'pino';
 import * as config from './config';
 

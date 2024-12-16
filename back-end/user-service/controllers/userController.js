@@ -42,6 +42,8 @@ const login = async (req, res) => {
   }
 };
 
+
+
 // Register Farmer with Preferences
 const registerFarmer = async (req, res) => {
   const {
@@ -139,10 +141,35 @@ const validateToken = async (req, res) => {
   }
 };
 
+
+const getFarmerByQrCode = async (req, res) => {
+  console.log("Request Params:", req.params);
+  const { qrCodeHash } = req.params;
+
+  try {
+    const result = await userService.getFarmerDetails(qrCodeHash);
+
+    if (result.success) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(404).json(result);
+    }
+  } catch (error) {
+    console.error("Error in controller layer:", error.message);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: "Server error",
+    });
+  }
+};
+
+
 module.exports = {
   register,
   login,
   registerFarmer,
   getUserPreferences,
   validateToken,
+  getFarmerByQrCode,
 };

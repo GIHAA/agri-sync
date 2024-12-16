@@ -1,4 +1,3 @@
-
 import { ConnectionOptions, Job, Queue, QueueScheduler, Worker } from 'bullmq';
 import { Application } from 'express';
 import { Contract, Transaction } from 'fabric-network';
@@ -66,7 +65,6 @@ export const initJobQueue = (): Queue => {
     return submitQueue;
 };
 
-
 export const initJobQueueWorker = (app: Application): Worker => {
     const worker = new Worker<JobData, JobResult>(
         config.JOB_QUEUE_NAME,
@@ -94,7 +92,6 @@ export const initJobQueueWorker = (app: Application): Worker => {
 
     return worker;
 };
-
 
 export const processSubmitTransactionJob = async (
     app: Application,
@@ -195,7 +192,6 @@ export const processSubmitTransactionJob = async (
         throw err;
     }
 };
-
 
 export const initJobQueueScheduler = (): QueueScheduler => {
     const queueScheduler = new QueueScheduler(config.JOB_QUEUE_NAME, {
@@ -304,7 +300,6 @@ export const getJobSummary = async (
 
     return jobSummary;
 };
-
 
 export const getJobCounts = async (
     queue: Queue

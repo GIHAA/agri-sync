@@ -1,5 +1,3 @@
-
-
 import { logger } from './logger';
 import passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
@@ -38,7 +36,6 @@ export const authenticateApiKey = (
     passport.authenticate(
         'headerapikey',
         { session: false },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (err: any, user: Express.User, _info: any) => {
             if (err) return next(err);
             if (!user)

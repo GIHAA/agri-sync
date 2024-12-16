@@ -32,9 +32,7 @@ const mockSeed2 = {
     AppraisedValue: 400,
 };
 
-const mockAllSeedsBuffer = Buffer.from(
-    JSON.stringify([mockSeed1, mockSeed2])
-);
+const mockAllSeedsBuffer = Buffer.from(JSON.stringify([mockSeed1, mockSeed2]));
 
 // TODO add tests for server errors
 describe('Seed Transfer Besic REST API', () => {
@@ -361,9 +359,7 @@ describe('Seed Transfer Besic REST API', () => {
         it('GET should respond with 404 not found json when there is no Seed with the specified ID', async () => {
             mockReadSeedTransaction.evaluate
                 .calledWith('Seed3')
-                .mockRejectedValue(
-                    new Error('the Seed Seed3 does not exist')
-                );
+                .mockRejectedValue(new Error('the Seed Seed3 does not exist'));
 
             const response = await request(app)
                 .get('/api/Seeds/Seed3')
@@ -690,7 +686,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('GET should respond with 404 not found json when there is no transaction with the specified ID', async () => {
             mockGetTransactionByIDTransaction.evaluate
-                .calledWith('mychannel', 'txn3')
+                .calledWith('seedtransectionchannel', 'txn3')
                 .mockRejectedValue(
                     new Error(
                         'Failed to get transaction with id txn3, error Entry not found in index'
@@ -722,7 +718,7 @@ describe('Seed Transfer Besic REST API', () => {
                 ).finish()
             );
             mockGetTransactionByIDTransaction.evaluate
-                .calledWith('mychannel', 'txn2')
+                .calledWith('seedtransectionchannel', 'txn2')
                 .mockResolvedValue(processedTransactionBuffer);
 
             const response = await request(app)

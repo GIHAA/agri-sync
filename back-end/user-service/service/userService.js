@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userRepo = require("../repository/userRepo");
 const FarmerDetails = require("../models/FarmerDetails");
+const farmerRepository = require("../repository/userRepo");
 
 require("dotenv").config();
 
@@ -45,7 +46,7 @@ const loginUser = async (email, password) => {
     console.log(user);
 
     const famer = await FarmerDetails.findOne({ where: { user_id: user.id } });
-    
+
     console.log(famer);
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
@@ -53,7 +54,7 @@ const loginUser = async (email, password) => {
       return { success: false, statusCode: 400, message: "Invalid password" };
     }
 
-    const token = generateToken({ id: user.id, email: user.email , username: user.username , age : famer?.age ? famer?.age : 0 , visionProblems : famer?.vision_problems ? famer?.vision_problems : false , colorBlindness : famer?.color_blindness ? famer?.color_blindness : false });
+    const token = generateToken({ id: user.id, email: user.email, username: user.username, age: famer?.age ? famer?.age : 0, visionProblems: famer?.vision_problems ? famer?.vision_problems : false, colorBlindness: famer?.color_blindness ? famer?.color_blindness : false });
 
     return {
       success: true,
@@ -107,9 +108,33 @@ const getUserPreferences = async (userId) => {
   }
 };
 
+const getFarmerDetails = async (qrCodeHash) => {
+  try {
+    const farmer = await farmerRepository.getFarmerByQrCode(qrCodeHash);
+    if (farmer) {
+      return {
+        success: true,
+        data: farmer,
+        message: "Farmer details fetched successfully",
+      };
+    } else {
+      return {
+        success: false,
+        data: null,
+        message: "Farmer not found.",
+      };
+    }
+  } catch (error) {
+    console.error("Error in service layer:", error);
+    throw new Error("Server error while fetching farmer details.");
+  }
+};
+
+
 module.exports = {
   registerUser,
   loginUser,
   registerFarmer,
   getUserPreferences,
+  getFarmerDetails,
 };

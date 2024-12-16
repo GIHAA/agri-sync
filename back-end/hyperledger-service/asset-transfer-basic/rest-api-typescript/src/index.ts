@@ -1,5 +1,3 @@
-
-
 import * as config from './config';
 import {
     createGateway,

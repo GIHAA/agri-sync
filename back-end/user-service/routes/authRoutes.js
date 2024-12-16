@@ -18,4 +18,7 @@ router.get("/preferences/:userId", userController.getUserPreferences);
 // Token Validation Route
 router.get("/validate", userController.validateToken);
 
+router.get("/farmers/:qrCodeHash", userController.getFarmerByQrCode);
+
+
 module.exports = router;

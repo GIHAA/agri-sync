@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const FarmerDetails = require("../models/FarmerDetails");
 const AccessibilitySettings = require("../models/AccessibilitySettings");
+const db = require("../config/database");
 
 // Function to find a user by email
 const findUserByEmail = async (email) => {
@@ -30,6 +31,26 @@ const createAccessibilitySettings = async (userId, textSize, layout, colorScheme
   });
 };
 
+const getFarmerByQrCode = async (qrCodeHash) => {
+  const query = `
+    SELECT u.id, u.username, u.email
+    FROM users u
+    WHERE u.email = :email
+  `;
+
+  try {
+    const result = await db.query(query, {
+      replacements: { email: qrCodeHash }, 
+      type: db.QueryTypes.SELECT, 
+    });
+
+    return result[0] || null;
+  } catch (error) {
+    console.error("Error in repository layer:", error.message);
+    throw new Error("Database query failed.");
+  }
+};
+
 // Function to get user preferences
 const getUserPreferences = async (userId) => {
   return await AccessibilitySettings.findOne({ where: { user_id: userId } });
@@ -41,4 +62,5 @@ module.exports = {
   createFarmerDetails,
   createAccessibilitySettings,
   getUserPreferences,
+  getFarmerByQrCode,
 };
