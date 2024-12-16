@@ -25,7 +25,7 @@ jobs:
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
           
-          # Verify the peer binary is installed
+          # Check if the peer binary is installed and accessible
           if ! [ -x "$(command -v peer)" ]; then
             echo 'Error: peer binary not found.' >&2
             exit 1
@@ -59,8 +59,16 @@ jobs:
       - name: Package and Install Chaincode
         working-directory: ./hyperledger-service/test-network
         run: |
+          # Explicitly include the path to the peer binary
           export PATH=${PWD}/../bin:$PATH
           export FABRIC_CFG_PATH=$PWD/../config/
+
+          # Ensure peer binary is available
+          if ! [ -x "$(command -v peer)" ]; then
+            echo 'Error: peer binary not found in path.' >&2
+            exit 1
+          fi
+
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
 
@@ -83,16 +91,34 @@ jobs:
       # Step 7: Invoke Chaincode to Initialize Ledger
       - name: Invoke Chaincode to Initialize Ledger
         run: |
+          # Ensure peer binary is available before invoking chaincode
+          if ! [ -x "$(command -v peer)" ]; then
+            echo 'Error: peer binary not found in path.' >&2
+            exit 1
+          fi
+
           peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C seedtransectionchannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
 
       # Step 8: Query Chaincode for All Seeds
       - name: Query Chaincode for All Seeds
         run: |
+          # Ensure peer binary is available before querying chaincode
+          if ! [ -x "$(command -v peer)" ]; then
+            echo 'Error: peer binary not found in path.' >&2
+            exit 1
+          fi
+
           peer chaincode query -C seedtransectionchannel -n basic -c '{"Args":["GetAllSeeds"]}'
 
       # Step 9: Query Chaincode for Specific Seed History
       - name: Query Chaincode for Specific Seed History
         run: |
+          # Ensure peer binary is available before querying chaincode
+          if ! [ -x "$(command -v peer)" ]; then
+            echo 'Error: peer binary not found in path.' >&2
+            exit 1
+          fi
+
           peer chaincode query -C seedtransectionchannel -n basic -c '{"Args":["GetSeedHistory","farmer2","Corn"]}'
 
       # Step 10: Teardown Hyperledger Fabric Network
