@@ -23,7 +23,7 @@ jobs:
           echo "Printing directory structure..."
           ls -R
 
-      # Step 3: Install Fabric Binaries
+      # Step 3: Install Hyperledger Fabric Binaries
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
@@ -55,6 +55,8 @@ jobs:
         run: |
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
+          # Ensure FABRIC_BIN_PATH is in the path before running network commands
+          export PATH=${FABRIC_BIN_PATH}:$PATH
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
@@ -114,7 +116,6 @@ jobs:
               ...context.repo,
               issue_number: context.issue.number,
               body: `${header}\`\`\`\n${results}\n\`\`\``
-            });
 
       # Step 12: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
