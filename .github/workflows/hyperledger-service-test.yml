@@ -22,8 +22,10 @@ jobs:
         run: |
           echo "Printing directory structure..."
           ls -R
+          echo "Printing contents of $PWD/bin"
+          ls -l $PWD/bin
 
-      # Step 3: Install Fabric Binaries
+      # Step 3: Install Hyperledger Fabric Binaries
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
@@ -53,6 +55,8 @@ jobs:
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
+          echo "Printing the PATH"
+          echo $PATH  # Ensure the PATH includes $FABRIC_BIN_PATH
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
           ./network.sh up createChannel -c seedtransectionchannel -ca
