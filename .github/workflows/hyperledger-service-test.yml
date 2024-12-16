@@ -17,19 +17,27 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Download Matching Fabric Binaries and Images
-      - name: Download Fabric Binaries and Images
-        run: |
-          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
-          export PATH=$PWD/bin:$PATH
-          export FABRIC_CFG_PATH=$PWD/config/
-
-      # Step 3: Debug Directory Structure
+      # Step 2: Debug Directory Structure
       - name: Debug Directory Structure
         run: |
-          echo "Checking directory structure..."
+          echo "Printing directory structure..."
           ls -R
-        working-directory: back-end/hyperledger-service/test-network
+
+      # Step 3: Install Hyperledger Fabric Binaries
+      - name: Install Hyperledger Fabric Binaries
+        run: |
+          echo "Installing Hyperledger Fabric binaries..."
+          
+          # Download Fabric binaries (ensure you're getting the correct version)
+          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.9  # Fabric version 2.5.9
+          
+          # Set FABRIC_BIN_PATH to the downloaded 'bin' directory
+          export FABRIC_BIN_PATH=$PWD/bin
+          export PATH=$FABRIC_BIN_PATH:$PATH  # Ensure binaries are in PATH
+          
+          echo "Fabric binaries installed successfully."
+          echo "Fabric version:"
+          peer version || echo "Peer command not found!"
 
       # Step 4: Install Dependencies
       - name: Install Dependencies
@@ -39,18 +47,30 @@ jobs:
           npm install -g mocha chai hyperledger/fabric-sdk-node
           npx prettier --write src/server.ts
 
-      # Step 5: Set Executable Permissions for Scripts
-      - name: Set Executable Permissions
-        working-directory: back-end/hyperledger-service/test-network
+      # Step 5: Generate Environment Variables
+      - name: Generate Environment Variables
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
-          chmod +x network.sh
-          chmod +x organizations/ccp-generate.sh
-          chmod +x scripts/createChannel.sh
+          chmod +x ./scripts/generateEnv.sh
+          npm run generateEnv
 
       # Step 6: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
+          # Make sure network.sh and other scripts are executable
+          chmod +x network.sh
+          chmod +x organizations/ccp-generate.sh
+
+          # Verify the path to Fabric binaries
+          echo "FABRIC_BIN_PATH: $FABRIC_BIN_PATH"
+          echo "PATH: $PATH"
+          
+          # Ensure Fabric binaries are in the path
+          export PATH=${FABRIC_BIN_PATH}:$PATH
+          echo "Updated PATH: $PATH"
+
+          # Start the network and create channel
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
@@ -59,7 +79,7 @@ jobs:
       - name: Package and Install Chaincode
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          export PATH=${PWD}/../bin:$PATH
+          export PATH=${FABRIC_BIN_PATH}:$PATH  # Ensure PATH is correct for this step
           export FABRIC_CFG_PATH=$PWD/../config/
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
@@ -92,6 +112,7 @@ jobs:
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
 
+      # Step 11: Comment on PR with Test Results
       - name: Comment PR
         uses: actions/github-script@v6
         with:
@@ -100,7 +121,6 @@ jobs:
             const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-
             const header = testsPassed 
               ? '### ✅ All Tests Passed! 🎉\n\n' +
                 `${totalTests} tests completed successfully ⭐\n\n`
@@ -110,9 +130,9 @@ jobs:
               ...context.repo,
               issue_number: context.issue.number,
               body: `${header}\`\`\`\n${results}\n\`\`\``
-            });
 
+      # Step 12: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          ./network.sh down
+            ./network.sh down
