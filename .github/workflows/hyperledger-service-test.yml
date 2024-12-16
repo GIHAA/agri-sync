@@ -23,6 +23,8 @@ jobs:
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
+          echo "Fabric binaries installed at:"
+          ls -l $PWD/bin
 
       # Step 3: Debug Directory Structure
       - name: Debug Directory Structure
@@ -34,10 +36,11 @@ jobs:
       # Step 4: Verify Fabric Binaries Installation
       - name: Verify Fabric Binaries
         run: |
-          which peer
-          which orderer
-          which fabric-ca-client
-          peer version
+          echo "Current PATH: $PATH"
+          which peer || echo "peer binary not found"
+          which orderer || echo "orderer binary not found"
+          which fabric-ca-client || echo "fabric-ca-client binary not found"
+          peer version || echo "peer version command failed"
         working-directory: back-end/hyperledger-service/test-network
 
       # Step 5: Install Dependencies
@@ -110,7 +113,6 @@ jobs:
             const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-
             const header = testsPassed 
               ? '### ✅ All Tests Passed! 🎉\n\n' +
                 `${totalTests} tests completed successfully ⭐\n\n`
