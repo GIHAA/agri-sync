@@ -17,51 +17,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Download Matching Fabric Binaries and Images
-      - name: Download Fabric Binaries and Images
+      # Step 2: Install Hyperledger Fabric Binaries
+      - name: Install Hyperledger Fabric Binaries
         run: |
+          echo "Downloading and installing Hyperledger Fabric binaries..."
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
-          # Check if peer binary exists
+          
+          # Verify the peer binary is installed
           if ! [ -x "$(command -v peer)" ]; then
             echo 'Error: peer binary not found.' >&2
             exit 1
           fi
           echo "Fabric binaries installed successfully."
 
-      # Step 3: Debug Directory Structure
-      - name: Debug Directory Structure
-        run: |
-          echo "Checking directory structure..."
-          ls -R ./hyperledger-service/test-network
-
-      # Step 4: Install Dependencies
-      - name: Install Dependencies
-        working-directory: ./hyperledger-service/asset-transfer-basic/rest-api-typescript
-        run: |
-          npm install
-          npm install -g mocha chai fabric-sdk-node
-          npx prettier --write src/server.ts
-
-      # Step 5: Set Executable Permissions for Scripts
-      - name: Set Executable Permissions
-        working-directory: ./hyperledger-service/test-network
-        run: |
-          chmod +x network.sh
-          chmod +x organizations/ccp-generate.sh
-          chmod +x scripts/createChannel.sh
-
-      # Step 6: Verify Docker Containers and Fabric Network
+      # Step 3: Verify Docker Containers and Fabric Network
       - name: Verify Docker Containers and Fabric Network
         run: |
-          # Check if the peer container is running
           docker ps | grep -q "peer0.org1.example.com"
           if [ $? -ne 0 ]; then
             echo "Error: peer container not running." >&2
             exit 1
           fi
-          # Check if other necessary containers (like orderer) are also running
           docker ps | grep -q "orderer.example.com"
           if [ $? -ne 0 ]; then
             echo "Error: orderer container not running." >&2
@@ -69,7 +47,7 @@ jobs:
           fi
           echo "Docker containers are running, peer and orderer containers are up."
 
-      # Step 7: Set Up Hyperledger Fabric Network
+      # Step 4: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
         working-directory: ./hyperledger-service/test-network
         run: |
@@ -77,7 +55,7 @@ jobs:
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
 
-      # Step 8: Package and Install Chaincode
+      # Step 5: Package and Install Chaincode
       - name: Package and Install Chaincode
         working-directory: ./hyperledger-service/test-network
         run: |
@@ -86,7 +64,7 @@ jobs:
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
 
-      # Step 9: Set Environment Variables for Peer Organizations
+      # Step 6: Set Environment Variables for Peer Organizations
       - name: Set Environment Variables for Peer Organizations
         run: |
           # Set Org1 Peer
@@ -102,54 +80,22 @@ jobs:
           export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
           export CORE_PEER_ADDRESS=localhost:9051
 
-      # Step 10: Invoke Chaincode to Initialize Ledger
+      # Step 7: Invoke Chaincode to Initialize Ledger
       - name: Invoke Chaincode to Initialize Ledger
         run: |
           peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C seedtransectionchannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
 
-      # Step 11: Query Chaincode for All Seeds
+      # Step 8: Query Chaincode for All Seeds
       - name: Query Chaincode for All Seeds
         run: |
           peer chaincode query -C seedtransectionchannel -n basic -c '{"Args":["GetAllSeeds"]}'
 
-      # Step 12: Query Chaincode for Specific Seed History
+      # Step 9: Query Chaincode for Specific Seed History
       - name: Query Chaincode for Specific Seed History
         run: |
           peer chaincode query -C seedtransectionchannel -n basic -c '{"Args":["GetSeedHistory","farmer2","Corn"]}'
 
-      # Step 13: Process Test Results
-      - name: Process Test Results
-        id: test-results
-        run: |
-          if grep -q "passing" ./hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -o "passing" ./hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "tests_passed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Comment PR
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const results = fs.readFileSync('./hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
-            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-
-            const header = testsPassed 
-              ? '### ✅ All Tests Passed! 🎉\n\n' +
-                `${totalTests} tests completed successfully ⭐\n\n`
-              : '### ❌ Tests Failed\n\n';
-            
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `${header}\`\`\`\n${results}\n\`\`\``
-
-      # Step 14: Teardown Hyperledger Fabric Network
+      # Step 10: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
         working-directory: ./hyperledger-service/test-network
         run: |
