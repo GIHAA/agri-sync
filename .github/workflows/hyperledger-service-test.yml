@@ -38,19 +38,19 @@ jobs:
           npm install -g mocha chai hyperledger/fabric-sdk-node
           npx prettier --write src/server.ts
 
-      # Step 5: Generate Environment Variables
-      - name: Generate Environment Variables
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+      # Step 5: Set Executable Permissions for Scripts
+      - name: Set Executable Permissions
+        working-directory: back-end/hyperledger-service/test-network
         run: |
-          chmod +x ./scripts/generateEnv.sh
-          npm run generateEnv
+          chmod +x network.sh
+          chmod +x organizations/ccp-generate.sh
+          chmod +x scripts/createChannel.sh
+          chmod +x scripts/deployChaincode.sh
 
       # Step 6: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          chmod +x network.sh
-          chmod +x organizations/ccp-generate.sh
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
