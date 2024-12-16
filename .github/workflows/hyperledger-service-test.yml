@@ -26,11 +26,21 @@ jobs:
       # Step 3: Debug Directory Structure
       - name: Debug Directory Structure
         run: |
-          echo "Printing directory structure..."
+          echo "Checking directory structure..."
           ls -R
-        working-directory: back-end/hyperledger-service
+        working-directory: back-end/hyperledger-service/test-network
 
-      # Step 4: Install Dependencies
+      # Step 4: Adjust Fabric Capabilities (if file exists)
+      - name: Adjust Configtx.yaml for Capabilities
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          if [ -f configtx.yaml ]; then
+            sed -i 's/V2_5/V2_2/' configtx.yaml
+          else
+            echo "configtx.yaml not found. Skipping capabilities adjustment."
+          fi
+
+      # Step 5: Install Dependencies
       - name: Install Dependencies
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
@@ -38,19 +48,13 @@ jobs:
           npm install -g mocha chai hyperledger/fabric-sdk-node
           npx prettier --write src/server.ts
 
-      # Step 5: Set Executable Permissions for Scripts
+      # Step 6: Set Executable Permissions for Scripts
       - name: Set Executable Permissions
         working-directory: back-end/hyperledger-service/test-network
         run: |
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
           chmod +x scripts/createChannel.sh
-
-      # Step 6: Adjust Fabric Capabilities (Optional)
-      - name: Adjust Configtx.yaml for Capabilities
-        working-directory: back-end/hyperledger-service/test-network
-        run: |
-          sed -i 's/V2_5/V2_2/' configtx.yaml
 
       # Step 7: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
