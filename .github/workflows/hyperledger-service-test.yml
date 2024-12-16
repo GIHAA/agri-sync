@@ -70,7 +70,7 @@ jobs:
         run: |
           export REDIS_PASSWORD=$(uuidgen)
           npm run start:redis
-          npm run start:dev &
+          npm run start:dev & # Run in the background
           sleep 30
 
       # Step 9: Run Hyperledger Tests
@@ -92,6 +92,7 @@ jobs:
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
 
+      # Step 11: Comment PR with Test Results
       - name: Comment PR
         uses: actions/github-script@v6
         with:
@@ -112,6 +113,7 @@ jobs:
               body: `${header}\`\`\`\n${results}\n\`\`\``
             });
 
+      # Step 12: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
