@@ -92,7 +92,6 @@ jobs:
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
 
-      # Step 11: Comment on PR with Test Results
       - name: Comment PR
         uses: actions/github-script@v6
         with:
@@ -113,7 +112,6 @@ jobs:
               body: `${header}\`\`\`\n${results}\n\`\`\``
             });
 
-      # Step 12: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
