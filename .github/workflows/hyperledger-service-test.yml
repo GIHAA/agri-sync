@@ -23,12 +23,11 @@ jobs:
           echo "Downloading Fabric binaries..."
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           echo "Download complete"
-          echo "Listing downloaded files:"
-          ls -R  # List all files in the current directory to check for the 'bin' folder
-          echo "Adding binaries to PATH"
+          echo "Checking for Fabric binaries..."
+          ls $PWD/bin  # List contents of the bin directory
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
-          echo "Current PATH: $PATH"  # Print the PATH to check if the binaries are included
+          echo "Current PATH: $PATH"
 
       # Step 3: Debug Directory Structure
       - name: Debug Directory Structure
