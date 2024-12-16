@@ -45,7 +45,6 @@ jobs:
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
           chmod +x scripts/createChannel.sh
-          chmod +x scripts/deployChaincode.sh
 
       # Step 6: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
