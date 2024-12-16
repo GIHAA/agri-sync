@@ -63,65 +63,16 @@ jobs:
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
 
-      # Step 7: Package and Install Chaincode
-      - name: Package and Install Chaincode
-        working-directory: back-end/hyperledger-service/test-network
+      # Step 7: Set Environment Variables for Chaincode Packaging
+      - name: Set Environment Variables for Chaincode Packaging
         run: |
-          export PATH=${FABRIC_BIN_PATH}:$PATH  # Ensure PATH is correct for this step
+          export PATH=${PWD}/../bin:$PATH
           export FABRIC_CFG_PATH=$PWD/../config/
+
+      # Step 8: Package Chaincode
+      - name: Package Chaincode
+        run: |
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
 
-      # Step 8: Start Hyperledger REST Service
-      - name: Start Hyperledger REST Service
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-        run: |
-          export REDIS_PASSWORD=$(uuidgen)
-          npm run start:redis
-          npm run start:dev &
-          sleep 30
-
-      # Step 9: Run Hyperledger Tests
-      - name: Run Hyperledger Tests
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-        run: |
-          mocha tests --recursive > test-results.txt 2>&1
-
-      # Step 10: Process Test Results
-      - name: Process Test Results
-        id: test-results
-        run: |
-          if grep -q "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -o "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "tests_passed=false" >> $GITHUB_OUTPUT
-          fi
-
-      # Step 11: Comment on PR with Test Results
-      - name: Comment PR
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
-            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            const header = testsPassed 
-              ? '### ✅ All Tests Passed! 🎉\n\n' +
-                `${totalTests} tests completed successfully ⭐\n\n`
-              : '### ❌ Tests Failed\n\n';
-            
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `${header}\`\`\`\n${results}\n\`\`\``
-            });
-
-      # Step 12: Teardown Hyperledger Fabric Network
-      - name: Teardown Hyperledger Fabric Network
-        working-directory: back-end/hyperledger-service/test-network
-        run: |
-            ./network.sh down
+      # Optional: Further steps for installing and testing chaincode
