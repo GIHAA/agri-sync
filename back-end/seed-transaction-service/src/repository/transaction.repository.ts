@@ -117,7 +117,7 @@ export class TransactionRepository implements ITransactionRepository {
         VALUES ($1, $2, $3, $4, $5, $6, 'Pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         RETURNING id;
       `;
-      
+
       // Set the values to be inserted into the query
       const values = [
         data.farmerId,
@@ -127,15 +127,15 @@ export class TransactionRepository implements ITransactionRepository {
         data.location,
         data.blockchainTxId || null, // If no blockchainTxId is provided, set it as null
       ];
-  
+
       // Execute the query and get the result
       const result = await db.query(query, values);
-  
+
       // Check if the insert was successful
       if (!result.rows.length) {
         throw new Error("Transaction creation failed.");
       }
-  
+
       // Return the inserted transaction ID
       return result.rows[0].id; // Return the ID of the inserted row
     } catch (error) {
@@ -143,7 +143,7 @@ export class TransactionRepository implements ITransactionRepository {
       throw error;
     }
   }
-  
+
 
   async updateBlockchainTransactionId(transactionId: number, blockchainTxId: string): Promise<any> {
     try {

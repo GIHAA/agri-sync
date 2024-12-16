@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# imports  
+# imports
 . scripts/envVar.sh
 
 CHANNEL_NAME="$1"
@@ -8,7 +8,7 @@ DELAY="$2"
 MAX_RETRY="$3"
 VERBOSE="$4"
 BFT="$5"
-: ${CHANNEL_NAME:="mychannel"}
+: ${CHANNEL_NAME:="seedtransectionchannel"}
 : ${DELAY:="3"}
 : ${MAX_RETRY:="5"}
 : ${VERBOSE:="false"}
@@ -92,7 +92,7 @@ joinChannel() {
 
 setAnchorPeer() {
   ORG=$1
-  . scripts/setAnchorPeer.sh $ORG $CHANNEL_NAME 
+  . scripts/setAnchorPeer.sh $ORG $CHANNEL_NAME
 }
 
 

@@ -1,10 +1,7 @@
-
-
 import IORedis, { Redis, RedisOptions } from 'ioredis';
 
 import * as config from './config';
 import { logger } from './logger';
-
 
 export const isMaxmemoryPolicyNoeviction = async (): Promise<boolean> => {
     let redis: Redis | undefined;
