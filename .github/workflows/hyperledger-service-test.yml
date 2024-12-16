@@ -8,54 +8,66 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
 
     steps:
       # Step 1: Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Initialize Submodules (if fabric-samples is a submodule)
-      - name: Initialize Submodules
-        run: git submodule update --init --recursive
-
-      # Step 3: Debug Directory Structure
+      # Step 2: Debug Directory Structure
       - name: Debug Directory Structure
         run: |
-          echo "Listing root directory..."
+          echo "Printing directory structure..."
           ls -R
 
-      # Step 4: Clone Fabric Samples (if directory is missing)
-      - name: Clone Fabric Samples (Optional)
-        if: !exists('fabric-samples/asset-transfer-basic/rest-api-typescript')
-        run: git clone https://github.com/hyperledger/fabric-samples.git
-
-      # Step 5: Install Dependencies
+      # Step 3: Install Dependencies
       - name: Install Dependencies
-        working-directory: fabric-samples/asset-transfer-basic/rest-api-typescript
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           npm install
           npm install -g mocha chai hyperledger/fabric-sdk-node
           npx prettier --write src/server.ts
 
-      # Step 6: Generate Environment Variables
+      # Step 4: Generate Environment Variables
       - name: Generate Environment Variables
-        working-directory: fabric-samples/asset-transfer-basic/rest-api-typescript
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           chmod +x ./scripts/generateEnv.sh
           npm run generateEnv
 
-      # Step 7: Set Up Hyperledger Fabric Network
+      # Step 5: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
-        working-directory: fabric-samples/test-network
+        working-directory: back-end/hyperledger-service/test-network
         run: |
           chmod +x organizations/ccp-generate.sh
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
 
+      # Step 6: Package and Install Chaincode
+      - name: Package and Install Chaincode
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          export PATH=${PWD}/../bin:$PATH
+          export FABRIC_CFG_PATH=$PWD/../config/
+          peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
+          peer lifecycle chaincode queryinstalled
+
+      # Step 7: Start Hyperledger REST Service
+      - name: Start Hyperledger REST Service
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        run: |
+          export REDIS_PASSWORD=$(uuidgen)
+          npm run start:redis
+          npm run start:dev &
+          sleep 30
+
       # Step 8: Run Hyperledger Tests
       - name: Run Hyperledger Tests
-        working-directory: fabric-samples/asset-transfer-basic/rest-api-typescript
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           mocha tests --recursive > test-results.txt 2>&1
 
@@ -63,11 +75,38 @@ jobs:
       - name: Process Test Results
         id: test-results
         run: |
-          if grep -q "passing" fabric-samples/asset-transfer-basic/rest-api-typescript/test-results.txt; then
+          if grep -q "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -o "passing" fabric-samples/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -o "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
+
+      # Step 10: Comment on PR with Test Results
+      - name: Comment PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
+            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+
+            const header = testsPassed 
+              ? '### ✅ All Tests Passed! 🎉\n\n' +
+                `${totalTests} tests completed successfully ⭐\n\n`
+              : '### ❌ Tests Failed\n\n';
+            
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `${header}\`\`\`\n${results}\n\`\`\``
+            });
+
+      # Step 11: Teardown Hyperledger Fabric Network
+      - name: Teardown Hyperledger Fabric Network
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          ./network.sh down
