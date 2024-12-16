@@ -23,17 +23,23 @@ jobs:
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
+          # Check if peer binary exists
+          if ! [ -x "$(command -v peer)" ]; then
+            echo 'Error: peer binary not found.' >&2
+            exit 1
+          fi
+          echo "Fabric binaries installed successfully."
 
       # Step 3: Debug Directory Structure
       - name: Debug Directory Structure
         run: |
           echo "Checking directory structure..."
           ls -R
-        working-directory: back-end/hyperledger-service/test-network
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/test-network
 
       # Step 4: Install Dependencies
       - name: Install Dependencies
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           npm install
           npm install -g mocha chai hyperledger/fabric-sdk-node
@@ -41,7 +47,7 @@ jobs:
 
       # Step 5: Set Executable Permissions for Scripts
       - name: Set Executable Permissions
-        working-directory: back-end/hyperledger-service/test-network
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/test-network
         run: |
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
@@ -49,7 +55,7 @@ jobs:
 
       # Step 6: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
-        working-directory: back-end/hyperledger-service/test-network
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/test-network
         run: |
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
@@ -57,7 +63,7 @@ jobs:
 
       # Step 7: Package and Install Chaincode
       - name: Package and Install Chaincode
-        working-directory: back-end/hyperledger-service/test-network
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/test-network
         run: |
           export PATH=${PWD}/../bin:$PATH
           export FABRIC_CFG_PATH=$PWD/../config/
@@ -66,7 +72,7 @@ jobs:
 
       # Step 8: Start Hyperledger REST Service
       - name: Start Hyperledger REST Service
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           export REDIS_PASSWORD=$(uuidgen)
           npm run start:redis
@@ -75,7 +81,7 @@ jobs:
 
       # Step 9: Run Hyperledger Tests
       - name: Run Hyperledger Tests
-        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           mocha tests --recursive > test-results.txt 2>&1
 
@@ -83,10 +89,10 @@ jobs:
       - name: Process Test Results
         id: test-results
         run: |
-          if grep -q "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
+          if grep -q "passing" D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -o "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -o "passing" D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt | wc -l)" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
@@ -97,7 +103,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
+            const results = fs.readFileSync('D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
 
@@ -114,6 +120,6 @@ jobs:
 
       # Step 11: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
-        working-directory: back-end/hyperledger-service/test-network
+        working-directory: D:/Repository/Research_project_v1/agri-sync-v2/agri-sync/back-end/hyperledger-service/test-network
         run: |
           ./network.sh down
