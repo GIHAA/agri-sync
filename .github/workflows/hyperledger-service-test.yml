@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Debug Directory Structure
-      - name: Debug Directory Structure
+        - name: Debug Directory Structure
         run: |
           echo "Printing directory structure..."
           ls -R
@@ -27,9 +27,14 @@ jobs:
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
+          
+          # Download Fabric binaries (ensure you're getting the correct version)
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.9  # Fabric version 2.5.9
+          
+          # Set FABRIC_BIN_PATH to the downloaded 'bin' directory
           export FABRIC_BIN_PATH=$PWD/bin
           export PATH=$FABRIC_BIN_PATH:$PATH  # Ensure binaries are in PATH
+          
           echo "Fabric binaries installed successfully."
           echo "Fabric version:"
           peer version || echo "Peer command not found!"
@@ -53,14 +58,14 @@ jobs:
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          # Make scripts executable
+          # Make sure network.sh and other scripts are executable
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
 
           # Verify the path to Fabric binaries
           echo "FABRIC_BIN_PATH: $FABRIC_BIN_PATH"
           echo "PATH: $PATH"
-
+          
           # Ensure Fabric binaries are in the path
           export PATH=${FABRIC_BIN_PATH}:$PATH
           echo "Updated PATH: $PATH"
