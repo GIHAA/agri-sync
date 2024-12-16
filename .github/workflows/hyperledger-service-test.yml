@@ -20,11 +20,15 @@ jobs:
       # Step 2: Download Matching Fabric Binaries and Images
       - name: Download Fabric Binaries and Images
         run: |
+          echo "Downloading Fabric binaries..."
           curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
+          echo "Download complete"
+          echo "Listing downloaded files:"
+          ls -R  # List all files in the current directory to check for the 'bin' folder
+          echo "Adding binaries to PATH"
           export PATH=$PWD/bin:$PATH
           export FABRIC_CFG_PATH=$PWD/config/
-          echo "Fabric binaries installed at:"
-          ls -l $PWD/bin
+          echo "Current PATH: $PATH"  # Print the PATH to check if the binaries are included
 
       # Step 3: Debug Directory Structure
       - name: Debug Directory Structure
