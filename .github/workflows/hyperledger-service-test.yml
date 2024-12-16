@@ -27,11 +27,12 @@ jobs:
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
-          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 3.0.0
-          export PATH=$PWD/bin:$PATH
+          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.9  # Use Fabric version 2.5.9
+          export FABRIC_BIN_PATH=$PWD/bin
+          export PATH=$FABRIC_BIN_PATH:$PATH  # Add the binaries to the PATH
           echo "Fabric binaries installed successfully."
           echo "Fabric version:"
-          peer version
+          peer version || echo "Peer command not found!"
 
       # Step 4: Install Dependencies
       - name: Install Dependencies
@@ -62,7 +63,7 @@ jobs:
       - name: Package and Install Chaincode
         working-directory: back-end/hyperledger-service/test-network
         run: |
-          export PATH=${PWD}/../bin:$PATH
+          export PATH=${FABRIC_BIN_PATH}:$PATH  # Ensure PATH is correct for this step
           export FABRIC_CFG_PATH=$PWD/../config/
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
