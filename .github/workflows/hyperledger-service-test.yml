@@ -20,7 +20,7 @@ jobs:
       # Step 2: Download Hyperledger Fabric Binaries
       - name: Download Fabric Binaries
         run: |
-          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.4.3 1.5.3
+          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.0 1.5.0
         working-directory: back-end/hyperledger-service
 
       # Step 3: Debug Directory Structure
@@ -46,7 +46,13 @@ jobs:
           chmod +x organizations/ccp-generate.sh
           chmod +x scripts/createChannel.sh
 
-      # Step 6: Set Up Hyperledger Fabric Network
+      # Step 6: Adjust Fabric Capabilities (Optional)
+      - name: Adjust Configtx.yaml for Capabilities
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          sed -i 's/V2_5/V2_2/' configtx.yaml
+
+      # Step 7: Set Up Hyperledger Fabric Network
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
@@ -54,7 +60,7 @@ jobs:
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
 
-      # Step 7: Package and Install Chaincode
+      # Step 8: Package and Install Chaincode
       - name: Package and Install Chaincode
         working-directory: back-end/hyperledger-service/test-network
         run: |
@@ -63,7 +69,7 @@ jobs:
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript/ --lang node --label basic_1.0
           peer lifecycle chaincode queryinstalled
 
-      # Step 8: Start Hyperledger REST Service
+      # Step 9: Start Hyperledger REST Service
       - name: Start Hyperledger REST Service
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
@@ -72,13 +78,13 @@ jobs:
           npm run start:dev &
           sleep 30
 
-      # Step 9: Run Hyperledger Tests
+      # Step 10: Run Hyperledger Tests
       - name: Run Hyperledger Tests
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
           mocha tests --recursive > test-results.txt 2>&1
 
-      # Step 10: Process Test Results
+      # Step 11: Process Test Results
       - name: Process Test Results
         id: test-results
         run: |
@@ -91,7 +97,7 @@ jobs:
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
 
-      # Step 11: Comment on PR with Test Results
+      # Step 12: Comment on PR with Test Results
       - name: Comment PR
         uses: actions/github-script@v6
         with:
@@ -112,7 +118,7 @@ jobs:
               body: `${header}\`\`\`\n${results}\n\`\`\``
             });
 
-      # Step 12: Teardown Hyperledger Fabric Network
+      # Step 13: Teardown Hyperledger Fabric Network
       - name: Teardown Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
