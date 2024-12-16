@@ -27,9 +27,9 @@ jobs:
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
-          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.9  # Use Fabric version 2.5.9
+          curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.5.9  # Fabric version 2.5.9
           export FABRIC_BIN_PATH=$PWD/bin
-          export PATH=$FABRIC_BIN_PATH:$PATH  # Add the binaries to the PATH
+          export PATH=$FABRIC_BIN_PATH:$PATH  # Ensure binaries are in PATH
           echo "Fabric binaries installed successfully."
           echo "Fabric version:"
           peer version || echo "Peer command not found!"
@@ -53,10 +53,19 @@ jobs:
       - name: Set Up Hyperledger Fabric Network
         working-directory: back-end/hyperledger-service/test-network
         run: |
+          # Make scripts executable
           chmod +x network.sh
           chmod +x organizations/ccp-generate.sh
-          # Ensure FABRIC_BIN_PATH is in the path before running network commands
+
+          # Verify the path to Fabric binaries
+          echo "FABRIC_BIN_PATH: $FABRIC_BIN_PATH"
+          echo "PATH: $PATH"
+
+          # Ensure Fabric binaries are in the path
           export PATH=${FABRIC_BIN_PATH}:$PATH
+          echo "Updated PATH: $PATH"
+
+          # Start the network and create channel
           ./network.sh up createChannel -c seedtransectionchannel -ca
           ./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-typescript/ -ccl typescript
           ./organizations/ccp-generate.sh
