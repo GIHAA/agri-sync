@@ -10,6 +10,13 @@ const sequelize = new Sequelize({
   password: process.env.DB_PASSWORD || "admin",
   database: process.env.DB_NAME || "agri",
   dialect: "postgres",
+  // for ssl
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
 });
 
 // Test the connection and log the result
