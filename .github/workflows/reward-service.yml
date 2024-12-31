@@ -90,5 +90,5 @@ jobs:
           context: ./back-end/reward-service
           push: true
           tags: |
-            your-dockerhub-username/reward-service:${{ env.DOCKER_TAG }}
-            your-dockerhub-username/reward-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/price-prediction-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/price-prediction-service:latest
