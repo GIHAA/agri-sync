@@ -1,4 +1,5 @@
 name: User Service - Test and Deploy
+
 on:
   pull_request:
     branches: [develop]
@@ -14,22 +15,28 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+    
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      
       - name: Install dependencies
         working-directory: back-end/user-service
         run: npm ci
+      
       - name: Run tests
         working-directory: back-end/user-service
         run: npm test -- --reporters=default --reporters=jest-junit
+      
       - uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
           name: test-results
           path: back-end/user-service/junit.xml
+      
       - name: Process test results
         id: test-results
         run: |
@@ -41,6 +48,7 @@ jobs:
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
+      
       - name: Comment PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
@@ -48,22 +56,58 @@ jobs:
           script: |
             const fs = require('fs');
             const results = fs.readFileSync('back-end/user-service/junit.xml', 'utf8');
+            
+            const formatTestResults = (results, testsPassed, totalTests) => {
+              const testCases = results.match(/<testcase.*?<\/testcase>/gs);
+              
+              let formattedOutput = testsPassed 
+                ? `### ✅ All Tests Passed! 🎉\n${totalTests} tests completed successfully ⭐\n\n`
+                : `### ❌ Tests Failed\n\n`;
+              
+              formattedOutput += '### Test Results Summary\n\n';
+              
+              const suites = {};
+              testCases.forEach(testCase => {
+                const suiteName = testCase.match(/classname="([^"]+)"/)[1];
+                const testName = testCase.match(/name="([^"]+)"/)[1];
+                const failed = testCase.includes('<failure');
+                
+                if (!suites[suiteName]) {
+                  suites[suiteName] = [];
+                }
+                
+                suites[suiteName].push({
+                  name: testName,
+                  status: failed ? '❌' : '✅'
+                });
+              });
+              
+              Object.entries(suites).forEach(([suite, tests]) => {
+                formattedOutput += `#### ${suite}\n`;
+                tests.forEach(test => {
+                  formattedOutput += `${test.status} ${test.name}\n`;
+                });
+                formattedOutput += '\n';
+              });
+              
+              return formattedOutput;
+            };
+
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            const header = testsPassed
-              ? '### ✅ All Tests Passed! 🎉\n\n' +
-                `${totalTests} tests completed successfully ⭐\n\n`
-              : '### ❌ Tests Failed\n\n';
+            const testResults = formatTestResults(results, testsPassed, totalTests);
+            
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body: `${header}\`\`\`xml\n${results}\n\`\`\``
+              body: testResults
             });
 
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    
     steps:
       - uses: actions/checkout@v3
       
