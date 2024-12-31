@@ -134,5 +134,5 @@ jobs:
           context: ./back-end/user-service
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ env.DOCKER_TAG }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-user-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-user-service:latest
