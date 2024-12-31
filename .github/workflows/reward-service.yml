@@ -134,5 +134,5 @@ jobs:
          context: ./back-end/reward-service
          push: true
          tags: |
-           ${{ secrets.DOCKERHUB_USERNAME }}/reward-service:${{ env.DOCKER_TAG }}
-           ${{ secrets.DOCKERHUB_USERNAME }}/reward-service:latest
+           ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:${{ env.DOCKER_TAG }}
+           ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:latest
