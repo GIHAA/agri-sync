@@ -106,7 +106,6 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     
     steps:
       - uses: actions/checkout@v3
@@ -126,13 +125,15 @@ jobs:
             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
             echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           fi
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./back-end/user-service
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/as-user-service:${{ env.DOCKER_TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/as-user-service:latest
