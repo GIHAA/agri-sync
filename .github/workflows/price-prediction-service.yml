@@ -1,4 +1,5 @@
 name: Price Prediction Service - Test and Deploy
+
 on:
   pull_request:
     branches: [develop]
@@ -14,25 +15,31 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+    
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-python@v4
         with:
           python-version: 3.12
+      
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flask flask-cors pandas scikit-learn openpyxl
+      
       - name: Train model
         working-directory: back-end/price-prediction-service
         run: |
           python app.py &
           sleep 15
           pkill -f flask || true
+      
       - name: Run tests
         working-directory: back-end/price-prediction-service
         run: |
           python -m unittest test_app.py -v > test-results.txt 2>&1
+
       - name: Process test results
         id: test-results
         run: |
@@ -44,6 +51,7 @@ jobs:
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
+      
       - name: Comment PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
@@ -66,7 +74,7 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    
     steps:
       - uses: actions/checkout@v3
       
@@ -85,13 +93,15 @@ jobs:
             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
             echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           fi
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./back-end/price-prediction-service
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:${{ env.DOCKER_TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:latest
