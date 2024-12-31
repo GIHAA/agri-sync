@@ -5,6 +5,8 @@ Agri Sync is an advanced platform aimed at enhancing the agricultural value chai
 [![Price Prediction Service - Test](https://github.com/GIHAA/agri-sync/actions/workflows/price-prediction-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/price-prediction-service.yml)
 <br>
 [![Reward Service - Test](https://github.com/GIHAA/agri-sync/actions/workflows/reward-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/reward-service.yml)
+<br>
+[![User Service - Test and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/user-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/user-service.yml)
 
 
 ## Architectural Diagram
