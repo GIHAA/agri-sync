@@ -1,4 +1,4 @@
-name: Hyperledger Fabric - Seed Transaction Channel
+name: hyperledger-service-test
 
 on:
   pull_request:
