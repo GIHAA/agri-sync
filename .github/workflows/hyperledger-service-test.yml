@@ -4,8 +4,11 @@ on:
   pull_request:
     branches:
       - main
+    branches:
+      - main
 
 jobs:
+  deploy-fabric:
   deploy-fabric:
     runs-on: ubuntu-latest
 
@@ -16,7 +19,16 @@ jobs:
 
       # Step 2: Set Up Environment Variables
       - name: Set Up Environment Variables
+      # Step 2: Set Up Environment Variables
+      - name: Set Up Environment Variables
         run: |
+          echo "Setting up environment variables..."
+          export FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config
+          echo "FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config" >> $GITHUB_ENV
+          echo "PATH=${PWD}/back-end/hyperledger-service/bin:$PATH" >> $GITHUB_ENV
+
+      # Step 3: Start Fabric Network and Create Channel
+      - name: Start Network and Create Channel
           echo "Setting up environment variables..."
           export FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config
           echo "FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config" >> $GITHUB_ENV
@@ -27,14 +39,59 @@ jobs:
         working-directory: back-end/hyperledger-service/test-network
         run: |
           echo "Cleaning up previous artifacts..."
+          echo "Cleaning up previous artifacts..."
           ./network.sh down
+          echo "Starting network and creating channel 'seedtransectionchannel'..."
           echo "Starting network and creating channel 'seedtransectionchannel'..."
           ./network.sh up createChannel -c seedtransectionchannel -ca
 
       # Step 4: Package and Install Chaincode
+      # Step 4: Package and Install Chaincode
       - name: Package and Install Chaincode
         working-directory: back-end/hyperledger-service/test-network
         run: |
+          echo "Packaging chaincode..."
+          peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript --lang node --label basic_1.0
+          
+          echo "Installing chaincode on Org1..."
+          export CORE_PEER_LOCALMSPID=Org1MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:7051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+          peer lifecycle chaincode install basic.tar.gz
+
+          echo "Installing chaincode on Org2..."
+          export CORE_PEER_LOCALMSPID=Org2MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:9051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+          peer lifecycle chaincode install basic.tar.gz
+
+      # Step 5: Approve Chaincode Definition
+      - name: Approve Chaincode Definition
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          echo "Querying installed chaincode..."
+          export CC_PACKAGE_ID=$(peer lifecycle chaincode queryinstalled | grep basic_1.0 | awk -F ',' '{print $1}' | awk '{print $3}')
+          echo "Package ID: $CC_PACKAGE_ID"
+
+          echo "Approving chaincode definition as Org1..."
+          export CORE_PEER_LOCALMSPID=Org1MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:7051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+          peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+          echo "Approving chaincode definition as Org2..."
+          export CORE_PEER_LOCALMSPID=Org2MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:9051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+          peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+      # Step 6: Commit Chaincode Definition
+      - name: Commit Chaincode Definition
+        working-directory: back-end/hyperledger-service/test-network
           echo "Packaging chaincode..."
           peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript --lang node --label basic_1.0
           
@@ -83,8 +140,14 @@ jobs:
 
       # Step 7: Run Chaincode Tests
       - name: Run Chaincode Tests
+          echo "Committing chaincode definition to channel 'seedtransectionchannel'..."
+          peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+      # Step 7: Run Chaincode Tests
+      - name: Run Chaincode Tests
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: |
+          npm run test
           npm run test
 
       # Step 11: Comment on PR with Test Results
