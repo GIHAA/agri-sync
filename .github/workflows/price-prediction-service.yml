@@ -1,4 +1,114 @@
-name: Price Prediction Service - Test and Deploy
+# name: Price Prediction Service - Test and Deploy
+
+# on:
+#   pull_request:
+#     branches: [develop]
+#     types: [opened, synchronize]
+#   push:
+#     branches:
+#       - develop
+#       - 'release-*'
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       pull-requests: write
+#       contents: read
+    
+#     steps:
+#       - uses: actions/checkout@v3
+      
+#       - uses: actions/setup-python@v4
+#         with:
+#           python-version: 3.12
+      
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install flask flask-cors pandas scikit-learn openpyxl
+      
+#       - name: Train model
+#         working-directory: back-end/price-prediction-service
+#         run: |
+#           python app.py &
+#           sleep 15
+#           pkill -f flask || true
+      
+#       - name: Run tests
+#         working-directory: back-end/price-prediction-service
+#         run: |
+#           python -m unittest test_app.py -v > test-results.txt 2>&1
+
+#       - name: Process test results
+#         id: test-results
+#         run: |
+#           if grep -q "OK" back-end/price-prediction-service/test-results.txt; then
+#             echo "status=success" >> $GITHUB_OUTPUT
+#             echo "tests_passed=true" >> $GITHUB_OUTPUT
+#             echo "total_tests=$(grep -c "ok$" back-end/price-prediction-service/test-results.txt)" >> $GITHUB_OUTPUT
+#           else
+#             echo "status=failure" >> $GITHUB_OUTPUT
+#             echo "tests_passed=false" >> $GITHUB_OUTPUT
+#           fi
+      
+#       - name: Comment PR
+#         if: github.event_name == 'pull_request'
+#         uses: actions/github-script@v6
+#         with:
+#           script: |
+#             const fs = require('fs');
+#             const results = fs.readFileSync('back-end/price-prediction-service/test-results.txt', 'utf8');
+#             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+#             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+#             const header = testsPassed
+#               ? '### ✅ All Tests Passed! 🎉\n\n' +
+#                 `${totalTests} tests completed successfully ⭐\n\n`
+#               : '### ❌ Tests Failed\n\n';
+#             await github.rest.issues.createComment({
+#               ...context.repo,
+#               issue_number: context.issue.number,
+#               body: `${header}\`\`\`\n${results}\n\`\`\``
+#             });
+
+#   build-and-push:
+#     needs: test
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#       - uses: actions/checkout@v3
+      
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
+      
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+#       - name: Extract branch name and set tag
+#         run: |
+#           if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+#             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+#           elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
+#             echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+#           else
+#             echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+#           fi
+      
+#       - name: Build and push Docker image
+#         uses: docker/build-push-action@v4
+#         with:
+#           context: ./back-end/price-prediction-service
+#           push: ${{ github.event_name == 'push' }}
+#           platforms: linux/amd64,linux/arm64
+#           tags: |
+#             ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:${{ env.DOCKER_TAG }}
+#             ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:latest
+
+
+name: Hyperledger Service - Seed Transaction Channel
 
 on:
   pull_request:
@@ -17,53 +127,94 @@ jobs:
       contents: read
     
     steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flask flask-cors pandas scikit-learn openpyxl
-      
-      - name: Train model
-        working-directory: back-end/price-prediction-service
-        run: |
-          python app.py &
-          sleep 15
-          pkill -f flask || true
-      
-      - name: Run tests
-        working-directory: back-end/price-prediction-service
-        run: |
-          python -m unittest test_app.py -v > test-results.txt 2>&1
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Process test results
+      - name: Set Up Environment Variables
+        run: |
+          echo "Setting up environment variables..."
+          export FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config
+          echo "FABRIC_CFG_PATH=${PWD}/back-end/hyperledger-service/config" >> $GITHUB_ENV
+          echo "PATH=${PWD}/back-end/hyperledger-service/bin:$PATH" >> $GITHUB_ENV
+      
+      - name: Start Fabric Network and Create Channel
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          echo "Cleaning up previous artifacts..."
+          ./network.sh down
+          echo "Starting network and creating channel 'seedtransectionchannel'..."
+          ./network.sh up createChannel -c seedtransectionchannel -ca
+      
+      - name: Package and Install Chaincode
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          echo "Packaging chaincode..."
+          peer lifecycle chaincode package basic.tar.gz --path ../asset-transfer-basic/chaincode-typescript --lang node --label basic_1.0
+          
+          echo "Installing chaincode on Org1..."
+          export CORE_PEER_LOCALMSPID=Org1MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:7051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+          peer lifecycle chaincode install basic.tar.gz
+
+          echo "Installing chaincode on Org2..."
+          export CORE_PEER_LOCALMSPID=Org2MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:9051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+          peer lifecycle chaincode install basic.tar.gz
+      
+      - name: Approve and Commit Chaincode Definition
+        working-directory: back-end/hyperledger-service/test-network
+        run: |
+          echo "Querying installed chaincode..."
+          export CC_PACKAGE_ID=$(peer lifecycle chaincode queryinstalled | grep basic_1.0 | awk -F ',' '{print $1}' | awk '{print $3}')
+          echo "Package ID: $CC_PACKAGE_ID"
+
+          echo "Approving chaincode definition as Org1..."
+          export CORE_PEER_LOCALMSPID=Org1MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:7051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+          peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+          echo "Approving chaincode definition as Org2..."
+          export CORE_PEER_LOCALMSPID=Org2MSP
+          export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+          export CORE_PEER_ADDRESS=localhost:9051
+          export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+          peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+          echo "Committing chaincode definition to channel..."
+          peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID seedtransectionchannel --name basic --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+      
+      - name: Run Chaincode Tests
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        run: |
+          echo "Running chaincode tests..."
+          npm run test > test-results.txt 2>&1
+
+      - name: Process Test Results
         id: test-results
         run: |
-          if grep -q "OK" back-end/price-prediction-service/test-results.txt; then
+          if grep -q "passing" back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -c "ok$" back-end/price-prediction-service/test-results.txt)" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
-      
-      - name: Comment PR
+
+      - name: Comment on PR with Test Results
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
-            const results = fs.readFileSync('back-end/price-prediction-service/test-results.txt', 'utf8');
-            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            const header = testsPassed
-              ? '### ✅ All Tests Passed! 🎉\n\n' +
-                `${totalTests} tests completed successfully ⭐\n\n`
+            const results = fs.readFileSync('back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/test-results.txt', 'utf8');
+            const header = '${{ steps.test-results.outputs.tests_passed }}' === 'true'
+              ? '### ✅ All Tests Passed! 🎉\n\n'
               : '### ❌ Tests Failed\n\n';
             await github.rest.issues.createComment({
               ...context.repo,
@@ -77,17 +228,17 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Set up Docker Buildx
+
+      - name: Set Up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-      - name: Extract branch name and set tag
+
+      - name: Extract Branch Name and Set Tag
         run: |
           if [[ ${{ github.ref }} == refs/heads/develop ]]; then
             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
@@ -96,13 +247,13 @@ jobs:
           else
             echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
           fi
-      
-      - name: Build and push Docker image
+
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./back-end/price-prediction-service
+          context: ./back-end/hyperledger-service
           push: ${{ github.event_name == 'push' }}
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:${{ env.DOCKER_TAG }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:latest
