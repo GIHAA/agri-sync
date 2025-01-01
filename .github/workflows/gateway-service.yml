@@ -40,6 +40,7 @@ jobs:
         with:
           context: ./back-end/gateway
           push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/as-gateway:${{ env.DOCKER_TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/as-gateway:latest

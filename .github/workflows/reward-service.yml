@@ -134,6 +134,7 @@ jobs:
         with:
           context: ./back-end/reward-service
           push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:${{ env.DOCKER_TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:latest
