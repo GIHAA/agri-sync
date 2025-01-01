@@ -24,6 +24,7 @@ jobs:
           ls -R
 
       # Step 3: Install Hyperledger Fabric Binaries
+            # Step 3: Install Hyperledger Fabric Binaries
       - name: Install Hyperledger Fabric Binaries
         run: |
           echo "Installing Hyperledger Fabric binaries..."
