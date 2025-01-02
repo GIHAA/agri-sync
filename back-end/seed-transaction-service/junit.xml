@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="10" failures="0" errors="0" time="0.527">
-  <testsuite name="Seed Transaction Service" errors="0" failures="0" skipped="0" timestamp="2025-01-02T21:00:00" time="0.471" tests="10">
-    <testcase classname="Seed Transaction Service validateTransaction should return success when valid data is provided" name="Seed Transaction Service validateTransaction should return success when valid data is provided" time="0.003">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="7.921">
+  <testsuite name="Seed Transaction Routes" errors="0" failures="0" skipped="0" timestamp="2025-01-02T22:18:32" time="6.47" tests="3">
+    <testcase classname="Seed Transaction Routes should create a new transaction" name="Seed Transaction Routes should create a new transaction" time="0.333">
     </testcase>
-    <testcase classname="Seed Transaction Service validateTransaction should return error when invalid data is provided" name="Seed Transaction Service validateTransaction should return error when invalid data is provided" time="0.001">
+    <testcase classname="Seed Transaction Routes should get a transaction by ID" name="Seed Transaction Routes should get a transaction by ID" time="0.023">
     </testcase>
-    <testcase classname="Seed Transaction Service saveTransaction should successfully save transaction" name="Seed Transaction Service saveTransaction should successfully save transaction" time="0.001">
-    </testcase>
-    <testcase classname="Seed Transaction Service saveTransaction should return error for invalid user" name="Seed Transaction Service saveTransaction should return error for invalid user" time="0.002">
-    </testcase>
-    <testcase classname="Seed Transaction Service getTransactionHistory should return transaction history for user" name="Seed Transaction Service getTransactionHistory should return transaction history for user" time="0.001">
-    </testcase>
-    <testcase classname="Seed Transaction Service processTransaction should process transaction successfully" name="Seed Transaction Service processTransaction should process transaction successfully" time="0.002">
-    </testcase>
-    <testcase classname="Seed Transaction Service processTransaction should return insufficient balance error" name="Seed Transaction Service processTransaction should return insufficient balance error" time="0.002">
-    </testcase>
-    <testcase classname="Seed Transaction Service processTransaction should handle non-existent user" name="Seed Transaction Service processTransaction should handle non-existent user" time="0.001">
-    </testcase>
-    <testcase classname="Seed Transaction Service cancelTransaction should successfully cancel transaction" name="Seed Transaction Service cancelTransaction should successfully cancel transaction" time="0.001">
-    </testcase>
-    <testcase classname="Seed Transaction Service cancelTransaction should return error for invalid transaction" name="Seed Transaction Service cancelTransaction should return error for invalid transaction" time="0.001">
+    <testcase classname="Seed Transaction Routes should get all transactions" name="Seed Transaction Routes should get all transactions" time="0.024">
     </testcase>
   </testsuite>
 </testsuites>
