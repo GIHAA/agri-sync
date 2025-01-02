@@ -1,9 +1,13 @@
-name: Price Prediction Service - Test
+name: Price Prediction Service - Test and Deploy
 
 on:
   pull_request:
     branches: [develop]
     types: [opened, synchronize]
+  push:
+    branches:
+      - develop
+      - 'release-*'
 
 jobs:
   test:
@@ -11,24 +15,26 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+    
     steps:
       - uses: actions/checkout@v3
+      
       - uses: actions/setup-python@v4
         with:
           python-version: 3.12
-
+      
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flask flask-cors pandas scikit-learn openpyxl
-
+      
       - name: Train model
         working-directory: back-end/price-prediction-service
         run: |
           python app.py &
           sleep 15
           pkill -f flask || true
-
+      
       - name: Run tests
         working-directory: back-end/price-prediction-service
         run: |
@@ -45,8 +51,9 @@ jobs:
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
-
+      
       - name: Comment PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           script: |
@@ -54,14 +61,48 @@ jobs:
             const results = fs.readFileSync('back-end/price-prediction-service/test-results.txt', 'utf8');
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            
-            const header = testsPassed 
+            const header = testsPassed
               ? '### ✅ All Tests Passed! 🎉\n\n' +
                 `${totalTests} tests completed successfully ⭐\n\n`
               : '### ❌ Tests Failed\n\n';
-            
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
               body: `${header}\`\`\`\n${results}\n\`\`\``
             });
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Extract branch name and set tag
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+            echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
+            echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          fi
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./back-end/price-prediction-service
+          push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-price-prediction-service:latest
