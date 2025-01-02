@@ -32,6 +32,14 @@ const authenticate = async (req, res, next) => {
     }
 };
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'UP',
+        timestamp: new Date().toISOString(),
+    });
+});
+
 // Routes that don't need authentication
 app.use('/auth', proxy('http://user-service:5000', {
     proxyReqPathResolver: (req) => `/auth${req.url}`
@@ -47,6 +55,7 @@ app.use('/farming', authenticate, proxy('http://reward-service:5000', {
 }));
 
 const PORT = process.env.GATEWAY_PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`API Gateway running on port ${PORT}`);
 });
