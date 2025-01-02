@@ -16,6 +16,11 @@ app.use(express.json());
 // Routes
 app.use("/auth", authRoutes);
 
+// health check
+app.get("/health", (req, res) => {
+  res.json({ message: "User Service is running" });
+});
+
 // Syncing the database with logging
 sequelize.sync({ alter: true })
   .then(() => {

@@ -18,6 +18,11 @@ app.use(express.json());
 app.use("/rewards", rewardRoutes);
 app.use("/farming", farmingRoutes);
 
+// health check
+app.get("/health", (req, res) => {
+  res.json({ message: "Reward Service is running" });
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });

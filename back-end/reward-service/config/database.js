@@ -1,7 +1,7 @@
-// config/database.js
+// config/database.js reward service
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
-const logger = require("../utils/logger"); // Add the logger
+const logger = require("../utils/logger");
 
 const sequelize = new Sequelize({
   host: process.env.DB_HOST || "localhost",
@@ -20,15 +20,15 @@ const sequelize = new Sequelize({
 });
 
 // Test the connection and log the result
-// const testConnection = async () => {
-//   try {
-//     await sequelize.authenticate();
-//     logger.info("Connection to the database has been established successfully.");
-//   } catch (error) {
-//     logger.error(`Unable to connect to the database: ${error.message}`);
-//   }
-// };
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    logger.info("Connection to the database has been established successfully.");
+  } catch (error) {
+    logger.error(`Unable to connect to the database: ${error.message}`);
+  }
+};
 
-// testConnection();
+testConnection();
 
 module.exports = sequelize;
