@@ -1,0 +1,108 @@
+name: Deploy and Test Hyperledger Service
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy_and_test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        env:
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+        options: --health-cmd="redis-server --version" --health-interval=5s --health-timeout=3s --health-retries=5
+
+      hyperledger-peer-org1:
+        image: hyperledger/fabric-peer:latest
+        ports:
+          - 7051:7051
+        env:
+          CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+          CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_test
+        options: --health-cmd="peer node status" --health-interval=5s --health-timeout=3s --health-retries=5
+
+      hyperledger-peer-org2:
+        image: hyperledger/fabric-peer:latest
+        ports:
+          - 9051:9051
+        env:
+          CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+          CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_test
+        options: --health-cmd="peer node status" --health-interval=5s --health-timeout=3s --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get install -y docker-compose
+
+      - name: Set up environment variables
+        run: echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Build Docker images
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      - name: Run services with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for services to start
+        run: |
+          sleep 20
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests
+        id: run-tests
+        run: |
+          npm run test # Adjust according to your test script in package.json
+        continue-on-error: true
+
+      - name: Save test result status
+        id: test-results
+        run: echo "::set-output name=tests_passed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
+
+      - name: Deploy Hyperledger Service
+        if: ${{ steps.test-results.outputs.tests_passed == 'true' }}
+        run: |
+          # Assuming you've added a deploy script or command to deploy the Hyperledger service
+          # Replace the following line with your actual deployment command
+          echo "Deploying Hyperledger Service to the environment..."
+          npm run deploy # Adjust this line to your specific deploy script
+
+      - name: Comment PR (if pull request)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const status = '${{ steps.test-results.outputs.tests_passed }}' === 'true' ? 'success' : 'failure';
+            const testResultsMessage = status === 'success' 
+              ? '### ✅ Hyperledger Service - All Tests Passed! 🎉'
+              : '### ❌ Hyperledger Service - Tests Failed';
+            
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: testResultsMessage
+            });
+
+      - name: Tear down services
+        run: |
+          docker-compose -f docker-compose.yml down
