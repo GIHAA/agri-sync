@@ -37,12 +37,11 @@ SeedsRouter.get('/', async (req: Request, res: Response) => {
 
 SeedsRouter.post(
     '/',
-    body().isObject().withMessage('body must contain an Seed object'),
     body('farmerId', 'must be a string').notEmpty(),
     body('SeedType', 'must be a string').notEmpty(),
     body('quantity', 'must be a number').isNumeric(),
-    body('pricePerUnit', 'must be a string').notEmpty(),
-    body('location', 'must be a number').isNumeric(),
+    body('pricePerUnit', 'must be a string').isNumeric(),
+    body('location', 'must be a string').notEmpty(),
     async (req: Request, res: Response) => {
         logger.debug(req.body, 'Create Seed request received');
 
@@ -57,20 +56,20 @@ SeedsRouter.post(
             });
         }
 
-        const mspId = req.user as string;
-        const SeedId = req.body.ID;
+        const { farmerId, SeedType, quantity, pricePerUnit, location } =
+            req.body;
 
         try {
             const submitQueue = req.app.locals.jobq as Queue;
             const jobId = await addSubmitTransactionJob(
                 submitQueue,
-                mspId,
+                req.user as string,
                 'CreateSeed',
-                SeedId,
-                req.body.SeedType,
-                req.body.quantity,
-                req.body.pricePerUnit,
-                req.body.location
+                farmerId,
+                SeedType,
+                quantity,
+                pricePerUnit,
+                location
             );
 
             return res.status(ACCEPTED).json({
@@ -81,8 +80,9 @@ SeedsRouter.post(
         } catch (err) {
             logger.error(
                 { err },
-                'Error processing create Seed request for Seed ID %s',
-                SeedId
+                'Error processing create Seed request for Farmer %s and Seed %s',
+                farmerId,
+                SeedType
             );
 
             return res.status(INTERNAL_SERVER_ERROR).json({
@@ -93,63 +93,86 @@ SeedsRouter.post(
     }
 );
 
-SeedsRouter.options('/:SeedId', async (req: Request, res: Response) => {
-    const SeedId = req.params.SeedId;
-    logger.debug('Seed options request received for Seed ID %s', SeedId);
+SeedsRouter.options(
+    '/:farmerId/:SeedType',
+    async (req: Request, res: Response) => {
+        const { farmerId, SeedType } = req.params;
+        logger.debug(
+            'Seed options request received for Farmer %s and SeedType %s',
+            farmerId,
+            SeedType
+        );
 
-    try {
-        const mspId = req.user as string;
-        const contract = req.app.locals[mspId]?.SeedContract as Contract;
+        try {
+            const mspId = req.user as string;
+            const contract = req.app.locals[mspId]?.SeedContract as Contract;
 
-        const data = await evatuateTransaction(contract, 'SeedExists', SeedId);
-        const exists = data.toString() === 'true';
+            const data = await evatuateTransaction(
+                contract,
+                'SeedExists',
+                farmerId,
+                SeedType
+            );
+            const exists = data.toString() === 'true';
 
-        if (exists) {
-            return res
-                .status(OK)
-                .set({
-                    Allow: 'DELETE,GET,OPTIONS,PATCH,PUT',
-                })
-                .json({
-                    status: getReasonPhrase(OK),
+            if (exists) {
+                return res
+                    .status(OK)
+                    .set({
+                        Allow: 'DELETE,GET,OPTIONS,PATCH,PUT',
+                    })
+                    .json({
+                        status: getReasonPhrase(OK),
+                        timestamp: new Date().toISOString(),
+                    });
+            } else {
+                return res.status(NOT_FOUND).json({
+                    status: getReasonPhrase(NOT_FOUND),
                     timestamp: new Date().toISOString(),
                 });
-        } else {
-            return res.status(NOT_FOUND).json({
-                status: getReasonPhrase(NOT_FOUND),
+            }
+        } catch (err) {
+            logger.error(
+                { err },
+                'Error processing Seed options request for Farmer %s and SeedType %s',
+                farmerId,
+                SeedType
+            );
+            return res.status(INTERNAL_SERVER_ERROR).json({
+                status: getReasonPhrase(INTERNAL_SERVER_ERROR),
                 timestamp: new Date().toISOString(),
             });
         }
-    } catch (err) {
-        logger.error(
-            { err },
-            'Error processing Seed options request for Seed ID %s',
-            SeedId
-        );
-        return res.status(INTERNAL_SERVER_ERROR).json({
-            status: getReasonPhrase(INTERNAL_SERVER_ERROR),
-            timestamp: new Date().toISOString(),
-        });
     }
-});
+);
 
-SeedsRouter.get('/:SeedId', async (req: Request, res: Response) => {
-    const SeedId = req.params.SeedId;
-    logger.debug('Read Seed request received for Seed ID %s', SeedId);
+SeedsRouter.get('/:farmerId/:SeedType', async (req: Request, res: Response) => {
+    const { farmerId, SeedType } = req.params;
+    logger.debug(
+        'Read Seed request received for Farmer %s and SeedType %s',
+        farmerId,
+        SeedType
+    );
 
     try {
         const mspId = req.user as string;
         const contract = req.app.locals[mspId]?.SeedContract as Contract;
 
-        const data = await evatuateTransaction(contract, 'ReadSeed', SeedId);
+        const data = await evatuateTransaction(
+            contract,
+            'ReadSeed',
+            farmerId,
+            SeedType
+        );
         const Seed = JSON.parse(data.toString());
 
         return res.status(OK).json(Seed);
     } catch (err) {
         logger.error(
             { err },
-            'Error processing read Seed request for Seed ID %s',
-            SeedId
+            'Error processing read Seed request for Farmer %s and SeedType %s',
+            farmerId,
+            SeedType
         );
 
         if (err instanceof SeedNotFoundError) {

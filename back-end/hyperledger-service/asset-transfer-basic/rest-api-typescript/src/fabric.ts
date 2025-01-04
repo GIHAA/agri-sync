@@ -97,9 +97,19 @@ export const getNetwork = async (gateway: Gateway): Promise<Network> => {
 export const getContracts = async (
     network: Network
 ): Promise<{ SeedContract: Contract; qsccContract: Contract }> => {
-    const SeedContract = network.getContract(config.chaincodeName);
-    const qsccContract = network.getContract('qscc');
-    return { SeedContract, qsccContract };
+    try {
+        const SeedContract = network.getContract(config.chaincodeName);
+        const qsccContract = network.getContract('qscc');
+
+        if (!SeedContract || !qsccContract) {
+            throw new Error('Failed to retrieve contracts from network.');
+        }
+
+        return { SeedContract, qsccContract };
+    } catch (err) {
+        logger.error('Error fetching contracts:', err);
+        throw err;
+    }
 };
 
 /**

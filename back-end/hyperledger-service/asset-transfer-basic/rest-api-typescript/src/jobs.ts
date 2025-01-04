@@ -87,6 +87,7 @@ export const initJobQueueWorker = (app: Application): Worker => {
     if (logger.isLevelEnabled('debug')) {
         worker.on('completed', (job) => {
             logger.debug({ job }, 'Job completed');
+            //updateJobData;
         });
     }
 
@@ -250,7 +251,7 @@ export const updateJobData = async (
     await job.update(newData);
 };
 
-/**
+/**7
  * Gets a job summary
  *
  * This function is used for the jobs REST endpoint

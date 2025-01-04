@@ -1,5 +1,4 @@
 import IORedis, { Redis, RedisOptions } from 'ioredis';
-
 import * as config from './config';
 import { logger } from './logger';
 
