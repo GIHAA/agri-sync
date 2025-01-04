@@ -5,8 +5,11 @@ import {
   getTransactionById,
   getTransactions
 } from "../services/seedTransaction.service";
+import protect from "../middleware/protect";
 
 const router = express.Router();
+
+router.use(protect);
 
 // Create a new seed transaction
 router.post("/", async (req, res, next) => {

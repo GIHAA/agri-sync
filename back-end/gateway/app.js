@@ -32,21 +32,42 @@ const authenticate = async (req, res, next) => {
     }
 };
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'UP',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// // Routes that don't need authentication
+// app.use('/auth', proxy('http://user-service:5000', {
+//     proxyReqPathResolver: (req) => `/auth${req.url}`
+// }));
+
+// // Protected routes
+// app.use('/rewards', authenticate, proxy('http://reward-service:5000', {
+//     proxyReqPathResolver: (req) => `/rewards${req.url}`
+// }));
+
+// app.use('/farming', authenticate, proxy('http://reward-service:5000', {
+//     proxyReqPathResolver: (req) => `/farming${req.url}`
+// }));
+
 // Routes that don't need authentication
-app.use('/auth', proxy('http://user-service:5000', {
+app.use('/auth-service', proxy('http://localhost:3001', {
     proxyReqPathResolver: (req) => `/auth${req.url}`
 }));
 
 // Protected routes
-app.use('/rewards', authenticate, proxy('http://reward-service:5000', {
+app.use('/rewards-service', authenticate, proxy('http://localhost:3003', {
     proxyReqPathResolver: (req) => `/rewards${req.url}`
 }));
 
-app.use('/farming', authenticate, proxy('http://reward-service:5000', {
-    proxyReqPathResolver: (req) => `/farming${req.url}`
-}));
+
 
 const PORT = process.env.GATEWAY_PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`API Gateway running on port ${PORT}`);
 });
