@@ -14,35 +14,6 @@ const getActivityHistory = async (userId) => {
   return await rewardRepo.getActivityHistory(userId);
 };
 
-// const redeemPoints = async (userId, rewardType) => {
-//   // todo : get the points required for each reward type
-//   // const pointsRequired = {
-//   //   'market_insight': 100,
-//   //   'premium_prediction': 100,
-//   //   'consultation': 500
-//   // };
-
-//   logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
-//   const userPoints = await rewardRepo.getUserPoints(userId);
-
-//   if (!userPoints || userPoints.total_points < pointsRequired[rewardType]) {
-//     logger.warn(`User ${userId} has insufficient points for ${rewardType}`);
-//     return {
-//       success: false,
-//       message: "Insufficient points"
-//     };
-//   }
-//   await rewardRepo.deductPoints(userId, pointsRequired[rewardType]);
-
-//   await rewardRepo.addActivityHistory(userId, "Reward Redemption", -pointsRequired[rewardType], `Redeemed ${rewardType} reward`);
-
-//   logger.info(`User ${userId} successfully redeemed ${rewardType} reward`);
-//   return {
-//     success: true,
-//     message: `Redeemed ${rewardType} reward`
-//   };
-// };
-
 const redeemPoints = async (userId, rewardType) => {
   try {
     logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
