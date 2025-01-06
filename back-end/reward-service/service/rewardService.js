@@ -81,6 +81,16 @@ const addFarmingDataReward = async (userId ) => {
   return addPoints(userId, pointsToAdd);
 }
 
+const getPointSettings = async () => {
+  logger.info('Fetching point settings');
+  return await PointSettings.findAll();
+}
+
+const getPointSetting = async (event) => {
+  logger.info(`Fetching point setting for event: ${event}`);
+  return await PointSettings.findOne({ where: { event } });
+}
+
 const addPoints = async (userId, pointsToAdd) => {
   logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
   const userPoints = await rewardRepo.getUserPoints(userId);
@@ -133,5 +143,7 @@ module.exports = {
   redeemPoints,
   addPoints,
   updatePoints,
-  addFarmingDataReward
+  addFarmingDataReward,
+  getPointSettings,
+  getPointSetting
 };
