@@ -17,14 +17,12 @@ export const createSeedTransaction = async (data: {
     let status = "In Progress";
     let blockchainTxId = data.blockchainTxId;
 
+    blockchainTxId = await initiateBlockchainTransaction(data);
 
-    if (!blockchainTxId || blockchainTxId === '') {
-
-      blockchainTxId = await initiateBlockchainTransaction(data);
-
-      status = "Pending";
-    } else {
+    if (blockchainTxId) {
       status = "Completed";
+    } else {
+      status = "Pending";
     }
 
     const transactionId = await transactionRepository.createOrUpdateSeedTransaction({
@@ -51,16 +49,12 @@ const initiateBlockchainTransaction = async (data: {
   quantity: number;
   pricePerUnit: number;
   location: string;
+  blockchainTxId: string | null;
 }) => {
   try {
-
-    console.log("Initiating blockchain transaction...");
-
-
-    const simulatedTxId = "Pending for real-blockchain-tx-id-updated";
-
-    // Return the simulated blockchain transaction ID
-    return simulatedTxId;
+    //return correct blockchain transaction ID
+    const blockchainTxId = data.blockchainTxId;
+    return blockchainTxId;
   } catch (error) {
     console.error("Error initiating blockchain transaction:", error);
     throw error;

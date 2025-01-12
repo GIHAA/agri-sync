@@ -118,26 +118,22 @@ export class TransactionRepository implements ITransactionRepository {
         RETURNING id;
       `;
 
-      // Set the values to be inserted into the query
       const values = [
         data.farmerId,
         data.seedType,
         data.quantity,
         data.pricePerUnit,
         data.location,
-        data.blockchainTxId || null, // If no blockchainTxId is provided, set it as null
+        data.blockchainTxId || null,
       ];
 
-      // Execute the query and get the result
       const result = await db.query(query, values);
 
-      // Check if the insert was successful
       if (!result.rows.length) {
         throw new Error("Transaction creation failed.");
       }
 
-      // Return the inserted transaction ID
-      return result.rows[0].id; // Return the ID of the inserted row
+      return result.rows[0].id;
     } catch (error) {
       console.error("Error in createOrUpdateSeedTransaction:", error);
       throw error;
