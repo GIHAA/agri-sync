@@ -20,6 +20,9 @@ export class Seed {
     @Property()
     public location: string = '';
 
+    @Property()
+    public transectionIds?: string[];
+
     // constructor(farmerId: string, SeedType: string, quantity: number, pricePerUnit: number, location: string, docType: string = 'Seed') {
     //     this.farmerId = farmerId;
     //     this.SeedType = SeedType;

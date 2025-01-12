@@ -14,7 +14,7 @@ using just ${farmerId} would result in overwriting or confusion because the key 
 export class SeedTransferContract extends Contract {
 
     @Transaction()
-    public async InitLedger(ctx: Context): Promise<void> {
+    public async InitLedger(ctx: Context): Promise<string> {
         const Seeds: Seed[] = [
             {
 
@@ -66,17 +66,22 @@ export class SeedTransferContract extends Contract {
             },
         ];
 
+        const initializedKeys: string[] = [];
+
         for (const seed of Seeds) {
             seed.docType = 'Seed';
             // Store the seed data in a deterministic order
             await ctx.stub.putState(`${seed.farmerId}-${seed.SeedType}`, Buffer.from(stringify(sortKeysRecursive(seed))));
             console.info(`Seed ${seed.farmerId}-${seed.SeedType} initialized`);
         }
+
+        // Return a summary of initialized keys
+        return JSON.stringify({ message: 'Ledger initialized', keys: initializedKeys });
     }
 
     // CreateSeed issues a new Seed to the world state with given details.
     @Transaction()
-    public async CreateSeed(ctx: Context, farmerId: string, SeedType: string, quantity: number, pricePerUnit: number, location: string): Promise<void> {
+    public async CreateSeed(ctx: Context, farmerId: string, SeedType: string, quantity: number, pricePerUnit: number, location: string): Promise<string> {
         const exists = await this.SeedExists(ctx, farmerId, SeedType);
         if (exists) {
             throw new Error(`The Seed ${SeedType} already exists for Farmer ${farmerId}`);
@@ -88,11 +93,15 @@ export class SeedTransferContract extends Contract {
             SeedType: SeedType,
             quantity: quantity,
             pricePerUnit: pricePerUnit,
-            location: location
+            location: location,
+            transections: [ctx.stub.getTxID()]
         };
 
         // Store the seed in world state
         await ctx.stub.putState(`${farmerId}-${SeedType}`, Buffer.from(stringify(sortKeysRecursive(seed))));
+
+        // Return the created seed as payload
+        return stringify(seed);
     }
 
     // ReadSeed returns the Seed stored in the world state with given farmerId and SeedType.
@@ -148,8 +157,11 @@ export class SeedTransferContract extends Contract {
     public async TransferSeedOwner(ctx: Context, farmerId: string, newFarmerId: string, SeedType: string): Promise<string> {
         const seedString = await this.ReadSeed(ctx, farmerId, SeedType);
         const seed = JSON.parse(seedString) as Seed;
-        const oldOwner = seed.farmerId; // Store the old owner (farmerId)
-        seed.farmerId = newFarmerId; // Update the owner (farmerId)
+        const oldOwner = seed.farmerId;
+        seed.farmerId = newFarmerId;
+
+        seed.transectionIds = seed.transectionIds || [];
+        seed.transectionIds.push(ctx.stub.getTxID());
 
         // Save the updated seed information in world state
         await ctx.stub.putState(`${newFarmerId}-${SeedType}`, Buffer.from(stringify(sortKeysRecursive(seed))));
@@ -169,6 +181,7 @@ export class SeedTransferContract extends Contract {
         };
 
         // Store the history in a separate audit log collection or append to the state
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         await ctx.stub.putState(`${key}-history-${Date.now()}`, Buffer.from(stringify(sortKeysRecursive(historyEntry))));
     }
 

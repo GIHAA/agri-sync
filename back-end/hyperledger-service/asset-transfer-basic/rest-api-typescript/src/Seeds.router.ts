@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { Contract } from 'fabric-network';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
-import { Queue } from 'bullmq';
+import { Job, Queue } from 'bullmq';
 import { SeedNotFoundError } from './errors';
 import { evatuateTransaction } from './fabric';
 import { addSubmitTransactionJob } from './jobs';
@@ -18,11 +18,31 @@ SeedsRouter.get('/', async (req: Request, res: Response) => {
     try {
         const mspId = req.user as string;
         const contract = req.app.locals[mspId]?.SeedContract as Contract;
+        const submitQueue = req.app.locals.jobq as Queue;
 
         const data = await evatuateTransaction(contract, 'GetAllSeeds');
         let Seeds = [];
         if (data.length > 0) {
             Seeds = JSON.parse(data.toString());
+        }
+
+        for (const seed of Seeds) {
+            const jobId = seed.blockchain_tx_id; // Assume this maps to the job ID
+            if (jobId) {
+                const job: Job | undefined = await submitQueue.getJob(jobId);
+                if (job) {
+                    seed.jobDetails = {
+                        id: job.id,
+                        transactionIds: job.returnvalue?.transactionIds || [],
+                        transactionPayload:
+                            job.returnvalue?.transactionPayload || '',
+                    };
+                } else {
+                    seed.jobDetails = {
+                        message: 'Job details not found',
+                    };
+                }
+            }
         }
 
         return res.status(OK).json(Seeds);
