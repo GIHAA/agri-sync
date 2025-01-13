@@ -6,7 +6,6 @@ import os
 
 app = Flask(__name__)
 
-# Simple Q-learning Agent Class
 class SimpleQAgent:
     def __init__(self, n_actions):
         self.n_actions = n_actions
@@ -24,11 +23,11 @@ class SimpleQAgent:
                 q_table = np.array(json.load(f))
         else:
             # Initialize Q-table with zeros if it doesn't exist
-            q_table = np.zeros(self.n_actions)
+            q_table = np.zeros(self.n_actions)  # Adjusted for 36 actions
         return q_table
 
     def save_q_table(self):
-        """Save the Q-table to a JSON file."""
+        """Save the Q-table to the JSON file."""
         with open('q_table.json', 'w') as f:
             json.dump(self.q_table.tolist(), f)  # Save as list in JSON format
 
@@ -47,20 +46,31 @@ class SimpleQAgent:
         """Decay the exploration rate to favor exploitation over time."""
         self.exploration_rate = max(self.exploration_rate * self.exploration_decay, self.exploration_min)
 
-# Create a Q-learning agent with 3 possible actions
-agent = SimpleQAgent(n_actions=3)
+
+
+agent = SimpleQAgent(n_actions=36)
 
 @app.route('/track-interaction', methods=['POST'])
 def track_interaction():
     """Endpoint to track button interactions and update the Q-table."""
     data = request.json
     button_clicks = data.get('buttonClicks', 0)
+    task_completed = data.get('taskCompleted', False)
 
     try:
-        # Example reward calculation (this can be adjusted)
-        reward = button_clicks / 10  # Calculate reward based on button clicks
-        action = agent.choose_action()  # Choose an action based on the current Q-table
-        agent.update_q_table(action, reward)  # Update the Q-table with the new reward
+       
+        if task_completed:
+            reward = 5  # Task completed 
+        elif button_clicks > 0:
+            reward = 1  # Button clicked but task not completed
+        else:
+            reward = -1  # No button click (penalize no interaction)
+
+        # Choose an action (button size, color theme, shape, font size combination)
+        action = agent.choose_action()
+
+        # Update Q-table based on the chosen action and reward
+        agent.update_q_table(action, reward)
 
         # Decay the exploration rate for future interactions
         agent.decay_exploration()
@@ -68,7 +78,10 @@ def track_interaction():
         # Save the updated Q-table to the JSON file
         agent.save_q_table()
 
-        return jsonify({'action': int(action), 'exploration_rate': agent.exploration_rate})
+        return jsonify({
+            'action': int(action), 
+            'exploration_rate': agent.exploration_rate
+        })
 
     except Exception as e:
         app.logger.error(f"Error in track_interaction: {e}")
@@ -88,7 +101,6 @@ def get_ui_recommendation():
 
 
 if __name__ == '__main__':
-    # Set up logging to capture errors
     logging.basicConfig(level=logging.DEBUG)
 
     # Run the Flask app

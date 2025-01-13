@@ -53,3 +53,6 @@ yarn.lock             # Ignore Yarn lock file
 __pycache__/
 *.py[cod]
 venv/
+
+age_net.caffeemodel
+gender_net.caffeemodel

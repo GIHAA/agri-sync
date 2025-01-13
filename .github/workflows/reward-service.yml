@@ -1,0 +1,140 @@
+name: Reward Service - Test and Deploy
+
+on:
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize]
+  push:
+    branches:
+      - develop
+      - 'release-*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Install dependencies
+        working-directory: back-end/reward-service
+        run: npm ci
+      
+      - name: Run tests
+        working-directory: back-end/reward-service
+        run: npm test -- --reporters=default --reporters=jest-junit
+      
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: test-results
+          path: back-end/reward-service/junit.xml
+      
+      - name: Process test results
+        id: test-results
+        run: |
+          if grep -q "success" back-end/reward-service/junit.xml; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "tests_passed=true" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -c "testcase" back-end/reward-service/junit.xml)" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('back-end/reward-service/junit.xml', 'utf8');
+            
+            const formatTestResults = (results, testsPassed, totalTests) => {
+              const testCases = results.match(/<testcase.*?<\/testcase>/gs);
+              
+              let formattedOutput = testsPassed 
+                ? `### ✅ Reward Service - All Tests Passed! 🎉\n${totalTests} tests completed successfully ⭐\n\n`
+                : `### ❌ Reward Service - Tests Failed\n\n`;
+              
+              formattedOutput += '### Test Results Summary\n\n';
+              
+              const suites = {};
+              testCases.forEach(testCase => {
+                const suiteName = testCase.match(/classname="([^"]+)"/)[1];
+                const testName = testCase.match(/name="([^"]+)"/)[1];
+                const failed = testCase.includes('<failure');
+                
+                if (!suites[suiteName]) {
+                  suites[suiteName] = [];
+                }
+                
+                suites[suiteName].push({
+                  name: testName,
+                  status: failed ? '❌' : '✅'
+                });
+              });
+              
+              Object.entries(suites).forEach(([suite, tests]) => {
+                formattedOutput += `#### ${suite}\n`;
+                tests.forEach(test => {
+                  formattedOutput += `${test.status} ${test.name}\n`;
+                });
+                formattedOutput += '\n';
+              });
+              
+              return formattedOutput;
+            };
+
+            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+            const testResults = formatTestResults(results, testsPassed, totalTests);
+            
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: testResults
+            });
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Extract branch name and set tag
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+            echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
+            echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          fi
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./back-end/reward-service
+          push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-reward-service:latest

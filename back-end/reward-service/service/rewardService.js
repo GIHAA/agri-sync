@@ -16,7 +16,7 @@ const getActivityHistory = async (userId) => {
 const redeemPoints = async (userId, rewardType) => {
   const pointsRequired = {
     'market_insight': 100,
-    'premium_prediction': 250,
+    'premium_prediction': 100,
     'consultation': 500
   };
 
@@ -53,12 +53,14 @@ const addPoints = async (userId, pointsToAdd) => {
   const userPoints = await rewardRepo.getUserPoints(userId);
 
   if (!userPoints) {
+    logger.info(`User points not found for user ${userId}`);
     await rewardRepo.createUserPoints(userId, pointsToAdd);
     logger.info(`Created new reward points entry for user ${userId} with ${pointsToAdd} points`);
   } else {
+    logger.info(`Updating points for user ${userId}. Current total: ${userPoints.total_points}`);
     userPoints.total_points += pointsToAdd;
     await userPoints.save();
-    logger.info(`Updated points for user ${userId}. New total: ${userPoints.total_points}`);
+    logger.info(`Updated points for user ${userId}. New total: ${pointsToAdd}`);
   }
 
   // Add activity history
@@ -66,7 +68,7 @@ const addPoints = async (userId, pointsToAdd) => {
 
   return {
     success: true,
-    message: `Added ${pointsToAdd} points. New total: ${userPoints.total_points}`
+    message: `Added ${pointsToAdd} points. New total: ${userPoints ? userPoints.total_points : pointsToAdd}`
   };
 };
 

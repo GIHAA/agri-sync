@@ -1,0 +1,80 @@
+{
+  "name": "fabric-network",
+  "version": "1.0.0",
+  "client": {
+    "organization": "Org1",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "3000"
+        },
+        "orderer": "3000"
+      }
+    }
+  },
+  "channels": {
+    "seedtransactions-channel": {
+      "orderers": [
+        {
+          "url": "grpcs://localhost:7050",
+          "server-hostname": "orderer.example.com",
+          "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Yh6F4lD/s9edGuaJRaO\n-----END CERTIFICATE-----"
+          }
+        }
+      ],
+      "peers": {
+        "peer0.org1.example.com": {
+          "url": "grpcs://localhost:7051",
+          "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Yh6F4lD/s9edGuaJRaO\n-----END CERTIFICATE-----"
+          }
+        }
+      }
+    }
+  },
+  "organizations": {
+    "Org1": {
+      "mspid": "Org1MSP",
+      "peers": [
+        "peer0.org1.example.com"
+      ],
+      "certificateAuthorities": [
+        "ca.org1.example.com"
+      ]
+    }
+  },
+  "orderers": {
+    "orderer.example.com": {
+      "url": "grpcs://localhost:7050",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Yh6F4lD/s9edGuaJRaO\n-----END CERTIFICATE-----"
+      }
+    }
+  },
+  "peers": {
+    "peer0.org1.example.com": {
+      "url": "grpcs://localhost:7051",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Yh6F4lD/s9edGuaJRaO\n-----END CERTIFICATE-----"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.org1.example.com": {
+      "url": "https://localhost:7054",
+      "caName": "ca-org1",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7Yh6F4lD/s9edGuaJRaO\n-----END CERTIFICATE-----"
+      }
+    }
+  },
+  "chaincodes": [
+    {
+      "name": "seedContract",
+      "version": "1.0",
+      "path": "/mnt/d/Repository/Research_project_v1/fabric-samples/asset-transfer-basic/chaincode-go/chaincode",
+      "language": "go"
+    }
+  ]
+}

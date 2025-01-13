@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import { 
-  TouchableOpacity, 
-  Text, 
-  ActivityIndicator, 
-  GestureResponderEvent, 
-  View, 
-  LayoutChangeEvent 
+import {
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  GestureResponderEvent,
+  View,
+  LayoutChangeEvent,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import * as Device from "expo-device";
@@ -16,25 +16,31 @@ import { router } from "expo-router";
 export type ThemedButtonProps = {
   label: string;
   onPress: () => void;
+  onMissClick ?: () => void;
   buttonId: string;
   disabled?: boolean;
   loading?: boolean;
   variant?: "primary" | "secondary" | "outline";
   containerStyle?: string;
   textStyle?: string;
-  missClickTrackingArea?: number; 
+  viewStyle?: string;
+  missClickTrackingArea?: number;
+  missContainerStyle?: string;
 };
 
 export function ThemedButtonWithML({
   label,
   onPress,
+  onMissClick,
   buttonId,
   disabled = false,
   loading = false,
   variant = "primary",
+  viewStyle = "",
   containerStyle = "",
   textStyle = "",
-  missClickTrackingArea = 50, 
+  missClickTrackingArea = 50,
+  missContainerStyle = "",
 }: ThemedButtonProps) {
   const themeColor = useThemeColor({}, "background");
   const buttonRef = useRef<any>(null);
@@ -81,8 +87,8 @@ export function ThemedButtonWithML({
   };
 
   const calculateMissClickDistance = (
-    clickX: number, 
-    clickY: number, 
+    clickX: number,
+    clickY: number,
     buttonLayout: any
   ) => {
     // Calculate the center of the button
@@ -91,14 +97,16 @@ export function ThemedButtonWithML({
 
     // Calculate Euclidean distance
     const distance = Math.sqrt(
-      Math.pow(clickX - buttonCenterX, 2) + 
-      Math.pow(clickY - buttonCenterY, 2)
+      Math.pow(clickX - buttonCenterX, 2) + Math.pow(clickY - buttonCenterY, 2)
     );
 
     return distance;
   };
 
-  const trackButtonInteraction = async (event: GestureResponderEvent, isMissClick: boolean = false) => {
+  const trackButtonInteraction = async (
+    event: GestureResponderEvent,
+    isMissClick: boolean = false
+  ) => {
     try {
       // Get user ID from SecureStore
       const user = await SecureStore.getItemAsync("user");
@@ -108,23 +116,26 @@ export function ThemedButtonWithML({
       // const { locationX, locationY } = event.nativeEvent;
 
       // Calculate session duration
-      const sessionDuration = Math.floor((Date.now() - sessionStartTime.current) / 1000);
+      const sessionDuration = Math.floor(
+        (Date.now() - sessionStartTime.current) / 1000
+      );
 
       // Prepare interaction data
       const interactionData = {
-        user_id: userId || 'unknown',
+        user_id: userId || "unknown",
         button_id: buttonId,
         click_coordinates: {
           x: 1,
-          y: 2
+          y: 2,
         },
-        missed_click_distance: isMissClick && buttonLayout 
-          ? calculateMissClickDistance(2, 1, buttonLayout)
-          : 0,
+        missed_click_distance:
+          isMissClick && buttonLayout
+            ? calculateMissClickDistance(2, 1, buttonLayout)
+            : 0,
         is_miss_click: isMissClick,
         session_duration: sessionDuration,
-        device: Device.deviceName || 'Unknown Device',
-        timestamp: new Date().toISOString()
+        device: Device.deviceName || "Unknown Device",
+        timestamp: new Date().toISOString(),
       };
 
       // Send interaction data to tracking service
@@ -135,7 +146,7 @@ export function ThemedButtonWithML({
         onPress();
       }
     } catch (error) {
-      console.error('Error tracking button interaction:', error);
+      console.error("Error tracking button interaction:", error);
       // Fallback to original onPress if tracking fails
       if (!isMissClick) {
         onPress();
@@ -144,22 +155,24 @@ export function ThemedButtonWithML({
   };
 
   return (
-    <View 
+    <View
       ref={containerRef}
-      className="relative"
+      className={`relative w-full p-4 ${viewStyle}`}
       onLayout={handleLayout}
     >
       {/* Invisible miss-click tracking area */}
       <TouchableOpacity
-        className="absolute z-0"
+      className={`absolute z-0 ${missContainerStyle}`}
         style={{
           top: -missClickTrackingArea,
           left: -missClickTrackingArea,
           right: -missClickTrackingArea,
           bottom: -missClickTrackingArea,
         }}
-        
-        onPress={(event) => trackButtonInteraction(event, true)}
+        onPress={(event) => {
+          trackButtonInteraction(event, true)
+          onMissClick && onMissClick()
+        }}
       />
 
       {/* Actual button */}

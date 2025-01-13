@@ -16,14 +16,19 @@ app.use(express.json());
 // Routes
 app.use("/auth", authRoutes);
 
-// // Syncing the database with logging
-// sequelize.sync({ alter: true })
-//   .then(() => {
-//     logger.info("Database synced successfully.");
-//   })
-//   .catch((error) => {
-//     logger.error(`Database sync error: ${error.message}`);
-//   });
+// health check
+app.get("/health", (req, res) => {
+  res.json({ message: "User Service is running" });
+});
+
+// Syncing the database with logging
+sequelize.sync({ alter: true })
+  .then(() => {
+    logger.info("Database synced successfully.");
+  })
+  .catch((error) => {
+    logger.error(`Database sync error: ${error.message}`);
+  });
 
 // Start the server
 const PORT = process.env.PORT || 5000;

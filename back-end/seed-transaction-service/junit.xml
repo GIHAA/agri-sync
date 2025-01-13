@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="7.921">
+  <testsuite name="Seed Transaction Routes" errors="0" failures="0" skipped="0" timestamp="2025-01-02T22:18:32" time="6.47" tests="3">
+    <testcase classname="Seed Transaction Routes should create a new transaction" name="Seed Transaction Routes should create a new transaction" time="0.333">
+    </testcase>
+    <testcase classname="Seed Transaction Routes should get a transaction by ID" name="Seed Transaction Routes should get a transaction by ID" time="0.023">
+    </testcase>
+    <testcase classname="Seed Transaction Routes should get all transactions" name="Seed Transaction Routes should get all transactions" time="0.024">
+    </testcase>
+  </testsuite>
+</testsuites>
