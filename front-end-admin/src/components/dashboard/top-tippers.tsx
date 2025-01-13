@@ -17,7 +17,7 @@ function TopTippers() {
       <div className="col-span-12 mt-6">
         <div className="intro-y block h-10 items-center sm:flex">
           <h2 className="mb-[5px] mr-5 text-[19px] text-lg font-medium text-[#2D3748]">
-            Top Tippers This Week
+            Top Agripers This Week
           </h2>
         </div>
         <div className="h-full w-full">

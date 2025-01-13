@@ -41,16 +41,16 @@ function Router() {
       path: '/',
       element: (
         // <PrivateRoute>
-          
+
         // </PrivateRoute>
 
         <SideMenu />
       ),
       children: [
-        // {
-        //   path: '/',
-        //   element: <Scanner />,
-        // },
+        {
+          path: '/',
+          element: <Dashboard />,
+        },
         {
           path: '/qr-scanner',
           element: <Scanner />,

@@ -268,8 +268,13 @@ const initialState: SideMenuState = {
     //    pathname: '/qr-scanner',
     //  },
     {
+      icon: 'User',
+      pathname: '/qr-scanner',
+      title: 'QR Scanner',
+    },
+    {
       icon: 'Activity',
-      pathname: '/manage-users',
+      pathname: '/table',
       title: 'User List',
     },
     // Use the permission checking for Admin Users only

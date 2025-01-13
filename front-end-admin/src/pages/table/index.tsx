@@ -34,23 +34,37 @@ function Main() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3045/seed-transactions");
-        const result = await response.json();
-        
-        if (result.success) {
-          setTransactions(result.data); 
-        } else {
-          console.error("Failed to fetch data: ", result.message); 
+        const response = await fetch("http://localhost:3045/seed-transactions", {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            //"X-Api-Key": "94a74636-a236-47fc-bede-6c4a0147e9d3",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        
-        setLoading(false);
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          setTransactions(result.data); // Update state with the fetched data
+        } else {
+          console.error("Failed to fetch data: ", result.message);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
+        console.error("Error fetching data:", error); // Handle fetch or parsing errors
+      } finally {
+        setLoading(false); // Ensure loading is set to false regardless of success/failure
       }
     };
+  
     fetchData();
   }, []);
+  
+  
 
   const handlePageClick = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -142,8 +156,8 @@ function Main() {
                 <Table.Th className="border-b-0 whitespace-nowrap">Location</Table.Th>
                 <Table.Th className="border-b-0 whitespace-nowrap">Blockchain TX ID</Table.Th>
                 <Table.Th className="border-b-0 whitespace-nowrap">Status</Table.Th>
-                <Table.Th className="border-b-0 whitespace-nowrap">Created At</Table.Th>
-                <Table.Th className="border-b-0 whitespace-nowrap">Updated At</Table.Th>
+                {/* <Table.Th className="border-b-0 whitespace-nowrap">Created At</Table.Th>
+                <Table.Th className="border-b-0 whitespace-nowrap">Updated At</Table.Th> */}
                 <Table.Th className="border-b-0 whitespace-nowrap">Action</Table.Th>
               </Table.Tr>
             </Table.Thead>
@@ -162,8 +176,8 @@ function Main() {
                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.location}</Table.Td>
                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.blockchain_tx_id}</Table.Td>
                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.status}</Table.Td>
-                  <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.created_at).toLocaleString()}</Table.Td>
-                  <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.updated_at).toLocaleString()}</Table.Td>
+                  {/* <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.created_at).toLocaleString()}</Table.Td>
+                  <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.updated_at).toLocaleString()}</Table.Td> */}
                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">
                     <Menu>
                       <Menu.Button className="flex items-center justify-center w-5 h-5">
@@ -205,9 +219,250 @@ export default Main;
 
 
 
+// import React, { useState, useEffect, useRef } from "react";
+// import _ from "lodash";
+// import clsx from "clsx";
+// import Button from "../../components/common/button";
+// import Pagination from "../../components/common/pagination";
+// import { FormCheck, FormInput, FormSelect } from "../../components/common/form-elements/components";
+// import Lucide from "../../components/common/lucide";
+// import { Dialog, Menu } from "../../components/common/headless";
+// import Table from "../../base-components/Table";
+// import PreviewImage from '../../../src/assets/images/fakers/image2.jpg';
+
+// interface Transaction {
+//   id: number;
+//   farmer_id: number;
+//   seed_type: string;
+//   quantity: number;
+//   price_per_unit: number;
+//   total_price: number;
+//   location: string;
+//   blockchain_tx_id: string;
+//   status: string;
+//   created_at: string;
+//   updated_at: string;
+// }
+
+// function Main() {
+//   const [transactions, setTransactions] = useState<Transaction[]>([]);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState<boolean>(false);
+//   const deleteButtonRef = useRef(null);
+//   const [currentPage, setCurrentPage] = useState<number>(1);
+//   const [pageSize, setPageSize] = useState<number>(10);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch("http://localhost:3001/api/seeds", {
+//           headers: {
+//             'Content-Type': 'application/json',
+//             "X-Api-Key": "8b6a155f-5802-4b52-b8b7-533af55828fd",
+//           },
+//           mode :'cors'
+//         });
+//         const result = await response.json();
+  
+//         if (response.ok) {
+//           const transformedData = result.map((item: any, index: number) => ({
+//             id: index + 1,
+//             farmer_id: item.farmerId,
+//             seed_type: item.SeedType,
+//             quantity: item.quantity,
+//             price_per_unit: item.pricePerUnit,
+//             total_price: item.quantity * item.pricePerUnit,
+//             location: item.location,
+//             blockchain_tx_id: item.blockchain_tx_id || "N/A",
+//             status: "Active", // Default status
+//             created_at: new Date().toISOString(),
+//             updated_at: new Date().toISOString(),
+//           }));
+//           setTransactions(transformedData);
+//         } else {
+//           console.error("Failed to fetch data: ", result.message);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+  
+//     fetchData();
+//   }, []);
+  
+
+//   const handlePageClick = (pageNumber: number) => {
+//     setCurrentPage(pageNumber);
+//   };
+
+//   const handlePageSizeChange = (size: number) => {
+//     setPageSize(size);
+//   };
+
+//   const handleChange = () => { };
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
+
+//   const paginatedTransactions = _.slice(
+//     transactions,
+//     (currentPage - 1) * pageSize,
+//     currentPage * pageSize
+//   );
+
+//   return (
+//     <>
+//       <h2 className="mt-10 text-lg font-medium intro-y">Seed Transactions</h2>
+//       <div className="grid grid-cols-12 gap-6 mt-5">
+//         <div className="flex flex-wrap items-center col-span-12 mt-2 intro-y xl:flex-nowrap">
+//           <div className="flex w-full sm:w-auto">
+//             <div className="relative w-48 text-slate-500">
+//               <FormInput
+//                 type="text"
+//                 className="w-48 pr-10 !box"
+//                 placeholder="Search by name..."
+//               />
+//               <Lucide
+//                 icon="Search"
+//                 className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+//               />
+//             </div>
+//             <FormSelect className="w-48 ml-2 xl:w-auto !box">
+//               <option>Status</option>
+//               <option>Active</option>
+//               <option>Removed</option>
+//             </FormSelect>
+//           </div>
+//           <div className="hidden mx-auto xl:block text-slate-500">
+//             Showing {currentPage} to {Math.min(currentPage * pageSize, transactions.length)} of {transactions.length} entries
+//           </div>
+//           <div className="flex flex-wrap items-center w-full mt-3 xl:w-auto xl:flex-nowrap gap-y-3 xl:mt-0">
+//             <Button variant="primary" className="mr-2 shadow-md">
+//               <Lucide icon="FileText" className="w-4 h-4 mr-2" /> Export to Excel
+//             </Button>
+//             <Button variant="primary" className="mr-2 shadow-md">
+//               <Lucide icon="FileText" className="w-4 h-4 mr-2" /> Export to PDF
+//             </Button>
+//             <Menu>
+//               <Menu.Button as={Button} className="px-2 !box">
+//                 <span className="flex items-center justify-center w-5 h-5">
+//                   <Lucide icon="Plus" className="w-4 h-4" />
+//                 </span>
+//               </Menu.Button>
+//               <Menu.Items className="w-40">
+//                 <Menu.Item>
+//                   <Lucide icon="Printer" className="w-4 h-4 mr-2" /> Print
+//                 </Menu.Item>
+//                 <Menu.Item>
+//                   <Lucide icon="FileText" className="w-4 h-4 mr-2" /> Export to Excel
+//                 </Menu.Item>
+//                 <Menu.Item>
+//                   <Lucide icon="FileText" className="w-4 h-4 mr-2" /> Export to PDF
+//                 </Menu.Item>
+//               </Menu.Items>
+//             </Menu>
+//           </div>
+//         </div>
+//         {/* BEGIN: Data List */}
+//         <div className="col-span-12 overflow-auto intro-y 2xl:overflow-visible">
+//           <Table className="border-spacing-y-[10px] border-separate -mt-2">
+//             <Table.Thead variant="default">
+//               <Table.Tr>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">
+//                   <FormCheck.Input type="checkbox" />
+//                 </Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">ID</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Farmer ID</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Seed Type</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Quantity</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Price per Unit</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Total Price</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Location</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Blockchain TX ID</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Status</Table.Th>
+//                 {/* <Table.Th className="border-b-0 whitespace-nowrap">Created At</Table.Th>
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Updated At</Table.Th> */}
+//                 <Table.Th className="border-b-0 whitespace-nowrap">Action</Table.Th>
+//               </Table.Tr>
+//             </Table.Thead>
+//             <Table.Tbody>
+//               {paginatedTransactions.map((transaction) => (
+//                 <Table.Tr key={transaction.id} className="intro-x">
+//                   <Table.Td className="first:rounded-l-md last:rounded-r-md w-10 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+//                     <FormCheck.Input type="checkbox" />
+//                   </Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.id}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.farmer_id}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.seed_type}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.quantity}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.price_per_unit}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.total_price}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.location}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.blockchain_tx_id}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{transaction.status}</Table.Td>
+//                   {/* <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.created_at).toLocaleString()}</Table.Td>
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">{new Date(transaction.updated_at).toLocaleString()}</Table.Td> */}
+//                   <Table.Td className="bg-white border-b-0 dark:bg-darkmode-600">
+//                     <Menu>
+//                       <Menu.Button className="flex items-center justify-center w-5 h-5">
+//                         <Lucide icon="MoreVertical" className="w-4 h-4" />
+//                       </Menu.Button>
+//                       <Menu.Items className="w-40">
+//                         <Menu.Item>
+//                           <Lucide icon="Edit" className="mr-2 h-4 w-4" /> Edit
+//                         </Menu.Item>
+//                         <Menu.Item>
+//                           <Lucide icon="Trash2" className="mr-2 h-4 w-4" /> Remove
+//                         </Menu.Item>
+//                       </Menu.Items>
+//                     </Menu>
+//                   </Table.Td>
+//                 </Table.Tr>
+//               ))}
+//             </Table.Tbody>
+//           </Table>
+//         </div>
+//         {/* END: Data List */}
+//         <div className="col-span-12 sm:flex sm:flex-wrap sm:items-center sm:justify-end sm:mt-5">
+//           <div className="flex flex-wrap items-center mt-2 sm:mt-0">
+//             <span className="text-slate-500">
+//               Showing {currentPage} to {Math.min(currentPage * pageSize, transactions.length)} of {transactions.length} entries
+//             </span>
+//             <Pagination
+//               className="pagination-sm"
+//               totalRecords={transactions.length}
+//               pageLimit={pageSize}
+//               pageNeighbours={1}
+//               onPageChanged={handlePageClick}
+//             />
+//             <FormSelect className="w-20 sm:ml-2" value={pageSize} onChange={(e) => handlePageSizeChange(Number(e.target.value))}>
+//               <option value={10}>10</option>
+//               <option value={25}>25</option>
+//               <option value={50}>50</option>
+//               <option value={100}>100</option>
+//             </FormSelect>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default Main;
 
 
-////MAin Table ?///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+// ////MAin Table ?///////////////////////////////////////////////////////////////////////////
 
 /* eslint-disable import/no-useless-path-segments */
 /* eslint-disable react/jsx-no-useless-fragment */

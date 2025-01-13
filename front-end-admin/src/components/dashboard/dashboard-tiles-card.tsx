@@ -34,7 +34,7 @@ function DashboardTilesCard() {
     <div>
       <div className="intro-y block h-fit items-center sm:flex ">
         <h2 className="mt-[30px] w-fit text-[19px] text-lg font-medium text-[#2D3748]">
-          Tips Overview
+          Agri Overview
         </h2>
       </div>
       <div className="mt-5 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[39px]">
@@ -43,7 +43,7 @@ function DashboardTilesCard() {
           percentage={formatTiles(
             tipsData?.dailyAverageComparisonPercentageTips || 0.00
           )}
-          label="Tips Received"
+          label="Agri Received"
           tooltipText={`${formatTiles(
             tipsData?.dailyAverageComparisonPercentageTips || 0.00
           )}% than last month`}
