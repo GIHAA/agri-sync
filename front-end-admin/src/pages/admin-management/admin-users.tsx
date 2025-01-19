@@ -179,7 +179,7 @@ const AdminUserManagementPage = () => {
             }}
             className="primary min-w-[100px] flex items-center gap-2.5 bg-black !font-medium text-white"
           >
-            Add User
+            Add Farmer
           </Button>
 
       </div>
@@ -262,9 +262,9 @@ const AdminUserManagementPage = () => {
       <div className="intro-y mt-8 overflow-auto sm:mt-0 lg:overflow-visible">
         {isLoading ? (
           <p>Loading...</p>
-        ) : isSuccess && data.data?.items.length ? (
+        ) : isSuccess && data.data?.users.length ? (
           <AdminManagementTable
-            Items={data.data.items}
+            Items={data.data.users}
             handleViewOnClick={handleViewUserOnClick}
             handleEditOnClick={handleEditUserOnClick}
             handleDeleteOnClick={handleDeleteUserOnClick}

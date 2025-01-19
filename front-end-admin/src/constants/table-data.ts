@@ -226,16 +226,8 @@ export const AdminUserTableHeadings = [
     label: 'EMAIL',
   },
   {
-    key: 3,
-    label: 'MOBILE NUMBER',
-  },
-  {
     key: 4,
     label: 'ROLE',
-  },
-  {
-    key: 5,
-    label: 'STATUS',
   },
   {
     key: 6,

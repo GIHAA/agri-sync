@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Table from '../common/table'
-import SlideoverRegistry from '../../pages/user-management/slideover-registry'
 import Label from '../common/label/active-banned-new-label'
 import Lucide from '../common/lucide'
 import { UserDetailsItem } from '../../types/adminUserTypes'
@@ -11,7 +10,7 @@ import ConfirmationModal from '../common/confirmation/ConfirmationModal'
 
 interface AdminManagementTableProps {
   headers: { key: number; label: string }[]
-  Items: UserDetailsItem[]
+  Items: any[]
   handleViewOnClick: (userId: string) => void
   handleEditOnClick: (userId: string) => void
   handleDeleteOnClick: (userId: string) => void
@@ -65,21 +64,14 @@ const AdminManagementTable: React.FC<AdminManagementTableProps> = ({
           {Items.map((item) => (
             <Table.Tr className="intro-x h-[68px] drop-shadow-lg" key={item.id}>
               <Table.Td className="border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
-                {item.FirstName + ' ' + item.LastName}
+                {item.username}
               </Table.Td>
               <Table.Td className="border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
-                {truncate(item.Email, { length: 25 }) || 'N/A'}
+                {truncate(item.email, { length: 25 }) || 'N/A'}
               </Table.Td>
+
               <Table.Td className="border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
-                {item.Phone || 'N/A'}
-              </Table.Td>
-              <Table.Td className="border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
-                {item?.role?.name || 'N/A'}
-              </Table.Td>
-              <Table.Td className="ml-4 border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md">
-                <div className="flex justify-center">
-                  <StatusButton status={item?.Status} />
-                </div>
+                {item?.role || 'N/A'}
               </Table.Td>
               <Table.Td className="cursor-pointer justify-center border-b-0 bg-white shadow-[20px_3px_20px_#0000000b] first:rounded-l-md last:rounded-r-md dark:bg-darkmode-600">
                 <div className="flex justify-center gap-3">

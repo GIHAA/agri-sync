@@ -35,6 +35,7 @@ const getUserPreferences = async (userId) => {
   return await AccessibilitySettings.findOne({ where: { user_id: userId } });
 };
 
+
 module.exports = {
   findUserByEmail,
   createUser,
