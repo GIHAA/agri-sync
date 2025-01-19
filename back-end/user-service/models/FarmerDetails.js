@@ -14,6 +14,8 @@ const FarmerDetails = sequelize.define("FarmerDetails", {
   age: DataTypes.INTEGER,
   vision_problems: DataTypes.BOOLEAN,
   color_blindness: DataTypes.BOOLEAN,
+  lat : DataTypes.STRING,
+  long : DataTypes.STRING,
 });
 
 module.exports = FarmerDetails;
