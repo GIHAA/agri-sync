@@ -62,7 +62,7 @@ function AgeDistributionChart() {
       }
 
       const option = {
-        toolagrisync: {
+        tooltip: {
           trigger: 'item',
         },
         legend: {
@@ -189,7 +189,7 @@ function AgeDistributionChart() {
             }`}
             onClick={() => setSelectedUserType('tp')}
           >
-            Agrisyncper
+            Tipper
           </button>
           <button
             className={`max-h-[30px] min-h-[30px] cursor-pointer rounded-md border-none px-2 py-1 ${

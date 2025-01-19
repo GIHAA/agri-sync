@@ -58,10 +58,10 @@ function AddUser() {
       otherwise: yup.string().notRequired(),
 
       prefix: yup.string().when('_', {
-        is: () => 'toolagrisync',
+        is: () => 'tooltip',
         then: yup
           .string()
-          .required(`${t('customerForm.fields.prefix.toolagrisync')}`),
+          .required(`${t('customerForm.fields.prefix.tooltip')}`),
         otherwise: yup.string().notRequired(),
       }),
     })
@@ -250,7 +250,7 @@ function AddUser() {
             <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t('userManagement.fields.activeStatus.toolagrisync')}`}
+                  tooltip={`${t('userManagement.fields.activeStatus.tooltip')}`}
                 />
               </div>
             </FormCheck.Label>
@@ -312,7 +312,7 @@ function AddUser() {
             error={errors.role}
             required
             info={`${t(
-              'userManagement.fields.rolesnPermission.fields.role.toolagrisync'
+              'userManagement.fields.rolesnPermission.fields.role.tooltip'
             )}`}
           />
 
@@ -331,7 +331,7 @@ function AddUser() {
             <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t('userManagement.fields.activeStatus.toolagrisync')}`}
+                  tooltip={`${t('userManagement.fields.activeStatus.tooltip')}`}
                 />
               </div>
             </FormCheck.Label>
@@ -348,8 +348,8 @@ function AddUser() {
             <FormCheck.Label className="mr-5">
               <div className="flex">
                 <FormInfo
-                  toolagrisync={`${t(
-                    'userManagement.fields.rolesnPermission.fields.accessLocations.toolagrisync'
+                  tooltip={`${t(
+                    'userManagement.fields.rolesnPermission.fields.accessLocations.tooltip'
                   )}`}
                 />
               </div>
@@ -365,8 +365,8 @@ function AddUser() {
             />
             <div className="flex">
               <FormInfo
-                toolagrisync={`${t(
-                  'userManagement.fields.rolesnPermission.fields.allLocations.toolagrisync'
+                tooltip={`${t(
+                  'userManagement.fields.rolesnPermission.fields.allLocations.tooltip'
                 )}`}
               />
             </div>
@@ -429,7 +429,7 @@ function AddUser() {
                 type="number"
                 id="prefix"
                 info={`${t(
-                  'userManagement.fields.sales.fields.salesPercentage.toolagrisync'
+                  'userManagement.fields.sales.fields.salesPercentage.tooltip'
                 )}`}
               />
               <InputElement
@@ -441,7 +441,7 @@ function AddUser() {
                 name="first_name"
                 id="first_name"
                 info={`${t(
-                  'userManagement.fields.sales.fields.maxSalesDiscountPecentage.toolagrisync'
+                  'userManagement.fields.sales.fields.maxSalesDiscountPecentage.tooltip'
                 )}`}
               />
 
@@ -459,8 +459,8 @@ function AddUser() {
                 <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
                   <div className="mx-1 -ml-1 flex">
                     <FormInfo
-                      toolagrisync={`${t(
-                        'userManagement.fields.sales.fields.selectedContacts.toolagrisync'
+                      tooltip={`${t(
+                        'userManagement.fields.sales.fields.selectedContacts.tooltip'
                       )}`}
                     />
                   </div>
@@ -492,8 +492,8 @@ function AddUser() {
                 >
                   <div className="mx-1 -ml-1 flex">
                     <FormInfo
-                      toolagrisync={`${t(
-                        'userManagement.fields.paymentAccounts.fields.allowFundTransferAccounts.toolagrisync'
+                      tooltip={`${t(
+                        'userManagement.fields.paymentAccounts.fields.allowFundTransferAccounts.tooltip'
                       )}`}
                     />
                   </div>
@@ -530,8 +530,8 @@ function AddUser() {
                 >
                   <div className="mx-1 -ml-1 flex">
                     <FormInfo
-                      toolagrisync={`${t(
-                        'userManagement.fields.paymentAccounts.fields.allowSelectedPaymentAccounts.toolagrisync'
+                      tooltip={`${t(
+                        'userManagement.fields.paymentAccounts.fields.allowSelectedPaymentAccounts.tooltip'
                       )}`}
                     />
                   </div>
@@ -701,7 +701,7 @@ function AddUser() {
                 name="bankIdCode"
                 id="bankIdCode"
                 info={`${t(
-                  'userManagement.fields.bankDetails.fields.bankIdCode.toolagrisync'
+                  'userManagement.fields.bankDetails.fields.bankIdCode.tooltip'
                 )}`}
               />
               <InputElement
@@ -720,7 +720,7 @@ function AddUser() {
                 name="taxPayerID"
                 id="taxPayerID"
                 info={`${t(
-                  'userManagement.fields.bankDetails.fields.taxPayerID.toolagrisync'
+                  'userManagement.fields.bankDetails.fields.taxPayerID.tooltip'
                 )}`}
               />
             </div>

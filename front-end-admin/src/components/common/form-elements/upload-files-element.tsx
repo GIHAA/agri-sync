@@ -101,7 +101,7 @@ function UploadFilesElement({
                   {required ? <FormRequiredIcon /> : ''}
                 </div>
                 <div className={`${required || info ? 'mr-2' : 'mr-0'} flex`}>
-                  {info ? <FormInfo toolagrisync={info} /> : ''}
+                  {info ? <FormInfo tooltip={info} /> : ''}
                 </div>
               </div>
             </div>

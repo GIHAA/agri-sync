@@ -12,8 +12,8 @@ import Lucide from '../../components/common/lucide'
 import Breadcrumb from '../../base-components/Breadcrumb'
 import { FormInput } from '../common/form-elements/components'
 import { Menu, Popover } from '../common/headless'
-import PreviewImage from '../../../src/assets/images/agrisync-app-logo.png'
-import SocketClient from '../../hooks/SocketClient'
+import PreviewImage from '../../../src/assets/images/LogoAgri.png'
+// import SocketClient from '../../hooks/SocketClient'
 import { useGetNotificationsList } from '../../api/notification'
 import NoDataFound from '../../assets/images/NoDataFound.png'
 
@@ -27,12 +27,12 @@ import NoDataFound from '../../assets/images/NoDataFound.png'
 
 // Define the breadcrumb map with specific types
 const breadcrumbMap: { [key: string]: string } = {
-  '/agrisync-setting': 'Agrisync Settings',
+  '/tip-setting': 'Tip Settings',
   '/manage-users': 'Admin User Management',
   '/manage-user-roles': 'Admin Role Management',
-  '/manage-agrisyncpers': 'Agrisyncper Management',
+  '/manage-tippers': 'Tipper Management',
   '/manage-service-providers': 'Service Provider Management',
-  '/manage-finances': 'Agrisync Management',
+  '/manage-finances': 'Tip Management',
   '/manage-reviews': 'Review Management',
   '/gateway-setting': 'Gateway Settings',
   '/footer-management': 'Footer Management',
@@ -67,10 +67,10 @@ function Main() {
     <>
       {/* BEGIN: Top Bar */}
       <div className="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
-        <SocketClient email={user.Email} role={user.Role} />
+        {/* <SocketClient email={user.Email} role={user.Role} /> */}
         {/* BEGIN: Breadcrumb */}
         <Breadcrumb className="-intro-x mr-auto hidden sm:flex">
-          <Breadcrumb.Link to="/">AgrisyncApp</Breadcrumb.Link>
+          <Breadcrumb.Link to="/">AgriApp</Breadcrumb.Link>
           <Breadcrumb.Link to={pathname} active>
             {breadcrumbLabel}
           </Breadcrumb.Link>
@@ -102,23 +102,23 @@ function Main() {
             </Menu.Item>
           </Menu.Items>
         </Menu> */}
-        {/* <Agrisyncpy
+        {/* <Tippy
           as="a"
-          href="https://projects.agrisync.lk/customer"
+          href="https://projects.storemate.lk/customer"
           className="zoom-in mr-2 flex h-8 w-8 items-center justify-center rounded-full border bg-primary bg-opacity-90 text-white dark:border-darkmode-400"
           content="Support"
         >
           <Lucide icon="Headphones" className="h-4 w-4 " />
-        </Agrisyncpy> */}
+        </Tippy> */}
 
-        {/* <Agrisyncpy
+        {/* <Tippy
           as="a"
           href="/pos"
           className="zoom-in mr-2 flex h-8 w-8 items-center justify-center rounded-full border bg-danger bg-opacity-60 text-white dark:border-darkmode-400"
           content="Add Repair"
         >
           <Lucide icon="Wrench" className="h-4 w-4 " />
-        </Agrisyncpy> */}
+        </Tippy> */}
         {/* <Button
               size='sm'
               variant="twitter"
@@ -153,7 +153,7 @@ function Main() {
                   >
                     <div className="flex items-center">
                       <img
-                        src={item.AgrisyncperProfilePictureUrl || PreviewImage}
+                        src={item.TipperProfilePictureUrl || PreviewImage}
                         alt="profile"
                         className="h-8 w-8 rounded-full object-cover"
                       />

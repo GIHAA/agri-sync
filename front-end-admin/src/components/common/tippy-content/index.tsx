@@ -1,9 +1,9 @@
 import { createRef, useEffect } from 'react'
-import agrisyncpy, {
+import tippy, {
   Props,
   roundArrow,
   animateFill as animateFillPlugin,
-} from 'agrisyncpy.js'
+} from 'tippy.js'
 
 interface MainProps {
   to: string
@@ -11,11 +11,11 @@ interface MainProps {
   options?: Props
 }
 
-type AgrisyncpyContentProps = React.PropsWithChildren<MainProps> &
+type TippyContentProps = React.PropsWithChildren<MainProps> &
   Omit<React.ComponentPropsWithoutRef<'div'>, keyof MainProps>
 
-const init = (el: HTMLElement, props: AgrisyncpyContentProps) => {
-  agrisyncpy(`[data-toolagrisync="${props.to}"]`, {
+const init = (el: HTMLElement, props: TippyContentProps) => {
+  tippy(`[data-tooltip="${props.to}"]`, {
     plugins: [animateFillPlugin],
     content: el,
     allowHTML: true,
@@ -38,26 +38,26 @@ const init = (el: HTMLElement, props: AgrisyncpyContentProps) => {
   })
 }
 
-function AgrisyncpyContent(props: AgrisyncpyContentProps) {
-  const agrisyncpyRef = createRef<HTMLDivElement>()
+function TippyContent(props: TippyContentProps) {
+  const tippyRef = createRef<HTMLDivElement>()
   const { to, options, getRef, children, ...computedProps } = props
 
   useEffect(() => {
     if (getRef) {
-      getRef(agrisyncpyRef.current)
+      getRef(tippyRef.current)
     }
 
-    if (agrisyncpyRef.current !== null) {
-      init(agrisyncpyRef.current, props)
+    if (tippyRef.current !== null) {
+      init(tippyRef.current, props)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children])
 
   return (
-    <div {...computedProps} ref={agrisyncpyRef}>
+    <div {...computedProps} ref={tippyRef}>
       {children}
     </div>
   )
 }
 
-export default AgrisyncpyContent
+export default TippyContent
