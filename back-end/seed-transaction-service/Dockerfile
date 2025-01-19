@@ -1,16 +1,21 @@
-FROM postgres:16.0
-USER postgres
+# Base image
+FROM node:16-alpine
 
-# Copy postgres config file into container
-COPY postgres-certs/ /etc/postgres/
-COPY postgresql.conf /etc/postgres
-COPY pg_hba.conf /etc/postgres/
-WORKDIR /etc/postgres
-USER root
-RUN  chown postgres server.*  &&   chmod 0600 server.* &&  chown postgres root.* &&  chmod 0600 root.*
-WORKDIR /etc/postgres/client
-RUN  chown postgres postgresql.*  &&   chmod 0600 postgresql.*
-WORKDIR /etc/postgres
-USER postgres
-# Override default postgres config file
-CMD ["postgres", "-c", "config_file=/etc/postgres/postgresql.conf"]
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy application source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Expose the application port
+EXPOSE 5001
+
+# Start the application
+CMD ["node", "dist/server.js"]
