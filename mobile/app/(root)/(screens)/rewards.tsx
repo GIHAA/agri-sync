@@ -95,7 +95,9 @@ export default function RewardsScreen() {
             </Pressable>
 
             {/* Leaderboard Button */}
-            <Pressable className="w-[30%]  p-4 rounded-lg items-center">
+            <Pressable onPress={
+              () => router.replace("/(root)/(screens)/leaderboard")
+            }  className="w-[30%]  p-4 rounded-lg items-center">
               <View className="bg-purple-100 p-4 rounded-full">
                 <AntDesign name="barschart" size={30} color="#805AD5" />
               </View>

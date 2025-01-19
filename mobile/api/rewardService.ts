@@ -101,10 +101,10 @@ interface RedeemRewardData {
    * 
    */
 
-  export const useGetFarmingLeaderboard = async (): Promise<Array<any>> => { 
+  export const useGetFarmingLeaderboard = async (): Promise<any> => { 
     try {
-      const response: ApiResponse<Array<any>> = await apiClient.get(`/farming-service/leaderboard`);
-      return response.data;
+      const response = await apiClient.get(`/farming-service/leaderboard`);
+      return response;
     } catch (error) {
       console.error('Error fetching farming leaderboard:', error);
       throw error;

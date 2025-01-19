@@ -11,6 +11,7 @@ const Layout = () => {
       <Stack.Screen name="selectCropForPrediction" options={{ headerShown: false }} />
       <Stack.Screen name="addFarmingData" options={{ headerShown: false }} />
       <Stack.Screen name="nearByFamersData" options={{ headerShown: false }} />
+      <Stack.Screen name="leaderboard" options={{ headerShown: false }} />
     </Stack>
   );
 };
