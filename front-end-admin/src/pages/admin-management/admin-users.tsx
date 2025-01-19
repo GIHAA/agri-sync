@@ -1,16 +1,3 @@
-/* eslint-disable react/jsx-curly-brace-presence */
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable radix */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/button-has-type */
-/* eslint-disable no-nested-ternary */
-
 import React, { ReactElement, useEffect, useState } from 'react'
 import Button from '../../components/common/button'
 import {
@@ -185,7 +172,7 @@ const AdminUserManagementPage = () => {
         <h2 className="mr-5 truncate text-[19px] text-lg font-medium  text-[#2D3748]">
           Admin User Management
         </h2>
-        {permissionChecker(
+
           <Button
             onClick={() => {
               handleAddUserOnClick()
@@ -193,9 +180,8 @@ const AdminUserManagementPage = () => {
             className="primary min-w-[100px] flex items-center gap-2.5 bg-black !font-medium text-white"
           >
             Add User
-          </Button>,
-          'user_management.add'
-        )}
+          </Button>
+
       </div>
       <div className="mb-8 mt-3 flex items-center justify-between sm:ml-auto sm:mt-0 ">
         <div className="relative flex sm:mt-0 sm:w-auto">

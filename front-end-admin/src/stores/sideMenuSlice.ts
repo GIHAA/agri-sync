@@ -258,7 +258,7 @@ const hasPermission = (requiredPermission: string): boolean => {
 const initialState: SideMenuState = {
   menu: [
     {
-      icon: 'Home',
+      icon: "Home" as keyof typeof icons,
       title: 'Home',
       pathname: '/dashboard',
     },
@@ -268,53 +268,19 @@ const initialState: SideMenuState = {
     //    pathname: '/qr-scanner',
     //  },
     {
-      icon: 'User',
+      icon: "QrCode" as keyof typeof icons,
       pathname: '/qr-scanner',
       title: 'QR Scanner',
     },
     {
-      icon: 'Activity',
+      icon: "Activity" as keyof typeof icons,
       pathname: '/table',
-      title: 'User List',
+      title: 'Seed Transactions',
     },
-    // Use the permission checking for Admin Users only
-    hasPermission('user_management.view') && {
-      icon: 'User',
-      title: 'Admin Users',
-      subMenu: [
-        hasPermission('user_management.view') && {
-          icon: 'Activity',
-          pathname: '/manage-users',
-          title: 'User List',
-        },
-        hasPermission('role_management.view') && {
-          icon: 'Activity',
-          pathname: '/manage-user-roles',
-          title: 'User Roles',
-        },
-      ].filter(Boolean),
-    },
-    'devider',
     {
-      icon: 'FileText',
-      title: 'Reports',
-      pathname: '/reports',
-    },
-    hasPermission('settings.view') && {
-      icon: 'Settings',
-      title: 'Settings',
-      subMenu: [
-        {
-          icon: 'Activity',
-          pathname: '/tip-setting',
-          title: 'Tip Settings',
-        },
-        {
-          icon: 'Activity',
-          pathname: '/gateway-setting',
-          title: 'Gateways',
-        },
-      ],
+      icon: "Users" as keyof typeof icons,
+      pathname: '/user-management',
+      title: 'User Management',
     },
   ].filter(Boolean), // Filter out falsy values
 };

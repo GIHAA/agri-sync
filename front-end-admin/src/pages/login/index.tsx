@@ -1,20 +1,21 @@
-import { useState } from 'react';
-import axios from 'axios';
-import clsx from 'clsx';
-import Toast from '../../utils/notification';
-import illustrationUrl from '../../assets/images/final-logo.svg';
-import Button from '../../components/common/button';
-import { FormInput } from '../../components/common/form-elements/components';
+import React, { useState, useEffect } from 'react';
+import { useLogin } from '../../api/auth-management';
 import SharedDataContainer from '../../containers/sharedData';
 import { Icons, NotificationTypes } from '../../constants';
+import Button from '../../components/common/button';
+import { FormInput } from '../../components/common/form-elements/components';
+import illustrationUrl from '../../assets/images/final-logo.svg';
+import clsx from 'clsx';
+import Toast from '../../utils/notification';
 
-function Main() {
+const LoginForm = () => {
   const { setNotification } = SharedDataContainer.useContainer();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('gihansad@g.com');
+  const [password, setPassword] = useState('gihan123');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate, isLoading, isSuccess } = useLogin();
 
   // Validate inputs
   const validateInputs = () => {
@@ -23,7 +24,6 @@ function Main() {
 
     if (!emailPattern.test(email)) {
       setEmailError('Please enter a valid email address');
-      console.log('Invalid email address:', email); // Debug log for invalid email
       isValid = false;
     } else {
       setEmailError('');
@@ -31,68 +31,20 @@ function Main() {
 
     if (!password) {
       setPasswordError('Password is required');
-      console.log('Password is empty'); // Debug log for empty password
       isValid = false;
     } else {
       setPasswordError('');
     }
 
-    console.log('Inputs validation result:', isValid); // Debug log for input validation result
     return isValid;
   };
 
-  // Handle login
   const loginHandler = async () => {
     if (!validateInputs()) return;
-
-    setIsLoading(true);
-    console.log('Attempting login with email:', email); // Debug log for login attempt
-
+    
     try {
-      // Make the login API request
-      const response = await axios.post(`http://localhost:9000/auth/login`, {
-        email,
-        password,
-      });
-
-      console.log('Login API response:', response.data); // Debug log for API response
-
-      // Check if login was successful
-      if (response.data.success) {
-        const { token, farmerDetails, accessibilitySettings, role, username, email, id } = response.data.data;
-        console.log('Login successful:', { token, username, role, farmerDetails, accessibilitySettings });
-
-        // Store JWT token, user details, and role in localStorage
-        localStorage.setItem('jwtToken', token);
-        localStorage.setItem('user', JSON.stringify({ id, username, email, role, farmerDetails, accessibilitySettings }));
-
-        // Show success notification
-        setNotification({
-          title: 'Successfully Logged In',
-          message: `Welcome back, ${username}!`,
-          icon: Icons.CHECKCIRCLE,
-          type: NotificationTypes.SUCCESS,
-        });
-        Toast();
-
-        // Redirect user to the dashboard
-        setTimeout(() => {
-          console.log('Redirecting to /dashboard'); // Debug log before redirect
-          window.location.href = '/dashboard';
-        }, 800);
-      } else {
-        console.log('Login failed:', response.data.message); // Debug log for failed login
-        // Show error notification if login fails
-        setNotification({
-          title: 'Login Failed',
-          message: response.data.message || 'Invalid login credentials.',
-          icon: Icons.XCIRCLE,
-          type: NotificationTypes.ERROR,
-        });
-        Toast();
-      }
+      await mutate({ email, password });
     } catch (error) {
-      console.error('Login error:', error); // Debug log for any error during the API request
       setNotification({
         title: 'Login Failed',
         message: 'An error occurred during login. Please try again.',
@@ -100,11 +52,24 @@ function Main() {
         type: NotificationTypes.ERROR,
       });
       Toast();
-    } finally {
-      setIsLoading(false);
-      console.log('Login request completed'); // Debug log when the request is completed
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setNotification({
+        message: 'Login successful',
+        icon: Icons.CHECKCIRCLE,
+        type: NotificationTypes.SUCCESS,
+      });
+      Toast();
+      
+      // Redirect after successful login
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 800);
+    }
+  }, [isSuccess, setNotification]);
 
   return (
     <div
@@ -174,6 +139,6 @@ function Main() {
       </div>
     </div>
   );
-}
+};
 
-export default Main;
+export default LoginForm;
