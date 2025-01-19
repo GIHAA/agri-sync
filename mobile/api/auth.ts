@@ -11,7 +11,7 @@ export const useLoginUser = async (
   password: string
 ): Promise<string> => {
   try {
-    const response: ApiResponse<{ token: string }> = await apiClient.post('/auth/login', {
+    const response: ApiResponse<{ token: string }> = await apiClient.post('/auth-service/login', {
       email,
       password,
     });

@@ -33,9 +33,8 @@ export default function RewardsScreen() {
       title: "Nearby Farmer info",
       coins: 100,
       icon: "enviromento",
-      comingSoon: true,
       onPress: () => {
-        alert("Coming Soon");
+        router.replace("/(root)/(screens)/nearByFamersData");
       },
     },
     {
