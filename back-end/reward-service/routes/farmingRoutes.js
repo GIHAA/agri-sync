@@ -9,5 +9,6 @@ router.get("/farming-data/:id", protect , farmingController.getFarmingDataById);
 router.post("/farming-data", protect , farmingController.createFarmingData);
 router.put("/farming-data/:id", protect , farmingController.updateFarmingData);
 router.delete("/farming-data/:id", protect , farmingController.deleteFarmingData);
+router.get("/nearby-farmers", farmingController.getNearbyFarmers);
 
 module.exports = router;
