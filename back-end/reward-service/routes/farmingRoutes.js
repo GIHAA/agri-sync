@@ -10,5 +10,6 @@ router.post("/farming-data", protect , farmingController.createFarmingData);
 router.put("/farming-data/:id", protect , farmingController.updateFarmingData);
 router.delete("/farming-data/:id", protect , farmingController.deleteFarmingData);
 router.get("/nearby-farmers", farmingController.getNearbyFarmers);
+router.get("/leaderboard",  farmingController.getLeaderboard);
 
 module.exports = router;

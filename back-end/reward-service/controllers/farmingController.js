@@ -74,11 +74,29 @@ const getNearbyFarmers = async (req, res) => {
     }
 };
 
+const getLeaderboard = async (req, res) => {
+    const { timeframe, limit } = req.query;
+    
+    try {
+      const result = await farmingService.getLeaderboard(timeframe, limit);
+      logger.info(`Leaderboard retrieved for timeframe: ${timeframe || 'all'}`);
+      
+      return res.status(result.success ? 200 : 400).json(result);
+    } catch (error) {
+      logger.error(`Error getting leaderboard: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: 'Error retrieving leaderboard'
+      });
+    }
+  };
+
 module.exports = {
     getAllFarmingData,
     getFarmingDataById,
     createFarmingData,
     updateFarmingData,
     deleteFarmingData,
-    getNearbyFarmers
+    getNearbyFarmers,
+    getLeaderboard
 };

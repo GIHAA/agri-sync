@@ -122,11 +122,53 @@ const getNearbyFarmers = async (lat, long, radius) => {
     }
 };
 
+const getLeaderboard = async (timeframe, limit) => {
+    try {
+      // Validate timeframe
+      const validTimeframes = ['daily', 'weekly', 'monthly', 'all'];
+      const validatedTimeframe = timeframe?.toLowerCase() || 'all';
+      
+      if (!validTimeframes.includes(validatedTimeframe)) {
+        logger.warn(`Invalid timeframe provided: ${timeframe}`);
+        return {
+          success: false,
+          message: 'Invalid timeframe. Must be one of: daily, weekly, monthly, all'
+        };
+      }
+  
+      // Validate limit
+      const validatedLimit = Math.min(Math.max(parseInt(limit) || 10, 1), 100);
+      
+      const leaderboardData = await farmingRepo.getLeaderboard(
+        validatedTimeframe, 
+        validatedLimit
+      );
+  
+      return {
+        success: true,
+        data: leaderboardData,
+        message: 'Leaderboard fetched successfully',
+        metadata: {
+          timeframe: validatedTimeframe,
+          limit: validatedLimit,
+          totalParticipants: leaderboardData.length
+        }
+      };
+    } catch (error) {
+      logger.error(`Error fetching leaderboard: ${error.message}`);
+      return {
+        success: false,
+        message: 'Error fetching leaderboard'
+      };
+    }
+  };
+
 module.exports = {
     getAllFarmingData,
     getFarmingDataById,
     createFarmingData,
     updateFarmingData,
     deleteFarmingData,
-    getNearbyFarmers
+    getNearbyFarmers,
+    getLeaderboard
 };
