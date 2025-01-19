@@ -34,17 +34,9 @@ export default function RewardsScreen() {
       coins: 100,
       icon: "enviromento",
       onPress: () => {
+        //todo : redirem points
+        alert("todo : redirem points");
         router.replace("/(root)/(screens)/nearByFamersData");
-      },
-    },
-    {
-      id: 3,
-      title: "Crop Recommendation",
-      coins: 100,
-      icon: "API",
-      comingSoon: true,
-      onPress: () => {
-        alert("Coming Soon");
       },
     },
   ];

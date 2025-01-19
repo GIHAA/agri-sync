@@ -94,4 +94,20 @@ interface RedeemRewardData {
       throw error;
     }
   };
+
+  /**
+   * Get the farming leaderboard.
+   * @returns {Promise<Array<any>>} - The farming leaderboard.
+   * 
+   */
+
+  export const useGetFarmingLeaderboard = async (): Promise<Array<any>> => { 
+    try {
+      const response: ApiResponse<Array<any>> = await apiClient.get(`/farming-service/leaderboard`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching farming leaderboard:', error);
+      throw error;
+    }
+  }
   
