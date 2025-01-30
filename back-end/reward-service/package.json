@@ -16,6 +16,7 @@
     "jest-junit": "^16.0.0",
     "mockdate": "^3.0.5",
     "nodemon": "^3.1.7",
+    "sequelize-mock": "^0.10.2",
     "sinon": "^19.0.2",
     "supertest": "^7.0.0"
   },
