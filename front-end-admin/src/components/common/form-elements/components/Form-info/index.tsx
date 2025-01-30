@@ -1,11 +1,11 @@
-import Agrisyncpy from '../../../agrisyncpy'
+import Tippy from '../../../tippy'
 import Lucide from '../../../lucide'
 import Button from '../../../button'
 import { Icons } from '../../../../../constants'
 
-function FormInfo({ toolagrisync }: { toolagrisync: string }) {
+function FormInfo({ tooltip }: { tooltip: string }) {
   return (
-    <Agrisyncpy as={Button} className="border-0 p-0" content={toolagrisync}>
+    <Tippy as={Button} className="border-0 p-0" content={tooltip}>
       <Lucide
         icon={Icons.INFO}
         width={18}
@@ -13,7 +13,7 @@ function FormInfo({ toolagrisync }: { toolagrisync: string }) {
         // stroke="stroke-2.75"
         className=" font-bold text-dark dark:text-darkmode-100"
       />
-    </Agrisyncpy>
+    </Tippy>
   )
 }
 

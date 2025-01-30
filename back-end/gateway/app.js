@@ -64,6 +64,14 @@ app.use('/rewards-service', authenticate, proxy('http://localhost:3003', {
     proxyReqPathResolver: (req) => `/rewards${req.url}`
 }));
 
+app.use('/farming-service', authenticate, proxy('http://localhost:3003', {
+    proxyReqPathResolver: (req) => `/farming${req.url}`
+}));
+
+app.use('/rewards-service-settings', authenticate, proxy('http://localhost:3003', {
+    proxyReqPathResolver: (req) => `/rewards-settings${req.url}`
+}));
+
 
 
 const PORT = process.env.GATEWAY_PORT || 3000;

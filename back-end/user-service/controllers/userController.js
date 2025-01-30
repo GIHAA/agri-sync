@@ -21,6 +21,9 @@ const register = async (req, res) => {
   }
 };
 
+
+
+
 // Login User
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -42,8 +45,6 @@ const login = async (req, res) => {
   }
 };
 
-
-
 // Register Farmer with Preferences
 const registerFarmer = async (req, res) => {
   const {
@@ -57,6 +58,8 @@ const registerFarmer = async (req, res) => {
     layout,
     color_friendly_scheme,
     use_symbols_with_colors,
+    lat,
+    long
   } = req.body;
 
   try {
@@ -70,7 +73,9 @@ const registerFarmer = async (req, res) => {
       text_size,
       layout,
       color_friendly_scheme,
-      use_symbols_with_colors
+      use_symbols_with_colors,
+      lat,
+      long
     );
 
     if (!result.success) {
@@ -142,34 +147,72 @@ const validateToken = async (req, res) => {
 };
 
 
-const getFarmerByQrCode = async (req, res) => {
-  console.log("Request Params:", req.params);
-  const { qrCodeHash } = req.params;
-
+const getAllUsers = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  
   try {
-    const result = await userService.getFarmerDetails(qrCodeHash);
-
-    if (result.success) {
-      return res.status(200).json(result);
-    } else {
-      return res.status(404).json(result);
+    const result = await userService.getAllUsers(page, limit);
+    if (!result.success) {
+      return res.status(result.statusCode).json(result);
     }
+    return res.status(200).json(result);
   } catch (error) {
-    console.error("Error in controller layer:", error.message);
+    console.error("Error fetching users:", error);
     return res.status(500).json({
-      success: false,
       data: null,
       message: "Server error",
+      success: false,
     });
   }
 };
 
+// Get One User
+const getUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await userService.getUser(userId);
+    if (!result.success) {
+      return res.status(result.statusCode).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
+  }
+};
 
+// Update User
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
+  const updateData = req.body;
+  try {
+    const result = await userService.updateUser(userId, updateData);
+    if (!result.success) {
+      return res.status(result.statusCode).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({
+      data: null,
+      message: "Server error",
+      success: false,
+    });
+  }
+};
+
+// Add to exports
 module.exports = {
   register,
   login,
   registerFarmer,
   getUserPreferences,
   validateToken,
-  getFarmerByQrCode,
+  getAllUsers, 
+  getUser,
+  updateUser,
 };

@@ -1,4 +1,5 @@
 // service/rewardService.js
+const { PointSettings } = require("../models/PointSettings");
 const rewardRepo = require("../repository/rewardRepo");
 const logger = require("../utils/logger");
 
@@ -14,38 +15,80 @@ const getActivityHistory = async (userId) => {
 };
 
 const redeemPoints = async (userId, rewardType) => {
-  const pointsRequired = {
-    'market_insight': 100,
-    'premium_prediction': 100,
-    'consultation': 500
-  };
+  try {
+    logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
 
-  logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
-  const userPoints = await rewardRepo.getUserPoints(userId);
+    // Fetch points required for the specific reward type from the database
+    const pointSettingsEntry = await PointSettings.findOne({ 
+      where: { event: rewardType } 
+    });
 
-  if (!userPoints || userPoints.total_points < pointsRequired[rewardType]) {
-    logger.warn(`User ${userId} has insufficient points for ${rewardType}`);
+    // If reward type doesn't exist in point settings
+    if (!pointSettingsEntry) {
+      logger.warn(`Invalid reward type: ${rewardType}`);
+      return {
+        success: false,
+        message: "Invalid reward type"
+      };
+    }
+
+    const pointsRequired = pointSettingsEntry.points;
+
+    // Get user's current points
+    const userPoints = await rewardRepo.getUserPoints(userId);
+
+    // Check if user has sufficient points
+    if (!userPoints || userPoints.total_points < pointsRequired) {
+      logger.warn(`User ${userId} has insufficient points for ${rewardType}`);
+      return {
+        success: false,
+        message: "Insufficient points"
+      };
+    }
+
+    // Deduct points and record activity
+    await rewardRepo.deductPoints(userId, pointsRequired);
+    await rewardRepo.addActivityHistory(
+      userId, 
+      "Reward Redemption", 
+      -pointsRequired, 
+      `Redeemed ${rewardType} reward`
+    );
+
+    logger.info(`User ${userId} successfully redeemed ${rewardType} reward`);
+    return {
+      success: true,
+      message: `Redeemed ${rewardType} reward`
+    };
+  } catch (error) {
+    logger.error(`Error in redeemPoints for user ${userId}: ${error.message}`);
     return {
       success: false,
-      message: "Insufficient points"
+      message: "An error occurred while processing the reward"
     };
   }
-  await rewardRepo.deductPoints(userId, pointsRequired[rewardType]);
-
-  await rewardRepo.addActivityHistory(userId, "Reward Redemption", -pointsRequired[rewardType], `Redeemed ${rewardType} reward`);
-
-  logger.info(`User ${userId} successfully redeemed ${rewardType} reward`);
-  return {
-    success: true,
-    message: `Redeemed ${rewardType} reward`
-  };
 };
 
 const addFarmingDataReward = async (userId ) => { 
-   // todo : get the point for the farming data
-  const pointsToAdd = 100;
+  const pointSetting = await PointSettings.findOne({ where: { event: 'farming_data' } });
+  if (!pointSetting) {
+    logger.error('Point setting for farming data not found');
+    return { success: false, message: 'Point setting not found' };
+  }
+
+  const pointsToAdd = pointSetting.points;
   logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
   return addPoints(userId, pointsToAdd);
+}
+
+const getPointSettings = async () => {
+  logger.info('Fetching point settings');
+  return await PointSettings.findAll();
+}
+
+const getPointSetting = async (event) => {
+  logger.info(`Fetching point setting for event: ${event}`);
+  return await PointSettings.findOne({ where: { event } });
 }
 
 const addPoints = async (userId, pointsToAdd) => {
@@ -100,5 +143,7 @@ module.exports = {
   redeemPoints,
   addPoints,
   updatePoints,
-  addFarmingDataReward
+  addFarmingDataReward,
+  getPointSettings,
+  getPointSetting
 };

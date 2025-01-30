@@ -16,8 +16,8 @@ import { FormattedMenu, linkTo, nestedMenu, enter, leave } from '../side-menu/si
 import Lucide from '../../components/common/lucide'
 // import DarkModeSwitcher from '../../components/dark-mode-switcher'
 // import MainColorSwitcher from '../../components/MainColorSwitcher'
-import SideMenuToolagrisync from '../../components/SideMenuToolagrisync'
-import logoUrl from '../../assets/images/agrisync-app-logo.png'
+import SideMenuTooltip from '../../components/SideMenuTooltip'
+import logoUrl from '../../assets/images/LogoAgri.png'
 
 function Main() {
   const location = useLocation()
@@ -52,7 +52,7 @@ function Main() {
               src={logoUrl}
             /> */}
             <span className="ml-3 hidden text-lg font-normal text-[#fff] xl:block">
-              Agrisync App
+              Agri App
             </span>
           </Link>
           <Devider type="div" className="my-6" />
@@ -164,7 +164,7 @@ function Menu(props: {
   const [formattedMenu, setFormattedMenu] = props.formattedMenuState
 
   return (
-    <SideMenuToolagrisync
+    <SideMenuTooltip
       as="a"
       content={props.menu.title}
       href={props.menu.subMenu ? '#' : props.menu.pathname}
@@ -229,7 +229,7 @@ function Menu(props: {
           </div>
         )}
       </div>
-    </SideMenuToolagrisync>
+    </SideMenuTooltip>
   )
 }
 

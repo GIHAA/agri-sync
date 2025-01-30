@@ -33,19 +33,10 @@ export default function RewardsScreen() {
       title: "Nearby Farmer info",
       coins: 100,
       icon: "enviromento",
-      comingSoon: true,
       onPress: () => {
-        alert("Coming Soon");
-      },
-    },
-    {
-      id: 3,
-      title: "Crop Recommendation",
-      coins: 100,
-      icon: "API",
-      comingSoon: true,
-      onPress: () => {
-        alert("Coming Soon");
+        //todo : redirem points
+        alert("todo : redirem points");
+        router.replace("/(root)/(screens)/nearByFamersData");
       },
     },
   ];
@@ -104,7 +95,9 @@ export default function RewardsScreen() {
             </Pressable>
 
             {/* Leaderboard Button */}
-            <Pressable className="w-[30%]  p-4 rounded-lg items-center">
+            <Pressable onPress={
+              () => router.replace("/(root)/(screens)/leaderboard")
+            }  className="w-[30%]  p-4 rounded-lg items-center">
               <View className="bg-purple-100 p-4 rounded-full">
                 <AntDesign name="barschart" size={30} color="#805AD5" />
               </View>

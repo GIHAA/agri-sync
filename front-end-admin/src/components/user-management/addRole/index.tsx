@@ -44,10 +44,10 @@ function AddRole() {
           `${t('addUserManagementRoles.fields.roleName.validationMessage')}`
         ),
       prefix: yup.string().when('_', {
-        is: () => 'toolagrisync',
+        is: () => 'tooltip',
         then: yup
           .string()
-          .required(`${t('customerForm.fields.prefix.toolagrisync')}`),
+          .required(`${t('customerForm.fields.prefix.tooltip')}`),
         otherwise: yup.string().notRequired(),
       }),
     })
@@ -920,8 +920,8 @@ function AddRole() {
               <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
                 <div className="mx-1 -ml-1 flex">
                   <FormInfo
-                    toolagrisync={`${t(
-                      'addUserManagementRoles.fields.userType.toolagrisync'
+                    tooltip={`${t(
+                      'addUserManagementRoles.fields.userType.tooltip'
                     )}`}
                   />
                 </div>
@@ -2410,8 +2410,8 @@ function AddRole() {
                       >
                         <div className="mx-1 -ml-1 flex">
                           <FormInfo
-                            toolagrisync={`${t(
-                              'addUserManagementRoles.fields.permissions.fields.product.fields.viewPurchasePrice.toolagrisync'
+                            tooltip={`${t(
+                              'addUserManagementRoles.fields.permissions.fields.product.fields.viewPurchasePrice.tooltip'
                             )}`}
                           />
                         </div>
@@ -2546,8 +2546,8 @@ function AddRole() {
                       >
                         <div className="mx-1 -ml-1 flex">
                           <FormInfo
-                            toolagrisync={`${t(
-                              'addUserManagementRoles.fields.permissions.fields.purchase.fields.addEditDeletePayments.toolagrisync'
+                            tooltip={`${t(
+                              'addUserManagementRoles.fields.permissions.fields.purchase.fields.addEditDeletePayments.tooltip'
                             )}`}
                           />
                         </div>
@@ -3056,8 +3056,8 @@ function AddRole() {
                       >
                         <div className="mx-1 -ml-2 flex">
                           <FormInfo
-                            toolagrisync={`${t(
-                              'addUserManagementRoles.fields.permissions.fields.sell.fields.addEditPayments.toolagrisync'
+                            tooltip={`${t(
+                              'addUserManagementRoles.fields.permissions.fields.sell.fields.addEditPayments.tooltip'
                             )}`}
                           />
                         </div>
@@ -3222,8 +3222,8 @@ function AddRole() {
                       >
                         <div className="mx-1 -ml-2 flex">
                           <FormInfo
-                            toolagrisync={`${t(
-                              'addUserManagementRoles.fields.permissions.fields.sell.fields.viewAllDdateRange.toolagrisync'
+                            tooltip={`${t(
+                              'addUserManagementRoles.fields.permissions.fields.sell.fields.viewAllDdateRange.tooltip'
                             )}`}
                           />
                         </div>
@@ -3266,8 +3266,8 @@ function AddRole() {
                       >
                         <div className="mx-1 -ml-2 flex">
                           <FormInfo
-                            toolagrisync={`${t(
-                              'addUserManagementRoles.fields.permissions.fields.sell.fields.enableLocationChange.toolagrisync'
+                            tooltip={`${t(
+                              'addUserManagementRoles.fields.permissions.fields.sell.fields.enableLocationChange.tooltip'
                             )}`}
                           />
                         </div>
@@ -3854,8 +3854,8 @@ function AddRole() {
                           )}`}
                           <div className="mx-1 ml-2 flex">
                             <FormInfo
-                              toolagrisync={`${t(
-                                'addUserManagementRoles.fields.permissions.fields.home.toolagrisync'
+                              tooltip={`${t(
+                                'addUserManagementRoles.fields.permissions.fields.home.tooltip'
                               )}`}
                             />
                           </div>
@@ -3984,8 +3984,8 @@ function AddRole() {
                         'addUserManagementRoles.fields.permissions.fields.account.fields.viewAllDateRange.label'
                       )}`}</div>
                       <FormInfo
-                        toolagrisync={`${t(
-                          'addUserManagementRoles.fields.permissions.fields.account.fields.viewAllDateRange.toolagrisync'
+                        tooltip={`${t(
+                          'addUserManagementRoles.fields.permissions.fields.account.fields.viewAllDateRange.tooltip'
                         )}`}
                       />
                     </FormCheck>
@@ -5170,8 +5170,8 @@ function AddRole() {
                         >
                           <div className="mx-1 -ml-1 flex">
                             <FormInfo
-                              toolagrisync={`${t(
-                                'addUserManagementRoles.fields.permissions.fields.reports.fields.stockRelatedReports.fields.stockExpiryReport.toolagrisync'
+                              tooltip={`${t(
+                                'addUserManagementRoles.fields.permissions.fields.reports.fields.stockRelatedReports.fields.stockExpiryReport.tooltip'
                               )}`}
                             />
                           </div>
@@ -5331,8 +5331,8 @@ function AddRole() {
                         >
                           <div className="mx-1 -ml-1 flex">
                             <FormInfo
-                              toolagrisync={`${t(
-                                'addUserManagementRoles.fields.permissions.fields.reports.fields.userContactsReports.fields.fixedSalesCommission.toolagrisync'
+                              tooltip={`${t(
+                                'addUserManagementRoles.fields.permissions.fields.reports.fields.userContactsReports.fields.fixedSalesCommission.tooltip'
                               )}`}
                             />
                           </div>
@@ -5461,8 +5461,8 @@ function AddRole() {
                         >
                           <div className="mx-1 -ml-1 flex">
                             <FormInfo
-                              toolagrisync={`${t(
-                                'addUserManagementRoles.fields.permissions.fields.reports.fields.restaurantReports.fields.serviceStaffReport.toolagrisync'
+                              tooltip={`${t(
+                                'addUserManagementRoles.fields.permissions.fields.reports.fields.restaurantReports.fields.serviceStaffReport.tooltip'
                               )}`}
                             />
                           </div>

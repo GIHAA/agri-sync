@@ -13,7 +13,7 @@ const AccessibilitySettings = sequelize.define("AccessibilitySettings", {
   },
   text_size: DataTypes.STRING,
   layout: DataTypes.STRING,
-  color_friendly_scheme: DataTypes.BOOLEAN,
+  color_friendly_scheme: DataTypes.STRING,
   use_symbols_with_colors: DataTypes.BOOLEAN,
 });
 

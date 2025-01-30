@@ -27,7 +27,7 @@ import {
   Disclosure,
 } from '../../common/headless'
 import Table from '../../common/table'
-import Agrisyncpy from '../../common/agrisyncpy'
+import Tippy from '../../common/tippy'
 
 
 function RegisterDetails() {
@@ -92,7 +92,7 @@ function RegisterDetails() {
           <div className="flex w-full sm:mt-0 sm:w-auto">
             <div className=" font-medium">
               {`${t('registerForm.fields.email.label')}`} :
-              {' support@agrisync.lk '}
+              {' support@storemate.lk '}
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@ function RegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Agrisyncpy
+                                <Tippy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -174,7 +174,7 @@ function RegisterDetails() {
                                 >
 
                                Sales
-                                </Agrisyncpy>
+                                </Tippy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -190,7 +190,7 @@ function RegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Agrisyncpy
+                                <Tippy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -198,7 +198,7 @@ function RegisterDetails() {
                                 >
 
                                   Credi Received
-                                </Agrisyncpy>
+                                </Tippy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -214,7 +214,7 @@ function RegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Agrisyncpy
+                                <Tippy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -222,7 +222,7 @@ function RegisterDetails() {
                                 >
 
                             Sales Return
-                                </Agrisyncpy>
+                                </Tippy>
                             </Tab.Button>
                         )}
                     </Tab>
@@ -238,7 +238,7 @@ function RegisterDetails() {
                                 ])}
                                 as="button"
                             >
-                                <Agrisyncpy
+                                <Tippy
                                     content=""
                                     className="flex items-center justify-center w-full py-4"
                                     aria-controls="content"
@@ -246,7 +246,7 @@ function RegisterDetails() {
                                 >
 
                             Expenses
-                                </Agrisyncpy>
+                                </Tippy>
                             </Tab.Button>
                         )}
                     </Tab>

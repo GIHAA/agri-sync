@@ -80,7 +80,7 @@ function SearchSelectElement({
                   {required ? <span className="text-red-500">*</span> : ''}
                 </div>
                 <div className="flex sm:mx-2">
-                  {info ? <FormInfo toolagrisync={info} /> : ''}
+                  {info ? <FormInfo tooltip={info} /> : ''}
                 </div>
               </div>
             </div>

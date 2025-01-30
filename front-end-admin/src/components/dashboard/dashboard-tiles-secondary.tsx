@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import Agrisyncpy from '../common/agrisyncpy'
+import Tippy from '../common/tippy'
 import Lucide from '../common/lucide'
 import clsx from 'clsx'
 
@@ -7,8 +7,8 @@ interface DashboardTileProps {
   amount?: string
   percentage?: any
   label?: string
-  toolagrisyncText: string
-  agrisyncpyBgColor?: string
+  tooltipText: string
+  tippyBgColor?: string
   icon?: any
 }
 
@@ -16,8 +16,8 @@ const DashboardTileSeconary: React.FC<DashboardTileProps> = ({
   amount,
   percentage,
   label,
-  toolagrisyncText,
-  agrisyncpyBgColor,
+  tooltipText,
+  tippyBgColor,
   icon,
 }) => {
   return (
@@ -34,17 +34,17 @@ const DashboardTileSeconary: React.FC<DashboardTileProps> = ({
               <img src={icon} className=" max-lg:h-16 max-lg:w-16" />
             </div>
             <div className="ml-auto">
-              <Agrisyncpy
+              <Tippy
                 as="div"
                 className={clsx([
                   'flex cursor-pointer items-center rounded-full py-[3px] pl-2 pr-1 text-xs font-medium text-white',
-                  agrisyncpyBgColor,
+                  tippyBgColor,
                 ])}
-                content={toolagrisyncText}
+                content={tooltipText}
               >
                 {percentage}%
                 <Lucide icon="ChevronUp" className="ml-0.5 h-4 w-4" />
-              </Agrisyncpy>
+              </Tippy>
             </div>
           </div>
           <div className=" mt-4">
