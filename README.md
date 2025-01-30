@@ -9,7 +9,12 @@ Agri Sync is an advanced platform aimed at enhancing the agricultural value chai
 [![User Service - Test and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/user-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/user-service.yml)
 <br>
 [![Gateway Service - Build and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/gateway-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/gateway-service.yml)
-
+<br>
+[![Gateway Service - Build and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/gateway-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/gateway-service.yml)
+<br>
+[![Chatbot Service - Test and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/chatbot-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/chatbot-service.yml)
+<br>
+[![Hyperledger Service - Test and Deploy](https://github.com/GIHAA/agri-sync/actions/workflows/hyperledger-service.yml/badge.svg)](https://github.com/GIHAA/agri-sync/actions/workflows/hyperledger-service.yml)
 
 ## Architectural Diagram
 ![Frame 1](https://github.com/user-attachments/assets/44bd9744-ac31-4f6b-b80d-004f7f0b3a18)
