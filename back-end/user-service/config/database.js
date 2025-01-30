@@ -1,7 +1,7 @@
 // config/database.js
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
-const logger = require("../utils/logger"); // Add the logger
+const logger = require("../utils/logger"); 
 
 const sequelize = new Sequelize({
   host: process.env.DB_HOST || "localhost",

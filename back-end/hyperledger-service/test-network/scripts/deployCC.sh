@@ -2,7 +2,7 @@
 
 source scripts/utils.sh
 
-CHANNEL_NAME=${1:-"mychannel"}
+CHANNEL_NAME=${1:-"seedtransectionchannel"}
 CC_NAME=${2}
 CC_SRC_PATH=${3}
 CC_SRC_LANGUAGE=${4}
@@ -69,7 +69,7 @@ function checkPrereqs() {
 checkPrereqs
 
 ## package the chaincode
-./scripts/packageCC.sh $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION 
+./scripts/packageCC.sh $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION
 
 PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
 

@@ -1,21 +1,25 @@
-import { Queue } from 'bullmq';
 import express, { Request, Response } from 'express';
+import { Contract } from 'fabric-network';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
-import { getJobSummary, JobNotFoundError } from './jobs';
+import { getJobSummary, JobNotFoundError } from './JobsCouchDB';
 import { logger } from './logger';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } = StatusCodes;
 
-export const jobsRouter = express.Router();
+export const JobsCouchDBRouter = express.Router();
 
-jobsRouter.get('/:jobId', async (req: Request, res: Response) => {
+JobsCouchDBRouter.get('/:jobId', async (req: Request, res: Response) => {
     const jobId = req.params.jobId;
     logger.debug('Read request received for job ID %s', jobId);
 
     try {
-        const submitQueue = req.app.locals.jobq as Queue;
+        const contract = req.app.locals.SeedContract as Contract;
 
-        const jobSummary = await getJobSummary(submitQueue, jobId);
+        if (!contract) {
+            throw new Error('Contract not found in application locals');
+        }
+
+        const jobSummary = await getJobSummary(contract, jobId);
 
         return res.status(OK).json(jobSummary);
     } catch (err) {
