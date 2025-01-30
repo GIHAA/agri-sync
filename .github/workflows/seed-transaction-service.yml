@@ -1,20 +1,20 @@
-# name: Seed Transaction Service - Test and Deploy
+name: Seed Transaction Service - Test and Deploy
 
-# on:
-#   pull_request:
-#     branches: [develop]
-#     types: [opened, synchronize]
-#   push:
-#     branches:
-#       - develop
-#       - 'release-*'
+on:
+  pull_request:
+    branches: [develop]
+    types: [opened, synchronize]
+  push:
+    branches:
+      - develop
+      - 'release-*'
 
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pull-requests: write
-#       contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     
 #     services:
 #       postgres:
