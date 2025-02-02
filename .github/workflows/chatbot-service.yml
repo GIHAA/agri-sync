@@ -30,12 +30,6 @@ jobs:
           cd back-end/chatbot-service
           pip install -r requirements.txt
 
-      - name: Start Chatbot Service (for testing)
-        working-directory: back-end/chatbot-service
-        run: |
-          python app.py &
-          sleep 15
-
       - name: Run tests
         working-directory: back-end/chatbot-service
         run: |
