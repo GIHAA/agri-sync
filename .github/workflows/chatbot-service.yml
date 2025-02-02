@@ -1,4 +1,4 @@
-name: Chatbot Service - Test and Deploy
+name: Chatbot Service - Build and Deploy
 
 on:
   pull_request:
