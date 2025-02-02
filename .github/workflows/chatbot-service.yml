@@ -39,7 +39,7 @@ jobs:
       - name: Run tests
         working-directory: back-end/chatbot-service
         run: |
-          pytest > test-results.txt 2>&1
+          python -m unittest discover > test-results.txt 2>&1
 
       - name: Process test results
         id: test-results
