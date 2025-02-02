@@ -35,6 +35,9 @@ jobs:
         run: |
           python -m unittest test_app.py -v > test-results.txt 2>&1
 
+      - name: Show test results
+        run: cat test-results.txt
+
       - name: Process test results
         id: test-results
         run: |
