@@ -2,36 +2,48 @@ import express, { Request, Response } from 'express';
 import { Contract } from 'fabric-network';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { getBlockHeight } from './fabric';
+import { getJobCounts } from './JobsCouchDB';
 import { logger } from './logger';
 import * as config from './config';
-import { Queue } from 'bullmq';
-import { getJobCounts } from './jobs';
 
 const { SERVICE_UNAVAILABLE, OK } = StatusCodes;
 
-export const healthRouter = express.Router();
+export const healthCouchDBRouter = express.Router();
 
-healthRouter.get('/ready', (_req, res: Response) =>
+/**
+ * Readiness endpoint: Always returns 200 OK.
+ */
+healthCouchDBRouter.get('/ready', (_req, res: Response) =>
     res.status(OK).json({
         status: getReasonPhrase(OK),
         timestamp: new Date().toISOString(),
     })
 );
 
-healthRouter.get('/live', async (req: Request, res: Response) => {
+/**
+ * Liveness endpoint: Checks the health of Fabric and CouchDB.
+ */
+healthCouchDBRouter.get('/live', async (req: Request, res: Response) => {
     logger.debug(req.body, 'Liveness request received');
 
     try {
-        const submitQueue = req.app.locals.jobq as Queue;
         const qsccOrg1 = req.app.locals[config.mspIdOrg1]
             ?.qsccContract as Contract;
         const qsccOrg2 = req.app.locals[config.mspIdOrg2]
             ?.qsccContract as Contract;
+        const SeedContract = req.app.locals.SeedContract as Contract;
 
+        if (!qsccOrg1 || !qsccOrg2 || !SeedContract) {
+            throw new Error(
+                'Required contracts not available in application locals'
+            );
+        }
+
+        // Check block height for both organizations and job counts from CouchDB.
         await Promise.all([
             getBlockHeight(qsccOrg1),
             getBlockHeight(qsccOrg2),
-            getJobCounts(submitQueue),
+            getJobCounts(SeedContract),
         ]);
     } catch (err) {
         logger.error({ err }, 'Error processing liveness request');

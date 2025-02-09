@@ -32,9 +32,7 @@ const mockSeed2 = {
     AppraisedValue: 400,
 };
 
-const mockAllSeedsBuffer = Buffer.from(
-    JSON.stringify([mockSeed1, mockSeed2])
-);
+const mockAllSeedsBuffer = Buffer.from(JSON.stringify([mockSeed1, mockSeed2]));
 
 // TODO add tests for server errors
 describe('Seed Transfer Besic REST API', () => {
@@ -106,7 +104,7 @@ describe('Seed Transfer Besic REST API', () => {
         });
     });
 
-    describe('/api/Seeds', () => {
+    describe('/api/seeds', () => {
         let mockGetAllSeedsTransaction: MockProxy<Transaction>;
 
         beforeEach(() => {
@@ -122,7 +120,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('GET should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .get('/api/Seeds')
+                .get('/api/seeds')
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
             expect(response.header).toHaveProperty(
@@ -142,7 +140,7 @@ describe('Seed Transfer Besic REST API', () => {
             );
 
             const response = await request(app)
-                .get('/api/Seeds')
+                .get('/api/seeds')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(200);
             expect(response.header).toHaveProperty(
@@ -158,7 +156,7 @@ describe('Seed Transfer Besic REST API', () => {
             );
 
             const response = await request(app)
-                .get('/api/Seeds')
+                .get('/api/seeds')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(200);
             expect(response.header).toHaveProperty(
@@ -167,31 +165,31 @@ describe('Seed Transfer Besic REST API', () => {
             );
             expect(response.body).toEqual([
                 {
-                    ID: 'Seed1',
-                    Color: 'blue',
-                    Size: 5,
-                    Owner: 'Tomoko',
-                    AppraisedValue: 300,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 },
                 {
-                    ID: 'Seed2',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    farmerId: 'farmer14a',
+                    SeedType: 'Wheat',
+                    quantity: 1200,
+                    pricePerUnit: 90.3,
+                    location: 'yakala',
                 },
             ]);
         });
 
         it('POST should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .post('/api/Seeds')
+                .post('/api/seeds')
                 .send({
-                    ID: 'Seed6',
-                    Color: 'white',
-                    Size: 15,
-                    Owner: 'Michel',
-                    AppraisedValue: 800,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 })
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
@@ -208,13 +206,13 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('POST should respond with 400 bad request json for invalid Seed json', async () => {
             const response = await request(app)
-                .post('/api/Seeds')
+                .post('/api/seeds')
                 .send({
-                    wrongidfield: 'Seed3',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    location: 'Seed3',
+                    SeedType: 'red',
+                    pricePerUnit: 5,
+                    farmerId: 'Brad',
+                    quantity: 400,
                 })
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(400);
@@ -239,13 +237,13 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('POST should respond with 202 accepted json', async () => {
             const response = await request(app)
-                .post('/api/Seeds')
+                .post('/api/seeds')
                 .send({
-                    ID: 'Seed3',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 })
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(202);
@@ -261,7 +259,7 @@ describe('Seed Transfer Besic REST API', () => {
         });
     });
 
-    describe('/api/Seeds/:id', () => {
+    describe('/api/seeds/:id', () => {
         let mockSeedExistsTransaction: MockProxy<Transaction>;
         let mockReadSeedTransaction: MockProxy<Transaction>;
 
@@ -285,7 +283,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('OPTIONS should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .options('/api/Seeds/Seed1')
+                .options('/api/seeds/Seed1')
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
             expect(response.header).toHaveProperty(
@@ -305,7 +303,7 @@ describe('Seed Transfer Besic REST API', () => {
                 .mockResolvedValue(Buffer.from('false'));
 
             const response = await request(app)
-                .options('/api/Seeds/Seed3')
+                .options('/api/seeds/Seed3')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(404);
             expect(response.header).toHaveProperty(
@@ -325,7 +323,7 @@ describe('Seed Transfer Besic REST API', () => {
                 .mockResolvedValue(Buffer.from('true'));
 
             const response = await request(app)
-                .options('/api/Seeds/Seed1')
+                .options('/api/seeds/Seed1')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(200);
             expect(response.header).toHaveProperty(
@@ -344,7 +342,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('GET should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .get('/api/Seeds/Seed1')
+                .get('/api/seeds/Seed1')
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
             expect(response.header).toHaveProperty(
@@ -361,12 +359,10 @@ describe('Seed Transfer Besic REST API', () => {
         it('GET should respond with 404 not found json when there is no Seed with the specified ID', async () => {
             mockReadSeedTransaction.evaluate
                 .calledWith('Seed3')
-                .mockRejectedValue(
-                    new Error('the Seed Seed3 does not exist')
-                );
+                .mockRejectedValue(new Error('the Seed Seed3 does not exist'));
 
             const response = await request(app)
-                .get('/api/Seeds/Seed3')
+                .get('/api/seeds/Seed3')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(404);
             expect(response.header).toHaveProperty(
@@ -385,7 +381,7 @@ describe('Seed Transfer Besic REST API', () => {
                 .mockResolvedValue(mockSeed1Buffer);
 
             const response = await request(app)
-                .get('/api/Seeds/Seed1')
+                .get('/api/seeds/Seed1')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(200);
             expect(response.header).toHaveProperty(
@@ -393,23 +389,23 @@ describe('Seed Transfer Besic REST API', () => {
                 'application/json; charset=utf-8'
             );
             expect(response.body).toEqual({
-                ID: 'Seed1',
-                Color: 'blue',
-                Size: 5,
-                Owner: 'Tomoko',
-                AppraisedValue: 300,
+                farmerId: 'farmer13a',
+                SeedType: 'Wheat',
+                quantity: 1600,
+                pricePerUnit: 15.3,
+                location: 'yakala',
             });
         });
 
         it('PUT should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .put('/api/Seeds/Seed1')
+                .put('/api/seeds/Seed1')
                 .send({
-                    ID: 'Seed3',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 })
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
@@ -426,13 +422,13 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PUT should respond with 400 bad request json when IDs do not match', async () => {
             const response = await request(app)
-                .put('/api/Seeds/Seed1')
+                .put('/api/seeds/Seed1')
                 .send({
-                    ID: 'Seed2',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 })
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(400);
@@ -450,13 +446,13 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PUT should respond with 400 bad request json for invalid Seed json', async () => {
             const response = await request(app)
-                .put('/api/Seeds/Seed1')
+                .put('/api/seeds/Seed1')
                 .send({
-                    wrongID: 'Seed1',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    location: 'Seed3',
+                    SeedType: 'red',
+                    pricePerUnit: 5,
+                    farmerId: 'Brad',
+                    quantity: 400,
                 })
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(400);
@@ -481,13 +477,13 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PUT should respond with 202 accepted json', async () => {
             const response = await request(app)
-                .put('/api/Seeds/Seed1')
+                .put('/api/seeds/Seed1')
                 .send({
-                    ID: 'Seed1',
-                    Color: 'red',
-                    Size: 5,
-                    Owner: 'Brad',
-                    AppraisedValue: 400,
+                    farmerId: 'farmer13a',
+                    SeedType: 'Wheat',
+                    quantity: 1600,
+                    pricePerUnit: 15.3,
+                    location: 'yakala',
                 })
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(202);
@@ -504,7 +500,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PATCH should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .patch('/api/Seeds/Seed1')
+                .patch('/api/seeds/Seed1')
                 .send([{ op: 'replace', path: '/Owner', value: 'Ashleigh' }])
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
@@ -521,7 +517,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PATCH should respond with 400 bad request json for invalid patch op/path', async () => {
             const response = await request(app)
-                .patch('/api/Seeds/Seed1')
+                .patch('/api/seeds/Seed1')
                 .send([{ op: 'replace', path: '/color', value: 'orange' }])
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(400);
@@ -547,7 +543,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('PATCH should respond with 202 accepted json', async () => {
             const response = await request(app)
-                .patch('/api/Seeds/Seed1')
+                .patch('/api/seeds/Seed1')
                 .send([{ op: 'replace', path: '/Owner', value: 'Ashleigh' }])
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(202);
@@ -564,7 +560,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('DELETE should respond with 401 unauthorized json when an invalid API key is specified', async () => {
             const response = await request(app)
-                .delete('/api/Seeds/Seed1')
+                .delete('/api/seeds/Seed1')
                 .set('X-Api-Key', 'NOTTHERIGHTAPIKEY');
             expect(response.statusCode).toEqual(401);
             expect(response.header).toHaveProperty(
@@ -580,7 +576,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('DELETE should respond with 202 accepted json', async () => {
             const response = await request(app)
-                .delete('/api/Seeds/Seed1')
+                .delete('/api/seeds/Seed1')
                 .set('X-Api-Key', 'ORG1MOCKAPIKEY');
             expect(response.statusCode).toEqual(202);
             expect(response.header).toHaveProperty(
@@ -690,7 +686,7 @@ describe('Seed Transfer Besic REST API', () => {
 
         it('GET should respond with 404 not found json when there is no transaction with the specified ID', async () => {
             mockGetTransactionByIDTransaction.evaluate
-                .calledWith('mychannel', 'txn3')
+                .calledWith('seedtransectionchannel', 'txn3')
                 .mockRejectedValue(
                     new Error(
                         'Failed to get transaction with id txn3, error Entry not found in index'
@@ -722,7 +718,7 @@ describe('Seed Transfer Besic REST API', () => {
                 ).finish()
             );
             mockGetTransactionByIDTransaction.evaluate
-                .calledWith('mychannel', 'txn2')
+                .calledWith('seedtransectionchannel', 'txn2')
                 .mockResolvedValue(processedTransactionBuffer);
 
             const response = await request(app)

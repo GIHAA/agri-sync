@@ -10,17 +10,15 @@ BEGIN
     END IF;
 END $$;
 
-
 -- Create Users table for basic user information
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE schemaname = 'public' AND tablename = 'users') THEN
         CREATE TABLE users (
             id SERIAL PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
+            username VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
             password_hash VARCHAR(255) NOT NULL,
-            qr_code_hash VARCHAR(255) UNIQUE,
             role_id INT NOT NULL DEFAULT 1, -- Default to 'superadmin' for the first user
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
@@ -63,7 +61,7 @@ END $$;
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM users) THEN
-        INSERT INTO users (name, email, password_hash, role_id)
+        INSERT INTO users (username, email, password_hash, role_id)
         VALUES ('Default Superadmin', 'admin@example.com', 'hashed_password', 1);
     END IF;
 END $$;
