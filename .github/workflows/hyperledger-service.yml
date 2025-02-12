@@ -44,7 +44,11 @@ jobs:
       # Step 4: Install dependencies using npm ci
       - name: Install Dependencies
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-        run: npm ci
+        run: |
+          if [ ! -f "package-lock.json" ]; then
+            npm install
+          fi
+          npm ci
 
       # Step 5: Fix Prettier and ESLint issues
       - name: Fix Prettier Formatting
