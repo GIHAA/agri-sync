@@ -33,17 +33,36 @@ jobs:
         with:
           node-version: '18'
 
-      # Step 3: Install dependencies using npm ci
+      # Step 3: Verify package-lock.json exists
+      - name: Verify package-lock.json
+        run: |
+          if [ ! -f "back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/package-lock.json" ]; then
+            echo "Error: package-lock.json is missing. Run 'npm install' locally and commit the file."
+            exit 1
+          fi
+
+      # Step 4: Install dependencies using npm ci
       - name: Install Dependencies
         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
         run: npm ci
 
-      # Step 4: Build Docker Image for Testing
+      # Step 5: Fix Prettier and ESLint issues
+      - name: Fix Prettier Formatting
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        run: |
+          npx prettier --write .
+
+      - name: Fix ESLint Issues
+        working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+        run: |
+          npm run lint -- --fix
+
+      # Step 6: Build Docker Image for Testing
       - name: Build Docker Image for Testing
         run: |
           docker build -t hyperledger-service-test -f back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/Dockerfile .
 
-      # Step 5: Run Tests in Docker Container
+      # Step 7: Run Tests in Docker Container
       - name: Run Tests in Docker Container
         id: run-tests
         run: |
@@ -52,7 +71,7 @@ jobs:
             -e REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
             hyperledger-service-test npm test || echo "Tests failed"
 
-      # Step 6: Comment on PR if tests fail (only for pull requests)
+      # Step 8: Comment on PR if tests fail (only for pull requests)
       - name: Comment PR (if pull request)
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
