@@ -228,72 +228,72 @@ try:
 
     # Define reduced parameter grids for faster execution
     logger.info("Defining parameter grids...")
-    # rf_params = {
-    #     'n_estimators': [100, 200],
-    #     'max_depth': [10, 15],
-    #     'min_samples_split': [2, 5],
-    #     'min_samples_leaf': [1, 2],
-    #     'max_features': ['sqrt', 'log2']
-    # }
-
-    # gb_params = {
-    #     'n_estimators': [100, 200],
-    #     'learning_rate': [0.05, 0.1],
-    #     'max_depth': [3, 5],
-    #     'subsample': [0.8, 0.9],
-    #     'min_samples_split': [2, 5],
-    #     'min_samples_leaf': [1, 2]
-    # }
-
-    # et_params = {
-    #     'n_estimators': [100, 200],
-    #     'max_depth': [10, 15],
-    #     'min_samples_split': [2, 5],
-    #     'min_samples_leaf': [1, 2],
-    #     'max_features': ['sqrt', 'log2']
-    # }
-    
-    # advanced parameter grids commented out for now
     rf_params = {
-        'n_estimators': [100, 200, 300, 500],
-        'max_depth': [None, 10, 20, 30],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
-        'max_features': ['sqrt', 'log2', None],
-        'bootstrap': [True, False],
-        'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
-        'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+        'n_estimators': [100, 200],
+        'max_depth': [10, 15],
+        'min_samples_split': [2, 5],
+        'min_samples_leaf': [1, 2],
+        'max_features': ['sqrt', 'log2']
     }
 
     gb_params = {
-        'n_estimators': [100, 200, 500],
-        'learning_rate': [0.01, 0.05, 0.1, 0.2],
-        'max_depth': [3, 5, 7, 9],
-        'subsample': [0.7, 0.8, 0.9, 1.0],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
-        'max_features': ['sqrt', 'log2', None],
-        'loss': ['squared_error', 'huber', 'absolute_error'],  # Regression losses
-        'validation_fraction': [0.1, 0.2],
-        'n_iter_no_change': [5, 10],
-        'tol': [1e-4, 1e-3]
+        'n_estimators': [100, 200],
+        'learning_rate': [0.05, 0.1],
+        'max_depth': [3, 5],
+        'subsample': [0.8, 0.9],
+        'min_samples_split': [2, 5],
+        'min_samples_leaf': [1, 2]
     }
 
     et_params = {
-        'n_estimators': [100, 200, 300, 500],
-        'max_depth': [None, 10, 20, 30],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
-        'max_features': ['sqrt', 'log2', None],
-        'bootstrap': [True, False],
-        'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
-        'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+        'n_estimators': [100, 200],
+        'max_depth': [10, 15],
+        'min_samples_split': [2, 5],
+        'min_samples_leaf': [1, 2],
+        'max_features': ['sqrt', 'log2']
     }
+    
+    # advanced parameter grids commented out for now
+    # rf_params = {
+    #     'n_estimators': [100, 200, 300, 500],
+    #     'max_depth': [None, 10, 20, 30],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'bootstrap': [True, False],
+    #     'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
+    #     'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+    # }
+
+    # gb_params = {
+    #     'n_estimators': [100, 200, 500],
+    #     'learning_rate': [0.01, 0.05, 0.1, 0.2],
+    #     'max_depth': [3, 5, 7, 9],
+    #     'subsample': [0.7, 0.8, 0.9, 1.0],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'loss': ['squared_error', 'huber', 'absolute_error'],  # Regression losses
+    #     'validation_fraction': [0.1, 0.2],
+    #     'n_iter_no_change': [5, 10],
+    #     'tol': [1e-4, 1e-3]
+    # }
+
+    # et_params = {
+    #     'n_estimators': [100, 200, 300, 500],
+    #     'max_depth': [None, 10, 20, 30],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'bootstrap': [True, False],
+    #     'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
+    #     'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+    # }
 
     # Modified parameter grids for pipelines
-    rf_pipeline_params = {f'rf__{key}': value for key, value in rf_params.items()}
-    gb_pipeline_params = {f'gb__{key}': value for key, value in gb_params.items()}
-    et_pipeline_params = {f'et__{key}': value for key, value in et_params.items()}
+    # rf_pipeline_params = {f'rf__{key}': value for key, value in rf_params.items()}
+    # gb_pipeline_params = {f'gb__{key}': value for key, value in gb_params.items()}
+    # et_pipeline_params = {f'et__{key}': value for key, value in et_params.items()}
 
 
     # Create pipelines with preprocessing
