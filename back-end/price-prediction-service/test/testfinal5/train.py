@@ -148,11 +148,26 @@ try:
         logger.info("Creating features...")
         
         # Create seasonal features
+        # Create seasonal features
         logger.info("- Adding seasonal features")
         df_long['Month_Num'] = df_long['Month'].map({m: i+1 for i, m in enumerate(months)})
-        df_long['Season'] = pd.cut(df_long['Month_Num'], 
-                                  bins=[0, 3, 6, 9, 12], 
-                                  labels=['Winter', 'Spring', 'Summer', 'Fall'])
+
+        # Sri Lanka seasonal classification:
+        # - First Inter-monsoon: March-April (3-4)
+        # - Southwest Monsoon: May-September (5-9)
+        # - Second Inter-monsoon: October-November (10-11)
+        # - Northeast Monsoon: December-February (12,1,2)
+        def get_sri_lanka_season(month):
+            if month in [3, 4]:
+                return 'First Inter-monsoon'
+            elif month in [5, 6, 7, 8, 9]:
+                return 'Southwest Monsoon'
+            elif month in [10, 11]:
+                return 'Second Inter-monsoon'
+            else:  # month in [12, 1, 2]
+                return 'Northeast Monsoon'
+
+        df_long['Season'] = df_long['Month_Num'].apply(get_sri_lanka_season)
         
         # Create price momentum features
         logger.info("- Adding price momentum features")
@@ -237,6 +252,49 @@ try:
         'min_samples_leaf': [1, 2],
         'max_features': ['sqrt', 'log2']
     }
+    
+    # advanced parameter grids commented out for now
+    # rf_params = {
+    #     'n_estimators': [100, 200, 300, 500],
+    #     'max_depth': [None, 10, 20, 30],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'bootstrap': [True, False],
+    #     'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
+    #     'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+    # }
+
+    # gb_params = {
+    #     'n_estimators': [100, 200, 500],
+    #     'learning_rate': [0.01, 0.05, 0.1, 0.2],
+    #     'max_depth': [3, 5, 7, 9],
+    #     'subsample': [0.7, 0.8, 0.9, 1.0],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'loss': ['squared_error', 'huber', 'absolute_error'],  # Regression losses
+    #     'validation_fraction': [0.1, 0.2],
+    #     'n_iter_no_change': [5, 10],
+    #     'tol': [1e-4, 1e-3]
+    # }
+
+    # et_params = {
+    #     'n_estimators': [100, 200, 300, 500],
+    #     'max_depth': [None, 10, 20, 30],
+    #     'min_samples_split': [2, 5, 10],
+    #     'min_samples_leaf': [1, 2, 4],
+    #     'max_features': ['sqrt', 'log2', None],
+    #     'bootstrap': [True, False],
+    #     'criterion': ['squared_error', 'absolute_error', 'friedman_mse'],  # Regression criteria
+    #     'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
+    # }
+
+    # Modified parameter grids for pipelines
+    # rf_pipeline_params = {f'rf__{key}': value for key, value in rf_params.items()}
+    # gb_pipeline_params = {f'gb__{key}': value for key, value in gb_params.items()}
+    # et_pipeline_params = {f'et__{key}': value for key, value in et_params.items()}
+
 
     # Create pipelines with preprocessing
     logger.info("Creating model pipelines...")
