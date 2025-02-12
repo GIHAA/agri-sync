@@ -1,125 +1,125 @@
-name: Hyperledger Service - Test and Deploy
+# name: Hyperledger Service - Test and Deploy
 
-on:
-  pull_request:
-    branches: [develop]
-    types: [opened, synchronize]
-  push:
-    branches:
-      - develop
-      - 'release-*'
+# on:
+#   pull_request:
+#     branches: [develop]
+#     types: [opened, synchronize]
+#   push:
+#     branches:
+#       - develop
+#       - 'release-*'
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: read
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       pull-requests: write
+#       contents: read
     
-    services:
-      redis:
-        image: "redis"
-        ports:
-          - "6379:6379"
-        env:
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+#     services:
+#       redis:
+#         image: "redis"
+#         ports:
+#           - "6379:6379"
+#         env:
+#           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+#         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-      hyperledger-peer-org1:
-        image: hyperledger/fabric-peer:latest
-        ports:
-          - "7051:7051"
-        env:
-          CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
-          CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_test
-        options: --health-cmd="peer node status" --health-interval=10s --health-timeout=5s --health-retries=3
+#       hyperledger-peer-org1:
+#         image: hyperledger/fabric-peer:latest
+#         ports:
+#           - "7051:7051"
+#         env:
+#           CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+#           CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE: fabric_test
+#         options: --health-cmd="peer node status" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16'
 
-      - name: Install Dependencies
-        working-directory: back-end/hyperledger-service
-        run: npm ci
+#       - name: Install Dependencies
+#         working-directory: back-end/hyperledger-service
+#         run: npm ci
 
-      - name: Run Tests
-        working-directory: back-end/hyperledger-service
-        run: npm test -- --reporters=default --reporters=jest-junit
+#       - name: Run Tests
+#         working-directory: back-end/hyperledger-service
+#         run: npm test -- --reporters=default --reporters=jest-junit
 
-      - name: Upload Test Results (if failure)
-        uses: actions/upload-artifact@v3
-        if: ${{ failure() }}
-        with:
-          name: test-results
-          path: back-end/hyperledger-service/junit.xml
+#       - name: Upload Test Results (if failure)
+#         uses: actions/upload-artifact@v3
+#         if: ${{ failure() }}
+#         with:
+#           name: test-results
+#           path: back-end/hyperledger-service/junit.xml
 
-      - name: Process Test Results
-        id: test-results
-        run: |
-          if grep -q "success" back-end/hyperledger-service/junit.xml; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "tests_passed=true" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "tests_passed=false" >> $GITHUB_OUTPUT
-          fi
+#       - name: Process Test Results
+#         id: test-results
+#         run: |
+#           if grep -q "success" back-end/hyperledger-service/junit.xml; then
+#             echo "status=success" >> $GITHUB_OUTPUT
+#             echo "tests_passed=true" >> $GITHUB_OUTPUT
+#           else
+#             echo "status=failure" >> $GITHUB_OUTPUT
+#             echo "tests_passed=false" >> $GITHUB_OUTPUT
+#           fi
 
-      - name: Comment PR (if pull request)
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const results = fs.readFileSync('back-end/hyperledger-service/junit.xml', 'utf8');
-            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const statusMessage = testsPassed
-              ? "### ✅ Hyperledger Service - All Tests Passed! 🎉"
-              : "### ❌ Hyperledger Service - Tests Failed";
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: statusMessage,
-            });
+#       - name: Comment PR (if pull request)
+#         if: github.event_name == 'pull_request'
+#         uses: actions/github-script@v6
+#         with:
+#           script: |
+#             const fs = require('fs');
+#             const results = fs.readFileSync('back-end/hyperledger-service/junit.xml', 'utf8');
+#             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+#             const statusMessage = testsPassed
+#               ? "### ✅ Hyperledger Service - All Tests Passed! 🎉"
+#               : "### ❌ Hyperledger Service - Tests Failed";
+#             await github.rest.issues.createComment({
+#               ...context.repo,
+#               issue_number: context.issue.number,
+#               body: statusMessage,
+#             });
 
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    if: ${{ needs.test.outputs.tests_passed == 'true' }}
+#   build-and-push:
+#     needs: test
+#     runs-on: ubuntu-latest
+#     if: ${{ needs.test.outputs.tests_passed == 'true' }}
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract Branch Name and Set Docker Tag
-        run: |
-          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
-            echo "DOCKER_TAG=dev" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
-            echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
-          else
-            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          fi
+#       - name: Extract Branch Name and Set Docker Tag
+#         run: |
+#           if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+#             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+#           elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
+#             echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+#           else
+#             echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+#           fi
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./back-end/hyperledger-service
-          push: ${{ github.event_name == 'push' }}
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:${{ env.DOCKER_TAG }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:latest
+#       - name: Build and Push Docker Image
+#         uses: docker/build-push-action@v4
+#         with:
+#           context: ./back-end/hyperledger-service
+#           push: ${{ github.event_name == 'push' }}
+#           platforms: linux/amd64,linux/arm64
+#           tags: |
+#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:${{ env.DOCKER_TAG }}
+#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-service:latest
