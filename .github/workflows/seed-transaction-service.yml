@@ -44,12 +44,12 @@ jobs:
         working-directory: back-end/seed-transaction-service
         run: npm test -- --reporters=default --reporters=jest-junit
 
-      - name: Upload Test Results (if failure)
-        uses: actions/upload-artifact@v4
-        if: ${{ failure() }}
-        with:
-          name: test-results
-          path: back-end/seed-transaction-service/junit.xml
+      # - name: Upload Test Results (if failure)
+      #   uses: actions/upload-artifact@v4
+      #   if: ${{ failure() }}
+      #   with:
+      #     name: test-results
+      #     path: back-end/seed-transaction-service/junit.xml
 
       - name: Process Test Results
         id: test-results
