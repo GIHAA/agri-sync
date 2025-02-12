@@ -290,7 +290,7 @@ try:
         'max_samples': [0.7, 0.9, None]  # Control bootstrapped sample size
     }
 
-    Modified parameter grids for pipelines
+    # Modified parameter grids for pipelines
     rf_pipeline_params = {f'rf__{key}': value for key, value in rf_params.items()}
     gb_pipeline_params = {f'gb__{key}': value for key, value in gb_params.items()}
     et_pipeline_params = {f'et__{key}': value for key, value in et_params.items()}
