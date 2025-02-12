@@ -22,6 +22,104 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Add these functions right after the logging setup and before the start_time definition
+
+def plot_model_comparison(results):
+    logger.info("Creating model comparison visualizations...")
+    
+    # Set figure aesthetics without using style
+    plt.rcParams['figure.facecolor'] = 'white'
+    plt.rcParams['axes.facecolor'] = 'white'
+    plt.rcParams['axes.grid'] = True
+    plt.rcParams['grid.alpha'] = 0.3
+    
+    metrics = ['R2', 'RMSE', 'MAE', 'MAPE']
+    
+    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    fig.suptitle('Model Performance Comparison', fontsize=16, y=1.02)
+    
+    for idx, metric in enumerate(metrics):
+        ax = axes[idx//2, idx%2]
+        bars = ax.bar(results['Model'], results[metric])
+        ax.set_title(f'{metric} Comparison')
+        ax.set_xticklabels(results['Model'], rotation=45)
+        
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2., height,
+                    f'{height:.3f}',
+                    ha='center', va='bottom')
+    
+    plt.tight_layout()
+    plt.savefig('model_comparison.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_prediction_analysis(models, X_test, y_test):
+    logger.info("Creating prediction analysis plots...")
+    
+    fig, axes = plt.subplots(len(models), 2, figsize=(15, 5*len(models)))
+    fig.suptitle('Model Prediction Analysis', fontsize=16, y=1.02)
+    
+    for idx, (name, model) in enumerate(models.items()):
+        y_pred = model.predict(X_test)
+        
+        # Scatter plot
+        axes[idx, 0].scatter(y_test, y_pred, alpha=0.5)
+        axes[idx, 0].plot([y_test.min(), y_test.max()], 
+                        [y_test.min(), y_test.max()], 
+                        'r--', lw=2)
+        axes[idx, 0].set_title(f'{name}: Actual vs Predicted')
+        axes[idx, 0].set_xlabel('Actual Values')
+        axes[idx, 0].set_ylabel('Predicted Values')
+        
+        # Residual plot
+        residuals = y_test - y_pred
+        axes[idx, 1].scatter(y_pred, residuals, alpha=0.5)
+        axes[idx, 1].axhline(y=0, color='r', linestyle='--')
+        axes[idx, 1].set_title(f'{name}: Residuals Plot')
+        axes[idx, 1].set_xlabel('Predicted Values')
+        axes[idx, 1].set_ylabel('Residuals')
+        
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        r2 = r2_score(y_test, y_pred)
+        axes[idx, 0].text(0.05, 0.95, f'RMSE: {rmse:.2f}\nR²: {r2:.2f}',
+                        transform=axes[idx, 0].transAxes,
+                        bbox=dict(facecolor='white', alpha=0.8))
+    
+    plt.tight_layout()
+    plt.savefig('prediction_analysis.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_error_distribution(models, X_test, y_test):
+    logger.info("Creating error distribution plots...")
+    
+    fig, axes = plt.subplots(len(models), 1, figsize=(12, 4*len(models)))
+    fig.suptitle('Error Distribution Analysis', fontsize=16, y=1.02)
+    
+    if len(models) == 1:
+        axes = [axes]
+    
+    for idx, (name, model) in enumerate(models.items()):
+        y_pred = model.predict(X_test)
+        errors = y_test - y_pred
+        
+        sns.histplot(errors, kde=True, ax=axes[idx])
+        axes[idx].set_title(f'{name}: Error Distribution')
+        axes[idx].set_xlabel('Prediction Error')
+        axes[idx].set_ylabel('Count')
+        
+        mean_error = errors.mean()
+        std_error = errors.std()
+        axes[idx].axvline(mean_error, color='r', linestyle='--', alpha=0.5)
+        axes[idx].text(0.05, 0.95, 
+                     f'Mean Error: {mean_error:.2f}\nStd Dev: {std_error:.2f}',
+                     transform=axes[idx].transAxes,
+                     bbox=dict(facecolor='white', alpha=0.8))
+    
+    plt.tight_layout()
+    plt.savefig('error_distribution.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
 # Start timing
 start_time = time.time()
 logger.info("Starting model training process")
@@ -249,7 +347,13 @@ try:
             plt.savefig('feature_importance.png')
             plt.close()
 
-    # Get the best estimator and plot feature importance
+    # Create visualizations
+    logger.info("Generating model comparison visualizations...")
+    
+    # Plot overall model comparison
+    plot_model_comparison(results)
+    
+    # Get best estimator and plot feature importance
     best_estimator = best_model.best_estimator_
     if best_model_name == 'Random Forest':
         plot_feature_importance(best_estimator.named_steps['rf'], feature_columns)
@@ -257,7 +361,21 @@ try:
         plot_feature_importance(best_estimator.named_steps['gb'], feature_columns)
     else:
         plot_feature_importance(best_estimator.named_steps['et'], feature_columns)
-
+    
+    # Create dictionary of models for prediction analysis
+    models = {
+        'Random Forest': random_forest_grid,
+        'Gradient Boosting': gradient_boosting_grid,
+        'Extra Trees': extra_trees_grid
+    }
+    
+    # Plot prediction analysis
+    plot_prediction_analysis(models, X_test, y_test)
+    
+    # Plot error distribution
+    plot_error_distribution(models, X_test, y_test)
+    
+    
     # Save the best model
     logger.info("Saving best model...")
     import pickle
