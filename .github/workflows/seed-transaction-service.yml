@@ -16,140 +16,140 @@ jobs:
       pull-requests: write
       contents: read
     
-#     services:
-#       postgres:
-#         image: "postgres:16.0"
-#         ports:
-#           - "5436:5432"
-#         env:
-#           POSTGRES_USER: transaction_db
-#           POSTGRES_PASSWORD: admin
-#           POSTGRES_DB: transaction_service
-#         options: --health-cmd="pg_isready -U transaction_db" --health-interval=10s --health-timeout=5s --health-retries=3
+    services:
+      postgres:
+        image: "postgres:16.0"
+        ports:
+          - "5436:5432"
+        env:
+          POSTGRES_USER: transaction_db
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: transaction_service
+        options: --health-cmd="pg_isready -U transaction_db" --health-interval=10s --health-timeout=5s --health-retries=3
 
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: '16'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-#       - name: Install Dependencies
-#         working-directory: back-end/seed-transaction-service
-#         run: npm ci
+      - name: Install Dependencies
+        working-directory: back-end/seed-transaction-service
+        run: npm ci
 
-#       - name: Run Tests
-#         working-directory: back-end/seed-transaction-service
-#         run: npm test -- --reporters=default --reporters=jest-junit
+      - name: Run Tests
+        working-directory: back-end/seed-transaction-service
+        run: npm test -- --reporters=default --reporters=jest-junit
 
-#       - name: Upload Test Results (if failure)
-#         uses: actions/upload-artifact@v3
-#         if: ${{ failure() }}
-#         with:
-#           name: test-results
-#           path: back-end/seed-transaction-service/junit.xml
+      - name: Upload Test Results (if failure)
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: test-results
+          path: back-end/seed-transaction-service/junit.xml
 
-#       - name: Process Test Results
-#         id: test-results
-#         run: |
-#           if grep -q "success" back-end/seed-transaction-service/junit.xml; then
-#             echo "status=success" >> $GITHUB_OUTPUT
-#             echo "tests_passed=true" >> $GITHUB_OUTPUT
-#             echo "total_tests=$(grep -c "testcase" back-end/seed-transaction-service/junit.xml)" >> $GITHUB_OUTPUT
-#           else
-#             echo "status=failure" >> $GITHUB_OUTPUT
-#             echo "tests_passed=false" >> $GITHUB_OUTPUT
-#           fi
+      - name: Process Test Results
+        id: test-results
+        run: |
+          if grep -q "success" back-end/seed-transaction-service/junit.xml; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "tests_passed=true" >> $GITHUB_OUTPUT
+            echo "total_tests=$(grep -c "testcase" back-end/seed-transaction-service/junit.xml)" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+          fi
 
-#       - name: Comment PR (if pull request)
-#         if: github.event_name == 'pull_request'
-#         uses: actions/github-script@v6
-#         with:
-#           script: |
-#             const fs = require('fs');
-#             const results = fs.readFileSync('back-end/seed-transaction-service/junit.xml', 'utf8');
+      - name: Comment PR (if pull request)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const results = fs.readFileSync('back-end/seed-transaction-service/junit.xml', 'utf8');
             
-#             const formatTestResults = (results, testsPassed, totalTests) => {
-#               const testCases = results.match(/<testcase.*?<\/testcase>/gs);
+            const formatTestResults = (results, testsPassed, totalTests) => {
+              const testCases = results.match(/<testcase.*?<\/testcase>/gs);
               
-#               let formattedOutput = testsPassed 
-#                 ? `### ✅ Seed Transaction Service - All Tests Passed! 🎉\n${totalTests} tests completed successfully ⭐\n\n`
-#                 : `### ❌ Seed Transaction Service - Tests Failed\n\n`;
+              let formattedOutput = testsPassed 
+                ? `### ✅ Seed Transaction Service - All Tests Passed! 🎉\n${totalTests} tests completed successfully ⭐\n\n`
+                : `### ❌ Seed Transaction Service - Tests Failed\n\n`;
               
-#               formattedOutput += '### Test Results Summary\n\n';
+              formattedOutput += '### Test Results Summary\n\n';
               
-#               const suites = {};
-#               testCases.forEach(testCase => {
-#                 const suiteName = testCase.match(/classname="([^"]+)"/)[1];
-#                 const testName = testCase.match(/name="([^"]+)"/)[1];
-#                 const failed = testCase.includes('<failure');
+              const suites = {};
+              testCases.forEach(testCase => {
+                const suiteName = testCase.match(/classname="([^"]+)"/)[1];
+                const testName = testCase.match(/name="([^"]+)"/)[1];
+                const failed = testCase.includes('<failure');
                 
-#                 if (!suites[suiteName]) {
-#                   suites[suiteName] = [];
-#                 }
+                if (!suites[suiteName]) {
+                  suites[suiteName] = [];
+                }
                 
-#                 suites[suiteName].push({
-#                   name: testName,
-#                   status: failed ? '❌' : '✅'
-#                 });
-#               });
+                suites[suiteName].push({
+                  name: testName,
+                  status: failed ? '❌' : '✅'
+                });
+              });
               
-#               Object.entries(suites).forEach(([suite, tests]) => {
-#                 formattedOutput += `#### ${suite}\n`;
-#                 tests.forEach(test => {
-#                   formattedOutput += `${test.status} ${test.name}\n`;
-#                 });
-#                 formattedOutput += '\n';
-#               });
+              Object.entries(suites).forEach(([suite, tests]) => {
+                formattedOutput += `#### ${suite}\n`;
+                tests.forEach(test => {
+                  formattedOutput += `${test.status} ${test.name}\n`;
+                });
+                formattedOutput += '\n';
+              });
               
-#               return formattedOutput;
-#             };
+              return formattedOutput;
+            };
 
-#             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-#             const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-#             const testResults = formatTestResults(results, testsPassed, totalTests);
+            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+            const testResults = formatTestResults(results, testsPassed, totalTests);
             
-#             await github.rest.issues.createComment({
-#               ...context.repo,
-#               issue_number: context.issue.number,
-#               body: testResults
-#             });
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: testResults
+            });
 
-#   build-and-push:
-#     needs: test
-#     runs-on: ubuntu-latest
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKERHUB_USERNAME }}
-#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#       - name: Extract Branch Name and Set Docker Tag
-#         run: |
-#           if [[ ${{ github.ref }} == refs/heads/develop ]]; then
-#             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
-#           elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
-#             echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
-#           else
-#             echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-#           fi
+      - name: Extract Branch Name and Set Docker Tag
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+            echo "DOCKER_TAG=dev" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} =~ refs/heads/release-(.*) ]]; then
+            echo "DOCKER_TAG=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          fi
 
-#       - name: Build and Push Docker Image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./back-end/seed-transaction-service
-#           push: ${{ github.event_name == 'push' }}
-#           platforms: linux/amd64,linux/arm64
-#           tags: |
-#             ${{ secrets.DOCKERHUB_USERNAME }}/as-seed-transaction-service:${{ env.DOCKER_TAG }}
-#             ${{ secrets.DOCKERHUB_USERNAME }}/as-seed-transaction-service:latest
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./back-end/seed-transaction-service
+          push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-seed-transaction-service:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/as-seed-transaction-service:latest
