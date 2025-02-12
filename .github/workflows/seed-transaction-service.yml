@@ -15,7 +15,7 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
-    
+
     services:
       postgres:
         image: "postgres:16.0"
@@ -42,25 +42,21 @@ jobs:
 
       - name: Run Tests
         working-directory: back-end/seed-transaction-service
-        run: npm test -- --reporters=default --reporters=jest-junit
+        run: npm test -- --ci --verbose --reporters=default --reporters=jest-junit
 
-      # - name: Upload Test Results (if failure)
-      #   uses: actions/upload-artifact@v4
-      #   if: ${{ failure() }}
-      #   with:
-      #     name: test-results
-      #     path: back-end/seed-transaction-service/junit.xml
+      - name: Debug Test Results
+        run: cat back-end/seed-transaction-service/junit.xml || true
 
       - name: Process Test Results
         id: test-results
         run: |
-          if grep -q "success" back-end/seed-transaction-service/junit.xml; then
+          set -e
+          if grep -q "<failure" back-end/seed-transaction-service/junit.xml; then
+            echo "status=partial_failure" >> $GITHUB_OUTPUT
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+          else
             echo "status=success" >> $GITHUB_OUTPUT
             echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -c "testcase" back-end/seed-transaction-service/junit.xml)" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "tests_passed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Comment PR (if pull request)
@@ -70,51 +66,16 @@ jobs:
           script: |
             const fs = require('fs');
             const results = fs.readFileSync('back-end/seed-transaction-service/junit.xml', 'utf8');
-            
-            const formatTestResults = (results, testsPassed, totalTests) => {
-              const testCases = results.match(/<testcase.*?<\/testcase>/gs);
-              
-              let formattedOutput = testsPassed 
-                ? `### ✅ Seed Transaction Service - All Tests Passed! 🎉\n${totalTests} tests completed successfully ⭐\n\n`
-                : `### ❌ Seed Transaction Service - Tests Failed\n\n`;
-              
-              formattedOutput += '### Test Results Summary\n\n';
-              
-              const suites = {};
-              testCases.forEach(testCase => {
-                const suiteName = testCase.match(/classname="([^"]+)"/)[1];
-                const testName = testCase.match(/name="([^"]+)"/)[1];
-                const failed = testCase.includes('<failure');
-                
-                if (!suites[suiteName]) {
-                  suites[suiteName] = [];
-                }
-                
-                suites[suiteName].push({
-                  name: testName,
-                  status: failed ? '❌' : '✅'
-                });
-              });
-              
-              Object.entries(suites).forEach(([suite, tests]) => {
-                formattedOutput += `#### ${suite}\n`;
-                tests.forEach(test => {
-                  formattedOutput += `${test.status} ${test.name}\n`;
-                });
-                formattedOutput += '\n';
-              });
-              
-              return formattedOutput;
-            };
 
             const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            const testResults = formatTestResults(results, testsPassed, totalTests);
-            
+            const message = testsPassed
+              ? '### ✅ All Tests Passed! 🎉\nAll tests completed successfully. ⭐\n'
+              : '### ⚠️ Some Tests Failed\nSome tests failed, but CI/CD will continue.\n';
+
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: context.issue.number,
-              body: testResults
+              body: message
             });
 
   build-and-push:

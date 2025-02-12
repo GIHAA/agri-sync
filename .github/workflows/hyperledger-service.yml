@@ -44,27 +44,20 @@
 #       # Step 4: Install dependencies using npm ci
 #       - name: Install Dependencies
 #         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-#         run: |
-#           if [ ! -f "package-lock.json" ]; then
-#             npm install
-#           fi
-#           npm ci
+#         run: npm ci
 
 #       # Step 5: Fix Prettier and ESLint issues
 #       - name: Fix Prettier Formatting
 #         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-#         run: |
-#           npx prettier --write .
+#         run: npx prettier --write .
 
 #       - name: Fix ESLint Issues
 #         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
-#         run: |
-#           npm run lint -- --fix
+#         run: npm run lint -- --fix
 
 #       # Step 6: Build Docker Image for Testing
 #       - name: Build Docker Image for Testing
-#         run: |
-#           docker build -t hyperledger-service-test -f back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/Dockerfile .
+#         run: docker build -t hyperledger-service-test -f back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/Dockerfile .
 
 #       # Step 7: Run Tests in Docker Container
 #       - name: Run Tests in Docker Container
