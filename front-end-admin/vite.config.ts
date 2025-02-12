@@ -16,9 +16,9 @@ export default defineConfig({
         'robots.txt',
       ],
       manifest: {
-        name: 'Agrisyncapp',
-        short_name: 'Agrisyncapp',
-        description: 'Agrisyncapp frontend',
+        name: 'Agriapp',
+        short_name: 'Agriapp',
+        description: 'Agriapp frontend',
         theme_color: '#ffffff',
         icons: [
           {

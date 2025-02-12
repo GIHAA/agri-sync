@@ -30,16 +30,16 @@ function UserCountChart() {
           { value: counts?.ServiceProviders.deactive, name: 'Inactive' },
           { value: counts?.ServiceProviders.new, name: 'New' },
         ]
-      } else if (selectedUserType === 'Agrisyncpers') {
+      } else if (selectedUserType === 'Tippers') {
         data = [
-          { value: counts?.Agrisyncpers.active, name: 'Active' },
-          { value: counts?.Agrisyncpers.deactive, name: 'Inactive' },
-          { value: counts?.Agrisyncpers.new, name: 'New' },
+          { value: counts?.Tippers.active, name: 'Active' },
+          { value: counts?.Tippers.deactive, name: 'Inactive' },
+          { value: counts?.Tippers.new, name: 'New' },
         ]
       }
 
       const option = {
-        toolagrisync: {
+        tooltip: {
           trigger: 'item',
         },
         legend: {
@@ -144,13 +144,13 @@ function UserCountChart() {
         <div className="mb-4 flex items-center justify-between gap-2">
           <button
             className={`max-h-[30px] min-h-[30px] cursor-pointer rounded-md border-none px-2 py-1 ${
-              selectedUserType === 'Agrisyncpers'
+              selectedUserType === 'Tippers'
                 ? 'bg-black text-white'
                 : 'bg-gray-200 text-black'
             }`}
-            onClick={() => setSelectedUserType('Agrisyncpers')}
+            onClick={() => setSelectedUserType('Tippers')}
           >
-            Agrisyncper
+            Tipper
           </button>
           <button
             className={`max-h-[30px] min-h-[30px] cursor-pointer rounded-md border-none px-2 py-1 ${

@@ -59,11 +59,16 @@ BEGIN
     END IF;
 END $$;
 
--- Assign the first user as 'superadmin' role (role_id = 1)
+
+-- Migration to add initial Point Settings for different events
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM users) THEN
-        INSERT INTO users (name, email, password_hash, role_id)
-        VALUES ('Default Superadmin', 'admin@example.com', 'hashed_password', 1);
+    -- Check if table is empty to avoid duplicate insertions
+    IF NOT EXISTS (SELECT 1 FROM "PointsSetting") THEN
+        INSERT INTO "PointsSetting" (event, points)
+        VALUES 
+            ('market_insight', 100),  
+            ('premium_prediction', 150), 
+            ('farming_data', 200);    
     END IF;
 END $$;

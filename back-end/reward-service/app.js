@@ -1,22 +1,21 @@
-// server.js
 const express = require("express");
 const cors = require("cors");
 const rewardRoutes = require("./routes/rewardRoutes");
 const farmingRoutes = require("./routes/farmingRoutes");
-const logger = require("./utils/logger"); 
-
+const settingsRoutes = require("./routes/settingsRoutes");
+const logger = require("./utils/logger");
 require("dotenv").config();
 const sequelize = require("./config/database");
+const { ensurePointSettings } = require("./models/PointSettings");
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-
 app.use("/rewards", rewardRoutes);
 app.use("/farming", farmingRoutes);
+app.use("/rewards-settings", settingsRoutes)
 
 // health check
 app.get("/health", (req, res) => {
@@ -27,10 +26,11 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// //Syncing the database with logging
+//Syncing the database with logging
 // sequelize.sync({ alter: true })
-//   .then(() => {
+//   .then(async () => {
 //     logger.info("Database synced successfully.");
+//     await ensurePointSettings(); 
 //   })
 //   .catch((error) => {
 //     logger.error(`Database sync error: ${error.message}`);

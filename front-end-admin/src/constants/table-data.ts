@@ -226,16 +226,8 @@ export const AdminUserTableHeadings = [
     label: 'EMAIL',
   },
   {
-    key: 3,
-    label: 'MOBILE NUMBER',
-  },
-  {
     key: 4,
     label: 'ROLE',
-  },
-  {
-    key: 5,
-    label: 'STATUS',
   },
   {
     key: 6,
@@ -282,7 +274,7 @@ export const TableReviewFeedbackHeadings = [
   },
 ]
 
-export const AgrisyncHeadings = [
+export const TipHeadings = [
   {
     key: 1,
     label: 'TIP REFERENCE',

@@ -144,7 +144,7 @@ function AddCampaign() {
 
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false)
   const deleteButtonRef = useRef(null)
-  const [selectMulagrisyncleOne, setSelectMulagrisyncleOne] = useState<string>('0');
+  const [selectMultipleOne, setSelectMultipleOne] = useState<string>('0');
   const [selectOne, setSelectOne] = useState<string[]>([])
   const [selectOneCustomer, setSelectOneCustomer] = useState<string[]>([])
   const [showSecondTomSelect, setShowSecondTomSelect] = useState(false);
@@ -159,8 +159,8 @@ function AddCampaign() {
   const [deselectAllContactChecked, setDeselectAllContactChecked] = useState(false);
   const [selectOneContact, setSelectOneContact] = useState<string[]>([])
 
-  const handleSelectMulagrisyncleOneChange = (newValue: string) => {
-    setSelectMulagrisyncleOne(newValue);
+  const handleSelectMultipleOneChange = (newValue: string) => {
+    setSelectMultipleOne(newValue);
 
     const isLeadsSelected = ['2'].includes(newValue);
     setShowSecondTomSelect(isLeadsSelected);
@@ -304,9 +304,9 @@ function AddCampaign() {
       
       <div  className="mb-4 "> <div className="mt-0.5 ">{`${t('To')}`}</div></div> 
        <TomSelect
-  value={selectMulagrisyncleOne}
+  value={selectMultipleOne}
   required
-  onChange={handleSelectMulagrisyncleOneChange}
+  onChange={handleSelectMultipleOneChange}
   options={{
     placeholder: 'Please Select',
   }}
@@ -335,7 +335,7 @@ function AddCampaign() {
                   placeholder: 'Please Select ',
                 }}
                 className="sm:w-auto"
-                mulagrisyncle
+                multiple
               >
                 <option value="1">0234 Partial(Mr.Rimzi)</option>
                 <option value="2">4536 Partial(Mr.Shani)</option>
@@ -362,7 +362,7 @@ function AddCampaign() {
                 placeholder: 'Please Select ',
               }}
               className="sm:w-auto"
-              mulagrisyncle
+              multiple
             >
               <option value="5">Walking Customer</option>
               <option value="6">Mr.Shani</option>
@@ -400,7 +400,7 @@ function AddCampaign() {
         placeholder: 'Please Select',
       }}
       className="sm:w-auto"
-      mulagrisyncle
+      multiple
     >
       <option value="9">Customer</option>
       <option value="10">Shani</option>

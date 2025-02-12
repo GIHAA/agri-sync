@@ -6,8 +6,8 @@
 /* eslint-disable import/no-useless-path-segments */
 /* eslint-disable prettier/prettier */
 import React, { useRef, useEffect } from "react"
-import Agrisyncpy from "../../components/common/agrisyncpy"
-import { PopperElement } from "agrisyncpy.js";
+import Tippy from "../../components/common/tippy"
+import { PopperElement } from "tippy.js";
 
 type MainProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,
@@ -16,34 +16,34 @@ type MainProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   }
 >;
 
-const toggleToolagrisync = (el: PopperElement) => {
+const toggleTooltip = (el: PopperElement) => {
   if (window.innerWidth <= 1260) {
-    el._agrisyncpy?.enable();
+    el._tippy?.enable();
   } else {
-    el._agrisyncpy?.disable();
+    el._tippy?.disable();
   }
 };
 
-const initToolagrisyncEvent = (agrisyncpyRef: PopperElement) => {
+const initTooltipEvent = (tippyRef: PopperElement) => {
   window.addEventListener("resize", () => {
-    toggleToolagrisync(agrisyncpyRef);
+    toggleTooltip(tippyRef);
   });
 };
 
 const Main = <C extends React.ElementType = "a">(props: MainProps<C>) => {
-  const agrisyncpyRef = useRef<PopperElement>();
+  const tippyRef = useRef<PopperElement>();
   const Component: React.ElementType = props.as || "a";
 
   useEffect(() => {
-    if (agrisyncpyRef.current !== undefined) {
-      toggleToolagrisync(agrisyncpyRef.current);
-      initToolagrisyncEvent(agrisyncpyRef.current);
+    if (tippyRef.current !== undefined) {
+      toggleTooltip(tippyRef.current);
+      initTooltipEvent(tippyRef.current);
     }
-  }, [agrisyncpyRef.current]);
+  }, [tippyRef.current]);
 
   const { as, ...computedProps } = props;
   return (
-    <Agrisyncpy
+    <Tippy
       {...computedProps}
       as={Component}
       content={props.content}
@@ -52,12 +52,12 @@ const Main = <C extends React.ElementType = "a">(props: MainProps<C>) => {
       }}
       getRef={(el: PopperElement | null) => {
         if (el !== null) {
-          agrisyncpyRef.current = el;
+          tippyRef.current = el;
         }
       }}
     >
       {props.children}
-    </Agrisyncpy>
+    </Tippy>
   );
 };
 

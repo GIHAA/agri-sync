@@ -57,24 +57,28 @@ describe('Reward Service', () => {
     it('should successfully redeem points when user has sufficient balance', async () => {
       const mockUserPoints = {
         user_id: 1,
-        total_points: 600
+        total_points: 600,
+        save: jest.fn().mockResolvedValue()
       };
       rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
       rewardRepo.deductPoints.mockResolvedValue();
       rewardRepo.addActivityHistory.mockResolvedValue();
 
-      const result = await rewardService.redeemPoints(1, 'consultation');
+      const pointsSetting = await rewardService.getPointSetting('farming_data');
+
+      rewardService.addPoints(1, pointsSetting.points);
+      const result = await rewardService.redeemPoints(1, 'premium_prediction');
       
       expect(result).toEqual({
         success: true,
-        message: 'Redeemed consultation reward'
+        message: 'Redeemed premium_prediction reward'
       });
-      expect(rewardRepo.deductPoints).toHaveBeenCalledWith(1, 500);
+      expect(rewardRepo.deductPoints).toHaveBeenCalledWith(1, pointsSetting.points);
       expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
         1,
         'Reward Redemption',
-        -500,
-        'Redeemed consultation reward'
+        pointsSetting.points * -1,
+        'Redeemed premium_prediction reward'
       );
     });
 
@@ -108,23 +112,7 @@ describe('Reward Service', () => {
   });
 
   describe('addPoints', () => {
-    // todo
-    // it('should create new points entry for new user', async () => {
-    //   rewardRepo.getUserPoints.mockResolvedValue(null);
-    //   rewardRepo.createUserPoints.mockResolvedValue();
-    //   rewardRepo.addActivityHistory.mockResolvedValue();
-
-    //   const result = await rewardService.addPoints(1, 100);
-      
-    //   expect(rewardRepo.createUserPoints).toHaveBeenCalledWith(1, 100);
-    //   expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
-    //     1,
-    //     'Points Added',
-    //     100,
-    //     'Added 100 points'
-    //   );
-    // });
-
+  
     it('should update points for existing user', async () => {
       const mockUserPoints = {
         user_id: 1,
@@ -197,13 +185,14 @@ describe('Reward Service', () => {
       rewardRepo.addActivityHistory.mockResolvedValue();
 
       const result = await rewardService.addFarmingDataReward(1);
+      const pointsSetting = await rewardService.getPointSetting('farming_data');
       
-      expect(mockUserPoints.total_points).toBe(100); // Farming data reward is 100 points
+      expect(mockUserPoints.total_points).toBe(pointsSetting.points); // Farming data reward is 100 points
       expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
         1,
         'Points Added',
-        100,
-        'Added 100 points'
+        pointsSetting.points,
+        `Added ${pointsSetting.points} points`
       );
     });
   });

@@ -10,7 +10,7 @@ export const useAddUserDetails = (): UseMutationResult<any> => {
     mutationKey: 'add_user_details',
     mutationFn: async (data : any) => {
       try {
-        const response = await authFetch.post('/auth/register-admin-users', data)
+        const response = await authFetch.post('/auth-service/register-farmer', data)
         return response.data
       } catch (error) {
         throw error
@@ -63,7 +63,7 @@ export const useGetUserDetails = (
     queryFn: async () => {
       try {
         const response = await authFetch.get<GetUserDetailsResponse>(
-          `/user-details?status=${active}&roleid=${roleid}&limit=${pageSize}&page=${page}&role=${roletype}${
+          `/auth-service/users?&limit=${pageSize}&page=${page}${
             searchdata ? `&search=${searchdata}` : ''
           }`
         )

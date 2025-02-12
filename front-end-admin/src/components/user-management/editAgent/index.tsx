@@ -111,7 +111,7 @@ function EditAgent() {
       <FormCheck.Input id="vertical-form-3" type="checkbox" value="" onChange={handleChange} />
       <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
         <div className="mx-1 -ml-1 flex">
-          <FormInfo toolagrisync={`${t('editAgent.fields.commissionAgent.toolagrisync')}`} />
+          <FormInfo tooltip={`${t('editAgent.fields.commissionAgent.tooltip')}`} />
         </div>
       </FormCheck.Label>
     </FormCheck>
@@ -121,7 +121,7 @@ function EditAgent() {
       <FormCheck.Input id="vertical-form-2" type="checkbox" value="" onChange={handleChange} />
       <FormCheck.Label className="mr-2" htmlFor="vertical-form-2">
         <div className="mx-1 -ml-1 flex">
-          <FormInfo toolagrisync={`${t('editAgent.fields.serviceStaff.toolagrisync')}`} />
+          <FormInfo tooltip={`${t('editAgent.fields.serviceStaff.tooltip')}`} />
         </div>
       </FormCheck.Label>
     </FormCheck>

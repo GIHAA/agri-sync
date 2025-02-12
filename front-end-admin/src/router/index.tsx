@@ -2,13 +2,10 @@
 /* eslint-disable prettier/prettier */
 import { useRoutes } from 'react-router-dom'
 import RouteRegistry from './router-registry'
-import PosLayout from '../layouts/pos-layout'
 import Error from '../pages/error'
 import SideMenu from '../layouts/SimpleMenu'
 import TopMenu from '../layouts/TopMenu'
-import User from '../pages/user-management'
 import Roles from '../pages/user-management-roles'
-import Agent from '../pages/user-management-agent'
 import CustomerNotify from '../pages/notificationTemplates/customerNotifications'
 import Login from '../pages/login'
 import Dashboard from '../pages/dashboard'
@@ -17,6 +14,8 @@ import Tabulator from '../pages/tabulator'
 import Drag from '../pages/drag/drag'
 import Table from '../pages/table'
 import PrivateRoute from './PrivateRoute'
+import Scanner from '../pages/qr-scanner/FarmerDetails'
+
 import {
   CommonComponent,
   DatepickerComponent,
@@ -38,9 +37,11 @@ function Router() {
     {
       path: '/',
       element: (
-        <PrivateRoute>
-          <SideMenu />
-        </PrivateRoute>
+        // <PrivateRoute>
+
+        // </PrivateRoute>
+
+        <SideMenu />
       ),
       children: [
         {
@@ -48,11 +49,15 @@ function Router() {
           element: <Dashboard />,
         },
         {
+          path: '/qr-scanner',
+          element: <Scanner />,
+        },
+        {
           path: 'form',
           element: <FormComponent />,
         },
         {
-          path: 'manage-users',
+          path: 'user-management',
           element: <AdminUserManagePage />,
         },
         {
@@ -60,16 +65,8 @@ function Router() {
           element: <AdminUserRolesManagePage />,
         },
         {
-          path: 'user-management-user',
-          element: <User />,
-        },
-        {
           path: 'user-management-roles',
           element: <Roles />,
-        },
-        {
-          path: 'user-management-agent',
-          element: <Agent />,
         },
         {
           path: '/tabulator',
@@ -98,17 +95,10 @@ function Router() {
       ],
     },
     {
-      path: '/user-management-user',
-      element: <User />,
-    },
-    {
       path: '/user-management-roles',
       element: <Roles />,
     },
-    {
-      path: '/user-management-agent',
-      element: <Agent />,
-    },
+
     {
       path: '/form',
       element: <FormComponent />,

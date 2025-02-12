@@ -45,10 +45,10 @@ function EditUser() {
         .string()
         .required(`${t('userManagement.fields.rolesnPermission.fields.role.validationMessage')}`),
         prefix: yup.string().when('_', {
-        is: () => 'toolagrisync',
+        is: () => 'tooltip',
         then: yup
           .string()
-          .required(`${t('customerForm.fields.prefix.toolagrisync')}`),
+          .required(`${t('customerForm.fields.prefix.tooltip')}`),
         otherwise: yup.string().notRequired(),
       }),
     })
@@ -213,7 +213,7 @@ function EditUser() {
             <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t('userManagement.fields.activeStatus.toolagrisync')}`}
+                  tooltip={`${t('userManagement.fields.activeStatus.tooltip')}`}
                 />
               </div>
             </FormCheck.Label>
@@ -293,7 +293,7 @@ function EditUser() {
             error={errors.role}
             required
             info={`${t(
-              'userManagement.fields.rolesnPermission.fields.role.toolagrisync'
+              'userManagement.fields.rolesnPermission.fields.role.tooltip'
             )}`}
           />
         </div>
@@ -308,8 +308,8 @@ function EditUser() {
             <FormCheck.Label className="mr-5">
               <div className="flex">
                 <FormInfo
-                  toolagrisync={`${t(
-                    'userManagement.fields.rolesnPermission.fields.accessLocations.toolagrisync'
+                  tooltip={`${t(
+                    'userManagement.fields.rolesnPermission.fields.accessLocations.tooltip'
                   )}`}
                 />
               </div>
@@ -325,8 +325,8 @@ function EditUser() {
       />
       <div className="flex">
               <FormInfo
-                toolagrisync={`${t(
-                  'userManagement.fields.rolesnPermission.fields.allLocations.toolagrisync'
+                tooltip={`${t(
+                  'userManagement.fields.rolesnPermission.fields.allLocations.tooltip'
                 )}`}
               />
             </div>
@@ -397,7 +397,7 @@ function EditUser() {
             type="number"
             id="prefix"
             info={`${t(
-              'userManagement.fields.sales.fields.salesPercentage.toolagrisync'
+              'userManagement.fields.sales.fields.salesPercentage.tooltip'
             )}`}
           />
           <InputElement
@@ -412,7 +412,7 @@ function EditUser() {
             )}`}
             id="first_name"
             info={`${t(
-              'userManagement.fields.sales.fields.maxSalesDiscountPecentage.toolagrisync'
+              'userManagement.fields.sales.fields.maxSalesDiscountPecentage.tooltip'
             )}`}
           />
 
@@ -430,8 +430,8 @@ function EditUser() {
             <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t(
-                    'userManagement.fields.sales.fields.selectedContacts.toolagrisync'
+                  tooltip={`${t(
+                    'userManagement.fields.sales.fields.selectedContacts.tooltip'
                   )}`}
                 />
               </div>
@@ -463,8 +463,8 @@ function EditUser() {
             >
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t(
-                    'userManagement.fields.paymentAccounts.fields.allowFundTransferAccounts.toolagrisync'
+                  tooltip={`${t(
+                    'userManagement.fields.paymentAccounts.fields.allowFundTransferAccounts.tooltip'
                   )}`}
                 />
               </div>
@@ -486,8 +486,8 @@ function EditUser() {
             >
               <div className="mx-1 -ml-1 flex">
                 <FormInfo
-                  toolagrisync={`${t(
-                    'userManagement.fields.paymentAccounts.fields.allowSelectedPaymentAccounts.toolagrisync'
+                  tooltip={`${t(
+                    'userManagement.fields.paymentAccounts.fields.allowSelectedPaymentAccounts.tooltip'
                   )}`}
                 />
               </div>
@@ -702,7 +702,7 @@ function EditUser() {
             )}`}
             id="bankIdCode"
             info={`${t(
-              'userManagement.fields.bankDetails.fields.bankIdCode.toolagrisync'
+              'userManagement.fields.bankDetails.fields.bankIdCode.tooltip'
             )}`}
           />
           <InputElement
@@ -727,7 +727,7 @@ function EditUser() {
             )}`}
             id="taxPayerID"
             info={`${t(
-              'userManagement.fields.bankDetails.fields.taxPayerID.toolagrisync'
+              'userManagement.fields.bankDetails.fields.taxPayerID.tooltip'
             )}`}
           />
         </div>
