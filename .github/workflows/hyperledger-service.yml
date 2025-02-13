@@ -1,36 +1,113 @@
-# name: Hyperledger Fabric - Build and Deploy
+# name: Hyperledger-Service - Test and Deploy
 
 # on:
+#   pull_request:
+#     branches: [develop]
+#     types: [opened, synchronize]
 #   push:
 #     branches:
 #       - develop
 #       - 'release-*'
-#   pull_request:
-#     branches: [develop]
-#     types: [opened, synchronize]
 
 # jobs:
-#   build-and-push:
+#   test:
 #     runs-on: ubuntu-latest
+#     permissions:
+#       pull-requests: write
+#       contents: read
+#     services:
+#       redis:
+#         image: "redis"
+#         ports:
+#           - "6379:6379"
+#         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
 #     steps:
-#       # Step 1: Checkout the repository
-#       - name: Checkout code
+#       # Step 1: Checkout the code
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+
+#       # Step 2: Setup Node.js environment
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+
+#       # Step 3: Verify package-lock.json exists
+#       - name: Verify package-lock.json
+#         run: |
+#           if [ ! -f "back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/package-lock.json" ]; then
+#             echo "Error: package-lock.json is missing. Run 'npm install' locally and commit the file."
+#             exit 1
+#           fi
+
+#       # Step 4: Install dependencies using npm ci
+#       - name: Install Dependencies
+#         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+#         run: npm ci
+
+#       # Step 5: Fix Prettier and ESLint issues
+#       - name: Fix Prettier Formatting
+#         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+#         run: npx prettier --write .
+
+#       - name: Fix ESLint Issues
+#         working-directory: back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript
+#         run: npm run lint -- --fix
+
+#       # Step 6: Build Docker Image for Testing
+#       - name: Build Docker Image for Testing
+#         run: docker build -t hyperledger-service-test -f back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/Dockerfile .
+
+#       # Step 7: Run Tests in Docker Container
+#       - name: Run Tests in Docker Container
+#         id: run-tests
+#         run: |
+#           docker run --rm \
+#             --network host \
+#             -e REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+#             hyperledger-service-test npm test || echo "Tests failed"
+
+#       # Step 8: Comment on PR if tests fail (only for pull requests)
+#       - name: Comment PR (if pull request)
+#         if: github.event_name == 'pull_request'
+#         uses: actions/github-script@v6
+#         with:
+#           script: |
+#             const testStatus = '${{ steps.run-tests.outcome }}' === 'success' ? 'passed' : 'failed';
+#             const commentBody = testStatus === 'passed'
+#               ? `### ✅ Hyperledger Service - All Tests Passed! 🎉\n\nAll tests completed successfully.`
+#               : `### ❌ Hyperledger Service - Tests Failed\n\nSome tests failed. Please check the logs for more details.`;
+#             await github.rest.issues.createComment({
+#               ...context.repo,
+#               issue_number: context.issue.number,
+#               body: commentBody
+#             });
+
+#   build-and-push:
+#     needs: test
+#     runs-on: ubuntu-latest
+#     if: ${{ always() && needs.test.result == 'success' }}
+
+#     steps:
+#       # Step 1: Checkout the code
+#       - name: Checkout Code
 #         uses: actions/checkout@v3
 
 #       # Step 2: Set up Docker Buildx
 #       - name: Set up Docker Buildx
 #         uses: docker/setup-buildx-action@v2
 
-#       # Step 3: Login to Docker Hub
-#       - name: Login to Docker Hub
+#       # Step 3: Login to GitHub Container Registry
+#       - name: Login to GitHub Container Registry
 #         uses: docker/login-action@v2
 #         with:
-#           username: ${{ secrets.DOCKERHUB_USERNAME }}
-#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
 
-#       # Step 4: Extract branch name and set Docker tag
-#       - name: Extract branch name and set tag
+#       # Step 4: Extract Branch Name and Set Docker Tag
+#       - name: Extract Branch Name and Set Docker Tag
 #         run: |
 #           if [[ ${{ github.ref }} == refs/heads/develop ]]; then
 #             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
@@ -40,46 +117,16 @@
 #             echo "DOCKER_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 #           fi
 
-#       # Step 5: Build and push Peer0.Org1 Docker image
-#       - name: Build and push Peer0.Org1 Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./peer0.org1.example.com
-#           push: ${{ github.event_name == 'push' }}
-#           platforms: linux/amd64,linux/arm64
-#           tags: |
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-peer0-org1:${{ env.DOCKER_TAG }}
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-peer0-org1:latest
+#       # Step 5: Build Docker Image
+#       - name: Build Docker Image
+#         run: |
+#           docker build -t ghcr.io/${{ github.repository }}/hyperledger-service:${{ env.DOCKER_TAG }} \
+#             -f back-end/hyperledger-service/asset-transfer-basic/rest-api-typescript/Dockerfile .
 
-#       # Step 6: Build and push Peer0.Org2 Docker image
-#       - name: Build and push Peer0.Org2 Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./peer0.org2.example.com
-#           push: ${{ github.event_name == 'push' }}
-#           platforms: linux/amd64,linux/arm64
-#           tags: |
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-peer0-org2:${{ env.DOCKER_TAG }}
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-peer0-org2:latest
-
-#       # Step 7: Build and push Redis Docker image
-#       - name: Build and push Redis Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./redis
-#           push: ${{ github.event_name == 'push' }}
-#           platforms: linux/amd64,linux/arm64
-#           tags: |
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-redis:${{ env.DOCKER_TAG }}
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-redis:latest
-
-#       # Step 8: Build and push NodeApp Docker image
-#       - name: Build and push NodeApp Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: ./nodeapp
-#           push: ${{ github.event_name == 'push' }}
-#           platforms: linux/amd64,linux/arm64
-#           tags: |
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-nodeapp:${{ env.DOCKER_TAG }}
-#             ${{ secrets.DOCKERHUB_USERNAME }}/hyperledger-nodeapp:latest
+#       # Step 6: Push Docker Image
+#       - name: Push Docker Image
+#         run: |
+#           docker push ghcr.io/${{ github.repository }}/hyperledger-service:${{ env.DOCKER_TAG }}
+#           docker tag ghcr.io/${{ github.repository }}/hyperledger-service:${{ env.DOCKER_TAG }} \
+#             ghcr.io/${{ github.repository }}/hyperledger-service:latest
+#           docker push ghcr.io/${{ github.repository }}/hyperledger-service:latest
