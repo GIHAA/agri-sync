@@ -193,3 +193,117 @@ Total execution time: 115.37 seconds
 2025-02-12 15:43:55,722 - INFO - Creating model pipelines...
 2025-02-12 15:43:55,723 - INFO - Starting model training...
 2025-02-12 15:43:55,723 - INFO - Training Random Forest model...
+2025-02-12 15:45:22,682 - INFO - Starting model training process
+2025-02-12 15:45:22,682 - INFO - Loading data from CSV file...
+2025-02-12 15:45:22,688 - INFO - Initial data shape: (3048, 13)
+2025-02-12 15:45:22,688 - INFO - Creating features...
+2025-02-12 15:45:22,725 - INFO - Data shape after feature engineering: (2914, 21)
+2025-02-12 15:45:22,725 - INFO - Encoding categorical variables...
+2025-02-12 15:45:22,727 - INFO - Final feature set: ['year', 'month_num', 'temperature', 'rain', 'LP95', 'LP92', 'LAD', 'LSD', 'LK', 'LIK', 'item', 'district', 'season', 'rolling_mean_price', 'rolling_std_price', 'price_volatility', 'rain_temp_interaction']
+2025-02-12 15:45:22,727 - INFO - Feature matrix shape: (2914, 17)
+2025-02-12 15:45:22,728 - INFO - Splitting data into train and test sets...
+2025-02-12 15:45:22,736 - INFO - Training set size: 2331, Test set size: 583
+2025-02-12 15:45:22,736 - INFO - Defining parameter grids...
+2025-02-12 15:45:22,736 - INFO - Creating model pipelines...
+2025-02-12 15:45:22,736 - INFO - Starting model training...
+2025-02-12 15:45:22,736 - INFO - Training Random Forest model...
+2025-02-12 15:48:04,535 - INFO - Starting model training process
+2025-02-12 15:48:04,535 - INFO - Loading data from CSV file...
+2025-02-12 15:48:04,541 - INFO - Initial data shape: (3048, 13)
+2025-02-12 15:48:04,541 - INFO - Creating features...
+2025-02-12 15:48:04,617 - INFO - Data shape after feature engineering: (2914, 21)
+2025-02-12 15:48:04,617 - INFO - Encoding categorical variables...
+2025-02-12 15:48:04,620 - INFO - Final feature set: ['year', 'month_num', 'temperature', 'rain', 'LP95', 'LP92', 'LAD', 'LSD', 'LK', 'LIK', 'item', 'district', 'season', 'rolling_mean_price', 'rolling_std_price', 'price_volatility', 'rain_temp_interaction']
+2025-02-12 15:48:04,620 - INFO - Feature matrix shape: (2914, 17)
+2025-02-12 15:48:04,620 - INFO - Splitting data into train and test sets...
+2025-02-12 15:48:04,628 - INFO - Training set size: 2331, Test set size: 583
+2025-02-12 15:48:04,629 - INFO - Defining parameter grids...
+2025-02-12 15:48:04,629 - INFO - Creating model pipelines...
+2025-02-12 15:48:04,629 - INFO - Starting model training...
+2025-02-12 15:48:04,629 - INFO - Training Random Forest model...
+2025-02-12 15:49:34,199 - INFO - Random Forest training completed in 89.57 seconds
+2025-02-12 15:49:34,201 - INFO - Best Random Forest score: -641.3560
+2025-02-12 15:49:34,201 - INFO - Training Gradient Boosting model...
+2025-02-12 20:01:07,304 - INFO - Gradient Boosting training completed in 15093.10 seconds
+2025-02-12 20:01:07,306 - INFO - Best Gradient Boosting score: -617.0932
+2025-02-12 20:01:07,306 - INFO - Training Extra Trees model...
+2025-02-12 20:02:21,074 - INFO - Extra Trees training completed in 73.77 seconds
+2025-02-12 20:02:21,086 - INFO - Best Extra Trees score: -652.4114
+2025-02-12 20:02:21,089 - INFO - Calculating final metrics...
+2025-02-12 20:02:21,090 - INFO - Evaluating Random Forest model...
+2025-02-12 20:02:21,465 - INFO - Evaluating Gradient Boosting model...
+2025-02-12 20:02:21,499 - INFO - Evaluating Extra Trees model...
+2025-02-12 20:02:21,653 - INFO - 
+Model Performance Metrics:
+2025-02-12 20:02:21,797 - INFO - 
+               Model      R2       MSE     RMSE     MAE    MAPE
+0      Random Forest  0.8970  560.0158  23.6647  9.3309  7.8404
+1  Gradient Boosting  0.8718  697.0794  26.4023  8.4300  6.5451
+2        Extra Trees  0.9165  454.1131  21.3099  9.6471  8.1644
+2025-02-12 20:02:21,800 - INFO - 
+Best Model: Extra Trees
+2025-02-12 20:02:21,800 - INFO - Best Parameters:
+2025-02-12 20:02:21,800 - INFO - {'et__max_depth': 25, 'et__max_features': 'sqrt', 'et__min_samples_leaf': 1, 'et__min_samples_split': 2, 'et__n_estimators': 200}
+2025-02-12 20:02:21,800 - INFO - Generating model comparison visualizations...
+2025-02-12 20:02:21,801 - INFO - Creating model comparison visualizations...
+2025-02-12 20:02:29,136 - INFO - Plotting feature importance...
+2025-02-12 20:02:29,310 - INFO - 
+Feature Importances:
+2025-02-12 20:02:29,310 - INFO - rolling_mean_price: 0.5593
+2025-02-12 20:02:29,310 - INFO - rolling_std_price: 0.1231
+2025-02-12 20:02:29,310 - INFO - item: 0.1036
+2025-02-12 20:02:29,310 - INFO - price_volatility: 0.0509
+2025-02-12 20:02:29,310 - INFO - year: 0.0262
+2025-02-12 20:02:29,310 - INFO - month_num: 0.0198
+2025-02-12 20:02:29,310 - INFO - LP95: 0.0144
+2025-02-12 20:02:29,310 - INFO - LIK: 0.0122
+2025-02-12 20:02:29,310 - INFO - rain_temp_interaction: 0.0121
+2025-02-12 20:02:29,310 - INFO - rain: 0.0116
+2025-02-12 20:02:29,310 - INFO - LSD: 0.0114
+2025-02-12 20:02:29,310 - INFO - season: 0.0106
+2025-02-12 20:02:29,310 - INFO - LP92: 0.0102
+2025-02-12 20:02:29,310 - INFO - temperature: 0.0096
+2025-02-12 20:02:29,310 - INFO - LK: 0.0091
+2025-02-12 20:02:29,310 - INFO - district: 0.0082
+2025-02-12 20:02:29,310 - INFO - LAD: 0.0077
+2025-02-12 20:02:29,310 - INFO - Creating prediction analysis plots...
+2025-02-12 20:02:31,595 - INFO - Creating error distribution plots...
+2025-02-12 20:02:33,660 - INFO - Saving best model and encoders...
+2025-02-12 20:02:34,369 - INFO - 
+Example usage of the saved model:
+2025-02-12 20:02:34,370 - INFO - 
+    import pickle
+    
+    # Load the model and supporting files
+    with open('best_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    with open('encoders.pkl', 'rb') as f:
+        encoders = pickle.load(f)
+    with open('feature_columns.pkl', 'rb') as f:
+        feature_columns = pickle.load(f)
+    with open('predict_function.pkl', 'rb') as f:
+        predict = pickle.load(f)
+    
+    # Example input data
+    input_data = {
+        'year': 2024,
+        'month_num': 1,
+        'temperature': 28.5,
+        'rain': 100.0,
+        'LP95': 130,
+        'LP92': 120,
+        'LAD': 100,
+        'LSD': 115,
+        'LK': 65,
+        'LIK': 90,
+        'item': 'samba 1',
+        'district': 'colombo',
+        'season': 'Northeast Monsoon'
+    }
+    
+    # Make prediction
+    predicted_price = predict(model, encoders, feature_columns, input_data)
+    print(f'Predicted price: {predicted_price:.2f}')
+    
+2025-02-12 20:02:34,370 - INFO - 
+Total execution time: 15269.84 seconds
