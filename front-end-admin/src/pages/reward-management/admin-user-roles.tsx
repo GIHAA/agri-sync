@@ -1,3 +1,11 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/function-component-definition */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-nested-ternary */
 import React, { ReactElement, useEffect, useState } from 'react'
 import Button from '../../components/common/button'
 import {
@@ -9,39 +17,37 @@ import FilterIcon from '../../assets/images/icons/filter-icon.svg'
 import SharedDataContainer from '../../containers/sharedData'
 import SlideoverPanel from '../../components/slideover-panel'
 import Pagination from '../../components/pagination/pagination'
-import { AdminUserTableHeadings } from '../../constants/table-data'
-import AdminManagementTable from '../../components/table/admin-user-management-table'
-import AddUserSection from './components/userManagement/addUserSection'
-import ViewUserSection from './components/userManagement/viewUserSection'
-import EditUserSection from './components/userManagement/editUserSection'
-import {
-  useDeleteUser,
-  useGetUserDetails,
-} from '../../api/admin-user-management'
+import { AdminRolesTableHeadings } from '../../constants/table-data'
+import { useDeleteUser } from '../../api/admin-user-management'
 import Toast from '../../utils/notification'
 import { Icons, NotificationTypes } from '../../constants'
-import { useGetAllRoles } from '../../api/admin-role-management'
+import RoleManagementTable from '../../components/table/admin-role-management-table'
+import ViewRoleSection from './components/roleManagement/viewRoleSection'
+import AddRoleSection from './components/roleManagement/addRoleSection'
+import EditRoleSection from './components/roleManagement/editRoleSection'
+import {
+  useDeleteRole,
+  useGetRoles,
+} from '../../api/admin-role-management'
 import permissionChecker from '../../hooks/permissonChecker'
-import SelectElement from '../../components/common/form-elements/select-element-secondary'
-import { AlignmentTypes } from '../../constants/common-enums'
 import NoDataFound from '../../assets/images/NoDataFound.png'
 
 interface FormContent {
   title: string
-  component: (props: { userId: string }) => ReactElement
+  component: (props: { roleId: string }) => ReactElement
 }
 
-const AdminUserManagementPage = () => {
+const AdminRoleManagementPage = () => {
   const { handleSlider } = SharedDataContainer.useContainer()
   const [searchName, setSearchName] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
   const [query, setQuery] = useState<string>('')
-  const [role, setRole] = useState<number>()
-  const [status, setStatus] = useState<string>('')
-  const { data, refetch, isSuccess, isLoading, isError, error } =
-    useGetUserDetails(query, 'staff', role ?? 0, status, currentPage, pageSize)
-  const { data: roles } = useGetAllRoles()
+  const { data, isSuccess, isLoading, isError, error } = useGetRoles(
+    query,
+    currentPage,
+    pageSize
+  )
   const [showFilters, setShowFilters] = useState<boolean>(false)
   const [sliderSize, setSliderSize] = useState<string>('xl')
   const [sliderContent, setSliderContent] = useState<{
@@ -53,35 +59,34 @@ const AdminUserManagementPage = () => {
     children: <div />,
     footer: <div />,
   })
-  const [refresh, setRefresh] = useState<boolean>(false)
 
   let typingTimeout: NodeJS.Timeout
 
-  const handleViewUserOnClick = (userId: string) => {
+  const handleViewRoleOnClick = (roleId: number) => {
     handleSlider()
     setSliderContent({
-      header: 'View User Details',
-      children: <ViewUserSection userId={userId} />,
+      header: 'View Role Details',
+      children: <ViewRoleSection roleId={roleId} />,
       footer: <div />,
     })
     setSliderSize('xl')
   }
 
-  const handleAddUserOnClick = () => {
+  const handleAddRoleOnClick = () => {
     handleSlider()
     setSliderContent({
-      header: 'Add User Details',
-      children: <AddUserSection roles={roles} />,
+      header: 'Add Role Details',
+      children: <AddRoleSection />,
       footer: <div />,
     })
     setSliderSize('xl')
   }
 
-  const handleEditUserOnClick = (userId: string) => {
+  const handleEditRoleOnClick = (roleId: number) => {
     handleSlider()
     setSliderContent({
-      header: 'Edit User Details',
-      children: <EditUserSection roles={roles} userId={userId} />,
+      header: 'Edit Role Details',
+      children: <EditRoleSection roleId={roleId} />,
       footer: <div />,
     })
     setSliderSize('xl')
@@ -90,15 +95,15 @@ const AdminUserManagementPage = () => {
   const { setNotification } = SharedDataContainer.useContainer()
 
   const {
-    mutate: deleteUser,
+    mutate: deleteRole,
     isSuccess: deleteSuccess,
     isError: deleteError,
-  } = useDeleteUser()
+  } = useDeleteRole()
 
   useEffect(() => {
     if (deleteSuccess) {
       setNotification({
-        message: 'User deleted successfully',
+        message: 'Role deleted successfully',
         icon: Icons.CHECKCIRCLE,
         type: NotificationTypes.SUCCESS,
       })
@@ -109,7 +114,7 @@ const AdminUserManagementPage = () => {
   useEffect(() => {
     if (deleteError) {
       setNotification({
-        message: 'User deletion failed',
+        message: 'Role deletion failed',
         icon: Icons.CLOSE,
         type: NotificationTypes.ERROR,
       })
@@ -117,11 +122,11 @@ const AdminUserManagementPage = () => {
     }
   }, [deleteError])
 
-  const handleDeleteUserOnClick = async (userId: string) => {
-    deleteUser(userId)
+  const handleDeleteRoleOnClick = async (roleId: string) => {
+    deleteRole(roleId)
   }
 
-  const searchUserData = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const searchRoleData = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     setSearchName(value)
 
@@ -134,12 +139,7 @@ const AdminUserManagementPage = () => {
 
   const toggleFilters = () => {
     setShowFilters(!showFilters)
-    setRefresh(!refresh)
   }
-
-  useEffect(() => {
-    refetch()
-  }, [refresh])
 
   const handlePageClick = (event: { selected: number }) => {
     setCurrentPage(event.selected + 1)
@@ -151,37 +151,26 @@ const AdminUserManagementPage = () => {
     setPageSize(Number(event.target.value))
     setCurrentPage(1)
   }
-  const formatedRoles = Array.isArray(roles)
-    ? roles.map((role: { name: string; id: number }, key) => ({
-        id: key,
-        value: role.id.toString(),
-        name: role.name,
-      }))
-    : []
 
   const totalPages = data?.data?.meta?.totalPages ?? 0
-  const [Prefixtype] = useState([
-    { id: 0, name: 'All', value: '' },
-    { id: 1, name: 'Active', value: 'active' },
-    { id: 2, name: 'Inactive', value: 'banned' },
-  ])
 
   return (
     <div className="col-span-12 mt-6">
-      <div className="intro-y mb-8 flex h-10 items-center justify-between sm:flex">
+      <div className="intro-y mb-8 flex h-10 items-center justify-between sm:flex ">
         <h2 className="mr-5 truncate text-[19px] text-lg font-medium  text-[#2D3748]">
-         Reward Management
+        Admin Role Management
         </h2>
-
+        {permissionChecker(
           <Button
             onClick={() => {
-              handleAddUserOnClick()
+              handleAddRoleOnClick()
             }}
-            className="primary min-w-[100px] flex items-center gap-2.5 bg-black !font-medium text-white"
+            className="primary flex  min-w-[100px] items-center gap-2.5 bg-black !font-medium text-white"
           >
-            Add Farmer
-          </Button>
-
+            Add Role
+          </Button>,
+          'role_management.add'
+        )}
       </div>
       <div className="mb-8 mt-3 flex items-center justify-between sm:ml-auto sm:mt-0 ">
         <div className="relative flex sm:mt-0 sm:w-auto">
@@ -189,7 +178,7 @@ const AdminUserManagementPage = () => {
             type="text"
             className="box custom-input w-40 sm:w-64"
             placeholder="Search..."
-            onChange={searchUserData}
+            onChange={searchRoleData}
           />
           <Lucide
             icon="Search"
@@ -197,78 +186,18 @@ const AdminUserManagementPage = () => {
           />
         </div>
 
-        <div className="relative">
-          <Button
-            className="!box flex items-center gap-2.5 !font-medium text-black dark:text-slate-300"
-            onClick={toggleFilters}
-          >
-            <img src={FilterIcon} alt="Filter Icon" />
-            <span className="hidden sm:block">Filters</span>
-          </Button>
-
-          {showFilters && (
-            <div className="absolute right-0 top-full z-20 mt-2 w-80 rounded-lg bg-white p-4 shadow-lg">
-              <div className="">
-                <SelectElement
-                  id="role"
-                  label="Role"
-                  name="Role"
-                  required={true}
-                  labelAlignment={AlignmentTypes.BLOCK}
-                  onChange={(e) => {
-                    const id = parseInt(e.target.value)
-                    setRole(id)
-                  }}
-                  options={formatedRoles}
-                  inputClassName="!mt-0"
-                />
-              </div>
-              <div className="mb-6 py-5">
-                <SelectElement
-                  label={'Status'}
-                  options={Prefixtype}
-                  name="gateway_type"
-                  id="gateway_type"
-                  value={status}
-                  onChange={(e) => {
-                    setStatus(e.target.value.toLowerCase())
-                  }}
-                  inputClassName="!mt-3"
-                />
-              </div>
-
-              <div className="flex justify-between">
-                <button
-                  className="rounded-md bg-gray-100 px-4 py-2 text-gray-500 hover:bg-gray-200"
-                  onClick={() => {
-                    setRole(undefined)
-                    setStatus('')
-                    toggleFilters()
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={toggleFilters}
-                  className="rounded-md bg-black px-4 py-2 text-white hover:bg-gray-800"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+    
       </div>
       <div className="intro-y mt-8 overflow-auto sm:mt-0 lg:overflow-visible">
         {isLoading ? (
           <p>Loading...</p>
-        ) : isSuccess && data.data?.users.length ? (
-          <AdminManagementTable
-            Items={data.data.users}
-            handleViewOnClick={handleViewUserOnClick}
-            handleEditOnClick={handleEditUserOnClick}
-            handleDeleteOnClick={handleDeleteUserOnClick}
-            headers={AdminUserTableHeadings}
+        ) : isSuccess && data.data?.items.length ? (
+          <RoleManagementTable
+            Items={data.data.items}
+            handleViewOnClick={handleViewRoleOnClick}
+            handleEditOnClick={handleEditRoleOnClick}
+            handleDeleteOnClick={handleDeleteRoleOnClick}
+            headers={AdminRolesTableHeadings}
           />
         ) : (
                   <div className="flex flex-col gap-3">
@@ -323,4 +252,4 @@ const AdminUserManagementPage = () => {
   )
 }
 
-export default AdminUserManagementPage
+export default AdminRoleManagementPage

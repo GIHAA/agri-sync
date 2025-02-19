@@ -24,6 +24,8 @@ export const useLogin = (): UseMutationResult<any> => {
       }
     },
     onSuccess: (data) => {
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+      localStorage.setItem('jwtToken', data.data.token);
       console.log(data)
     },
     onError: (error: any) => {
