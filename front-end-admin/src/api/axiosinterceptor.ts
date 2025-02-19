@@ -6,6 +6,7 @@ const authFetch = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+
 });
 
 authFetch.interceptors.request.use(

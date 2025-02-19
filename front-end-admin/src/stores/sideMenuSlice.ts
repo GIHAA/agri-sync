@@ -282,6 +282,11 @@ const initialState: SideMenuState = {
       pathname: '/user-management',
       title: 'User Management',
     },
+    {
+      icon: "Award" as keyof typeof icons,
+      pathname: '/reward-management',
+      title: 'Reward Management',
+    },
   ].filter(Boolean), // Filter out falsy values
 };
 

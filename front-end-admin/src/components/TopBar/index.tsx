@@ -29,6 +29,7 @@ import NoDataFound from '../../assets/images/NoDataFound.png'
 const breadcrumbMap: { [key: string]: string } = {
   '/tip-setting': 'Tip Settings',
   '/manage-users': 'Admin User Management',
+  '/reward-management': 'Reward Management',
   '/manage-user-roles': 'Admin Role Management',
   '/manage-tippers': 'Tipper Management',
   '/manage-service-providers': 'Service Provider Management',

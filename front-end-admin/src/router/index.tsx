@@ -29,6 +29,7 @@ import {
 } from '../pages/forms'
 import AdminUserManagePage from '../pages/admin-management/admin-users'
 import AdminUserRolesManagePage from '../pages/admin-management/admin-user-roles'
+import RewardManagementPage from '../pages/reward-management/reward-management'
 
 function Router() {
   const { error } = RouteRegistry
@@ -59,6 +60,10 @@ function Router() {
         {
           path: 'user-management',
           element: <AdminUserManagePage />,
+        },
+        {
+          path: 'reward-management',
+          element: <RewardManagementPage />,
         },
         {
           path: 'manage-user-roles',
