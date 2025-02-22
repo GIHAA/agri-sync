@@ -175,9 +175,9 @@ function Menu(props: {
             !props.menu.active && props.level != 'first',
           'bg-[#F1F5F8] dark:bg-darkmode-700':
             props.menu.active && props.level == 'first',
-          "before:absolute before:right-0 before:top-0 before:-mr-6 before:-mt-[30px] before:h-[30px] before:w-[30px] before:rotate-90 before:scale-[1.04] before:bg-menu-corner before:bg-[length:100%] before:content-[''] dark:before:bg-menu-corner-dark":
+          "before:absolute before:right-0 before:top-0 before:-mr-6 before:-mt-[30px] before:h-[30px] before:w-[30px] before:rotate-90 before:scale-[1.04] before:bg- before:bg-[length:100%] before:content-[''] dark:before:bg--dark":
             props.menu.active && props.level == 'first',
-          "after:absolute after:right-0 after:top-0 after:-mr-6 after:mt-[50px] after:h-[30px] after:w-[30px] after:scale-[1.04] after:bg-menu-corner after:bg-[length:100%] after:content-[''] dark:after:bg-menu-corner-dark":
+          "after:absolute after:right-0 after:top-0 after:-mr-6 after:mt-[50px] after:h-[30px] after:w-[30px] after:scale-[1.04] after:bg- after:bg-[length:100%] after:content-[''] dark:after:bg--dark":
             props.menu.active && props.level == 'first',
           '[&>div:nth-child(1)]:hover:before:bg-white/5 [&>div:nth-child(1)]:hover:before:dark:bg-darkmode-500/70':
             !props.menu.active &&
