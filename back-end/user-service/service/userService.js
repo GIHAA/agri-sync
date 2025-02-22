@@ -22,7 +22,7 @@ const registerUser = async (username, email, password) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userRepo.createUser(username, email, hashedPassword);
+    const newUser = await userRepo.createUser(username, email, hashedPassword , "ADMIN");
 
     return {
       success: true,
@@ -42,11 +42,9 @@ const loginUser = async (email, password) => {
     if (!user) {
       return { success: false, statusCode: 404, message: "User not found" };
     }
-    console.log(user);
-
+  
     const famer = await FarmerDetails.findOne({ where: { user_id: user.id } });
     
-    console.log(famer);
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
@@ -55,9 +53,11 @@ const loginUser = async (email, password) => {
 
     const token = generateToken({ id: user.id, email: user.email , username: user.username , age : famer?.age ? famer?.age : 0 , visionProblems : famer?.vision_problems ? famer?.vision_problems : false , colorBlindness : famer?.color_blindness ? famer?.color_blindness : false });
 
+    delete user.password_hash;
+
     return {
       success: true,
-      data: { token },
+      data: { token , user , famer},
       message: "Login successful",
     };
   } catch (error) {
@@ -67,7 +67,7 @@ const loginUser = async (email, password) => {
 };
 
 // Register farmer with preferences
-const registerFarmer = async (username, email, password, age, visionProblems, colorBlindness, textSize, layout, colorScheme, useSymbols) => {
+const registerFarmer = async (username, email, password, age, visionProblems, colorBlindness, textSize, layout, colorScheme, useSymbols , lat , long) => {
   try {
     const existingUser = await userRepo.findUserByEmail(email);
     if (existingUser) {
@@ -75,10 +75,10 @@ const registerFarmer = async (username, email, password, age, visionProblems, co
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userRepo.createUser(username, email, hashedPassword);
+    const newUser = await userRepo.createUser(username, email, hashedPassword , "FARMER");
     const userId = newUser.id;
 
-    await userRepo.createFarmerDetails(userId, age, visionProblems, colorBlindness);
+    await userRepo.createFarmerDetails(userId, age, visionProblems, colorBlindness , lat , long);
     await userRepo.createAccessibilitySettings(userId, textSize, layout, colorScheme, useSymbols);
 
     return {
@@ -107,9 +107,75 @@ const getUserPreferences = async (userId) => {
   }
 };
 
+// userService.js
+const getAllUsers = async (page, limit) => {
+  try {
+    const result = await userRepo.findAllUsers(parseInt(page), parseInt(limit));
+    return {
+      success: true,
+      data: {
+        users: result.users,
+        meta: {
+          totalUsers: result.totalUsers,
+          totalPages: result.totalPages,
+          currentPage: result.currentPage,
+          limit: parseInt(limit)
+        }
+      },
+      message: "Users fetched successfully",
+    };
+  } catch (error) {
+    console.error("Error in fetching users service:", error);
+    return { success: false, statusCode: 500, message: "Server error" };
+  }
+};
+
+// Get one user
+const getUser = async (userId) => {
+  try {
+    const user = await userRepo.findUserById(userId);
+    if (!user) {
+      return { success: false, statusCode: 404, message: "User not found" };
+    }
+
+    return {
+      success: true,
+      data: user,
+      message: "User fetched successfully",
+    };
+  } catch (error) {
+    console.error("Error in fetching user service:", error);
+    return { success: false, statusCode: 500, message: "Server error" };
+  }
+};
+
+// Update user
+const updateUser = async (userId, updateData) => {
+  try {
+    const user = await userRepo.findUserById(userId);
+    if (!user) {
+      return { success: false, statusCode: 404, message: "User not found" };
+    }
+
+    const updatedUser = await userRepo.updateUser(userId, updateData);
+    return {
+      success: true,
+      data: updatedUser,
+      message: "User updated successfully",
+    };
+  } catch (error) {
+    console.error("Error in updating user service:", error);
+    return { success: false, statusCode: 500, message: "Server error" };
+  }
+};
+
+// Add to exports
 module.exports = {
   registerUser,
   loginUser,
   registerFarmer,
   getUserPreferences,
+  getAllUsers, 
+  getUser,
+  updateUser,
 };

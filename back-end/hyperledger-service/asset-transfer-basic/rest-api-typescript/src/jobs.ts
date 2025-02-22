@@ -1,4 +1,3 @@
-
 import { ConnectionOptions, Job, Queue, QueueScheduler, Worker } from 'bullmq';
 import { Application } from 'express';
 import { Contract, Transaction } from 'fabric-network';
@@ -66,7 +65,6 @@ export const initJobQueue = (): Queue => {
     return submitQueue;
 };
 
-
 export const initJobQueueWorker = (app: Application): Worker => {
     const worker = new Worker<JobData, JobResult>(
         config.JOB_QUEUE_NAME,
@@ -89,12 +87,12 @@ export const initJobQueueWorker = (app: Application): Worker => {
     if (logger.isLevelEnabled('debug')) {
         worker.on('completed', (job) => {
             logger.debug({ job }, 'Job completed');
+            //updateJobData;
         });
     }
 
     return worker;
 };
-
 
 export const processSubmitTransactionJob = async (
     app: Application,
@@ -196,7 +194,6 @@ export const processSubmitTransactionJob = async (
     }
 };
 
-
 export const initJobQueueScheduler = (): QueueScheduler => {
     const queueScheduler = new QueueScheduler(config.JOB_QUEUE_NAME, {
         connection,
@@ -254,7 +251,7 @@ export const updateJobData = async (
     await job.update(newData);
 };
 
-/**
+/**7
  * Gets a job summary
  *
  * This function is used for the jobs REST endpoint
@@ -304,7 +301,6 @@ export const getJobSummary = async (
 
     return jobSummary;
 };
-
 
 export const getJobCounts = async (
     queue: Queue

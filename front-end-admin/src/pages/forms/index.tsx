@@ -31,10 +31,12 @@ import {
 
 import Button from '../../components/common/button'
 import LoadingIcon from '../../components/common/loading-icon'
-import Agrisyncpy from '../../components/common/agrisyncpy'
+import Tippy from '../../components/common/tippy'
 import fakerData from '../../assets/images/fakers/image-placeholder-1.png'
 import Lucide from '../../components/common/lucide'
 import ProgressBar from '../../components/common/progress-bar'
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function CommonComponent() {
   return (
@@ -807,7 +809,7 @@ function DatepickerComponent() {
 
 function SelectComponent() {
   const [select, setSelect] = useState('1')
-  const [selectMulagrisyncle, setSelectMulagrisyncle] = useState(['1', '3'])
+  const [selectMultiple, setSelectMultiple] = useState(['1', '3'])
   const [selectHeader, setSelectHeader] = useState(['2', '3', '5'])
 
   return (
@@ -875,19 +877,19 @@ function SelectComponent() {
               </div>
               <div className="flex flex-col items-center border-b border-slate-200/60 p-5 dark:border-darkmode-400 sm:flex-row">
                 <h2 className="mr-auto text-base font-medium">
-                  Mulagrisyncle Select
+                  Multiple Select
                 </h2>
               </div>
               <div className="p-5">
                 <Preview>
                   <TomSelect
-                    value={selectMulagrisyncle}
-                    onChange={setSelectMulagrisyncle}
+                    value={selectMultiple}
+                    onChange={setSelectMultiple}
                     options={{
                       placeholder: 'Select your favorite actors',
                     }}
                     className="w-full"
-                    mulagrisyncle
+                    multiple
                   >
                     <option value="1">Leonardo DiCaprio</option>
                     <option value="2">Johnny Deep</option>
@@ -900,13 +902,13 @@ function SelectComponent() {
                     <Highlight>
                       {`
               <TomSelect
-                value={selectMulagrisyncle}
-                onChange={setSelectMulagrisyncle}
+                value={selectMultiple}
+                onChange={setSelectMultiple}
                 options={{
                   placeholder: "Select your favorite actors",
                 }}
                 className="w-full"
-                mulagrisyncle
+                multiple
               >
                 <option value="1">Leonardo DiCaprio</option>
                 <option value="2">Johnny Deep</option>
@@ -935,7 +937,7 @@ function SelectComponent() {
                       },
                     }}
                     className="w-full"
-                    mulagrisyncle
+                    multiple
                   >
                     <option value="1">Leonardo DiCaprio</option>
                     <option value="2">Johnny Deep</option>
@@ -1199,7 +1201,7 @@ function FormComponent() {
                     required
                     value={date}
                     onChange={setDate}
-                    info="This is a Toolagrisync"
+                    info="This is a Tooltip"
                   />
                   <SelectElement
                     label="actors"

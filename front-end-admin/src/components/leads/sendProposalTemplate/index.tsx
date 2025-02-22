@@ -181,7 +181,7 @@ function SendProposalTemplate() {
                 'expensesForm.fields.attachDocument.btnPlaceolder'
               )}`}
               error={errors.attach_document}
-              info={`${t('expensesForm.fields.attachDocument.toolagrisync')}`}
+              info={`${t('expensesForm.fields.attachDocument.tooltip')}`}
             />
               </div>
         

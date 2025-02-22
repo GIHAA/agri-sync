@@ -1,5 +1,3 @@
-
-
 import express, { Request, Response } from 'express';
 import { Contract } from 'fabric-network';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';

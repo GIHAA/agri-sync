@@ -21,6 +21,14 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  role: {
+    type: DataTypes.ENUM('FARMER', 'ADMIN'),
+    allowNull: false,
+    defaultValue: 'FARMER',
+    validate: {
+      isIn: [['FARMER', 'ADMIN']]
+    }
+  }
 });
 
 module.exports = User;

@@ -512,8 +512,8 @@ function ViewLead() {
                               >
                                 <div className="mx-1 -ml-1 flex">
                                   <FormInfo
-                                    toolagrisync={`${t(
-                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.toolagrisync'
+                                    tooltip={`${t(
+                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.tooltip'
                                     )}`}
                                   />
                                 </div>
@@ -772,8 +772,8 @@ function ViewLead() {
                               >
                                 <div className="mx-1 -ml-1 flex">
                                   <FormInfo
-                                    toolagrisync={`${t(
-                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.viewNotes.fields.activeStatus.toolagrisync'
+                                    tooltip={`${t(
+                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.viewNotes.fields.activeStatus.tooltip'
                                     )}`}
                                   />
                                 </div>
@@ -1145,8 +1145,8 @@ function ViewLead() {
                               >
                                 <div className="mx-1 -ml-1 flex">
                                   <FormInfo
-                                    toolagrisync={`${t(
-                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.toolagrisync'
+                                    tooltip={`${t(
+                                      'contactManagement.fields.suppliers.fields.viewSuppliers.fields.addLogin.fields.isActive.tooltip'
                                     )}`}
                                   />
                                 </div>

@@ -30,7 +30,7 @@ import {
 } from '../../common/form-elements/components'
 import productPlaceholder from '../../../assets/images/fakers/image-placeholder-1.png'
 import ClassicEditorElement from '../../common/form-elements/classic-editor-element'
-import Agrisyncpy from '../../common/agrisyncpy'
+import Tippy from '../../common/tippy'
 import Lucide from '../../common/lucide'
 import {
   Menu,
@@ -180,14 +180,14 @@ function FollowUpView() {
                   ])}
                   as="button"
                 >
-                  <Agrisyncpy
+                  <Tippy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Follow Up Info')}`}</div>
-                  </Agrisyncpy>
+                  </Tippy>
                 </Tab.Button>
               )}
             </Tab>
@@ -203,14 +203,14 @@ function FollowUpView() {
                   ])}
                   as="button"
                 >
-                  <Agrisyncpy
+                  <Tippy
                     content=""
                     className="flex w-full items-center justify-center py-4"
                     aria-controls="content"
                     aria-selected="true"
                   >
                     <div className="">{`${t('Follow Up Log')}`}</div>
-                  </Agrisyncpy>
+                  </Tippy>
                 </Tab.Button>
               )}
             </Tab>
@@ -643,8 +643,8 @@ function FollowUpView() {
                 </FormCheck.Label>
                 <div className="mx-1 mr-5 flex">
                   <FormInfo
-                    toolagrisync={`${t(
-                      'lead.fields.sendNotification.toolagrisync'
+                    tooltip={`${t(
+                      'lead.fields.sendNotification.tooltip'
                     )}`}
                   />
                 </div>

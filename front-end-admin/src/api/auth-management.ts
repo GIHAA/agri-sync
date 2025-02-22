@@ -1,4 +1,4 @@
-import { UseMutationResult , useMutation , useQueryClient } from 'react-query'
+import { UseMutationResult, useMutation, useQueryClient } from 'react-query'
 import authFetch from './axiosinterceptor'
 import { AxiosResponse } from 'axios'
 
@@ -9,18 +9,23 @@ interface UploadResponse {
 }
 
 export const useLogin = (): UseMutationResult<any> => {
-  
+
 
   return useMutation({
-    mutationFn: async (data : any) => {
+    mutationFn: async (data: any) => {
       try {
-        const response = await authFetch.post('/auth/login', data)
+        const response = await authFetch.post('/auth-service/login', data);
+        if (response.data.token) {
+          localStorage.setItem('validationToken', response.data.token); // Store token
+        }
         return response.data
       } catch (error) {
         throw error
       }
     },
     onSuccess: (data) => {
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+      localStorage.setItem('jwtToken', data.data.token);
       console.log(data)
     },
     onError: (error: any) => {
@@ -39,13 +44,13 @@ export const useUploadImage = () => {
         data,
         {
           headers: {
-            "Content-Type": "mulagrisyncart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       return response.data;
     },
-   
+
     onError: (error) => {
       console.error(
         "Image upload error:",

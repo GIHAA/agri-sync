@@ -1,5 +1,3 @@
-
-
 import express, { Request, Response } from 'express';
 import { Contract } from 'fabric-network';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
@@ -12,8 +10,6 @@ import { getJobCounts } from './jobs';
 const { SERVICE_UNAVAILABLE, OK } = StatusCodes;
 
 export const healthRouter = express.Router();
-
-
 
 healthRouter.get('/ready', (_req, res: Response) =>
     res.status(OK).json({

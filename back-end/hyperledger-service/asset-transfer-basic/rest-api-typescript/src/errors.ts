@@ -1,5 +1,3 @@
-
-
 import { TimeoutError, TransactionError } from 'fabric-network';
 import { logger } from './logger';
 
@@ -24,7 +22,6 @@ export class TransactionNotFoundError extends ContractError {
     }
 }
 
-
 export class SeedExistsError extends ContractError {
     constructor(message: string, transactionId: string) {
         super(message, transactionId);
@@ -33,7 +30,6 @@ export class SeedExistsError extends ContractError {
         this.name = 'SeedExistsError';
     }
 }
-
 
 export class SeedNotFoundError extends ContractError {
     constructor(message: string, transactionId: string) {
@@ -44,18 +40,13 @@ export class SeedNotFoundError extends ContractError {
     }
 }
 
-
 export enum RetryAction {
-
     WithExistingTransactionId,
-
 
     WithNewTransactionId,
 
-
     None,
 }
-
 
 export const getRetryAction = (err: unknown): RetryAction => {
     if (isDuplicateTransactionError(err) || err instanceof ContractError) {
@@ -114,7 +105,6 @@ export const isDuplicateTransactionError = (err: unknown): boolean => {
     return isDuplicate === true;
 };
 
-
 const matchSeedAlreadyExistsMessage = (message: string): string | null => {
     const SeedAlreadyExistsRegex = /([tT]he )?[aA]sset \w* already exists/g;
     const SeedAlreadyExistsMatch = message.match(SeedAlreadyExistsRegex);
@@ -129,7 +119,6 @@ const matchSeedAlreadyExistsMessage = (message: string): string | null => {
 
     return null;
 };
-
 
 const matchSeedDoesNotExistMessage = (message: string): string | null => {
     const SeedDoesNotExistRegex = /([tT]he )?[aA]sset \w* does not exist/g;
@@ -166,7 +155,6 @@ const matchTransactionDoesNotExistMessage = (
     return null;
 };
 
-
 export const handleError = (
     transactionId: string,
     err: unknown
@@ -181,14 +169,9 @@ export const handleError = (
             return new SeedExistsError(SeedAlreadyExistsMatch, transactionId);
         }
 
-        const SeedDoesNotExistMatch = matchSeedDoesNotExistMessage(
-            err.message
-        );
+        const SeedDoesNotExistMatch = matchSeedDoesNotExistMessage(err.message);
         if (SeedDoesNotExistMatch !== null) {
-            return new SeedNotFoundError(
-                SeedDoesNotExistMatch,
-                transactionId
-            );
+            return new SeedNotFoundError(SeedDoesNotExistMatch, transactionId);
         }
 
         const transactionDoesNotExistMatch =

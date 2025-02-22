@@ -2,15 +2,16 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const authFetch = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api`,
+  baseURL: `${import.meta.env.VITE_API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
+
 });
 
 authFetch.interceptors.request.use(
   (config) => {
-   const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("jwtToken");
     if (token) {
       const decodedToken: any = jwtDecode(token);
       const currentTime = Date.now() / 1000;
@@ -21,8 +22,8 @@ authFetch.interceptors.request.use(
         localStorage.removeItem("userId");
         localStorage.removeItem("email");
         localStorage.removeItem("validationToken");
-        localStorage.removeItem("notification_token");  
-        localStorage.removeItem("userEmail");  
+        localStorage.removeItem("notification_token");
+        localStorage.removeItem("userEmail");
         localStorage.removeItem("selectedCurrency");
         window.location.reload();
         throw new axios.Cancel("Token expired");

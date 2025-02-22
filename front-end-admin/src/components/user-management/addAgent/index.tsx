@@ -111,7 +111,7 @@ function AddAgent() {
       <FormCheck.Input id="vertical-form-3" type="checkbox" value="" onChange={handleChange} />
       <FormCheck.Label className="mr-2" htmlFor="vertical-form-3">
         <div className="mx-1 -ml-1 flex">
-          <FormInfo toolagrisync={`${t('addAgent.fields.commissionAgent.toolagrisync')}`} />
+          <FormInfo tooltip={`${t('addAgent.fields.commissionAgent.tooltip')}`} />
         </div>
       </FormCheck.Label>
     </FormCheck>
@@ -121,7 +121,7 @@ function AddAgent() {
       <FormCheck.Input id="vertical-form-2" type="checkbox" value="" onChange={handleChange} />
       <FormCheck.Label className="mr-2" htmlFor="vertical-form-2">
         <div className="mx-1 -ml-1 flex">
-          <FormInfo toolagrisync={`${t('addAgent.fields.serviceStaff.toolagrisync')}`} />
+          <FormInfo tooltip={`${t('addAgent.fields.serviceStaff.tooltip')}`} />
         </div>
       </FormCheck.Label>
     </FormCheck>
