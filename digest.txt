@@ -1,0 +1,1799 @@
+Directory structure:
+└── back-end/reward-service/
+    ├── middleware/
+    │   └── protect.js
+    ├── repository/
+    │   ├── pointSettingsRepo.js
+    │   ├── farmingRepo.js
+    │   └── rewardRepo.js
+    ├── db.sql
+    ├── test/
+    │   └── rewardController.test.js
+    ├── config/
+    │   └── database.js
+    ├── dockerfile
+    ├── jest.config.js
+    ├── utils/
+    │   └── logger.js
+    ├── models/
+    │   ├── FarmingData.js
+    │   ├── RewardPoints.js
+    │   ├── RewardActivity.js
+    │   └── PointSettings.js
+    ├── logs/
+    ├── package.json
+    ├── service/
+    │   ├── farmingService.js
+    │   ├── pointSettingsService.js
+    │   └── rewardService.js
+    ├── controllers/
+    │   ├── pointSettingsController.js
+    │   ├── rewardController.js
+    │   └── farmingController.js
+    ├── junit.xml
+    ├── routes/
+    │   ├── settingsRoutes.js
+    │   ├── rewardRoutes.js
+    │   └── farmingRoutes.js
+    └── app.js
+
+================================================
+File: /middleware/protect.js
+================================================
+const jwt = require("jsonwebtoken");
+
+const protect = (req, res, next) => {
+  const token = req.header("Authorization");
+
+  if (!token) {
+    return res.status(401).json({ message: "No token, authorization denied" });
+  }
+
+  try {
+    // Remove 'Bearer ' prefix from the token if present
+    const jwtToken = token.startsWith("Bearer ") ? token.slice(7) : token;
+
+    // Verify the JWT token
+    jwt.verify(jwtToken, "your_jwt_secret", (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ message: "Token is not valid" });
+      }
+
+      // Set the user ID in the request object
+      req.user = { id: decoded.id };
+      console.log("User ID:", req.user.id);
+      next();
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = protect;
+
+
+================================================
+File: /repository/pointSettingsRepo.js
+================================================
+const { PointSettings } = require("../models/PointSettings");
+const logger = require("../utils/logger");
+
+const getAllSettings = async () => {
+  logger.info("Fetching all point settings");
+  return await PointSettings.findAll({
+    attributes: ['id', 'event', 'points'],
+    order: [['createdAt', 'ASC']]
+  });
+};
+
+const updateSetting = async (updateData) => {
+  try {
+    logger.info(`Updating point setting: ${JSON.stringify(updateData)}`);
+    
+    // Find the setting by event
+    const pointSetting = await PointSettings.findOne({
+      where: { event: updateData.event }
+    });
+
+    if (!pointSetting) {
+      logger.warn(`Point setting not found for event: ${updateData.event}`);
+      return {
+        success: false,
+        message: `Point setting for ${updateData.event} not found`
+      };
+    }
+
+    // Update only the points field
+    await pointSetting.update({ 
+      points: updateData.points 
+    });
+
+    return {
+      success: true,
+      data: pointSetting,
+      message: "Point settings updated successfully"
+    };
+  } catch (error) {
+    logger.error(`Error updating point setting: ${error.message}`);
+    return {
+      success: false,
+      message: "Error updating point settings"
+    };
+  }
+};
+
+module.exports = {
+  getAllSettings,
+  updateSetting
+};
+
+================================================
+File: /repository/farmingRepo.js
+================================================
+const { Op, fn, col, Sequelize } = require('sequelize');
+const sequelize = require('../config/database');
+const FarmingData = require('../models/FarmingData');
+const logger = require('../utils/logger');
+
+const getAllFarmingData = async () => {
+  logger.info('Fetching all farming data');
+  return await FarmingData.findAll();
+};
+
+const getFarmingDataById = async (id) => {
+  logger.info(`Fetching farming data for ID: ${id}`);
+  return await FarmingData.findByPk(id);
+};
+
+const createFarmingData = async (data) => {
+  logger.info(`Creating new farming data entry for ${data.farmer_name}`);
+  return await FarmingData.create(data);
+};
+
+const updateFarmingData = async (id, data) => {
+  logger.info(`Updating farming data for ID: ${id}`);
+  const farmingData = await getFarmingDataById(id);
+  
+  if (!farmingData) {
+    logger.warn(`Farming data not found for ID: ${id}`);
+    return null;
+  }
+  
+  return await farmingData.update(data);
+};
+
+const deleteFarmingData = async (id) => {
+  logger.info(`Deleting farming data for ID: ${id}`);
+  const farmingData = await getFarmingDataById(id);
+  
+  if (!farmingData) {
+    logger.warn(`Farming data not found for ID: ${id}`);
+    return null;
+  }
+  
+  return await farmingData.destroy();
+};
+
+const getNearbyFarmers = async (lat, long, radius) => {
+  logger.info(`Fetching nearby farmers around (${lat}, ${long}) within ${radius} km`);
+  
+  try {
+    // First, make sure the earthdistance extension is installed
+    await sequelize.query('CREATE EXTENSION IF NOT EXISTS cube;');
+    await sequelize.query('CREATE EXTENSION IF NOT EXISTS earthdistance;');
+
+    const nearbyFarmers = await FarmingData.findAll({
+      where: Sequelize.where(
+        fn('earth_distance', 
+          fn('ll_to_earth', col('lat'), col('long')),
+          fn('ll_to_earth', lat, long)
+        ),
+        '<=',
+        radius * 1000  // Convert km to meters
+      ),
+      attributes: [
+        'id',
+        'farmer_ref',
+        'farmer_name',
+        'lat',
+        'long',
+        'vegetable_ref',
+        'vegetable_name',
+        'amount',
+        [fn('earth_distance',
+          fn('ll_to_earth', col('lat'), col('long')),
+          fn('ll_to_earth', lat, long)
+        ), 'distance']
+      ],
+      order: [[fn('earth_distance',
+        fn('ll_to_earth', col('lat'), col('long')),
+        fn('ll_to_earth', lat, long)
+      ), 'ASC']]
+    });
+    
+    return nearbyFarmers;
+  } catch (error) {
+    logger.error(`Error finding nearby farmers: ${error.message}`);
+    throw error;
+  }
+};
+
+const getLeaderboard = async (timeframe = 'all', limit = 10) => {
+    logger.info(`Fetching farmer leaderboard for timeframe: ${timeframe}, limit: ${limit}`);
+    
+    try {
+      let timeCondition = {};
+      const now = new Date();
+      
+      switch(timeframe.toLowerCase()) {
+        case 'daily':
+          timeCondition = {
+            planted_at: {
+              [Op.gte]: new Date(now.setHours(0,0,0,0))
+            }
+          };
+          break;
+        case 'weekly':
+          const weekAgo = new Date(now);
+          weekAgo.setDate(weekAgo.getDate() - 7);
+          timeCondition = {
+            planted_at: {
+              [Op.gte]: weekAgo
+            }
+          };
+          break;
+        case 'monthly':
+          const monthAgo = new Date(now);
+          monthAgo.setMonth(monthAgo.getMonth() - 1);
+          timeCondition = {
+            planted_at: {
+              [Op.gte]: monthAgo
+            }
+          };
+          break;
+      }
+  
+      const leaderboard = await FarmingData.findAll({
+        attributes: [
+          'farmer_ref',
+          'farmer_name',
+          [fn('SUM', col('amount')), 'total_production'],
+          [fn('COUNT', col('id')), 'total_entries'],
+          [fn('COUNT', Sequelize.fn('DISTINCT', col('vegetable_ref'))), 'unique_vegetables']
+        ],
+        where: timeCondition,
+        group: ['farmer_ref', 'farmer_name'],
+        order: [[fn('SUM', col('amount')), 'DESC']],
+        limit: limit,
+        raw: true
+      });
+  
+      const rankedLeaderboard = leaderboard.map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+        percentile: Math.round(((limit - index) / limit) * 100)
+      }));
+  
+      return rankedLeaderboard;
+    } catch (error) {
+      logger.error(`Error generating leaderboard: ${error.message}`);
+      throw error;
+    }
+  };
+
+module.exports = {
+  getAllFarmingData,
+  getFarmingDataById,
+  createFarmingData,
+  updateFarmingData,
+  deleteFarmingData,
+  getNearbyFarmers,
+  getLeaderboard
+};
+
+================================================
+File: /repository/rewardRepo.js
+================================================
+// repository/rewardRepo.js
+const RewardPoints = require("../models/RewardPoints");
+const RewardActivity = require("../models/RewardActivity");
+const logger = require("../utils/logger");
+
+const getUserPoints = async (userId) => {
+  logger.info(`Fetching user points for user ${userId}`);
+  return await RewardPoints.findOne({ where: { user_id: userId } });
+};
+
+const getActivityHistory = async (userId) => {
+  logger.info(`Fetching activity history for user ${userId}`);
+  return await RewardActivity.findAll({
+    where: { user_id: userId },
+    order: [["createdAt", "DESC"]],
+    limit: 50
+  });
+};
+
+const deductPoints = async (userId, points) => {
+  logger.info(`Deducting ${points} points for user ${userId}`);
+  const userPoints = await RewardPoints.findOne({ where: { user_id: userId } });
+  if (userPoints) {
+    userPoints.total_points -= points;
+    await userPoints.save();
+    logger.info(`User ${userId} now has ${userPoints.total_points} points`);
+  }
+};
+
+const createUserPoints = async (userId, points) => {
+  logger.info(`Creating new reward points entry for user ${userId}`);
+  await RewardPoints.create({
+    user_id: userId,
+    total_points: points
+  });
+};
+
+const addActivityHistory = async (userId, activityType, pointsEarned, description) => {
+  logger.info(`Recording activity for user ${userId}: ${activityType} (${pointsEarned} points)`);
+  await RewardActivity.create({
+    user_id: userId,
+    activity_type: activityType,
+    points_earned: pointsEarned,
+    description: description
+  });
+};
+
+module.exports = {
+  getUserPoints,
+  getActivityHistory,
+  deductPoints,
+  createUserPoints,
+  addActivityHistory
+};
+
+
+================================================
+File: /db.sql
+================================================
+-- Create Roles table for defining user roles
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_tables WHERE schemaname = 'public' AND tablename = 'roles') THEN
+        CREATE TABLE roles (
+            id SERIAL PRIMARY KEY,
+            role_name VARCHAR(50) NOT NULL UNIQUE
+        );
+        INSERT INTO roles (role_name) VALUES ('SUPER_ADMIN'), ('SEED_PROVIDER'), ('FARMER');
+    END IF;
+END $$;
+
+
+-- Create Users table for basic user information
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE schemaname = 'public' AND tablename = 'users') THEN
+        CREATE TABLE users (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password_hash VARCHAR(255) NOT NULL,
+            qr_code_hash VARCHAR(255) UNIQUE,
+            role_id INT NOT NULL DEFAULT 1, -- Default to 'superadmin' for the first user
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
+        );
+    END IF;
+END $$;
+
+-- Create Farmer Details table for farmer-specific data
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE schemaname = 'public' AND tablename = 'farmer_details') THEN
+        CREATE TABLE farmer_details (
+            id SERIAL PRIMARY KEY,
+            user_id INT NOT NULL,
+            age INT NOT NULL,
+            vision_problems BOOLEAN DEFAULT FALSE,
+            color_blindness BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+    END IF;
+END $$;
+
+-- Create Accessibility Settings table for user preferences
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_tables WHERE schemaname = 'public' AND tablename = 'accessibility_settings') THEN
+        CREATE TABLE accessibility_settings (
+            id SERIAL PRIMARY KEY,
+            user_id INT NOT NULL,
+            text_size TEXT CHECK (text_size IN ('Small', 'Medium', 'Large')) DEFAULT 'Medium',
+            layout TEXT CHECK (layout IN ('Simple', 'Standard')) DEFAULT 'Standard',
+            color_friendly_scheme TEXT CHECK (color_friendly_scheme IN ('Red-Green Safe', 'Blue-Yellow Safe', 'Standard')) DEFAULT 'Standard',
+            use_symbols_with_colors BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+    END IF;
+END $$;
+
+
+-- Migration to add initial Point Settings for different events
+DO $$
+BEGIN
+    -- Check if table is empty to avoid duplicate insertions
+    IF NOT EXISTS (SELECT 1 FROM "PointsSetting") THEN
+        INSERT INTO "PointsSetting" (event, points)
+        VALUES 
+            ('market_insight', 100),  
+            ('premium_prediction', 150), 
+            ('farming_data', 200);    
+    END IF;
+END $$;
+
+================================================
+File: /test/rewardController.test.js
+================================================
+// test/rewardService.test.js
+const rewardService = require('../service/rewardService');
+const rewardRepo = require('../repository/rewardRepo');
+
+// Mock the repository layer
+jest.mock('../repository/rewardRepo');
+// Mock the logger to avoid console noise during tests
+jest.mock('../utils/logger', () => ({
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn()
+}));
+
+describe('Reward Service', () => {
+  beforeEach(() => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+  });
+
+  describe('getUserPoints', () => {
+    it('should return user points when user exists', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 150
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+
+      const result = await rewardService.getUserPoints(1);
+      expect(result).toBe(150);
+      expect(rewardRepo.getUserPoints).toHaveBeenCalledWith(1);
+    });
+
+    it('should return 0 when user does not exist', async () => {
+      rewardRepo.getUserPoints.mockResolvedValue(null);
+
+      const result = await rewardService.getUserPoints(1);
+      expect(result).toBe(0);
+      expect(rewardRepo.getUserPoints).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('getActivityHistory', () => {
+    it('should return activity history for user', async () => {
+      const mockHistory = [
+        { activity_type: 'Points Added', points_earned: 100 },
+        { activity_type: 'Reward Redemption', points_earned: -50 }
+      ];
+      rewardRepo.getActivityHistory.mockResolvedValue(mockHistory);
+
+      const result = await rewardService.getActivityHistory(1);
+      expect(result).toEqual(mockHistory);
+      expect(rewardRepo.getActivityHistory).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('redeemPoints', () => {
+    it('should successfully redeem points when user has sufficient balance', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 600,
+        save: jest.fn().mockResolvedValue()
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+      rewardRepo.deductPoints.mockResolvedValue();
+      rewardRepo.addActivityHistory.mockResolvedValue();
+
+      const pointsSetting = await rewardService.getPointSetting('farming_data');
+
+      rewardService.addPoints(1, pointsSetting.points);
+      const result = await rewardService.redeemPoints(1, 'premium_prediction');
+      
+      expect(result).toEqual({
+        success: true,
+        message: 'Redeemed premium_prediction reward'
+      });
+      expect(rewardRepo.deductPoints).toHaveBeenCalledWith(1, pointsSetting.points);
+      expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
+        1,
+        'Reward Redemption',
+        pointsSetting.points * -1,
+        'Redeemed premium_prediction reward'
+      );
+    });
+
+    it('should return insufficient points error when balance is low', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 50
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+
+      const result = await rewardService.redeemPoints(1, 'market_insight');
+      
+      expect(result).toEqual({
+        success: false,
+        message: 'Insufficient points'
+      });
+      expect(rewardRepo.deductPoints).not.toHaveBeenCalled();
+      expect(rewardRepo.addActivityHistory).not.toHaveBeenCalled();
+    });
+
+    it('should handle non-existent user', async () => {
+      rewardRepo.getUserPoints.mockResolvedValue(null);
+
+      const result = await rewardService.redeemPoints(1, 'market_insight');
+      
+      expect(result).toEqual({
+        success: false,
+        message: 'Insufficient points'
+      });
+    });
+  });
+
+  describe('addPoints', () => {
+  
+    it('should update points for existing user', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 100,
+        save: jest.fn().mockResolvedValue()
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+      rewardRepo.addActivityHistory.mockResolvedValue();
+
+      const result = await rewardService.addPoints(1, 50);
+      
+      expect(mockUserPoints.save).toHaveBeenCalled();
+      expect(mockUserPoints.total_points).toBe(150);
+      expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
+        1,
+        'Points Added',
+        50,
+        'Added 50 points'
+      );
+    });
+  });
+
+  describe('updatePoints', () => {
+    it('should successfully update points', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 100,
+        save: jest.fn().mockResolvedValue()
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+      rewardRepo.addActivityHistory.mockResolvedValue();
+
+      const result = await rewardService.updatePoints(1, 200);
+      
+      expect(result).toEqual({
+        success: true,
+        message: 'Points updated to 200'
+      });
+      expect(mockUserPoints.save).toHaveBeenCalled();
+      expect(mockUserPoints.total_points).toBe(200);
+      expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
+        1,
+        'Points Updated',
+        100,
+        'Updated points to 200'
+      );
+    });
+
+    it('should handle non-existent user', async () => {
+      rewardRepo.getUserPoints.mockResolvedValue(null);
+
+      const result = await rewardService.updatePoints(1, 200);
+      
+      expect(result).toEqual({
+        success: false,
+        message: 'User points not found'
+      });
+      expect(rewardRepo.addActivityHistory).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('addFarmingDataReward', () => {
+    it('should add farming data reward points', async () => {
+      const mockUserPoints = {
+        user_id: 1,
+        total_points: 0,
+        save: jest.fn().mockResolvedValue()
+      };
+      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
+      rewardRepo.addActivityHistory.mockResolvedValue();
+
+      const result = await rewardService.addFarmingDataReward(1);
+      const pointsSetting = await rewardService.getPointSetting('farming_data');
+      
+      expect(mockUserPoints.total_points).toBe(pointsSetting.points); // Farming data reward is 100 points
+      expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
+        1,
+        'Points Added',
+        pointsSetting.points,
+        `Added ${pointsSetting.points} points`
+      );
+    });
+  });
+});
+
+================================================
+File: /config/database.js
+================================================
+// config/database.js reward service
+const { Sequelize } = require("sequelize");
+require("dotenv").config();
+const logger = require("../utils/logger");
+
+const sequelize = new Sequelize({
+  host: process.env.DB_HOST || "localhost",
+  port: process.env.DB_PORT || 5432,
+  username: process.env.DB_USER || "admin",
+  password: process.env.DB_PASSWORD || "admin",
+  database: process.env.DB_NAME || "agri",
+  dialect: "postgres",
+  // for ssl
+  dialectOptions: {
+    ssl: {
+      require: process.env.DB_SSL === 'true',
+      rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true'
+    }
+  }
+});
+
+// Test the connection and log the result
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    logger.info("Connection to the database has been established successfully.");
+  } catch (error) {
+    logger.error(`Unable to connect to the database: ${error.message}`);
+  }
+};
+
+testConnection();
+
+module.exports = sequelize;
+
+
+================================================
+File: /dockerfile
+================================================
+# Use an official Node.js runtime as a parent image
+FROM node:16
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port that the app will run on (port 5000 internally)
+EXPOSE 5000
+
+# Run the app
+CMD ["node", "app.js"]
+
+
+================================================
+File: /jest.config.js
+================================================
+module.exports = {
+    testEnvironment: 'node',
+    clearMocks: true,
+    testTimeout: 10000
+  };
+
+================================================
+File: /utils/logger.js
+================================================
+// utils/logger.js
+const winston = require("winston");
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.timestamp(),
+    winston.format.printf(
+      ({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`
+    )
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/app.log" })
+  ]
+});
+
+module.exports = logger;
+
+
+================================================
+File: /models/FarmingData.js
+================================================
+// models/FarmingData.js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const logger = require('../utils/logger');
+
+const FarmingData = sequelize.define('FarmingData', {
+  farmer_ref: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  farmer_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lat: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  long: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  vegetable_ref: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  vegetable_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  amount: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  planted_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  },
+});
+
+FarmingData.addHook('afterCreate', (farmingData, options) => {
+  logger.info(`New farming data entry created for farmer ${farmingData.farmer_name}: ${farmingData.vegetable_name}, ${farmingData.amount}`);
+});
+
+FarmingData.addHook('afterUpdate', (farmingData, options) => {
+  logger.info(`Farming data updated for farmer ${farmingData.farmer_name}: ${farmingData.vegetable_name}, ${farmingData.amount}`);
+});
+
+module.exports = FarmingData;
+
+
+================================================
+File: /models/RewardPoints.js
+================================================
+// models/RewardPoints.js
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const logger = require("../utils/logger");
+
+const RewardPoints = sequelize.define("RewardPoints", {
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  total_points: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  last_updated: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
+});
+
+RewardPoints.addHook('afterCreate', (rewardPoints, options) => {
+  logger.info(`New reward points entry created for user ${rewardPoints.user_id}: ${rewardPoints.total_points} points`);
+});
+
+RewardPoints.addHook('afterUpdate', (rewardPoints, options) => {
+  logger.info(`Reward points updated for user ${rewardPoints.user_id}: ${rewardPoints.total_points} points`);
+});
+
+module.exports = RewardPoints;
+
+
+================================================
+File: /models/RewardActivity.js
+================================================
+// models/RewardActivity.js
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const logger = require("../utils/logger");
+
+const RewardActivity = sequelize.define("RewardActivity", {
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  activity_type: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  points_earned: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT
+  }
+});
+
+RewardActivity.addHook('afterCreate', (rewardActivity, options) => {
+  logger.info(`Reward activity recorded for user ${rewardActivity.user_id}: ${rewardActivity.activity_type} (${rewardActivity.points_earned} points)`);
+});
+
+module.exports = RewardActivity;
+
+
+================================================
+File: /models/PointSettings.js
+================================================
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const logger = require("../utils/logger");
+
+// Define enum for point events
+const PointEvents = {
+  MARKET_INSIGHT: 'market_insight',
+  PREMIUM_PREDICTION: 'premium_prediction',
+  FARMING_DATA: 'farming_data'
+};
+
+// Define the model with explicit table name
+const PointSettings = sequelize.define("PointSettings", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  event: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isIn: [[
+        PointEvents.MARKET_INSIGHT, 
+        PointEvents.PREMIUM_PREDICTION, 
+        PointEvents.FARMING_DATA
+      ]]
+    }
+  },
+  points: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 0
+    }
+  }
+}, {
+  tableName: 'PointSettings',
+});
+
+// Hooks for logging
+PointSettings.addHook('afterCreate', (pointSettings, options) => {
+  logger.info(`New Point settings entry created for event ${pointSettings.event}: ${pointSettings.points} points`);
+});
+
+PointSettings.addHook('afterUpdate', (pointSettings, options) => {
+  logger.info(`Point settings updated for event ${pointSettings.event}: ${pointSettings.points} points`);
+});
+
+// Function to seed initial data
+const seedPointSettings = async () => {
+  try {
+    // Check if data already exists
+    const existingSettings = await PointSettings.count();
+    
+    if (existingSettings === 0) {
+      await PointSettings.bulkCreate([
+        { event: PointEvents.MARKET_INSIGHT, points: 100 },
+        { event: PointEvents.PREMIUM_PREDICTION, points: 150 },
+        { event: PointEvents.FARMING_DATA, points: 200 }
+      ]);
+      logger.info('Point settings seeded successfully');
+    } else {
+      logger.info('Point settings already exist');
+    }
+  } catch (error) {
+    logger.error('Error seeding point settings:', error);
+    
+    // If unique constraint violation, try to handle or log more details
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      logger.error('Unique constraint violation:', error.errors);
+    }
+  }
+};
+
+// Function to ensure seeds are present
+const ensurePointSettings = async () => {
+  try {
+    for (const eventKey of Object.keys(PointEvents)) {
+      const event = PointEvents[eventKey];
+      const [setting, created] = await PointSettings.findOrCreate({
+        where: { event },
+        defaults: { 
+          points: event === PointEvents.MARKET_INSIGHT ? 100 :
+                  event === PointEvents.PREMIUM_PREDICTION ? 150 : 200 
+        }
+      });
+      
+      if (created) {
+        logger.info(`Created point setting for ${event}`);
+      }
+    }
+  } catch (error) {
+    logger.error('Error ensuring point settings:', error);
+  }
+};
+
+// Export the model, events, and seeding functions
+module.exports = {
+  PointSettings,
+  PointEvents,
+  seedPointSettings,
+  ensurePointSettings
+};
+
+================================================
+File: /package.json
+================================================
+{
+  "name": "user_service",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watch",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "mockdate": "^3.0.5",
+    "nodemon": "^3.1.7",
+    "sequelize-mock": "^0.10.2",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5",
+    "winston": "^3.17.0"
+  }
+}
+
+
+================================================
+File: /service/farmingService.js
+================================================
+const farmingRepo = require('../repository/farmingRepo');
+const rewardService = require("../service/rewardService");
+const logger = require('../utils/logger');
+
+const getAllFarmingData = async () => {
+    try {
+        const data = await farmingRepo.getAllFarmingData();
+        logger.info('Fetched all farming data successfully.');
+        return {
+            success: true,
+            data,
+            message: 'Fetched all farming data successfully.',
+        };
+    } catch (error) {
+        logger.error(`Error fetching all farming data: ${error.message}`);
+        return { success: false, message: 'Error fetching farming data' };
+    }
+};
+
+const getFarmingDataById = async (id) => {
+    try {
+        const data = await farmingRepo.getFarmingDataById(id);
+        if (!data) {
+            logger.warn(`Farming data not found for ID: ${id}`);
+            return { success: false, message: 'Farming data not found' };
+        }
+        logger.info(`Fetched farming data for ID: ${id}`);
+        return { success: true, data, message: 'Farming data fetched successfully' };
+    } catch (error) {
+        logger.error(`Error fetching farming data by ID: ${id} - ${error.message}`);
+        return { success: false, message: 'Error fetching farming data by ID' };
+    }
+};
+
+const createFarmingData = async (data, userId) => {
+    try {
+        logger.info(`Creating farming data for ${data.farmer_name}`);
+        const newData = await farmingRepo.createFarmingData(data);
+        logger.info(`Created reward for ${data.farmer_name}`);
+        const reward = await rewardService.addFarmingDataReward(userId);
+        return { 
+            success: true, 
+            data: { data: newData, reward }, 
+            message: 'Farming data created successfully' 
+        };
+    } catch (error) {
+        logger.error(`Error creating farming data: ${error.message}`);
+        return { success: false, message: 'Error creating farming data' };
+    }
+};
+
+const updateFarmingData = async (id, data) => {
+    try {
+        const updatedData = await farmingRepo.updateFarmingData(id, data);
+        if (!updatedData) {
+            logger.warn(`Farming data not found for ID: ${id}`);
+            return { success: false, message: 'Farming data not found' };
+        }
+        logger.info(`Updated farming data for ID: ${id}`);
+        return { success: true, data: updatedData, message: 'Farming data updated successfully' };
+    } catch (error) {
+        logger.error(`Error updating farming data: ${error.message}`);
+        return { success: false, message: 'Error updating farming data' };
+    }
+};
+
+const deleteFarmingData = async (id) => {
+    try {
+        const result = await farmingRepo.deleteFarmingData(id);
+        if (!result) {
+            logger.warn(`Farming data not found for ID: ${id}`);
+            return { success: false, message: 'Farming data not found' };
+        }
+        logger.info(`Deleted farming data for ID: ${id}`);
+        return { success: true, message: 'Farming data deleted successfully' };
+    } catch (error) {
+        logger.error(`Error deleting farming data: ${error.message}`);
+        return { success: false, message: 'Error deleting farming data' };
+    }
+};
+
+// New method to get nearby farmers
+const getNearbyFarmers = async (lat, long, radius) => {
+    try {
+        // Validate input parameters
+        if (!lat || !long || !radius) {
+            logger.warn('Invalid parameters for nearby farmers search');
+            return { 
+                success: false, 
+                message: 'Latitude, Longitude, and Radius are required' 
+            };
+        }
+
+        // Validate radius
+        const parsedRadius = Number(radius);
+        if (isNaN(parsedRadius) || parsedRadius <= 0) {
+            logger.warn('Invalid radius provided');
+            return { 
+                success: false, 
+                message: 'Radius must be a positive number' 
+            };
+        }
+
+        const nearbyFarmers = await farmingRepo.getNearbyFarmers(
+            Number(lat), 
+            Number(long), 
+            parsedRadius
+        );
+
+        logger.info(`Found ${nearbyFarmers.length} nearby farmers`);
+        return {
+            success: true,
+            data: nearbyFarmers,
+            message: 'Nearby farmers fetched successfully'
+        };
+    } catch (error) {
+        logger.error(`Error finding nearby farmers: ${error.message}`);
+        return { 
+            success: false, 
+            message: 'Error finding nearby farmers' 
+        };
+    }
+};
+
+const getLeaderboard = async (timeframe, limit) => {
+    try {
+      // Validate timeframe
+      const validTimeframes = ['daily', 'weekly', 'monthly', 'all'];
+      const validatedTimeframe = timeframe?.toLowerCase() || 'all';
+      
+      if (!validTimeframes.includes(validatedTimeframe)) {
+        logger.warn(`Invalid timeframe provided: ${timeframe}`);
+        return {
+          success: false,
+          message: 'Invalid timeframe. Must be one of: daily, weekly, monthly, all'
+        };
+      }
+  
+      // Validate limit
+      const validatedLimit = Math.min(Math.max(parseInt(limit) || 10, 1), 100);
+      
+      const leaderboardData = await farmingRepo.getLeaderboard(
+        validatedTimeframe, 
+        validatedLimit
+      );
+  
+      return {
+        success: true,
+        data: leaderboardData,
+        message: 'Leaderboard fetched successfully',
+        metadata: {
+          timeframe: validatedTimeframe,
+          limit: validatedLimit,
+          totalParticipants: leaderboardData.length
+        }
+      };
+    } catch (error) {
+      logger.error(`Error fetching leaderboard: ${error.message}`);
+      return {
+        success: false,
+        message: 'Error fetching leaderboard'
+      };
+    }
+  };
+
+module.exports = {
+    getAllFarmingData,
+    getFarmingDataById,
+    createFarmingData,
+    updateFarmingData,
+    deleteFarmingData,
+    getNearbyFarmers,
+    getLeaderboard
+};
+
+================================================
+File: /service/pointSettingsService.js
+================================================
+const pointsSettingsRepo = require("../repository/pointSettingsRepo");
+const logger = require("../utils/logger");
+
+const getPointSettings = async (req, res) => {
+  try {
+    logger.info('Fetching point settings');
+    const settings = await pointsSettingsRepo.getAllSettings();
+    
+    return res.status(200).json({
+      success: true,
+      data: settings,
+      message: "Point settings retrieved successfully"
+    });
+  } catch (error) {
+    logger.error(`Error fetching point settings: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving point settings"
+    });
+  }
+};
+
+const updatePointSettings = async (req, res) => {
+  try {
+    const settings = req.body;
+    logger.info('Updating point settings', settings);
+    
+    // Validate input
+    if (!settings.event || settings.points === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "Event and points are required"
+      });
+    }
+    
+    const result = await pointsSettingsRepo.updateSetting(settings);
+    
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error updating point settings: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating point settings"
+    });
+  }
+};
+
+module.exports = {
+  getPointSettings,
+  updatePointSettings
+};
+
+================================================
+File: /service/rewardService.js
+================================================
+// service/rewardService.js
+const { PointSettings } = require("../models/PointSettings");
+const rewardRepo = require("../repository/rewardRepo");
+const logger = require("../utils/logger");
+
+const getUserPoints = async (userId) => {
+  logger.info(`Fetching points for user ${userId}`);
+  const userPoints = await rewardRepo.getUserPoints(userId);
+  return userPoints ? userPoints.total_points : 0;
+};
+
+const getActivityHistory = async (userId) => {
+  logger.info(`Fetching activity history for user ${userId}`);
+  return await rewardRepo.getActivityHistory(userId);
+};
+
+const redeemPoints = async (userId, rewardType) => {
+  try {
+    logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
+
+    // Fetch points required for the specific reward type from the database
+    const pointSettingsEntry = await PointSettings.findOne({ 
+      where: { event: rewardType } 
+    });
+
+    // If reward type doesn't exist in point settings
+    if (!pointSettingsEntry) {
+      logger.warn(`Invalid reward type: ${rewardType}`);
+      return {
+        success: false,
+        message: "Invalid reward type"
+      };
+    }
+
+    const pointsRequired = pointSettingsEntry.points;
+
+    // Get user's current points
+    const userPoints = await rewardRepo.getUserPoints(userId);
+
+    // Check if user has sufficient points
+    if (!userPoints || userPoints.total_points < pointsRequired) {
+      logger.warn(`User ${userId} has insufficient points for ${rewardType}`);
+      return {
+        success: false,
+        message: "Insufficient points"
+      };
+    }
+
+    // Deduct points and record activity
+    await rewardRepo.deductPoints(userId, pointsRequired);
+    await rewardRepo.addActivityHistory(
+      userId, 
+      "Reward Redemption", 
+      -pointsRequired, 
+      `Redeemed ${rewardType} reward`
+    );
+
+    logger.info(`User ${userId} successfully redeemed ${rewardType} reward`);
+    return {
+      success: true,
+      message: `Redeemed ${rewardType} reward`
+    };
+  } catch (error) {
+    logger.error(`Error in redeemPoints for user ${userId}: ${error.message}`);
+    return {
+      success: false,
+      message: "An error occurred while processing the reward"
+    };
+  }
+};
+
+const addFarmingDataReward = async (userId ) => { 
+  const pointSetting = await PointSettings.findOne({ where: { event: 'farming_data' } });
+  if (!pointSetting) {
+    logger.error('Point setting for farming data not found');
+    return { success: false, message: 'Point setting not found' };
+  }
+
+  const pointsToAdd = pointSetting.points;
+  logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
+  return addPoints(userId, pointsToAdd);
+}
+
+const getPointSettings = async () => {
+  logger.info('Fetching point settings');
+  return await PointSettings.findAll();
+}
+
+const getPointSetting = async (event) => {
+  logger.info(`Fetching point setting for event: ${event}`);
+  return await PointSettings.findOne({ where: { event } });
+}
+
+const addPoints = async (userId, pointsToAdd) => {
+  logger.info(`Adding ${pointsToAdd} points for user ${userId}`);
+  const userPoints = await rewardRepo.getUserPoints(userId);
+
+  if (!userPoints) {
+    logger.info(`User points not found for user ${userId}`);
+    await rewardRepo.createUserPoints(userId, pointsToAdd);
+    logger.info(`Created new reward points entry for user ${userId} with ${pointsToAdd} points`);
+  } else {
+    logger.info(`Updating points for user ${userId}. Current total: ${userPoints.total_points}`);
+    userPoints.total_points += pointsToAdd;
+    await userPoints.save();
+    logger.info(`Updated points for user ${userId}. New total: ${pointsToAdd}`);
+  }
+
+  // Add activity history
+  await rewardRepo.addActivityHistory(userId, "Points Added", pointsToAdd, `Added ${pointsToAdd} points`);
+
+  return {
+    success: true,
+    message: `Added ${pointsToAdd} points. New total: ${userPoints ? userPoints.total_points : pointsToAdd}`
+  };
+};
+
+const updatePoints = async (userId, newPointsTotal) => {
+  logger.info(`Updating points for user ${userId} to ${newPointsTotal}`);
+  const userPoints = await rewardRepo.getUserPoints(userId);
+
+  if (!userPoints) {
+    return { success: false, message: "User points not found" };
+  }
+
+  const pointsDifference = newPointsTotal - userPoints.total_points;
+  userPoints.total_points = newPointsTotal;
+  await userPoints.save();
+
+  // Add activity history
+  await rewardRepo.addActivityHistory(userId, "Points Updated", pointsDifference, `Updated points to ${newPointsTotal}`);
+
+  logger.info(`User ${userId} points updated to ${newPointsTotal}`);
+  return {
+    success: true,
+    message: `Points updated to ${newPointsTotal}`
+  };
+};
+
+module.exports = {
+  getUserPoints,
+  getActivityHistory,
+  redeemPoints,
+  addPoints,
+  updatePoints,
+  addFarmingDataReward,
+  getPointSettings,
+  getPointSetting
+};
+
+
+================================================
+File: /controllers/pointSettingsController.js
+================================================
+const pointsSettingsRepo = require("../repository/pointSettingsRepo");
+const logger = require("../utils/logger");
+
+const getPointSettings = async (req, res) => {
+  try {
+    logger.info('Fetching point settings');
+    const settings = await pointsSettingsRepo.getAllSettings();
+    
+    return res.status(200).json({
+      success: true,
+      data: settings,
+      message: "Point settings retrieved successfully"
+    });
+  } catch (error) {
+    logger.error(`Error fetching point settings: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving point settings"
+    });
+  }
+};
+
+const updatePointSettings = async (req, res) => {
+  try {
+    const settings = req.body;
+    logger.info('Updating point settings', settings);
+    
+    // Validate input
+    if (!settings.event || settings.points === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "Event and points are required"
+      });
+    }
+    
+    const result = await pointsSettingsRepo.updateSetting(settings);
+    
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error updating point settings: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating point settings"
+    });
+  }
+};
+
+module.exports = {
+  getPointSettings,
+  updatePointSettings
+};
+
+================================================
+File: /controllers/rewardController.js
+================================================
+// controllers/rewardController.js
+const rewardService = require("../service/rewardService");
+const logger = require("../utils/logger");
+
+const getUserPoints = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    logger.info(`Fetching points for user ${userId}`);
+    const points = await rewardService.getUserPoints(userId);
+    return res.status(200).json({
+      success: true,
+      data: { points },
+      message: "Points retrieved successfully"
+    });
+  } catch (error) {
+    logger.error(`Error fetching points for user ${req.user.id}: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving points"
+    });
+  }
+};
+
+const getActivityHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    logger.info(`Fetching activity history for user ${userId}`);
+    const activities = await rewardService.getActivityHistory(userId);
+    return res.status(200).json({
+      success: true,
+      data: { activities },
+      message: "Activity history retrieved successfully"
+    });
+  } catch (error) {
+    logger.error(`Error fetching activity history for user ${req.user.id}: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error retrieving activity history"
+    });
+  }
+};
+
+const redeemPoints = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { rewardType } = req.body;
+    logger.info(`User ${userId} attempting to redeem ${rewardType} reward`);
+    const result = await rewardService.redeemPoints(userId, rewardType);
+
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error redeeming points for user ${req.user.id}: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error redeeming points"
+    });
+  }
+};
+
+const addPoints = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { pointsToAdd } = req.body;
+    logger.info(`User ${userId} adding ${pointsToAdd} points`);
+    const result = await rewardService.addPoints(userId, pointsToAdd);
+
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error adding points for user ${req.user.id}: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error adding points"
+    });
+  }
+};
+
+const updatePoints = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { newPointsTotal } = req.body;
+    logger.info(`User ${userId} updating points to ${newPointsTotal}`);
+    const result = await rewardService.updatePoints(userId, newPointsTotal);
+
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error updating points for user ${req.user.id}: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating points"
+    });
+  }
+};
+
+module.exports = {
+  getUserPoints,
+  getActivityHistory,
+  redeemPoints,
+  addPoints,
+  updatePoints
+};
+
+
+================================================
+File: /controllers/farmingController.js
+================================================
+const farmingService = require('../service/farmingService');
+const logger = require('../utils/logger');
+
+const getAllFarmingData = async (req, res) => {
+    try {
+        const result = await farmingService.getAllFarmingData();
+        logger.info('All farming data retrieved');
+        return res.status(result.success ? 200 : 500).json(result);
+    } catch (error) {
+        logger.error(`Error getting all farming data: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error getting farming data' });
+    }
+};
+
+const getFarmingDataById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await farmingService.getFarmingDataById(id);
+        logger.info(`Farming data with ID ${id} retrieved`);
+        return res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        logger.error(`Error getting farming data by ID: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error getting farming data by ID' });
+    }
+};
+
+const createFarmingData = async (req, res) => {
+    const data = req.body;
+    try {
+        const userId = req.user.id;
+        const result = await farmingService.createFarmingData(data, userId);
+        logger.info(`User ${userId} created farming data`);
+        return res.status(result.success ? 201 : 500).json(result);
+    } catch (error) {
+        logger.error(`Error creating farming data: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error creating farming data' });
+    }
+};
+
+const updateFarmingData = async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    try {
+        const result = await farmingService.updateFarmingData(id, data);
+        return res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        logger.error(`Error updating farming data: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error updating farming data' });
+    }
+};
+
+const deleteFarmingData = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await farmingService.deleteFarmingData(id);
+        logger.info(`Farming data with ID ${id} deleted`);
+        return res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        logger.error(`Error deleting farming data: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error deleting farming data' });
+    }
+};
+
+// New controller method to get nearby farmers
+const getNearbyFarmers = async (req, res) => {
+    const { lat, long, radius } = req.query;
+    try {
+        const result = await farmingService.getNearbyFarmers(lat, long, radius);
+        logger.info('Nearby farmers retrieved');
+        return res.status(result.success ? 200 : 400).json(result);
+    } catch (error) {
+        logger.error(`Error getting nearby farmers: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Error finding nearby farmers' });
+    }
+};
+
+const getLeaderboard = async (req, res) => {
+    const { timeframe, limit } = req.query;
+    
+    try {
+      const result = await farmingService.getLeaderboard(timeframe, limit);
+      logger.info(`Leaderboard retrieved for timeframe: ${timeframe || 'all'}`);
+      
+      return res.status(result.success ? 200 : 400).json(result);
+    } catch (error) {
+      logger.error(`Error getting leaderboard: ${error.message}`);
+      return res.status(500).json({
+        success: false,
+        message: 'Error retrieving leaderboard'
+      });
+    }
+  };
+
+module.exports = {
+    getAllFarmingData,
+    getFarmingDataById,
+    createFarmingData,
+    updateFarmingData,
+    deleteFarmingData,
+    getNearbyFarmers,
+    getLeaderboard
+};
+
+================================================
+File: /junit.xml
+================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="10" failures="0" errors="0" time="0.527">
+  <testsuite name="Reward Service" errors="0" failures="0" skipped="0" timestamp="2024-12-02T19:16:31" time="0.471" tests="10">
+    <testcase classname="Reward Service getUserPoints should return user points when user exists" name="Reward Service getUserPoints should return user points when user exists" time="0.003">
+    </testcase>
+    <testcase classname="Reward Service getUserPoints should return 0 when user does not exist" name="Reward Service getUserPoints should return 0 when user does not exist" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service getActivityHistory should return activity history for user" name="Reward Service getActivityHistory should return activity history for user" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should successfully redeem points when user has sufficient balance" name="Reward Service redeemPoints should successfully redeem points when user has sufficient balance" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should return insufficient points error when balance is low" name="Reward Service redeemPoints should return insufficient points error when balance is low" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service redeemPoints should handle non-existent user" name="Reward Service redeemPoints should handle non-existent user" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service addPoints should update points for existing user" name="Reward Service addPoints should update points for existing user" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service updatePoints should successfully update points" name="Reward Service updatePoints should successfully update points" time="0.002">
+    </testcase>
+    <testcase classname="Reward Service updatePoints should handle non-existent user" name="Reward Service updatePoints should handle non-existent user" time="0.001">
+    </testcase>
+    <testcase classname="Reward Service addFarmingDataReward should add farming data reward points" name="Reward Service addFarmingDataReward should add farming data reward points" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
+
+================================================
+File: /routes/settingsRoutes.js
+================================================
+const express = require("express");
+const router = express.Router();
+const settingsController = require("../controllers/pointSettingsController");
+const protect = require("../middleware/protect");
+
+router.get("/", protect, settingsController.getPointSettings);
+router.put("/", protect, settingsController.updatePointSettings);
+
+module.exports = router;
+
+
+================================================
+File: /routes/rewardRoutes.js
+================================================
+// routes/rewardRoutes.js
+const express = require("express");
+const rewardController = require("../controllers/rewardController");
+const protect = require("../middleware/protect");
+const logger = require("../utils/logger");
+
+const router = express.Router();
+
+// Log when a request is received
+router.use((req, res, next) => {
+  logger.info(`Received ${req.method} request for ${req.originalUrl}`);
+  next();
+});
+
+// Get user's total reward points
+router.get("/points", protect, rewardController.getUserPoints);
+
+// Get reward activity history
+router.get("/activity-history", protect, rewardController.getActivityHistory);
+
+// Redeem points for rewards
+router.post("/redeem", protect, rewardController.redeemPoints);
+
+// Add points for user
+router.post("/add", protect, rewardController.addPoints);
+
+// Update points for user
+router.post("/update", protect, rewardController.updatePoints);
+
+module.exports = router;
+
+
+================================================
+File: /routes/farmingRoutes.js
+================================================
+// routes/farmingRoutes.js
+const express = require("express");
+const router = express.Router();
+const farmingController = require("../controllers/farmingController");
+const protect = require("../middleware/protect");
+
+router.get("/farming-data", protect ,  farmingController.getAllFarmingData);
+router.get("/farming-data/:id", protect , farmingController.getFarmingDataById);
+router.post("/farming-data", protect , farmingController.createFarmingData);
+router.put("/farming-data/:id", protect , farmingController.updateFarmingData);
+router.delete("/farming-data/:id", protect , farmingController.deleteFarmingData);
+router.get("/nearby-farmers", farmingController.getNearbyFarmers);
+router.get("/leaderboard",  farmingController.getLeaderboard);
+
+module.exports = router;
+
+
+================================================
+File: /app.js
+================================================
+const express = require("express");
+const cors = require("cors");
+const rewardRoutes = require("./routes/rewardRoutes");
+const farmingRoutes = require("./routes/farmingRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
+const logger = require("./utils/logger");
+require("dotenv").config();
+const sequelize = require("./config/database");
+const { ensurePointSettings } = require("./models/PointSettings");
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use("/rewards", rewardRoutes);
+app.use("/farming", farmingRoutes);
+app.use("/rewards-settings", settingsRoutes)
+
+// health check
+app.get("/health", (req, res) => {
+  res.json({ message: "Reward Service is running" });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+//Syncing the database with logging
+// sequelize.sync({ alter: true })
+//   .then(async () => {
+//     logger.info("Database synced successfully.");
+//     await ensurePointSettings(); 
+//   })
+//   .catch((error) => {
+//     logger.error(`Database sync error: ${error.message}`);
+//   });
+
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});
+

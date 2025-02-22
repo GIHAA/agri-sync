@@ -51,3 +51,53 @@ export const useGetRewardSettings = (
     },
   })
 }
+
+
+export const useGetRedemptionAnalytics = (
+): UseQueryResult<GetUserDetailsResponse> => {
+  return useQuery({
+    queryKey: ['get_redemption_analytics'],
+    queryFn: async () => {
+      try {
+        const response = await authFetch.get<GetUserDetailsResponse>(
+          `/rewards-service/redemption-analytics`
+        )
+        console.log(response.data)
+        return response?.data.data
+      } catch (error) {
+        throw error
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      console.error('Fetch error:', error)
+    },
+  })
+}
+
+
+export const useGetActivityTrend = (
+): UseQueryResult<GetUserDetailsResponse> => {
+  return useQuery({
+    queryKey: ['get_activity_trend'],
+    queryFn: async () => {
+      try {
+        const response = await authFetch.get<GetUserDetailsResponse>(
+          `/rewards-service/activity-trend`
+        )
+        console.log(response.data)
+        return response?.data.data
+      } catch (error) {
+        throw error
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      console.error('Fetch error:', error)
+    },
+  })
+}

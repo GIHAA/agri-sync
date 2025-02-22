@@ -137,6 +137,24 @@ const updatePoints = async (userId, newPointsTotal) => {
   };
 };
 
+const getActivityTrend = async (timeframe) => {
+  try {
+    return await rewardRepo.getActivityTrend(timeframe);
+  } catch (error) {
+    logger.error(`Error in service layer fetching activity trend: ${error.message}`);
+    return { success: false, message: "Error fetching activity trend" };
+  }
+};
+
+const getRedemptionAnalytics = async () => {
+  try {
+    return await rewardRepo.getRedemptionAnalytics();
+  } catch (error) {
+    logger.error(`Error in service layer fetching redemption analytics: ${error.message}`);
+    return { success: false, message: "Error fetching redemption analytics" };
+  }
+};
+
 module.exports = {
   getUserPoints,
   getActivityHistory,
@@ -145,5 +163,7 @@ module.exports = {
   updatePoints,
   addFarmingDataReward,
   getPointSettings,
-  getPointSetting
+  getPointSetting,
+  getActivityTrend,
+  getRedemptionAnalytics
 };
