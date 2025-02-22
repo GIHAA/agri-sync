@@ -38,50 +38,7 @@ function DashboardTilesCard() {
         </h2>
       </div>
       <div className="mt-5 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-[39px]">
-        <DashboardTile
-          amount={`AED ${TipsAmount}`}
-          percentage={formatTiles(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
-          )}
-          label="Agri Received"
-          tooltipText={`${formatTiles(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
-          )}% than last month`}
-          tippyBgColor={getBgColor(
-            tipsData?.dailyAverageComparisonPercentageTips || 0.00
-          )}
-          icon={TileSVG1}
-        />
-        <DashboardTile
-          amount="AED 0.00"
-          percentage="0.00"
-          label="Tip Commission"
-          tooltipText="than last month"
-          tippyBgColor="bg-success"
-          icon={TileSVG2}
-        />
-        <DashboardTile
-          amount="AED 0.00"
-          percentage="0.00"
-          label="Amount Pending "
-          tooltipText="than last month"
-          tippyBgColor="bg-success"
-          icon={TileSVG3}
-        />
-        <DashboardTile
-          amount={`AED ${WithdrawAmount}`}
-          percentage={formatTiles(
-            withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
-          )}
-          label="Amount Received "
-          tooltipText={`${formatTiles(
-            withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
-          )}% than last month`}
-          tippyBgColor={getBgColor(
-            withdrawalsData?.dailyAverageComparisonPercentageWithdrawals || 0.00
-          )}
-          icon={TileSVG4}
-        />
+        // in progress
       </div>
     </div>
   )

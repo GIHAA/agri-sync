@@ -91,10 +91,33 @@ const updatePoints = async (req, res) => {
   }
 };
 
+const getActivityTrend = async (req, res) => {
+  try {
+    const { timeframe } = req.query;
+    const result = await rewardService.getActivityTrend(timeframe);
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error fetching activity trend: ${error.message}`);
+    return res.status(500).json({ success: false, message: "Error fetching activity trend" });
+  }
+};
+
+const getRedemptionAnalytics = async (req, res) => {
+  try {
+    const result = await rewardService.getRedemptionAnalytics();
+    return res.status(result.success ? 200 : 400).json(result);
+  } catch (error) {
+    logger.error(`Error fetching redemption analytics: ${error.message}`);
+    return res.status(500).json({ success: false, message: "Error fetching redemption analytics" });
+  }
+};
+
 module.exports = {
   getUserPoints,
   getActivityHistory,
   redeemPoints,
   addPoints,
-  updatePoints
+  updatePoints,
+  getActivityTrend,
+  getRedemptionAnalytics
 };

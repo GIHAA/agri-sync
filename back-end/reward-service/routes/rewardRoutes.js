@@ -27,4 +27,11 @@ router.post("/add", protect, rewardController.addPoints);
 // Update points for user
 router.post("/update", protect, rewardController.updatePoints);
 
+// Fetch Activity Trend Data (Points Earned vs Redeemed over Time)
+router.get("/activity-trend", protect, rewardController.getActivityTrend);
+
+// Fetch Reward Redemption Analytics
+router.get("/redemption-analytics", protect, rewardController.getRedemptionAnalytics);
+
+
 module.exports = router;
