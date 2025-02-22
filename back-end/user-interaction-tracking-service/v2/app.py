@@ -265,7 +265,7 @@ async def get_model_status():
 def save_interaction():
     try:
         interaction = request.json
-         interaction['createdAt'] = datetime.utcnow()  # Add timestamp in UTC
+        #  interaction['createdAt'] = datetime.utcnow()  # Add timestamp in UTC
 
         touch_interactions.insert_one(interaction)  # Save to database
         return jsonify({'message': 'Interaction saved'}), 201
