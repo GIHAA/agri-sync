@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^4.22.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.3"
