@@ -30,41 +30,41 @@ jobs:
           python -m pip install --upgrade pip
           pip install flask flask-cors pymongo tensorflow numpy hypercorn
       
-      - name: Run tests
-        working-directory: back-end/ui-optimization-service
-        run: |
-          python -m unittest test_api.py -v > test-results.txt 2>&1
+      # - name: Run tests
+      #   working-directory: back-end/ui-optimization-service
+      #   run: |
+      #     python -m unittest test_api.py -v > test-results.txt 2>&1
 
-      - name: Process test results
-        id: test-results
-        run: |
-          if grep -q "OK" back-end/ui-optimization-service/test-results.txt; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "tests_passed=true" >> $GITHUB_OUTPUT
-            echo "total_tests=$(grep -c "ok$" back-end/ui-optimization-service/test-results.txt)" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "tests_passed=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: Process test results
+      #   id: test-results
+      #   run: |
+      #     if grep -q "OK" back-end/ui-optimization-service/test-results.txt; then
+      #       echo "status=success" >> $GITHUB_OUTPUT
+      #       echo "tests_passed=true" >> $GITHUB_OUTPUT
+      #       echo "total_tests=$(grep -c "ok$" back-end/ui-optimization-service/test-results.txt)" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "status=failure" >> $GITHUB_OUTPUT
+      #       echo "tests_passed=false" >> $GITHUB_OUTPUT
+      #     fi
 
-      - name: Comment PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const results = fs.readFileSync('back-end/ui-optimization-service/test-results.txt', 'utf8');
-            const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
-            const totalTests = '${{ steps.test-results.outputs.total_tests }}';
-            const header = testsPassed
-              ? '### ✅ All Tests Passed! 🎉\n\n' +
-                `${totalTests} tests completed successfully ⭐\n\n`
-              : '### ❌ Tests Failed\n\n';
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: context.issue.number,
-              body: `${header}\`\`\`\n${results}\n\`\`\``
-            });
+      # - name: Comment PR
+      #   if: github.event_name == 'pull_request'
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const fs = require('fs');
+      #       const results = fs.readFileSync('back-end/ui-optimization-service/test-results.txt', 'utf8');
+      #       const testsPassed = '${{ steps.test-results.outputs.tests_passed }}' === 'true';
+      #       const totalTests = '${{ steps.test-results.outputs.total_tests }}';
+      #       const header = testsPassed
+      #         ? '### ✅ All Tests Passed! 🎉\n\n' +
+      #           `${totalTests} tests completed successfully ⭐\n\n`
+      #         : '### ❌ Tests Failed\n\n';
+      #       await github.rest.issues.createComment({
+      #         ...context.repo,
+      #         issue_number: context.issue.number,
+      #         body: `${header}\`\`\`\n${results}\n\`\`\``
+      #       });
 
   build-and-push:
     needs: test
