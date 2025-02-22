@@ -7,7 +7,13 @@ class TestFlaskAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """ Setup code before tests run. """
+        """Initialize class-level mock interaction data for tests.
+        
+        Sets up a mock interaction dictionary used across the test suite to simulate a
+        user interaction. The dictionary includes a button identifier, touch point
+        coordinates, button bounds dimensions, device metrics, and a flag indicating
+        whether the click is a miss click.
+        """
         cls.mock_interaction = {
             "buttonId": "test_button_123",
             "touchPoint": {"x": 150, "y": 250},
@@ -17,11 +23,21 @@ class TestFlaskAPI(unittest.TestCase):
         }
 
     def setUp(self):
-        """ Setup code before each test. """
+        """
+        Initializes a Flask test client for API testing.
+        
+        This method creates a test client from the Flask application instance, allowing tests
+        to simulate HTTP requests to various API endpoints.
+        """
         self.client = app.test_client()
 
     def test_model_status(self):
-        """ Test the /api/model-status endpoint. """
+        """
+        Tests the /api/model-status endpoint.
+        
+        Sends a GET request to the endpoint and verifies that the response status is 200
+        and that the returned JSON payload includes a 'status' key.
+        """
         response = self.client.get('/api/model-status')
         data = json.loads(response.data)
 
@@ -29,7 +45,12 @@ class TestFlaskAPI(unittest.TestCase):
         self.assertIn('status', data)
 
     def test_save_touch_interaction(self):
-        """ Test the /api/touch-interactions endpoint to save a touch interaction. """
+        """
+        Verifies that the /api/touch-interactions endpoint saves a touch interaction.
+        
+        Sends a POST request with a sample interaction payload and asserts that the response
+        has a 201 status code and includes a JSON message confirming the interaction was saved.
+        """
         response = self.client.post('/api/touch-interactions', json=self.mock_interaction)
         data = json.loads(response.data)
 
@@ -38,7 +59,13 @@ class TestFlaskAPI(unittest.TestCase):
         self.assertEqual(data['message'], 'Interaction saved')
 
     def test_save_bulk_touch_interactions(self):
-        """ Test the /api/bulk-touch-interactions endpoint with valid data. """
+        """
+        Tests the bulk touch interactions endpoint with valid input.
+        
+        Sends a POST request to '/api/bulk-touch-interactions' with a list of valid touch
+        interaction objects and verifies that the response has a 201 status code and a JSON
+        body containing a 'message' key with the value 'Bulk interactions saved successfully'.
+        """
         bulk_data = [self.mock_interaction, self.mock_interaction]
 
         response = self.client.post('/api/bulk-touch-interactions', json=bulk_data)
@@ -49,7 +76,13 @@ class TestFlaskAPI(unittest.TestCase):
         self.assertEqual(data['message'], 'Bulk interactions saved successfully')
 
     def test_save_bulk_touch_interactions_invalid_format(self):
-        """ Test /api/bulk-touch-interactions with incorrect request format. """
+        """
+        Test invalid JSON payload on /api/bulk-touch-interactions endpoint.
+        
+        Sends a POST request with a non-array JSON payload and verifies that the response
+        returns a 400 status code with an error message indicating that the request body
+        must be an array.
+        """
         response = self.client.post('/api/bulk-touch-interactions', json={"invalid": "data"})
         data = json.loads(response.data)
 
@@ -59,7 +92,12 @@ class TestFlaskAPI(unittest.TestCase):
 
     @patch('app.ml_model.train_model', return_value=MagicMock(history={'loss': [0.1], 'val_loss': [0.2]}))
     def test_train_model(self, mock_train):
-        """ Test the /api/train endpoint for model training. """
+        """
+        Tests the /api/train endpoint for model training.
+        
+        Sends a POST request with a sample button ID and verifies that the response has a
+        400 status code with an 'error' key in its JSON content.
+        """
         response = self.client.post('/api/train', json={"buttonId": "test_button_123"})
         data = json.loads(response.data)
 
@@ -67,7 +105,11 @@ class TestFlaskAPI(unittest.TestCase):
         self.assertIn('error', data)
 
     def test_predict(self):
-        """ Test the /api/predict endpoint. """
+        """
+        Tests the /api/predict endpoint using valid metrics.
+        
+        Sends a POST request with valid metric values and asserts that a 500 status code is returned along with a response that includes an 'error' key, indicating the model may not be initialized.
+        """
         valid_metrics = {
             "x": 100, "y": 200,
             "width": 50, "height": 30,
@@ -81,7 +123,11 @@ class TestFlaskAPI(unittest.TestCase):
         self.assertIn('error', data)
 
     def test_button_recommendations(self):
-        """ Test the /api/button-recommendations/<button_id> endpoint. """
+        """
+        Test the button recommendations endpoint for a non-existent button ID.
+        
+        Sends a GET request to the /api/button-recommendations/<button_id> endpoint using a test button ID and verifies that the response includes an 'error' key and returns a 404 status code.
+        """
         response = self.client.get('/api/button-recommendations/test_button_123')
         data = json.loads(response.data)
 

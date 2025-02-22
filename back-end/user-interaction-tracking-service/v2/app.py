@@ -24,11 +24,25 @@ if not os.path.exists(models_dir):
 
 class UIOptimizationModel:
     def __init__(self):
+        """
+        Initialize a UIOptimizationModel instance.
+        
+        Sets default attributes for the instance: the model is initially None, the model_path is set to the 
+        default file location for the Keras model, and the is_model_ready flag is initialized as False.
+        """
         self.model = None
         self.model_path = './models/ui-model.keras'  # Added .keras extension
         self.is_model_ready = False
 
     async def initialize(self):  # Added self
+        """
+        Initializes and verifies the machine learning model asynchronously.
+        
+        Attempts to load an existing model from disk; if not found, creates a new model,
+        compiles it with the Adam optimizer and mean squared error loss, and saves it.
+        The function then verifies the model using an asynchronous check and sets the
+        model readiness flag. Raises an Exception if model verification fails.
+        """
         try:
             needs_compilation = True
 
@@ -64,6 +78,14 @@ class UIOptimizationModel:
             raise error
 
     def create_model(self):
+        """
+        Creates and compiles a TensorFlow Keras sequential model.
+        
+        The model comprises three dense layers: the first layer with 32 units using ReLU activation and an input size of 6, the second with 16 units and ReLU activation, and a final output layer with 4 units using linear activation. It is compiled with the Adam optimizer (learning rate 0.001), mean squared error loss, and mean squared error as the metric.
+        
+        Returns:
+            tf.keras.Sequential: The compiled neural network model.
+        """
         model = tf.keras.Sequential([
             tf.keras.layers.Dense(
                 32,
@@ -93,6 +115,13 @@ class UIOptimizationModel:
         return model
 
     async def verify_model(self):
+        """
+        Verifies the TensorFlow model's prediction output shape.
+        
+        Creates a test input and uses the model to generate a prediction.
+        The function confirms that the prediction has exactly four columns; if so,
+        it returns True, otherwise it logs the discrepancy and returns False.
+        """
         try:
             test_input = tf.constant([[0.5, 0.5, 0.2, 0.2, 0.1, 0.1]], dtype=tf.float32)
             prediction = self.model.predict(test_input)
@@ -105,6 +134,25 @@ class UIOptimizationModel:
             return False
 
     async def train_model(self, interactions):
+        """
+        Trains the ML model using touch interaction data.
+        
+        Filters out unsuccessful interactions and computes touch precision metrics along
+        with an optimal button size. The function normalizes input data using device
+        screen dimensions and trains the model with a validation split. An exception is
+        raised if there are fewer than three successful interactions.
+        
+        Args:
+            interactions: A list of interaction records. Each record should contain touch
+                          point coordinates, device metrics (e.g., screen dimensions), and
+                          button boundaries. Only records where 'isMissClick' is False are used.
+        
+        Returns:
+            The training history from the model fit.
+            
+        Raises:
+            Exception: If there are fewer than three successful interactions for training.
+        """
         try:
             if not self.is_model_ready or self.model is None:
                 await self.initialize()
@@ -202,6 +250,29 @@ class UIOptimizationModel:
             raise error
 
     async def predict(self, metrics):
+        """
+        Predicts adjusted UI element coordinates and dimensions based on input metrics.
+        
+        The function normalizes the provided UI metrics relative to screen dimensions and
+        passes them through a TensorFlow model to obtain predicted adjustments. It then
+        ensures that the predicted width and height do not fall below a minimum threshold,
+        preserving usability by enforcing at least 80% of the original size or 44 pixels.
+        
+        Parameters:
+            metrics (dict): A dictionary containing the following keys:
+                'x' (float): The x-coordinate of the element.
+                'y' (float): The y-coordinate of the element.
+                'width' (float): The current width of the element.
+                'height' (float): The current height of the element.
+                'screenWidth' (float): The width of the screen.
+                'screenHeight' (float): The height of the screen.
+        
+        Returns:
+            list: A list of four numbers where:
+                - The first two represent predicted x and y positions.
+                - The last two represent normalized predicted dimensions (width and height),
+                  adjusted to meet the minimum size requirements.
+        """
         try:
             if not self.is_model_ready or self.model is None:
                 await self.initialize()
@@ -236,6 +307,15 @@ ml_model = UIOptimizationModel()
 
 @app.route('/api/model-status', methods=['GET'])
 async def get_model_status():
+    """
+    Return the status and configuration details of the ML model.
+    
+    This asynchronous function checks if the machine learning model is initialized and,
+    if so, verifies its functionality by calling an asynchronous verification routine.
+    It returns a JSON response containing the model's operational status along with configuration
+    details such as whether the model is compiled, the number of layers, and its input and output shapes.
+    In case of any error during the check, it returns a JSON response with an error message and an HTTP 500 status.
+    """
     try:
         if not ml_model.is_model_ready:
             return jsonify({
@@ -263,6 +343,14 @@ async def get_model_status():
 
 @app.route('/api/touch-interactions', methods=['POST'])
 def save_interaction():
+    """
+    Saves a touch interaction to the database.
+    
+    Extracts the JSON payload from the incoming request and inserts it as an interaction record
+    into the database. Returns a JSON response with a success message and HTTP status 201 upon
+    successful insertion. In case of an error, logs the error and returns a JSON error response
+    with HTTP status 500.
+    """
     try:
         interaction = request.json
         #  interaction['createdAt'] = datetime.utcnow()  # Add timestamp in UTC
@@ -278,6 +366,14 @@ def save_interaction():
 
 @app.route('/api/bulk-touch-interactions', methods=['POST'])
 def save_bulk_interactions():
+    """
+    Saves multiple touch interactions to the database.
+    
+    Extracts a list of interactions from the JSON request payload and performs a bulk insert into the database.
+    If the payload is not a list, returns a 400 response indicating that the request body must be an array.
+    On successful insertion, returns a 201 response with a success message and the count of interactions inserted.
+    If an exception occurs, returns a 500 response with an error message and details.
+    """
     try:
         interactions = request.json
         if not isinstance(interactions, list):
@@ -297,6 +393,17 @@ def save_bulk_interactions():
 
 @app.route('/api/train', methods=['POST'])
 async def train():
+    """
+    Trains the machine learning model using button-specific touch interactions.
+    
+    This asynchronous function retrieves touch interactions for the button specified in the JSON 
+    request (via the 'buttonId' field), filters out unsuccessful clicks, and verifies that there 
+    are at least three successful interactions available for training. If sufficient data is found, 
+    it trains the model, saves the updated model file, and returns a JSON response with training 
+    history and key performance metrics. In case of insufficient data or any errors during data 
+    retrieval or training, the function returns an error JSON response with the appropriate HTTP 
+    status code.
+    """
     button_id = request.json.get('buttonId')
     
     try:
@@ -343,6 +450,13 @@ async def train():
 
 @app.route('/api/predict', methods=['POST'])
 async def predict():
+    """
+    Processes a prediction request and returns scaled UI component dimensions.
+    
+    Extracts 'metrics' from the JSON request body, invokes the machine learning model to obtain predictions,
+    and scales the resulting values using the provided screen dimensions. Returns a JSON response with the computed
+    x, y, width, and height, or an error message with status code 500 if prediction fails.
+    """
     metrics = request.json.get('metrics')
     
     try:
@@ -362,6 +476,18 @@ async def predict():
 
 @app.route('/api/button-recommendations/<button_id>', methods=['GET'])
 def get_button_recommendations(button_id):
+    """
+    Analyzes touch interactions for a button and recommends UI adjustments.
+    
+    This function retrieves touch interactions for the provided button identifier from the database and computes statistics based on successful and missed clicks. It calculates adjustment factors using touch point spread, miss click rate, and precision score to recommend new UI dimensions. If there are no interactions or no successful clicks, a 404 JSON error response is returned. On unexpected errors, the function returns a 500 JSON error response.
+    
+    Args:
+        button_id: The unique identifier of the button whose interactions are to be analyzed.
+    
+    Returns:
+        A Flask JSON response containing the recommended dimensions, statistical details, and adjustment factors,
+        or an error message if data is insufficient or an error occurs.
+    """
     try:
         interactions = list(touch_interactions.find({'buttonId': button_id}))
         
@@ -472,6 +598,14 @@ if __name__ == '__main__':
     config.bind = ["0.0.0.0:3005"]
     
     async def start_server():
+        """
+        Starts the server and initializes the ML model.
+        
+        Attempts to asynchronously initialize the machine learning model. If initialization fails,
+        an error message is printed and the server continues running without the model, retrying
+        initialization on the first request. Finally, the server is started using the provided
+        application configuration.
+        """
         try:
             await ml_model.initialize()
             print('Server running on port 3005 with initialized ML model')
