@@ -183,7 +183,7 @@ function Main() {
             <Menu.Items className="relative mt-px w-56  before:absolute before:inset-0 before:z-[-1] before:block before:rounded-md before:bg-black ">
               <Menu.Header className="font-normal">
                 <div className="font-medium">
-                  {user.FirstName + ' ' + user.LastName}{' '}
+                  {user.username }{' '}
                 </div>
                 <div className="/70 mt-0.5 text-xs dark:text-slate-500 break-before-auto">
                   {truncate(user.Email)}

@@ -13,6 +13,7 @@ import SharedDataContainer from '../../../../containers/sharedData'
 import SelectElement from '../../../../components/common/form-elements/select-element-secondary'
 import { useUploadImage } from '../../../../api/auth-management'
 import Separator from '../../../../components/common/separator/separator'
+import MapPicker from '../../../../components/common/MapPicker'
 
 const schema = yup
   .object({
@@ -218,34 +219,18 @@ function AddFarmerSection() {
 
         {/* Location */}
         <div className="flex-cols mb-6 flex w-full gap-24">
-          <div className="w-1/2">
-            <InputElement
-              id="lat"
-              label="Latitude"
-              name="lat"
-              type="number"
 
-              placeholder="Latitude"
-              register={register}
-              required={true}
-              error={errors.lat as FieldError}
-              labelAlignment={AlignmentTypes.BLOCK}
-            />
-          </div>
-          <div className="w-1/2">
-            <InputElement
-              id="long"
-              label="Longitude"
-              name="long"
-              type="number"
-    
-              placeholder="Longitude"
-              register={register}
-              required={true}
-              error={errors.long as FieldError}
-              labelAlignment={AlignmentTypes.BLOCK}
-            />
-          </div>
+
+          <div className="mb-6 w-full">
+  <MapPicker 
+    onLocationSelect={(lat, lng) => {
+      setValue('lat', lat);
+      setValue('long', lng);
+    }}
+    initialLat={20.5937} // Default to India's coordinates
+    initialLng={78.9629}
+  />
+</div>
         </div>
 
         {/* Accessibility Settings */}
