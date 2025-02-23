@@ -87,7 +87,7 @@ export const useGetUserById = (userparameid: string): UseQueryResult<any> => {
     queryFn: async () => {
       try {
         const response = await authFetch.get(
-          `/user-details/${userparameid}`
+          `/auth-service/users/${userparameid}`
         )
         return response.data.data
       } catch (error) {
@@ -99,7 +99,7 @@ export const useGetUserById = (userparameid: string): UseQueryResult<any> => {
     },
     onError: (error: any) => {
       console.error('Fetch error:', error)
-      console.log(error.response.data)
+      console.log(error)
     },
   })
 }
