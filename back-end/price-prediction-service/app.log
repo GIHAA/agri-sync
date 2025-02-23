@@ -3395,3 +3395,57 @@
 2024-12-04 09:47:40,226 - DEBUG - Request data: {'whenToPlant': '2019-11-04T04:17:12.000Z', 'whatToPlant': 'CARROT'}
 2024-12-04 09:47:40,234 - INFO - Prediction completed. Predicted price: 150.33334251137762
 2024-12-04 09:47:40,234 - INFO - 172.20.10.1 - - [04/Dec/2024 09:47:40] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:25:19,933 - INFO - Loading data from Excel file.
+2025-02-23 15:25:20,391 - INFO - Ensuring correct data types for months and year.
+2025-02-23 15:25:20,392 - INFO - Reshaping data to long format.
+2025-02-23 15:25:20,395 - INFO - Encoding categorical data for vegetables and months.
+2025-02-23 15:25:20,395 - INFO - Splitting data into training and testing sets.
+2025-02-23 15:25:20,396 - INFO - Training the Gradient Boosting Regressor model.
+2025-02-23 15:25:20,428 - INFO - Saving the trained model and label encoders.
+2025-02-23 15:25:20,432 - INFO - Starting Flask app.
+2025-02-23 15:25:23,840 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3002
+ * Running on http://192.168.1.2:3002
+2025-02-23 15:25:23,841 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-23 15:27:14,367 - INFO - Loading data from Excel file.
+2025-02-23 15:27:14,471 - INFO - Ensuring correct data types for months and year.
+2025-02-23 15:27:14,472 - INFO - Reshaping data to long format.
+2025-02-23 15:27:14,475 - INFO - Encoding categorical data for vegetables and months.
+2025-02-23 15:27:14,475 - INFO - Splitting data into training and testing sets.
+2025-02-23 15:27:14,476 - INFO - Training the Gradient Boosting Regressor model.
+2025-02-23 15:27:14,505 - INFO - Saving the trained model and label encoders.
+2025-02-23 15:27:14,508 - INFO - Starting Flask app.
+2025-02-23 15:27:14,535 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3002
+ * Running on http://192.168.1.2:3002
+2025-02-23 15:27:14,535 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-23 15:29:27,714 - INFO - Received prediction request.
+2025-02-23 15:29:27,716 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2025-02-23 15:29:27,770 - INFO - Prediction completed. Predicted price: 483.46846281251464
+2025-02-23 15:29:27,774 - INFO - 127.0.0.1 - - [23/Feb/2025 15:29:27] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:37:37,885 - INFO - Received prediction request.
+2025-02-23 15:37:37,887 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2025-02-23 15:37:37,935 - INFO - Prediction completed. Predicted price: 483.46846281251464
+2025-02-23 15:37:37,936 - INFO - 127.0.0.1 - - [23/Feb/2025 15:37:37] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:37:41,738 - INFO - Received prediction request.
+2025-02-23 15:37:41,740 - DEBUG - Request data: {'whenToPlant': '2026-01-24T17:36:44.000Z', 'whatToPlant': 'TOMATOES'}
+2025-02-23 15:37:41,743 - INFO - Prediction completed. Predicted price: 483.46846281251464
+2025-02-23 15:37:41,743 - INFO - 127.0.0.1 - - [23/Feb/2025 15:37:41] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:39:38,040 - INFO - Received prediction request.
+2025-02-23 15:39:38,041 - DEBUG - Request data: {'whenToPlant': '2025-02-23T10:09:31.052Z', 'whatToPlant': 'CABBAGE'}
+2025-02-23 15:39:38,053 - INFO - Prediction completed. Predicted price: 488.35663286875365
+2025-02-23 15:39:38,054 - INFO - 127.0.0.1 - - [23/Feb/2025 15:39:38] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:39:39,668 - INFO - Received prediction request.
+2025-02-23 15:39:39,668 - DEBUG - Request data: {'whenToPlant': '2025-02-23T10:09:31.052Z', 'whatToPlant': 'CARROT'}
+2025-02-23 15:39:39,673 - INFO - Prediction completed. Predicted price: 612.0433175312488
+2025-02-23 15:39:39,674 - INFO - 127.0.0.1 - - [23/Feb/2025 15:39:39] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:39:41,421 - INFO - Received prediction request.
+2025-02-23 15:39:41,422 - DEBUG - Request data: {'whenToPlant': '2025-02-23T10:09:31.052Z', 'whatToPlant': 'TOMATOES'}
+2025-02-23 15:39:41,427 - INFO - Prediction completed. Predicted price: 493.6762578927062
+2025-02-23 15:39:41,428 - INFO - 127.0.0.1 - - [23/Feb/2025 15:39:41] "POST /predict HTTP/1.1" 200 -
+2025-02-23 15:39:42,740 - INFO - Received prediction request.
+2025-02-23 15:39:42,741 - DEBUG - Request data: {'whenToPlant': '2025-02-23T10:09:31.052Z', 'whatToPlant': 'PUMPKIN'}
+2025-02-23 15:39:42,744 - INFO - Prediction completed. Predicted price: 407.7682937129341
+2025-02-23 15:39:42,745 - INFO - 127.0.0.1 - - [23/Feb/2025 15:39:42] "POST /predict HTTP/1.1" 200 -

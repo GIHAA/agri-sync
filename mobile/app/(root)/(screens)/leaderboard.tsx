@@ -89,13 +89,13 @@ export default function FarmingLeaderboard() {
       className={`flex-row items-center p-3 border-b border-gray-200 ${getRowStyle(item.rank)}`}
     >
       {/* Medal Icon for Top 3 */}
-      {item.rank <= 3 && (
+
         <Image
           source={renderMedalIcon(item.rank)}
           className="w-10 h-10 mr-3"
           resizeMode="contain"
         />
-      )}
+ 
       
       {/* Rank */}
       <View className="w-12">
@@ -116,7 +116,7 @@ export default function FarmingLeaderboard() {
         <Text className="font-bold text-green-600">
           {item.total_production} kg
         </Text>
-        <Text className="text-gray-500">Percentile: {item.percentile}%</Text>
+        {/* <Text className="text-gray-500">Percentile: {item.percentile}%</Text> */}
       </View>
     </View>
   );
@@ -145,7 +145,6 @@ export default function FarmingLeaderboard() {
       {/* Leaderboard List */}
       <FlatList
         data={leaderboardData}
-        keyExtractor={(item) => item.farmer_ref}
         renderItem={renderLeaderboardItem}
         ListEmptyComponent={
           <View className="items-center p-4">

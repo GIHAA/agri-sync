@@ -11,19 +11,11 @@ import MapView, { Marker, Circle } from "react-native-maps";
 import { usePostFarmingData } from "@/api/rewardService";
 import * as SecureStore from "expo-secure-store";
 
-const GEO_FENCE_LATITUDE = 7.050308;
-const GEO_FENCE_LONGITUDE = 79.937582;
+// const GEO_FENCE_LATITUDE = 7.050308;
+// const GEO_FENCE_LONGITUDE = 79.937582;
 const GEO_FENCE_RADIUS = 5; // in kilometers
 
-function isLocationInRadius(latitude : number , longitude : number) {
-  return isLocationWithinRadius(
-    latitude,
-    longitude,
-    GEO_FENCE_LATITUDE,
-    GEO_FENCE_LONGITUDE,
-    GEO_FENCE_RADIUS
-  );
-}
+
 
 function isLocationWithinRadius(latitude : number, longitude : number, geoFenceLatitude : number, geoFenceLongitude : number, radius : number) {
   const R = 6371; // Earth's radius in kilometers
@@ -51,6 +43,17 @@ export default function AddFarmData() {
     longitude: number;
   } | null>(null);
   const [user, setUser] = useState<any | null>(null);
+  const [farmer, setFarmer] = useState<any | null>(null);
+
+  function isLocationInRadius(latitude : number , longitude : number) {
+    return isLocationWithinRadius(
+      latitude,
+      longitude,
+      farmer.lat,
+      farmer.long,
+      GEO_FENCE_RADIUS
+    );
+  }
 
   useEffect(() => {
     (async () => {
@@ -108,6 +111,18 @@ export default function AddFarmData() {
         setUser(JSON.parse(user));
       }
     });
+
+    // get famer data
+    SecureStore.getItemAsync("farmer").then((user) => {
+      if (user) {
+        setFarmer(JSON.parse(user));
+        console.log("farmer", user);
+        setLocation({
+          latitude: JSON.parse(user).lat,
+          longitude: JSON.parse(user).long,
+        });
+      }
+    });
   }, []);
 
   return (
@@ -156,16 +171,19 @@ export default function AddFarmData() {
                     setLocation({ latitude, longitude });
                   }}
                 />
-                <Circle
-                  center={{
-                    latitude: GEO_FENCE_LATITUDE,
-                    longitude: GEO_FENCE_LONGITUDE,
-                  }}
-                  radius={GEO_FENCE_RADIUS * 1000} 
-                  fillColor="rgba(0, 0, 255, 0.1)"
-                  strokeColor="rgba(0, 0, 255, 0.5)"
-                  strokeWidth={2}
-                />
+                {farmer && (
+                             <Circle
+                             center={{
+                               latitude: farmer.lat,
+                               longitude: farmer.long,
+                             }}
+                             radius={GEO_FENCE_RADIUS * 1000} 
+                             fillColor="rgba(0, 0, 255, 0.1)"
+                             strokeColor="rgba(0, 0, 255, 0.5)"
+                             strokeWidth={2}
+                           />
+                )}
+     
               </MapView>
             ) : (
               <Text>Loading map...</Text>
@@ -179,6 +197,7 @@ export default function AddFarmData() {
             value={new Date(whenToPlant)}
             onChangeText={setWhenToPlant}
             className="mb-4"
+            dateRange="past"
           />
           <ThemedSelect
             label="Select a Vegetable"

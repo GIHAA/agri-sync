@@ -13,7 +13,7 @@ import { groupBy, sumBy, maxBy } from 'lodash';
 import { useGetNearbyFarmers } from "@/api/rewardService"; 
 
 // Configurable geofence radius (in kilometers)
-const GEO_FENCE_RADIUS = 5; 
+const GEO_FENCE_RADIUS = 10; 
 
 // Interface for farmer data
 interface Farmer {

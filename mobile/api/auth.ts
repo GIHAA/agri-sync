@@ -9,14 +9,14 @@ import apiClient, { ApiResponse } from './apiClientAuth';
 export const useLoginUser = async (
   email: string,
   password: string
-): Promise<string> => {
+): Promise<any> => {
   try {
-    const response: ApiResponse<{ token: string }> = await apiClient.post('/auth-service/login', {
+    const response: ApiResponse<any> = await apiClient.post('/auth-service/login', {
       email,
       password,
     });
 
-    return response.data.token;
+    return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;

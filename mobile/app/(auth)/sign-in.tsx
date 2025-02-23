@@ -15,22 +15,26 @@ import { useLoginUser } from "@/api/auth";
 import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 
 const SignIn = () => {
-  const [email, setEmail] = useState("gihansad@g.com");
-  const [password, setPassword] = useState("gihan123");
+  const [email, setEmail] = useState("gihantestf@gmail.com");
+  const [password, setPassword] = useState("Gihan123");
 
   async function handleLogIn(): Promise<void> {
     try {
       // Get token from API call
-      const token = await useLoginUser(email, password);
+      const data = await useLoginUser(email, password);
       // decode and get payload and parse json it 
 
+      const token = data.token;
 
-      if (token) {
+      if (data) {
         await SecureStore.setItemAsync('auth_token', token); 
         const payload = token.split('.')[1];
         const decodedPayload = atob(payload);
         const parsedPayload = JSON.parse(decodedPayload);
+        console.log("111" , parsedPayload);
         await SecureStore.setItemAsync('user', JSON.stringify(parsedPayload));
+        console.log("222" , data.famer);
+        await SecureStore.setItemAsync('farmer', JSON.stringify(data.famer));
         router.replace("/(root)/(screens)/home");
       } else {
         Alert.alert("Invalid Credentials", "Please check your email or password.");

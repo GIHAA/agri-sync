@@ -64,6 +64,7 @@ export default function SelectCropForPrediction() {
             value={new Date(whenToPlant)}
             onChangeText={setWhenToPlant}
             className="mb-4"
+            dateRange="future"
           />
           <ThemedSelect
             label="Select a Vegetable"

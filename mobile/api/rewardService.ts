@@ -15,6 +15,20 @@ export const useGetRewardPoints = async (): Promise<number> => {
     throw error;
   }
 };
+//{{API}}/rewards-service-settings/
+/**
+ * Get the reward settings.
+ * @returns {Promise<Array<any>>} - The reward settings.
+ */
+export const useGetRewardSettings = async (): Promise<Array<any>> => {
+  try {
+    const response: ApiResponse<Array<any>> = await apiClient.get('/rewards-service-settings');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reward settings:', error);
+    throw error;
+  }
+};
 
 // {{API}}/farming-service/nearby-farmers?lat=6.994585&long=800.724331&radius=1
 

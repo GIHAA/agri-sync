@@ -5,7 +5,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
-import { useGetRewardPoints } from "@/api/rewardService";
+import { useGetRewardPoints, useGetRewardSettings } from "@/api/rewardService";
 
 export default function RewardsScreen() {
   type AntDesignIconName = "linechart" | "enviromento" | "API";
@@ -17,11 +17,13 @@ export default function RewardsScreen() {
     coins: number;
     icon: AntDesignIconName;
     comingSoon?: boolean;
+    event : string;
     onPress?: () => void;
   }[] = [
     {
       id: 1,
       title: "Price Prediction",
+      event : "premium_prediction",
       coins: 100,
       icon: "linechart",
       onPress: () => {
@@ -31,15 +33,18 @@ export default function RewardsScreen() {
     {
       id: 2,
       title: "Nearby Farmer info",
+      event : "market_insight",
       coins: 100,
       icon: "enviromento",
       onPress: () => {
         //todo : redirem points
-        alert("todo : redirem points");
+        // alert("todo : redirem points");
         router.replace("/(root)/(screens)/nearByFamersData");
       },
     },
   ];
+
+  const [rewardsettings , setRewardSettings] = React.useState<any>([]);
 
   useEffect(() => {
     const fetchPoints = async () => {
@@ -47,6 +52,11 @@ export default function RewardsScreen() {
       setPoints(points);
     };
     fetchPoints();
+    const fetchRewardSettings = async () => {
+      const response = await useGetRewardSettings();
+      setRewardSettings(response);
+    }
+    fetchRewardSettings();
   }, []);
 
   return (
@@ -148,7 +158,10 @@ export default function RewardsScreen() {
                 <View className="bg-yellow-400 rounded-full p-1 mr-2">
                   <AntDesign name="heart" size={12} color="#A64B2A" />
                 </View>
-                <Text className="text-green-600 font-bold">{reward.coins}</Text>
+                <Text className="text-green-600 font-bold">{
+                  // get points from reward settings
+                  rewardsettings.find((setting: any) => setting.event === reward.event)?.points
+                  }</Text>
               </View>
 
               <Text className="text-white font-bold text-[14px] m-2 text-center">

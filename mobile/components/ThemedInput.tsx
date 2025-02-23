@@ -8,15 +8,16 @@ import DateTimePicker, {
 export type ThemedInputProps = {
   label: string;
   placeholder?: string;
-  value: any ,
+  value: any;
   onChangeText: (value: any) => void;
   lightColor?: string;
   darkColor?: string;
-  inputStyle?: string ;
+  inputStyle?: string;
   containerStyle?: string;
   error?: string;
   disabled?: boolean;
   type?: "text" | "number" | "date";
+  dateRange?: "past" | "future" | "both"; // New prop
 } & TextInputProps;
 
 export function ThemedInput({
@@ -31,6 +32,7 @@ export function ThemedInput({
   error,
   disabled = false,
   type = "text",
+  dateRange = "both", // Default: allow both past & future dates
   ...rest
 }: ThemedInputProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
@@ -44,6 +46,13 @@ export function ThemedInput({
   ) => {
     setShowDatePicker(false);
     if (selectedDate) {
+      const today = new Date();
+      if (
+        (dateRange === "past" && selectedDate > today) || 
+        (dateRange === "future" && selectedDate < today)
+      ) {
+        return; // Prevent selection if it doesn't match the allowed range
+      }
       onChangeText(selectedDate);
     }
   };
@@ -69,14 +78,16 @@ export function ThemedInput({
             mode="date"
             display="spinner"
             onChange={handleDateChange}
-            style={{ width: "100%"   }} 
-            {...(Platform.OS === "ios" && { textColor: "black" })} 
+            minimumDate={dateRange === "future" ? new Date() : undefined} // Prevent past dates
+            maximumDate={dateRange === "past" ? new Date() : undefined} // Prevent future dates
+            style={{ width: "100%" }}
+            {...(Platform.OS === "ios" && { textColor: "black" })}
           />
         </View>
       ) : (
         <TextInput
           placeholder={placeholder}
-          value={value as string }
+          value={value as string}
           onChangeText={onChangeText}
           editable={!disabled}
           keyboardType={type === "number" ? "numeric" : "default"}
@@ -89,7 +100,7 @@ export function ThemedInput({
             borderRadius: 8,
             borderColor: error ? "red" : "#d1d5db",
             backgroundColor: "#f3f4f6",
-            width: "100%", 
+            width: "100%",
             padding: 16,
           }}
           {...rest}

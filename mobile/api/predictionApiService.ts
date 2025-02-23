@@ -1,4 +1,5 @@
-import apiClient, { ApiResponse } from './apiClientPrediction';
+import apiClient from './apiClient';
+import  { ApiResponse } from './apiClientPrediction';
 
 /**
  * Fetch the predicted price for a vegetable.
@@ -11,7 +12,7 @@ export const fetchPredictedPrice = async (
   whatToPlant: string
 ): Promise<number> => {
   try {
-    const response: ApiResponse<{ predicted_price : number}> = await apiClient.post('/predict', {
+    const response: ApiResponse<{ predicted_price : number}> = await apiClient.post('/price-predict', {
       whenToPlant,
       whatToPlant: whatToPlant.toUpperCase(),
     });

@@ -70,6 +70,8 @@ export default function PricePredictionScreen() {
         await usePostRedeemReward({
           rewardType: "premium_prediction",
         });
+        console.log("Reward redeemed successfully.");
+        
         setCurrentSelectedVegetable(veg.name);
         setCurrentSelectedVegetableImage(veg.image);
         setCurrentPrice(veg.currentPrice);
@@ -78,6 +80,8 @@ export default function PricePredictionScreen() {
           whenToPlant.toString(),
           veg.name
         );
+        console.log("Predicted Price: ", predictedPrice);
+        
         setPredictedPrice(predictedPrice);
         fetchPoints();
       } catch (error) {
@@ -124,7 +128,7 @@ export default function PricePredictionScreen() {
           </View>
           {/* <Text className="text-gray-600">Current Price: {currentPrice}</Text> */}
           <Text className="text-green-600 font-bold text-2xl">
-            Predicted Price: Rs: {predictedPrice.toPrecision(8)}
+            Predicted Price: Rs: {predictedPrice.toPrecision(5)}
           </Text>
         </View>
 
@@ -133,7 +137,7 @@ export default function PricePredictionScreen() {
             {remainingPredictions} Remaining Points
           </Text>
           <Pressable
-            onPress={() => alert("Redirecting to purchase predictions...")}
+            onPress={() => router.replace("/(root)/(screens)/rewards")}
             className="bg-green-500 px-4 py-2 rounded-md"
           >
             <Text className="text-white font-bold">Get More</Text>

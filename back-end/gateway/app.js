@@ -3,9 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const proxy = require('express-http-proxy');
 const jwt = require('jsonwebtoken');
+const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
+
+app.use(morgan('combined'));
 
 app.use(cors());
 app.use(express.json());
@@ -72,6 +75,10 @@ app.use('/rewards-service-settings', authenticate, proxy('http://localhost:3003'
     proxyReqPathResolver: (req) => `/rewards-settings${req.url}`
 }));
 
+
+app.use('/price-predict', authenticate, proxy('http://localhost:3002', {
+    proxyReqPathResolver: (req) => `/predict`
+}));
 
 
 const PORT = process.env.GATEWAY_PORT || 3000;
