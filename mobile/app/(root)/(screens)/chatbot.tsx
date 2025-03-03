@@ -69,7 +69,8 @@ import {
     };
   
     return (
-      <KeyboardAwareScrollView style={{ flex: 1 }}>
+      <>
+      <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 80 }}>
         <View style={{ flex: 1, justifyContent: "flex-end", padding: 16 }}>
           <View style={{ flex: 1 }}>
             {/* Display the conversation */}
@@ -95,50 +96,57 @@ import {
               </View>
             ))}
           </View>
-  
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              padding: 10,
-              borderTopWidth: 1,
-              borderTopColor: "#ccc",
-            }}
-          >
-            <TextInput
-              style={{
-                flex: 1,
-                height: textInputHeight,
-                borderColor: "#ccc",
-                borderWidth: 1,
-                borderRadius: 20,
-                paddingLeft: 10,
-                paddingRight: 10,
-                backgroundColor: "#fff",
-              }}
-              value={chatText}
-              onChangeText={setChatText}
-              placeholder="Type your message..."
-              multiline
-            />
-            <Pressable
-              onPress={sendChatQuery}
-              style={{
-                backgroundColor: "#22c55e",
-                padding: 10,
-                marginLeft: 10,
-                borderRadius: 10,
-              }}
-              disabled={sendingChat}
-            >
-              {sendingChat ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Feather name="send" size={24} color="#fff" />
-              )}
-            </Pressable>
-          </View>
         </View>
       </KeyboardAwareScrollView>
+    
+      {/* Fixed bottom input section */}
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          flexDirection: "row",
+          alignItems: "center",
+          padding: 10,
+          borderTopWidth: 1,
+          borderTopColor: "#ccc",
+          backgroundColor: "#fff", // You may want to give this a background color for visibility
+        }}
+      >
+        <TextInput
+          style={{
+            flex: 1,
+            height: textInputHeight,
+            borderColor: "#ccc",
+            borderWidth: 1,
+            borderRadius: 20,
+            paddingLeft: 10,
+            paddingRight: 10,
+            backgroundColor: "#fff",
+          }}
+          value={chatText}
+          onChangeText={setChatText}
+          placeholder="Type your message..."
+          multiline
+        />
+        <Pressable
+          onPress={sendChatQuery}
+          style={{
+            backgroundColor: "#22c55e",
+            padding: 10,
+            marginLeft: 10,
+            borderRadius: 10,
+          }}
+          disabled={sendingChat}
+        >
+          {sendingChat ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Feather name="send" size={24} color="#fff" />
+          )}
+        </Pressable>
+      </View>
+      </>
     );
   }
