@@ -14,7 +14,7 @@ export const useLogin = (): UseMutationResult<any> => {
   return useMutation({
     mutationFn: async (data: any) => {
       try {
-        const response = await authFetch.post('/auth-service/login', data);
+        const response = await authFetch.post('/auth/login', data);
         if (response.data.token) {
           localStorage.setItem('validationToken', response.data.token); // Store token
         }

@@ -11,12 +11,12 @@ const sequelize = new Sequelize({
   database: process.env.DB_NAME || "agri",
   dialect: "postgres",
   // for ssl
-  dialectOptions: {
-    ssl: {
-      require: process.env.DB_SSL === 'true',
-      rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true'
-    }
-  }
+  // dialectOptions: {
+  //   ssl: {
+  //     require: process.env.DB_SSL === 'true',
+  //     rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true'
+  //   }
+  // }
 });
 
 // Test the connection and log the result

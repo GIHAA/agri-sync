@@ -149,7 +149,7 @@ const validateToken = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  
+
   try {
     const result = await userService.getAllUsers(page, limit);
     if (!result.success) {
@@ -205,6 +205,28 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getFarmerByQrCode = async (req, res) => {
+  console.log("Request Params:", req.params);
+  const { qrCodeHash } = req.params;
+
+  try {
+    const result = await userService.getFarmerDetails(qrCodeHash);
+
+    if (result.success) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(404).json(result);
+    }
+  } catch (error) {
+    console.error("Error in controller layer:", error.message);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: "Server error",
+    });
+  }
+};
+
 // Add to exports
 module.exports = {
   register,
@@ -212,7 +234,8 @@ module.exports = {
   registerFarmer,
   getUserPreferences,
   validateToken,
-  getAllUsers, 
+  getAllUsers,
   getUser,
   updateUser,
+  getFarmerByQrCode,
 };
