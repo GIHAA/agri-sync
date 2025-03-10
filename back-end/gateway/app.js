@@ -80,6 +80,9 @@ app.use('/price-predict', authenticate, proxy('http://localhost:3002', {
     proxyReqPathResolver: (req) => `/predict`
 }));
 
+app.use('/user-interaction-service', authenticate, proxy('http://localhost:3002', {
+    proxyReqPathResolver: (req) => `/predict`
+}));
 
 const PORT = process.env.GATEWAY_PORT || 3000;
 
