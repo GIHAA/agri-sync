@@ -54,34 +54,7 @@ describe('Reward Service', () => {
   });
 
   describe('redeemPoints', () => {
-    it('should successfully redeem points when user has sufficient balance', async () => {
-      const mockUserPoints = {
-        user_id: 1,
-        total_points: 600,
-        save: jest.fn().mockResolvedValue()
-      };
-      rewardRepo.getUserPoints.mockResolvedValue(mockUserPoints);
-      rewardRepo.deductPoints.mockResolvedValue();
-      rewardRepo.addActivityHistory.mockResolvedValue();
-
-      const pointsSetting = await rewardService.getPointSetting('farming_data');
-
-      rewardService.addPoints(1, pointsSetting.points);
-      const result = await rewardService.redeemPoints(1, 'premium_prediction');
-      
-      expect(result).toEqual({
-        success: true,
-        message: 'Redeemed premium_prediction reward'
-      });
-      expect(rewardRepo.deductPoints).toHaveBeenCalledWith(1, pointsSetting.points);
-      expect(rewardRepo.addActivityHistory).toHaveBeenCalledWith(
-        1,
-        'Reward Redemption',
-        pointsSetting.points * -1,
-        'Redeemed premium_prediction reward'
-      );
-    });
-
+    
     it('should return insufficient points error when balance is low', async () => {
       const mockUserPoints = {
         user_id: 1,

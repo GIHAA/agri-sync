@@ -25,6 +25,7 @@ if (!fs.existsSync(modelsDir)) {
 
 // MongoDB Schema
 const TouchInteractionSchema = new mongoose.Schema({
+  userID: Number,
   buttonId: String,
   timestamp: { type: Date, default: Date.now },
   touchPoint: {
@@ -400,6 +401,153 @@ app.post('/api/train', async (req, res) => {
     });
   }
 });
+
+// app.get('/api/user-recommendations/:userID', async (req, res) => {
+//   const { userID } = req.params;
+
+//   try {
+//       // Find all unique button IDs for the user
+//       const interactions = await TouchInteraction.find({ userID });
+//       const buttonIds = [...new Set(interactions.map(i => i.buttonId))];
+
+//       if (buttonIds.length === 0) {
+//           return res.status(404).json({ error: 'No interactions found for this user' });
+//       }
+
+//       // Get recommendations for each button
+//       const recommendations = {};
+//       for (const buttonId of buttonIds) {
+//           const buttonInteractions = interactions.filter(i => i.buttonId === buttonId);
+//           const successfulClicks = buttonInteractions.filter(i => !i.isMissClick);
+
+//           if (successfulClicks.length === 0) {
+//               recommendations[buttonId] = { error: 'No successful clicks for this button' };
+//               continue;
+//           }
+
+//           const avgDimensions = successfulClicks.reduce((acc, click) => {
+//               return {
+//                   width: acc.width + click.buttonBounds.width,
+//                   height: acc.height + click.buttonBounds.height
+//               };
+//           }, { width: 0, height: 0 });
+
+//           avgDimensions.width /= successfulClicks.length;
+//           avgDimensions.height /= successfulClicks.length;
+
+//           const missClickRate = (buttonInteractions.length - successfulClicks.length) / buttonInteractions.length;
+//           const adjustmentFactor = missClickRate > 0.3 ? 1.2 : 1;
+
+//           recommendations[buttonId] = {
+//               recommendedWidth: Math.max(Math.round(avgDimensions.width * adjustmentFactor), 44),
+//               recommendedHeight: Math.max(Math.round(avgDimensions.height * adjustmentFactor), 44),
+//               statistics: {
+//                   totalInteractions: buttonInteractions.length,
+//                   successfulClicks: successfulClicks.length,
+//                   missClickRate: Math.round(missClickRate * 100)
+//               }
+//           };
+//       }
+
+//       res.json({ userID, recommendations });
+//   } catch (error) {
+//       console.error('Error fetching user recommendations:', error);
+//       res.status(500).json({ error: 'Error fetching recommendations', details: error.message });
+//   }
+// });
+
+app.get('/api/user-recommendations/:userID', async (req, res) => {
+  const { userID } = req.params;
+
+  try {
+      // Fetch all interactions by this user
+      const interactions = await TouchInteraction.find({ userID });
+      if (interactions.length === 0) {
+          return res.status(404).json({ error: 'No interactions found for this user' });
+      }
+
+      // Get unique buttons the user interacted with
+      const buttonIds = [...new Set(interactions.map(i => i.buttonId))];
+      const recommendations = {};
+
+      for (const buttonId of buttonIds) {
+          const buttonInteractions = interactions.filter(i => i.buttonId === buttonId);
+          const successfulClicks = buttonInteractions.filter(i => !i.isMissClick);
+
+          if (successfulClicks.length === 0) {
+              recommendations[buttonId] = { error: 'No successful clicks for this button' };
+              continue;
+          }
+
+          // Compute basic statistics
+          const avgDimensions = successfulClicks.reduce((acc, click) => ({
+              width: acc.width + click.buttonBounds.width,
+              height: acc.height + click.buttonBounds.height
+          }), { width: 0, height: 0 });
+
+          avgDimensions.width /= successfulClicks.length;
+          avgDimensions.height /= successfulClicks.length;
+
+          const missClickRate = (buttonInteractions.length - successfulClicks.length) / buttonInteractions.length;
+
+          // Prepare data for ML prediction
+          const latestClick = successfulClicks[successfulClicks.length - 1]; // Use the latest interaction
+          const mlInput = {
+              x: latestClick.touchPoint.x,
+              y: latestClick.touchPoint.y,
+              width: latestClick.buttonBounds.width,
+              height: latestClick.buttonBounds.height,
+              screenWidth: latestClick.deviceMetrics.screenWidth,
+              screenHeight: latestClick.deviceMetrics.screenHeight
+          };
+
+          // Get ML model's prediction for optimal button size & position
+          const mlPrediction = await mlModel.predict(mlInput);
+
+          // Convert ML output from relative values (0-1) back to pixels
+          const mlRecommendedX = mlPrediction[0] * mlInput.screenWidth;
+          const mlRecommendedY = mlPrediction[1] * mlInput.screenHeight;
+          const mlRecommendedWidth = mlPrediction[2] * mlInput.screenWidth;
+          const mlRecommendedHeight = mlPrediction[3] * mlInput.screenHeight;
+
+          // Adjust button size based on ML and miss-click rate
+          let sizeMultiplier;
+          if (missClickRate > 0.4) {
+              sizeMultiplier = 1.2;  // Increase size if high miss-click rate
+          } else if (missClickRate < 0.1) {
+              sizeMultiplier = 0.9;  // Decrease size slightly if high accuracy
+          } else {
+              sizeMultiplier = 1;  // Keep the same
+          }
+
+          const finalWidth = Math.max(Math.round(avgDimensions.width * sizeMultiplier), 44);  // Minimum size 44px
+          const finalHeight = Math.max(Math.round(avgDimensions.height * sizeMultiplier), 44);
+
+          recommendations[buttonId] = {
+              mlRecommendedX: Math.round(mlRecommendedX),
+              mlRecommendedY: Math.round(mlRecommendedY),
+              mlRecommendedWidth: Math.round(mlRecommendedWidth),
+              mlRecommendedHeight: Math.round(mlRecommendedHeight),
+              basicStats: {
+                  totalInteractions: buttonInteractions.length,
+                  successfulClicks: successfulClicks.length,
+                  missClickRate: Math.round(missClickRate * 100)
+              },
+              finalRecommendedSize: {
+                  width: finalWidth,
+                  height: finalHeight
+              }
+          };
+      }
+
+      res.json({ userID, recommendations });
+  } catch (error) {
+      console.error('Error fetching ML-based user recommendations:', error);
+      res.status(500).json({ error: 'Error fetching recommendations', details: error.message });
+  }
+});
+
+
 
 app.post('/api/predict', async (req, res) => {
   const { metrics } = req.body;
