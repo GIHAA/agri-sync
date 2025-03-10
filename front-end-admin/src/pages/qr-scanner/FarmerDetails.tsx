@@ -73,7 +73,7 @@ const QRScanner = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-Api-Key": "ef5eea6b-c543-421f-a07f-9621d5f35dab",
+          "X-Api-Key": "da26588c-c185-480e-b05a-c3371a6973f5",
         },
         body: JSON.stringify({
           farmerId: farmerId,
@@ -89,14 +89,14 @@ const QRScanner = () => {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            "X-Api-Key": "ef5eea6b-c543-421f-a07f-9621d5f35dab",
+            "X-Api-Key": "da26588c-c185-480e-b05a-c3371a6973f5",
           },
         })
 
         const transactionId = blockchainData.data.transections[0];
         console.log("Blockchain Transaction ID:", transactionId);
 
-        const offChainResponse = await axios.post("http://localhost:3045/seed-transactions", {
+        const offChainResponse = await axios.post("http://localhost:3004/seed-transactions", {
           farmerId: farmerId,
           seedType: seedType,
           quantity: data.quantity,
@@ -105,6 +105,7 @@ const QRScanner = () => {
           blockchainTxId: transactionId,
         });
 
+        console.log("Off-Chain Response:", offChainResponse.data);
         if (offChainResponse.data.success) {
           setNotification({
             title: 'Transaction Success',

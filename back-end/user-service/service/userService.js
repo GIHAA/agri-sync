@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userRepo = require("../repository/userRepo");
 const FarmerDetails = require("../models/FarmerDetails");
+const farmerRepository = require("../repository/userRepo");
 
 require("dotenv").config();
 
@@ -22,7 +23,7 @@ const registerUser = async (username, email, password) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userRepo.createUser(username, email, hashedPassword , "ADMIN");
+    const newUser = await userRepo.createUser(username, email, hashedPassword, "ADMIN");
 
     return {
       success: true,
@@ -42,22 +43,22 @@ const loginUser = async (email, password) => {
     if (!user) {
       return { success: false, statusCode: 404, message: "User not found" };
     }
-  
+
     const famer = await FarmerDetails.findOne({ where: { user_id: user.id } });
-    
+
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
       return { success: false, statusCode: 400, message: "Invalid password" };
     }
 
-    const token = generateToken({ id: user.id, email: user.email , username: user.username , age : famer?.age ? famer?.age : 0 , visionProblems : famer?.vision_problems ? famer?.vision_problems : false , colorBlindness : famer?.color_blindness ? famer?.color_blindness : false });
+    const token = generateToken({ id: user.id, email: user.email, username: user.username, age: famer?.age ? famer?.age : 0, visionProblems: famer?.vision_problems ? famer?.vision_problems : false, colorBlindness: famer?.color_blindness ? famer?.color_blindness : false });
 
     delete user.password_hash;
 
     return {
       success: true,
-      data: { token , user , famer},
+      data: { token, user, famer },
       message: "Login successful",
     };
   } catch (error) {
@@ -67,7 +68,7 @@ const loginUser = async (email, password) => {
 };
 
 // Register farmer with preferences
-const registerFarmer = async (username, email, password, age, visionProblems, colorBlindness, textSize, layout, colorScheme, useSymbols , lat , long) => {
+const registerFarmer = async (username, email, password, age, visionProblems, colorBlindness, textSize, layout, colorScheme, useSymbols, lat, long) => {
   try {
     const existingUser = await userRepo.findUserByEmail(email);
     if (existingUser) {
@@ -75,10 +76,10 @@ const registerFarmer = async (username, email, password, age, visionProblems, co
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userRepo.createUser(username, email, hashedPassword , "FARMER");
+    const newUser = await userRepo.createUser(username, email, hashedPassword, "FARMER");
     const userId = newUser.id;
 
-    await userRepo.createFarmerDetails(userId, age, visionProblems, colorBlindness , lat , long);
+    await userRepo.createFarmerDetails(userId, age, visionProblems, colorBlindness, lat, long);
     await userRepo.createAccessibilitySettings(userId, textSize, layout, colorScheme, useSymbols);
 
     return {
@@ -104,6 +105,28 @@ const getUserPreferences = async (userId) => {
   } catch (error) {
     console.error("Error in fetching preferences service:", error);
     return { success: false, statusCode: 500, message: "Server error" };
+  }
+};
+
+const getFarmerDetails = async (qrCodeHash) => {
+  try {
+    const farmer = await farmerRepository.getFarmerByQrCode(qrCodeHash);
+    if (farmer) {
+      return {
+        success: true,
+        data: farmer,
+        message: "Farmer details fetched successfully",
+      };
+    } else {
+      return {
+        success: false,
+        data: null,
+        message: "Farmer not found.",
+      };
+    }
+  } catch (error) {
+    console.error("Error in service layer:", error);
+    throw new Error("Server error while fetching farmer details.");
   }
 };
 
@@ -175,7 +198,8 @@ module.exports = {
   loginUser,
   registerFarmer,
   getUserPreferences,
-  getAllUsers, 
+  getAllUsers,
   getUser,
   updateUser,
+  getFarmerDetails,
 };
