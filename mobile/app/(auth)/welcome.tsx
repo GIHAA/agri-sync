@@ -67,6 +67,15 @@ const Welcome = () => {
           buttonId={"UI_demo"}
           missClickTrackingArea={0}
         />
+
+        <ThemedButtonWithML
+          label="test"
+          onPress={() => {
+            router.replace("/(demo)/test");
+          }}
+          buttonId={"UI_demo"}
+          missClickTrackingArea={0}
+        />
       </View>
     </SafeAreaView>
   );

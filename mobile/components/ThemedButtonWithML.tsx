@@ -8,15 +8,15 @@ import {
   LayoutChangeEvent,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import * as Device from "expo-device";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { trackInteraction } from "@/api/trackEventService";
-import { router } from "expo-router";
+import { Dimensions } from "react-native";
 
 export type ThemedButtonProps = {
   label: string;
   onPress: () => void;
-  onMissClick ?: () => void;
+  onMissClick?: () => void;
+  devmode?: boolean;
   buttonId: string;
   disabled?: boolean;
   loading?: boolean;
@@ -26,6 +26,7 @@ export type ThemedButtonProps = {
   viewStyle?: string;
   missClickTrackingArea?: number;
   missContainerStyle?: string;
+  actualButton?: React.ReactNode;
 };
 
 export function ThemedButtonWithML({
@@ -37,13 +38,14 @@ export function ThemedButtonWithML({
   loading = false,
   variant = "primary",
   viewStyle = "",
+  devmode = false,
   containerStyle = "",
   textStyle = "",
   missClickTrackingArea = 50,
   missContainerStyle = "",
+  actualButton,
 }: ThemedButtonProps) {
   const themeColor = useThemeColor({}, "background");
-  const buttonRef = useRef<any>(null);
   const containerRef = useRef<View>(null);
   const sessionStartTime = useRef<number>(Date.now());
   const [buttonLayout, setButtonLayout] = useState<{
@@ -52,6 +54,15 @@ export function ThemedButtonWithML({
     width: number;
     height: number;
   } | null>(null);
+
+  const [buttonContainerLayout, setButtonContainerLayout] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const { width, height } = Dimensions.get("window");
 
   const getButtonClasses = () => {
     switch (variant) {
@@ -81,60 +92,51 @@ export function ThemedButtonWithML({
     }
   };
 
-  const handleLayout = (event: LayoutChangeEvent) => {
+  const handleButtonLayout = (event: LayoutChangeEvent) => {
     const { x, y, width, height } = event.nativeEvent.layout;
+    console.log("Button layout:", { x, y, width, height });
     setButtonLayout({ x, y, width, height });
   };
 
-  const calculateMissClickDistance = (
-    clickX: number,
-    clickY: number,
-    buttonLayout: any
-  ) => {
-    // Calculate the center of the button
-    const buttonCenterX = buttonLayout.x + buttonLayout.width / 2;
-    const buttonCenterY = buttonLayout.y + buttonLayout.height / 2;
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
 
-    // Calculate Euclidean distance
-    const distance = Math.sqrt(
-      Math.pow(clickX - buttonCenterX, 2) + Math.pow(clickY - buttonCenterY, 2)
-    );
-
-    return distance;
+  const handleLayout = (event: any) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setButtonContainerLayout({ x, y, width, height });
   };
 
   const trackButtonInteraction = async (
     event: GestureResponderEvent,
     isMissClick: boolean = false
   ) => {
+    const { locationX, locationY } = event.nativeEvent;
+
+    setCoordinates({ x: locationX, y: locationY });
+
     try {
       // Get user ID from SecureStore
       const user = await SecureStore.getItemAsync("user");
       const userId = user ? JSON.parse(user).id : null;
 
-      //Get click coordinates
-      // const { locationX, locationY } = event.nativeEvent;
-
-      // Calculate session duration
-      const sessionDuration = Math.floor(
-        (Date.now() - sessionStartTime.current) / 1000
-      );
-
-      // Prepare interaction data
       const interactionData = {
-        user_id: userId || "unknown",
-        button_id: buttonId,
-        click_coordinates: {
-          x: 1,
-          y: 2,
+        userID: userId || 99,
+        buttonId: buttonId,
+        touchPoint: {
+          x: locationX,
+          y: locationY,
         },
-        missed_click_distance:
-          isMissClick && buttonLayout
-            ? calculateMissClickDistance(2, 1, buttonLayout)
-            : 0,
-        is_miss_click: isMissClick,
-        session_duration: sessionDuration,
-        device: Device.deviceName || "Unknown Device",
+        buttonBounds: {
+          x: (buttonContainerLayout?.x || 0) + (buttonLayout?.x || 0),
+          y: (buttonContainerLayout?.y || 0) + (buttonLayout?.y || 0),
+          width: buttonLayout?.width,
+          height: buttonLayout?.height,
+        },
+        isMissClick: isMissClick,
+        deviceMetrics: {
+          screenWidth: width,
+          screenHeight: height,
+          deviceOrientation: "portrait",
+        },
         timestamp: new Date().toISOString(),
       };
 
@@ -162,7 +164,9 @@ export function ThemedButtonWithML({
     >
       {/* Invisible miss-click tracking area */}
       <TouchableOpacity
-      className={`absolute z-0 ${missContainerStyle}`}
+        className={`absolute z-0 ${
+          devmode ? "bg-cyan-100 opacity-50 border-2 border-cyan-600" : ""
+        }}`}
         style={{
           top: -missClickTrackingArea,
           left: -missClickTrackingArea,
@@ -170,31 +174,51 @@ export function ThemedButtonWithML({
           bottom: -missClickTrackingArea,
         }}
         onPress={(event) => {
-          trackButtonInteraction(event, true)
-          onMissClick && onMissClick()
+          trackButtonInteraction(event, true);
+          onMissClick && onMissClick();
         }}
+        onLayout={handleButtonLayout}
       />
+      {devmode && (
+        <View className="absolute top-0 left-0 z-20 bg-white opacity-70 p-2 rounded-md shadow">
+          <Text>Touch coordinates:</Text>
+          <Text>X: {coordinates.x.toFixed(2)}</Text>
+          <Text>Y: {coordinates.y.toFixed(2)}</Text>
+        </View>
+      )}
 
       {/* Actual button */}
-      <TouchableOpacity
-        ref={buttonRef}
-        onPress={(event) => trackButtonInteraction(event, false)}
-        disabled={disabled || loading}
-        className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${containerStyle}`}
-      >
-        {loading ? (
-          <ActivityIndicator
-            size="small"
-            color={variant === "primary" ? "#fff" : themeColor}
-          />
-        ) : (
-          <Text
-            className={`font-semibold text-base ${getTextClasses()} ${textStyle}`}
+      {actualButton ? (
+        <>
+        {actualButton}
+        </>
+      ) : (
+        <>
+          <TouchableOpacity
+            onPress={(event) => {
+              trackButtonInteraction(event);
+              onPress();
+            }}
+            disabled={disabled || loading}
+            className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${
+              devmode ? "z-10" : ""
+            } ${containerStyle}`}
           >
-            {label}
-          </Text>
-        )}
-      </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator
+                size="small"
+                color={variant === "primary" ? "#fff" : themeColor}
+              />
+            ) : (
+              <Text
+                className={`font-semibold text-base ${getTextClasses()} ${textStyle}`}
+              >
+                {label}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }
