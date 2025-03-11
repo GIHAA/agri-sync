@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedButtonWithML } from "@/components/ThemedButtonWithML";
 import { router } from "expo-router";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
 
 const Welcome = () => {
   const [events, setEvents] = useState<string[]>([]);
@@ -52,7 +53,6 @@ const Welcome = () => {
         onStartShouldSetResponder={() => true}
         onResponderRelease={handleTouch}
         className="flex flex-col bg-red-200 justify-center items-center my-auto h-full"
-
       >
         <View className="h-40 mb-4">
           <Text className="text-lg font-bold mb-2">Welcome</Text>
@@ -101,19 +101,41 @@ const Welcome = () => {
             buttonId={"Sign up"}
             containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
             viewStyle="flex flex-col justify-center items-center"
-            devmode={true}
-            missClickTrackingArea={20}
-            actualButton={<>
-            <TouchableOpacity
-              onPress={() => {
-                handleActualButtonPress();
-              }}
-              className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 bg-[#2F855A]`}
-            >
-              <Text className={`font-semibold text-base text-white`}>Actual Button</Text>
-            </TouchableOpacity>
+            missClickTrackingArea={10}
+            actualButton={
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleActualButtonPress();
+                  }}
+                  className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 bg-[#2F855A]`}
+                >
+                  <Text className={`font-semibold text-base text-white`}>
+                    Actual Button
+                  </Text>
+                </TouchableOpacity>
+              </>
+            }
+          />
 
-            </>}
+          <UserInteractionWrapper
+            buttonId={"test-gihan-button"}
+            devmode={true}
+            missClickTrackingArea={50}
+            actualButton={
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("Actual button clicked");
+                  }}
+                  className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 bg-[#2F855A]`}
+                >
+                  <Text className={`font-semibold text-base text-white`}>
+                    Actual222222222222 Button
+                  </Text>
+                </TouchableOpacity>
+              </>
+            }
           />
           <ThemedButtonWithML
             label="Log In"
