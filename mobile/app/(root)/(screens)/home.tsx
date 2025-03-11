@@ -12,11 +12,13 @@ import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import QRCode from "react-native-qrcode-svg"; // Import QRCode component
 import MenuOption from "@/components/HomeOption";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
 
 interface MenuOptionProps {
   icon: React.ReactNode;
   label: string;
   onPress?: () => void;
+  buttonId?: string;
 }
 
 interface User {
@@ -53,30 +55,36 @@ const HomeScreen: React.FC = ({}) => {
     router.replace("/(auth)/sign-in");
   };
 
+  
   const menuItems: Array<MenuOptionProps> = [
     {
       icon: <AntDesign name="pluscircleo" size={55} color="white" />,
       label: "Add Farming Data",
+      buttonId: "home-addFarmingDataButton",
       onPress: onAddFarmingPress,
     },
     {
       icon: <AntDesign name="gift" size={55} color="white" />,
       label: "Reward Program",
+      buttonId: "home-rewardsButton",
       onPress: onRewardPress,
     },
     {
       icon: <AntDesign name="setting" size={55} color="white" />,
       label: "User Preference",
+      buttonId: "home-userPreferenceButton",
       onPress: onPreferencePress,
     },
     {
       icon: <Entypo name="chat" size={55} color="white" />,
       label: "Chat",
+      buttonId: "home-chatButton",
       onPress: onChatbotPress,
     },
     {
       icon: <AntDesign name="login" size={55} color="white" />,
       label: "Logout",
+      buttonId: "home-logoutButton",
       onPress: onLogoutPress,
     },
   ];
@@ -121,15 +129,23 @@ const HomeScreen: React.FC = ({}) => {
             </View>
           </View>
         ) : (
-          <View className="mt-[78px]">
-            <View className="flex-row flex-wrap gap-y-[30px]">
+          <View className="mt-[28px]">
+            <View className="flex-row flex-wrap justify-between">
               {menuItems.map((item, index) => (
-                <MenuOption
-                  key={index}
+              <View key={index} className="w-[48%] mb-[5px]">
+                <UserInteractionWrapper
+                buttonId={item.buttonId ?? `menu-item-${index}`}
+                devmode={true}
+                missClickTrackingArea={5}
+                actualButton={
+                  <MenuOption
                   icon={item.icon}
                   label={item.label}
                   onPress={item.onPress}
+                  />
+                }
                 />
+              </View>
               ))}
             </View>
           </View>

@@ -10,27 +10,34 @@ import * as Location from "expo-location";
 import MapView, { Marker, Circle } from "react-native-maps";
 import { usePostFarmingData } from "@/api/rewardService";
 import * as SecureStore from "expo-secure-store";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
 
 // const GEO_FENCE_LATITUDE = 7.050308;
 // const GEO_FENCE_LONGITUDE = 79.937582;
 const GEO_FENCE_RADIUS = 5; // in kilometers
 
-
-
-function isLocationWithinRadius(latitude : number, longitude : number, geoFenceLatitude : number, geoFenceLongitude : number, radius : number) {
+function isLocationWithinRadius(
+  latitude: number,
+  longitude: number,
+  geoFenceLatitude: number,
+  geoFenceLongitude: number,
+  radius: number
+) {
   const R = 6371; // Earth's radius in kilometers
   const dLat = deg2rad(geoFenceLatitude - latitude);
   const dLon = deg2rad(geoFenceLongitude - longitude);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(geoFenceLatitude)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(deg2rad(latitude)) *
+      Math.cos(deg2rad(geoFenceLatitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c; // Distance in km
   return distance <= radius;
 }
 
-function deg2rad(deg : number) {
+function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
 }
 
@@ -45,7 +52,7 @@ export default function AddFarmData() {
   const [user, setUser] = useState<any | null>(null);
   const [farmer, setFarmer] = useState<any | null>(null);
 
-  function isLocationInRadius(latitude : number , longitude : number) {
+  function isLocationInRadius(latitude: number, longitude: number) {
     return isLocationWithinRadius(
       latitude,
       longitude,
@@ -172,18 +179,17 @@ export default function AddFarmData() {
                   }}
                 />
                 {farmer && (
-                             <Circle
-                             center={{
-                               latitude: farmer.lat,
-                               longitude: farmer.long,
-                             }}
-                             radius={GEO_FENCE_RADIUS * 1000} 
-                             fillColor="rgba(0, 0, 255, 0.1)"
-                             strokeColor="rgba(0, 0, 255, 0.5)"
-                             strokeWidth={2}
-                           />
+                  <Circle
+                    center={{
+                      latitude: farmer.lat,
+                      longitude: farmer.long,
+                    }}
+                    radius={GEO_FENCE_RADIUS * 1000}
+                    fillColor="rgba(0, 0, 255, 0.1)"
+                    strokeColor="rgba(0, 0, 255, 0.5)"
+                    strokeWidth={2}
+                  />
                 )}
-     
               </MapView>
             ) : (
               <Text>Loading map...</Text>
@@ -227,11 +233,18 @@ export default function AddFarmData() {
       </ScrollView>
 
       <View className="p-4 bg-white border-t border-gray-200">
-        <ThemedButton
-          label="Submit"
-          onPress={handleSubmit}
-          variant="primary"
-          textStyle="text-lg"
+        <UserInteractionWrapper
+          buttonId={"add-farming-submit-button"}
+          devmode={false}
+          missClickTrackingArea={5}
+          actualButton={
+            <ThemedButton
+              label="Submit"
+              onPress={handleSubmit}
+              variant="primary"
+              textStyle="text-lg"
+            />
+          }
         />
       </View>
     </SafeAreaView>

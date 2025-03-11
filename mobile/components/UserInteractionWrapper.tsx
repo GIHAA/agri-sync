@@ -27,9 +27,7 @@ export function UserInteractionWrapper({
   missClickTrackingArea = 50,
   actualButton,
 }: UserInteractionWrapperProps) {
-  const themeColor = useThemeColor({}, "background");
   const containerRef = useRef<View>(null);
-  const sessionStartTime = useRef<number>(Date.now());
   const [buttonLayout, setButtonLayout] = useState<{
     x: number;
     y: number;

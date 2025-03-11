@@ -9,7 +9,7 @@ interface MenuOptionProps {
 
 const MenuOption: React.FC<MenuOptionProps> = ({ icon, label, onPress }) => (
   <TouchableOpacity
-    style={{ alignItems: "center", justifyContent: "center", padding: 16, width: "50%" }}
+    style={{ alignItems: "center", justifyContent: "center", padding: 16, }}
     onPress={onPress}
   >
     <View style={{ alignItems: "center", display: "flex" }}>
