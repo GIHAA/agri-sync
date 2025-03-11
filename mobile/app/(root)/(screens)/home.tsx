@@ -135,7 +135,7 @@ const HomeScreen: React.FC = ({}) => {
               <View key={index} className="w-[48%] mb-[5px]">
                 <UserInteractionWrapper
                 buttonId={item.buttonId ?? `menu-item-${index}`}
-                devmode={true}
+                devmode={false}
                 missClickTrackingArea={5}
                 actualButton={
                   <MenuOption
