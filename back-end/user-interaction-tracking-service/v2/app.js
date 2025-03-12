@@ -699,7 +699,7 @@ app.get("/api/button-recommendations/:buttonId", async (req, res) => {
   }
 });
 
-// graph data
+// graph data for miss-click rate by button
 app.get('/api/miss-click-rate-by-button', async (req, res) => {
   try {
     // Aggregate miss-clicks by buttonId
@@ -733,6 +733,34 @@ app.get('/api/miss-click-rate-by-button', async (req, res) => {
   } catch (error) {
     console.error('Error fetching miss-click rate by button:', error);
     res.status(500).json({ error: 'Error fetching miss-click rate by button', details: error.message });
+  }
+});
+
+// graph data for precision
+app.get('/api/precision-graph', async (req, res) => {
+  try {
+    const interactions = await TouchInteraction.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
+          successfulClicks: { $sum: { $cond: [{ $eq: ["$isMissClick", false] }, 1, 0] } },
+          totalClicks: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          date: "$_id",
+          precision: { $divide: ["$successfulClicks", "$totalClicks"] },
+          _id: 0
+        }
+      },
+      { $sort: { date: 1 } }
+    ]);
+
+    res.json(interactions);
+  } catch (error) {
+    console.error('Error fetching precision graph data:', error);
+    res.status(500).json({ error: 'Error fetching precision graph data', details: error.message });
   }
 });
 
@@ -771,24 +799,6 @@ app.get("/api/successful-clicks-rate", async (req, res) => {
   }
 });
 
-app.get("/api/successful-clicks-rate", async (req, res) => {
-  try {
-    const totalInteractions = await TouchInteraction.countDocuments();
-    const successfulClicks = await TouchInteraction.countDocuments({
-      isMissClick: false,
-    });
-    const successRate = (successfulClicks / totalInteractions) * 100;
-    res.json({ successRate: successRate.toFixed(2) });
-  } catch (error) {
-    console.error("Error fetching successful clicks rate:", error);
-    res
-      .status(500)
-      .json({
-        error: "Error fetching successful clicks rate",
-        details: error.message,
-      });
-  }
-});
 
 app.get('/api/miss-click-rate', async (req, res) => {
   try {
