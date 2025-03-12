@@ -10,8 +10,8 @@ import Toast from '../../utils/notification';
 
 const LoginForm = () => {
   const { setNotification } = SharedDataContainer.useContainer();
-  const [email, setEmail] = useState('tl685998@gmail.com'); // Default email from curl
-  const [password, setPassword] = useState('tl685998'); // Default password from curl
+  const [email, setEmail] = useState('gihansad@g.com');
+  const [password, setPassword] = useState('gihan123');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
