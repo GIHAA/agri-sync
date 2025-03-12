@@ -30,6 +30,7 @@ import {
 import AdminUserManagePage from '../pages/admin-management/admin-users'
 import AdminUserRolesManagePage from '../pages/admin-management/admin-user-roles'
 import RewardManagementPage from '../pages/reward-management/reward-management'
+import UIManagementPage from '../pages/user-interaction-management/reward-management'
 
 function Router() {
   const { error } = RouteRegistry
@@ -64,6 +65,10 @@ function Router() {
         {
           path: 'reward-management',
           element: <RewardManagementPage />,
+        },
+        {
+          path: '/user-interaction-management',
+          element: <UIManagementPage />,
         },
         {
           path: 'manage-user-roles',
