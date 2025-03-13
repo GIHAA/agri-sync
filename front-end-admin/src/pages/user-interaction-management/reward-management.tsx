@@ -9,6 +9,7 @@ import {
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from "chart.js";
 import Button from "../../components/common/button";
+import { useGetClickTrend, useGetMissClickRate, useGetMissClickRateByButton, useGetPreisionGraph, useGetSucessfullClickRate } from "../../api/ui-management";
 
 ChartJS.register(
   CategoryScale,
@@ -22,9 +23,10 @@ ChartJS.register(
 );
 
 const UIManagementPage = () => {
-  const { data } = useGetRewardSettings();
-  const { data: activityTrend } = useGetActivityTrend();
-  const { data: redemptionAnalytics } = useGetRedemptionAnalytics();
+  const { data } = useGetMissClickRate();
+  const {data: successdata} = useGetSucessfullClickRate();
+  const { data: activityTrend } = useGetMissClickRateByButton();
+  const { data: redemptionAnalytics } = useGetPreisionGraph();
   const { mutate } = useUpdateRewardSettings();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -44,18 +46,18 @@ const UIManagementPage = () => {
     }
   };
 
-  const activityTrendData = {
-    labels: activityTrend?.map((entry) => entry.date),
+  const missClickRateData = {
+    labels: activityTrend?.map((entry) => entry.buttonId), // Use buttonId as labels
     datasets: [
       {
-        label: "Points Earned",
-        data: activityTrend?.map((entry) => parseInt(entry.points_earned, 10)),
+        label: "Miss Click Rate (%)",
+        data: activityTrend?.map((entry) => parseFloat(entry.missClickRate)), // Ensure it's parsed correctly
         borderColor: "#36A2EB",
         backgroundColor: "rgba(54, 162, 235, 0.2)",
       },
       {
-        label: "Points Redeemed",
-        data: activityTrend?.map((entry) => Math.abs(parseInt(entry.points_redeemed, 10))),
+        label: "Total Interactions",
+        data: activityTrend?.map((entry) => Math.abs(parseInt(entry.totalInteractions, 10))),
         borderColor: "#FF6384",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
@@ -63,11 +65,11 @@ const UIManagementPage = () => {
   };
 
   const redemptionAnalyticsData = {
-    labels: redemptionAnalytics?.map((entry) => entry.reward_type),
+    labels: redemptionAnalytics?.map((entry) => entry.date),
     datasets: [
       {
-        label: "Redemptions",
-        data: redemptionAnalytics?.map((entry) => parseInt(entry.redemptions, 10)),
+        label: "Precision",
+        data: redemptionAnalytics?.map((entry) => (entry.precision * 100)),
         backgroundColor: "#FF6384",
       },
     ],
@@ -82,31 +84,32 @@ const UIManagementPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {data
-          ?.slice()
-          .sort((a, b) => a.id - b.id)
-          .map((reward) => (
-            <div key={reward.id} className="flex h-full w-full justify-between rounded-md bg-white p-4 shadow-md">
+     
+            <div  className="flex h-full w-full justify-between rounded-md bg-white p-4 shadow-md">
               <div className="flex flex-col">
-                <div>{reward.event.replace("_", " ")}</div>
-                <div className="text-4xl text-gray-700">{reward.points}</div>
+                <div>Misclick Rate</div>
+                <div className="text-4xl text-gray-700">{data?.missClickRate}</div>
               </div>
               <div>
-                <Lucide
-                  icon="Edit"
-                  className="h-6 w-6 text-black cursor-pointer"
-                  onClick={() => handleEditClick(reward.event, reward.points)}
-                />
               </div>
             </div>
-          ))}
+
+            <div  className="flex h-full w-full justify-between rounded-md bg-white p-4 shadow-md">
+              <div className="flex flex-col">
+                <div>Succesfull Clicks Rate</div>
+                <div className="text-4xl text-gray-700">{successdata?.successRate}</div>
+              </div>
+              <div>
+              </div>
+            </div>
+         
       </div>
       <div className="flex flex-col lg:flex-row gap-6 mt-8">
           <div className="w-full lg:w-1/2">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Activity Trend</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Clicks Trend</h3>
             <div className="h-[400px]">
           <Line 
-            data={activityTrendData}
+            data={missClickRateData}
             options={{
               responsive: true,
               maintainAspectRatio: false
@@ -116,7 +119,7 @@ const UIManagementPage = () => {
           </div>
         
           <div className="w-full lg:w-1/2">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Reward Redemption Analytics</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Clicks Precission Analytics</h3>
             <div className="h-[400px]">
           <Bar 
             data={redemptionAnalyticsData}
