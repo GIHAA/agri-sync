@@ -1,7 +1,0 @@
-flask
-flask-cors
-tensorflow
-pymongo
-hypercorn
-numpy
-python-dotenv

@@ -2,7 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 // Hard-coded base URL
-const BASE_URL = "http://localhost:3000"; // Replace with your actual backend URL
+const BASE_URL = "https://agrisynclocal.astratech.software"; // Replace with your actual backend URL
 
 const authFetch = axios.create({
   baseURL: BASE_URL, // Use the hard-coded base URL
