@@ -68,7 +68,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./
+          context: ./back-end/user-interaction-tracking-service/v2
           push: ${{ github.event_name == 'push' }}
           platforms: linux/amd64,linux/arm64
           tags: |
