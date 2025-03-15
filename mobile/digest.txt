@@ -1,0 +1,5255 @@
+Directory structure:
+└── agri-sync/mobile/
+    ├── pnpm-lock.yaml
+    ├── .expo/
+    │   ├── types/
+    │   │   └── router.d.ts
+    │   ├── README.md
+    │   └── devices.json
+    ├── tailwind.config.js
+    ├── app/
+    │   ├── index.tsx
+    │   ├── (root)/
+    │   │   ├── _layout.tsx
+    │   │   └── (screens)/
+    │   │       ├── leaderboard.tsx
+    │   │       ├── pricePrediction.tsx
+    │   │       ├── rewards.tsx
+    │   │       ├── home.tsx
+    │   │       ├── user-preferences.tsx
+    │   │       ├── nearByFamersData.tsx
+    │   │       ├── selectCropForPrediction.tsx
+    │   │       ├── _layout.tsx
+    │   │       ├── addFarmingData.tsx
+    │   │       └── chatbot.tsx
+    │   ├── _layout.tsx
+    │   ├── (auth)/
+    │   │   ├── sign-in.tsx
+    │   │   ├── _layout.tsx
+    │   │   ├── welcome.tsx
+    │   │   └── sign-up.tsx
+    │   ├── +html.tsx
+    │   └── (demo)/
+    │       ├── home.tsx
+    │       ├── test.tsx
+    │       ├── ageDetect.tsx
+    │       └── welcome.tsx
+    ├── app.json
+    ├── global.css
+    ├── constants/
+    │   └── Colors.ts
+    ├── expo-env.d.ts
+    ├── utils/
+    │   └── ruleEngine.ts
+    ├── README.md
+    ├── components/
+    │   ├── ExternalLink.tsx
+    │   ├── ThemedText.tsx
+    │   ├── HomeOption.tsx
+    │   ├── .DS_Store
+    │   ├── ThemedTextML.tsx
+    │   ├── ThemedView.tsx
+    │   ├── HelloWave.tsx
+    │   ├── navigation/
+    │   │   └── TabBarIcon.tsx
+    │   ├── __tests__/
+    │   │   ├── ThemedText-test.tsx
+    │   │   └── __snapshots__/
+    │   │       └── ThemedText-test.tsx.snap
+    │   ├── ParallaxScrollView.tsx
+    │   ├── ThemedInput.tsx
+    │   ├── UserInteractionWrapper.tsx
+    │   ├── ThemedSelect.tsx
+    │   ├── ThemedButton.tsx
+    │   ├── Collapsible.tsx
+    │   └── ThemedButtonWithML.tsx
+    ├── nativewind-env.d.ts
+    ├── metro.config.js
+    ├── babel.config.js
+    ├── package.json
+    ├── hooks/
+    │   ├── useColorScheme.web.ts
+    │   ├── useThemeColor.ts
+    │   └── useColorScheme.ts
+    ├── scripts/
+    │   └── reset-project.js
+    ├── lib/
+    │   └── auth.ts
+    ├── api/
+    │   ├── predictionApiService.ts
+    │   ├── trackEventService.ts
+    │   ├── apiClientAuth.ts
+    │   ├── apiClientRein.ts
+    │   ├── apiClientPrediction.ts
+    │   ├── ip.ts
+    │   ├── rewardService.ts
+    │   ├── apiClientReward.ts
+    │   ├── reinforceUI.ts
+    │   ├── apiClient.ts
+    │   └── auth.ts
+    ├── tsconfig.json
+    ├── declarations.d.ts
+    ├── data/
+    │   └── index.ts
+    └── assets/
+        ├── svg/
+        ├── .DS_Store
+        ├── images/
+        │   └── vegitables/
+        │       └── Carrot.webp
+        └── fonts/
+            └── SpaceMono-Regular.ttf
+
+================================================
+File: /.expo/types/router.d.ts
+================================================
+/* eslint-disable */
+import * as Router from 'expo-router';
+
+export * from 'expo-router';
+
+declare module 'expo-router' {
+  export namespace ExpoRouter {
+    export interface __routes<T extends string | object = string> {
+      hrefInputParams: { pathname: Router.RelativePathString, params?: Router.UnknownInputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownInputParams } | { pathname: `/`; params?: Router.UnknownInputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/sign-in` | `/sign-in`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/sign-up` | `/sign-up`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/welcome` | `/welcome`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/ageDetect` | `/ageDetect`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/home` | `/home`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/test` | `/test`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/welcome` | `/welcome`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/addFarmingData` | `/addFarmingData`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/chatbot` | `/chatbot`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/home` | `/home`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/leaderboard` | `/leaderboard`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/nearByFamersData` | `/nearByFamersData`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/pricePrediction` | `/pricePrediction`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/rewards` | `/rewards`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/selectCropForPrediction` | `/selectCropForPrediction`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/user-preferences` | `/user-preferences`; params?: Router.UnknownInputParams; };
+      hrefOutputParams: { pathname: Router.RelativePathString, params?: Router.UnknownOutputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownOutputParams } | { pathname: `/`; params?: Router.UnknownOutputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(auth)'}/sign-in` | `/sign-in`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(auth)'}/sign-up` | `/sign-up`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(auth)'}/welcome` | `/welcome`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(demo)'}/ageDetect` | `/ageDetect`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(demo)'}/home` | `/home`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(demo)'}/test` | `/test`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(demo)'}/welcome` | `/welcome`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/addFarmingData` | `/addFarmingData`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/chatbot` | `/chatbot`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/home` | `/home`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/leaderboard` | `/leaderboard`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/nearByFamersData` | `/nearByFamersData`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/pricePrediction` | `/pricePrediction`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/rewards` | `/rewards`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/selectCropForPrediction` | `/selectCropForPrediction`; params?: Router.UnknownOutputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/user-preferences` | `/user-preferences`; params?: Router.UnknownOutputParams; };
+      href: Router.RelativePathString | Router.ExternalPathString | `/${`?${string}` | `#${string}` | ''}` | `/_sitemap${`?${string}` | `#${string}` | ''}` | `${'/(auth)'}/sign-in${`?${string}` | `#${string}` | ''}` | `/sign-in${`?${string}` | `#${string}` | ''}` | `${'/(auth)'}/sign-up${`?${string}` | `#${string}` | ''}` | `/sign-up${`?${string}` | `#${string}` | ''}` | `${'/(auth)'}/welcome${`?${string}` | `#${string}` | ''}` | `/welcome${`?${string}` | `#${string}` | ''}` | `${'/(demo)'}/ageDetect${`?${string}` | `#${string}` | ''}` | `/ageDetect${`?${string}` | `#${string}` | ''}` | `${'/(demo)'}/home${`?${string}` | `#${string}` | ''}` | `/home${`?${string}` | `#${string}` | ''}` | `${'/(demo)'}/test${`?${string}` | `#${string}` | ''}` | `/test${`?${string}` | `#${string}` | ''}` | `${'/(demo)'}/welcome${`?${string}` | `#${string}` | ''}` | `/welcome${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/addFarmingData${`?${string}` | `#${string}` | ''}` | `/addFarmingData${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/chatbot${`?${string}` | `#${string}` | ''}` | `/chatbot${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/home${`?${string}` | `#${string}` | ''}` | `/home${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/leaderboard${`?${string}` | `#${string}` | ''}` | `/leaderboard${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/nearByFamersData${`?${string}` | `#${string}` | ''}` | `/nearByFamersData${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/pricePrediction${`?${string}` | `#${string}` | ''}` | `/pricePrediction${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/rewards${`?${string}` | `#${string}` | ''}` | `/rewards${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/selectCropForPrediction${`?${string}` | `#${string}` | ''}` | `/selectCropForPrediction${`?${string}` | `#${string}` | ''}` | `${'/(root)'}${'/(screens)'}/user-preferences${`?${string}` | `#${string}` | ''}` | `/user-preferences${`?${string}` | `#${string}` | ''}` | { pathname: Router.RelativePathString, params?: Router.UnknownInputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownInputParams } | { pathname: `/`; params?: Router.UnknownInputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/sign-in` | `/sign-in`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/sign-up` | `/sign-up`; params?: Router.UnknownInputParams; } | { pathname: `${'/(auth)'}/welcome` | `/welcome`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/ageDetect` | `/ageDetect`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/home` | `/home`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/test` | `/test`; params?: Router.UnknownInputParams; } | { pathname: `${'/(demo)'}/welcome` | `/welcome`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/addFarmingData` | `/addFarmingData`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/chatbot` | `/chatbot`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/home` | `/home`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/leaderboard` | `/leaderboard`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/nearByFamersData` | `/nearByFamersData`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/pricePrediction` | `/pricePrediction`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/rewards` | `/rewards`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/selectCropForPrediction` | `/selectCropForPrediction`; params?: Router.UnknownInputParams; } | { pathname: `${'/(root)'}${'/(screens)'}/user-preferences` | `/user-preferences`; params?: Router.UnknownInputParams; };
+    }
+  }
+}
+
+
+================================================
+File: /.expo/README.md
+================================================
+> Why do I have a folder named ".expo" in my project?
+The ".expo" folder is created when an Expo project is started using "expo start" command.
+> What do the files contain?
+- "devices.json": contains information about devices that have recently opened this project. This is used to populate the "Development sessions" list in your development builds.
+- "settings.json": contains the server configuration that is used to serve the application manifest.
+> Should I commit the ".expo" folder?
+No, you should not share the ".expo" folder. It does not contain any information that is relevant for other developers working on the project, it is specific to your machine.
+Upon project creation, the ".expo" folder is already added to your ".gitignore" file.
+
+
+================================================
+File: /.expo/devices.json
+================================================
+{
+  "devices": []
+}
+
+
+================================================
+File: /tailwind.config.js
+================================================
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  // NOTE: Update this to include the paths to all of your component files.
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+  ],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+================================================
+File: /app/index.tsx
+================================================
+import { View, Text } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Redirect } from 'expo-router'
+
+const Home = () => {
+  return <Redirect href='/(auth)/welcome' />
+  //return <Redirect href='/(auth)/sign-in' />
+}
+
+export default Home
+
+================================================
+File: /app/(root)/_layout.tsx
+================================================
+import { Stack } from "expo-router";
+
+const Layout = () => {
+  return (
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+    </Stack>
+  );
+};
+
+export default Layout;
+
+================================================
+File: /app/(root)/(screens)/leaderboard.tsx
+================================================
+import React, { useState, useEffect } from "react";
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedButton } from "@/components/ThemedButton";
+import { router } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
+
+// Import the API function
+import { useGetFarmingLeaderboard } from "@/api/rewardService";
+
+// Interface for Leaderboard Entry
+interface LeaderboardEntry {
+  farmer_ref: string;
+  farmer_name: string;
+  total_production: string;
+  total_entries: string;
+  unique_vegetables: string;
+  rank: number;
+  percentile: number;
+}
+
+// Interface for Leaderboard Response
+interface LeaderboardResponse {
+  success: boolean;
+  data: LeaderboardEntry[];
+  message: string;
+  metadata: {
+    timeframe: string;
+    limit: number;
+    totalParticipants: number;
+  };
+}
+
+export default function FarmingLeaderboard() {
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [metadata, setMetadata] = useState<LeaderboardResponse['metadata']>({
+    timeframe: 'all',
+    limit: 10,
+    totalParticipants: 0
+  });
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await useGetFarmingLeaderboard();
+        console.log("Leaderboard response:", response);
+        if (response) {
+          setLeaderboardData(response.data);
+          setMetadata(response.metadata);
+        }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
+
+  // Render medal icon based on rank
+  const renderMedalIcon = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return require('@/assets/images/gold-medal.png');
+      case 2:
+        return require('@/assets/images/silver-medal.png');
+      case 3:
+        return require('@/assets/images/bronze-medal.png');
+      default:
+        return null;
+    }
+  };
+
+  // Determine background color based on rank
+  const getRowStyle = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return "bg-yellow-100";
+      case 2:
+        return "bg-gray-200";
+      case 3:
+        return "bg-orange-100";
+      default:
+        return "bg-white";
+    }
+  };
+
+  const renderLeaderboardItem = ({ item }: { item: LeaderboardEntry }) => (
+    <View 
+      className={`flex-row items-center p-3 border-b border-gray-200 ${getRowStyle(item.rank)}`}
+    >
+      {/* Medal Icon for Top 3 */}
+
+        <Image
+          source={renderMedalIcon(item.rank)}
+          className="w-10 h-10 mr-3"
+          resizeMode="contain"
+        />
+ 
+      
+      {/* Rank */}
+      <View className="w-12">
+        <Text className="font-bold text-lg">{item.rank}</Text>
+      </View>
+      
+      {/* Farmer Details */}
+      <View className="flex-1">
+        <Text className="font-bold text-base">{item.farmer_name}</Text>
+        <View className="flex-row">
+          <Text className="mr-3">Entries: {item.total_entries}</Text>
+          <Text>Vegetables: {item.unique_vegetables}</Text>
+        </View>
+      </View>
+      
+      {/* Production */}
+      <View>
+        <Text className="font-bold text-green-600">
+          {item.total_production} kg
+        </Text>
+        {/* <Text className="text-gray-500">Percentile: {item.percentile}%</Text> */}
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      {/* Header */}
+      <View className="flex-row items-center p-4">
+        <TouchableOpacity
+          className="flex-row items-center"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Title */}
+      <View className="px-4 mb-4">
+        <ThemedText type="title">Farming Leaderboard</ThemedText>
+        <Text className="text-gray-600">
+          Timeframe: {metadata.timeframe} | Total Participants: {metadata.totalParticipants}
+        </Text>
+      </View>
+
+      {/* Leaderboard List */}
+      <FlatList
+        data={leaderboardData}
+        renderItem={renderLeaderboardItem}
+        ListEmptyComponent={
+          <View className="items-center p-4">
+            <Text className="text-gray-500">No leaderboard data available</Text>
+          </View>
+        }
+      />
+
+      {/* Footer Button */}
+      <View className="p-4 bg-white border-t border-gray-200">
+        <ThemedButton
+          label="Back to Rewards"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+          variant="primary"
+          textStyle="text-lg"
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+================================================
+File: /app/(root)/(screens)/pricePrediction.tsx
+================================================
+import { ThemedText } from "@/components/ThemedText";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  Image,
+  SafeAreaView,
+  LogBox,
+} from "react-native";
+import Brinjals from "@/assets/images/vegitables/Brinjals.jpeg";
+import Cabbage from "@/assets/images/vegitables/Cabbage.jpg";
+import Carrot from "@/assets/images/vegitables/Carrot.webp";
+import Pumpkin from "@/assets/images/vegitables/Pumpkin.jpg";
+import Tomatoes from "@/assets/images/vegitables/Tomatoes.jpg";
+import { fetchPredictedPrice } from "@/api/predictionApiService";
+import { AntDesign } from "@expo/vector-icons";
+import { usePostRedeemReward } from "@/api/rewardService";
+import { useGetRewardPoints } from "@/api/rewardService";
+
+interface Vegetable {
+  name: string;
+  image: any;
+  currentPrice: number;
+  predictedPrice: number;
+}
+
+const vegetableData: Vegetable[] = [
+  { name: "Brinjals", image: Brinjals, currentPrice: 120, predictedPrice: 200 },
+  { name: "Cabbage", image: Cabbage, currentPrice: 90, predictedPrice: 150 },
+  { name: "Carrot", image: Carrot, currentPrice: 100, predictedPrice: 200 },
+  { name: "Pumpkin", image: Pumpkin, currentPrice: 70, predictedPrice: 120 },
+  { name: "Tomatoes", image: Tomatoes, currentPrice: 110, predictedPrice: 180 },
+];
+
+export default function PricePredictionScreen() {
+  const { whereToPlant, whenToPlant, whatToPlant } = useLocalSearchParams();
+
+  const [currentSelectedVegetable, setCurrentSelectedVegetable] =
+    useState<string>(whatToPlant.toString() || "Carrot");
+  const [currentSelectedVegetableImage, setCurrentSelectedVegetableImage] =
+    useState<any>(
+      vegetableData.find(
+        (veg) => veg.name.toLowerCase() === whatToPlant.toString().toLowerCase()
+      )?.image || Carrot
+    );
+  const [currentPrice, setCurrentPrice] = useState<number>(
+    vegetableData.find((veg) => veg.name === whatToPlant)?.currentPrice || 100
+  );
+  const [predictedPrice, setPredictedPrice] = useState<number>(
+    vegetableData.find((veg) => veg.name === whatToPlant)?.predictedPrice || 200
+  );
+  const [remainingPredictions, setRemainingPredictions] = useState<number>(10);
+
+  const fetchPoints = async () => {
+    const points = await useGetRewardPoints();
+    setRemainingPredictions(points);
+  };
+  useEffect(() => {
+
+    fetchPoints();
+  }, []);
+
+  const handleVegetableSelect = async (veg: Vegetable) => {
+    try {
+      LogBox.ignoreAllLogs();
+      try {
+        await usePostRedeemReward({
+          rewardType: "premium_prediction",
+        });
+        console.log("Reward redeemed successfully.");
+        
+        setCurrentSelectedVegetable(veg.name);
+        setCurrentSelectedVegetableImage(veg.image);
+        setCurrentPrice(veg.currentPrice);
+
+        const predictedPrice = await fetchPredictedPrice(
+          whenToPlant.toString(),
+          veg.name
+        );
+        console.log("Predicted Price: ", predictedPrice);
+        
+        setPredictedPrice(predictedPrice);
+        fetchPoints();
+      } catch (error) {
+        alert("Could not redeem reward. insufficient points.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Could not fetch the predicted price. Please try again.");
+    }
+  };
+
+  const renderVegetableTile = ({ item }: { item: Vegetable }) => (
+    <Pressable
+      onPress={() => handleVegetableSelect(item)}
+      className="bg-white flex-1 m-2 aspect-square rounded-lg shadow-md justify-center items-center"
+    >
+      <Image source={item.image} className="w-12 h-12" />
+      <Text className="mt-2 font-bold">{item.name}</Text>
+    </Pressable>
+  );
+
+  return (
+    <SafeAreaView className="flex-1  bg-white">
+      <View className="p-4">
+        <Pressable
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/home")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </Pressable>
+
+        <ThemedText type="title">Price Prediction</ThemedText>
+
+        <View className="bg-white rounded-lg shadow-md p-4 mb-6">
+          <View className="flex-row items-center mb-4">
+            <Image
+              source={currentSelectedVegetableImage}
+              className="w-[120px] h-[100px] mr-4"
+            />
+            <Text className="text-lg font-bold">
+              {currentSelectedVegetable}
+            </Text>
+          </View>
+          {/* <Text className="text-gray-600">Current Price: {currentPrice}</Text> */}
+          <Text className="text-green-600 font-bold text-2xl">
+            Predicted Price: Rs: {predictedPrice.toPrecision(5)}
+          </Text>
+        </View>
+
+        <View className="flex-row items-center justify-between mb-4">
+          <Text className="text-gray-600">
+            {remainingPredictions} Remaining Points
+          </Text>
+          <Pressable
+            onPress={() => router.replace("/(root)/(screens)/rewards")}
+            className="bg-green-500 px-4 py-2 rounded-md"
+          >
+            <Text className="text-white font-bold">Get More</Text>
+          </Pressable>
+        </View>
+
+        <Text className="text-lg font-bold mb-4 text-center">
+          Select a Different Vegetable
+        </Text>
+
+        <FlatList
+          data={vegetableData}
+          numColumns={3}
+          renderItem={renderVegetableTile}
+          keyExtractor={(item) => item.name}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "space-evenly",
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+
+================================================
+File: /app/(root)/(screens)/rewards.tsx
+================================================
+import { View, Text, Pressable, ScrollView, SafeAreaView } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+
+import AntDesign from "@expo/vector-icons/AntDesign";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
+import React, { useEffect } from "react";
+import { useGetRewardPoints, useGetRewardSettings } from "@/api/rewardService";
+
+export default function RewardsScreen() {
+  type AntDesignIconName = "linechart" | "enviromento" | "API";
+  const [points, setPoints] = React.useState(0);
+
+  const rewards: {
+    id: number;
+    title: string;
+    coins: number;
+    icon: AntDesignIconName;
+    comingSoon?: boolean;
+    event : string;
+    onPress?: () => void;
+  }[] = [
+    {
+      id: 1,
+      title: "Price Prediction",
+      event : "premium_prediction",
+      coins: 100,
+      icon: "linechart",
+      onPress: () => {
+        router.replace("/(root)/(screens)/selectCropForPrediction");
+      },
+    },
+    {
+      id: 2,
+      title: "Nearby Farmer info",
+      event : "market_insight",
+      coins: 100,
+      icon: "enviromento",
+      onPress: () => {
+        //todo : redirem points
+        // alert("todo : redirem points");
+        router.replace("/(root)/(screens)/nearByFamersData");
+      },
+    },
+  ];
+
+  const [rewardsettings , setRewardSettings] = React.useState<any>([]);
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      const points = await useGetRewardPoints();
+      setPoints(points);
+    };
+    fetchPoints();
+    const fetchRewardSettings = async () => {
+      const response = await useGetRewardSettings();
+      setRewardSettings(response);
+    }
+    fetchRewardSettings();
+  }, []);
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView
+        className="bg-gray-100 flex-1"
+        contentContainerStyle={{ padding: 16 }}
+      >
+        {/* Go Back Button */}
+        <Pressable
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/home")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </Pressable>
+
+        <ThemedText type="title" className="mb-4">
+          Rewards
+        </ThemedText>
+
+        <View className="bg-white p-4 rounded-lg shadow-md mb-4">
+          <View className="flex-row items-center justify-between">
+            <View>
+              <Text className="text-gray-600">Your points</Text>
+
+              <View className="flex-row items-center bg-white rounded-full px-2 py-1">
+                <View className="bg-yellow-400 rounded-full p-3 mr-2">
+                  <AntDesign name="heart" size={30} color="#A64B2A" />
+                </View>
+                <Text className="text-green-600 font-bold text-4xl">
+                  {points}
+                </Text>
+              </View>
+            </View>
+            <AntDesign name="right" size={20} color="gray" />
+          </View>
+
+          <View className="flex-row justify-between mt-4 flex-wrap">
+            {/* History Button */}
+            <Pressable className="w-[30%]  p-4 rounded-lg items-center">
+              <View className="bg-green-100 p-4 rounded-full">
+                <MaterialIcons name="history" size={30} color="#38A169" />
+              </View>
+              <Text className="text-gray-700 mt-2 text-center">History</Text>
+            </Pressable>
+
+            {/* Leaderboard Button */}
+            <Pressable onPress={
+              () => router.replace("/(root)/(screens)/leaderboard")
+            }  className="w-[30%]  p-4 rounded-lg items-center">
+              <View className="bg-purple-100 p-4 rounded-full">
+                <AntDesign name="barschart" size={30} color="#805AD5" />
+              </View>
+              <Text className="text-gray-700 mt-2 text-center">
+                Leaderboard
+              </Text>
+            </Pressable>
+
+            {/* Explore Rewards Button */}
+            <Pressable className="w-[30%]  p-4 rounded-lg items-center">
+              <View className="bg-blue-100 p-4 rounded-full">
+                <AntDesign name="staro" size={30} color="#3182CE" />
+              </View>
+              <Text className="text-gray-700 mt-2 text-center">
+                Explore rewards
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* Reward Promotion Section */}
+        <View className="bg-green-500 rounded-lg p-4 flex-row items-center mb-4">
+          <View className="flex-1">
+            <Text className="text-white font-bold text-lg">Get Rewarded</Text>
+            <Text className="text-white mt-1">
+              for sharing your farming data! Tap here to contribute now!
+            </Text>
+          </View>
+          <View className="bg-white p-4 ml-1 rounded-full">
+            <AntDesign name="gift" size={50} color="#38A169" />
+          </View>
+        </View>
+
+        {/* Rewards List */}
+        <View className="flex-row flex-wrap justify-between">
+          {rewards.map((reward) => (
+            <Pressable
+              key={reward.id}
+              className="w-[48%] bg-green-500 rounded-lg items-center mb-4"
+              disabled={reward.comingSoon}
+              onPress={reward.onPress}
+            >
+              <View className="bg-white p-4 rounded-full m-4">
+                <AntDesign name={reward.icon} size={30} color="#38A169" />
+              </View>
+
+              <View className="flex-row items-center bg-white rounded-full px-2 py-1">
+                <View className="bg-yellow-400 rounded-full p-1 mr-2">
+                  <AntDesign name="heart" size={12} color="#A64B2A" />
+                </View>
+                <Text className="text-green-600 font-bold">{
+                  // get points from reward settings
+                  rewardsettings.find((setting: any) => setting.event === reward.event)?.points
+                  }</Text>
+              </View>
+
+              <Text className="text-white font-bold text-[14px] m-2 text-center">
+                {reward.title}
+              </Text>
+
+              {reward.comingSoon && (
+                <View className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-50 rounded-lg flex items-center justify-center">
+                  <Text className="text-white font-bold text-center">
+                    Coming Soon
+                  </Text>
+                </View>
+              )}
+            </Pressable>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+
+================================================
+File: /app/(root)/(screens)/home.tsx
+================================================
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+} from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from '@expo/vector-icons/Entypo';
+import { router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import QRCode from "react-native-qrcode-svg"; // Import QRCode component
+import MenuOption from "@/components/HomeOption";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
+
+interface MenuOptionProps {
+  icon: React.ReactNode;
+  label: string;
+  onPress?: () => void;
+  buttonId?: string;
+}
+
+interface User {
+  email: string;
+  username: string;
+}
+
+const HomeScreen: React.FC = ({}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [openQR, setOpenQR] = useState<boolean>(false);
+
+  const onQRCodePress = () => {
+    setOpenQR(!openQR); // Toggle QR code visibility
+  };
+
+  const onAddFarmingPress = () => {
+    console.log("Add Farming Data Pressed");
+    router.replace("/(root)/(screens)/addFarmingData");
+  };
+
+  const onRewardPress = () => {
+    router.replace("/(root)/(screens)/rewards");
+  };
+
+  const onPreferencePress = () => {
+    router.replace("/(root)/(screens)/user-preferences");
+  };
+
+  const onChatbotPress = () => {
+    router.replace("/(root)/(screens)/chatbot");
+  };
+
+  const onLogoutPress = () => {
+    router.replace("/(auth)/sign-in");
+  };
+
+  
+  const menuItems: Array<MenuOptionProps> = [
+    {
+      icon: <AntDesign name="pluscircleo" size={55} color="white" />,
+      label: "Add Farming Data",
+      buttonId: "home-addFarmingDataButton",
+      onPress: onAddFarmingPress,
+    },
+    {
+      icon: <AntDesign name="gift" size={55} color="white" />,
+      label: "Reward Program",
+      buttonId: "home-rewardsButton",
+      onPress: onRewardPress,
+    },
+    {
+      icon: <AntDesign name="setting" size={55} color="white" />,
+      label: "User Preference",
+      buttonId: "home-userPreferenceButton",
+      onPress: onPreferencePress,
+    },
+    {
+      icon: <Entypo name="chat" size={55} color="white" />,
+      label: "Chat",
+      buttonId: "home-chatButton",
+      onPress: onChatbotPress,
+    },
+    {
+      icon: <AntDesign name="login" size={55} color="white" />,
+      label: "Logout",
+      buttonId: "home-logoutButton",
+      onPress: onLogoutPress,
+    },
+  ];
+
+  // get user from store
+  useEffect(() => {
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+  }, []);
+
+  return (
+    <SafeAreaView className="flex-1 gap-10">
+      <View className="items-center pt-8 pb-4">
+        <Image
+          source={require("../../../assets/images/app-icon.png")}
+          className="w-[126p] h-[126px] mt-[35px]"
+          resizeMode="contain"
+        />
+      </View>
+
+      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
+        <View className="absolute top-[-35px] left-4 transform px-6 w-full flex justify-center ">
+          <TouchableOpacity
+            className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
+            onPress={onQRCodePress}
+          >
+            <Image
+              source={require("@/assets/images/qr.png")}
+              className="w-8 h-8"
+            />
+            <Text className="text-gray-800 font-medium">Show QR Code </Text>
+          </TouchableOpacity>
+        </View>
+
+        {openQR && user ? (
+          <View className="mt-[78px] items-center">
+            <View className="bg-white p-4 rounded-xl  ">
+              <QRCode value={user.email} size={220} color="green" />
+            </View>
+          </View>
+        ) : (
+          <View className="mt-[28px]">
+            <View className="flex-row flex-wrap justify-between">
+              {menuItems.map((item, index) => (
+              <View key={index} className="w-[48%] mb-[5px]">
+                <UserInteractionWrapper
+                buttonId={item.buttonId ?? `menu-item-${index}`}
+                devmode={false}
+                missClickTrackingArea={5}
+                actualButton={
+                  <MenuOption
+                  icon={item.icon}
+                  label={item.label}
+                  onPress={item.onPress}
+                  />
+                }
+                />
+              </View>
+              ))}
+            </View>
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default HomeScreen;
+
+
+================================================
+File: /app/(root)/(screens)/user-preferences.tsx
+================================================
+import { View, Text, ScrollView, Alert } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedInput } from "@/components/ThemedInput";
+import { ThemedSelect } from "@/components/ThemedSelect";
+import { router } from "expo-router";
+import { ThemedButton } from "@/components/ThemedButton";
+
+const UserPreferences = () => {
+  const [email, setEmail] = useState("");
+  const [textSize, setTextSize] = useState("");
+  const [age, setAge] = useState(0);
+  const [userName, setUserName] = useState("");
+  const [visionProblems, setVisionProblems] = useState(false);
+  const [colorBlindness, setColorBlindness] = useState(false);
+  const [layout, setLayout] = useState("");
+  const [colorFriendlyScheme, setColorFriendlyScheme] = useState("");
+  const [useSymbolsWithColors, setUseSymbolsWithColors] = useState(false);
+
+  function handleUpdate(): void {
+    Alert.alert("User Preferences Updated Successfully");
+  }
+
+  function handleCancel(): void {
+    router.replace("/(root)/(screens)/home");
+  }
+
+  function handleNavigate(): void {
+    throw new Error("Function not implemented.");
+  }
+
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <View className="flex  p-[40px]">
+          <Text className="text-[32px]  text-left font-bold">User Profile</Text>
+          <Text className="text-[16px]  mb-6 text-gray-600">
+            You can edit your preferences here.
+          </Text>
+
+          <Text className="text-[20px] leading-[24px] font-bold mb-3 ">
+            Account Details
+          </Text>
+
+          <ThemedInput
+            label="Name"
+            placeholder="Enter your name"
+            value={userName}
+            onChangeText={(value) => setUserName(value as string)}
+            className="mb-4"
+          />
+
+          <ThemedInput
+            label="Age"
+            placeholder="Enter your age"
+            value={age.toString()}
+            onChangeText={(value) => setAge(value as number)}
+            className="mb-4"
+            keyboardType="numeric"
+          />
+
+          <ThemedInput
+            label="Email"
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={(value) => setEmail(value as string)}
+            className="mb-4"
+            keyboardType="email-address"
+          />
+
+          <Text className="text-[20px] leading-[24px] font-bold mb-3">
+            Preferences
+          </Text>
+
+          <ThemedSelect
+            label="Are you having a vision problem?"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={visionProblems}
+            onValueChange={(value) => setVisionProblems(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Preferred Text Size"
+            placeholder="Choose one"
+            options={[
+              { label: "Small", value: "Small" },
+              { label: "Medium", value: "Medium" },
+              { label: "Large", value: "Large" },
+            ]}
+            value={textSize}
+            onValueChange={(value) => setTextSize(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Are you color blind?"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={colorBlindness}
+            onValueChange={(value) => setColorBlindness(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Preferred Layout"
+            placeholder="Choose one"
+            options={[
+              { label: "Simple", value: "Simple" },
+              { label: "Advanced", value: "Advanced" },
+            ]}
+            value={layout}
+            onValueChange={(value) => setLayout(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Color Scheme Preference"
+            placeholder="Choose one"
+            options={[
+              { label: "Red-Green Safe", value: "Red-Green Safe" },
+              { label: "High Contrast", value: "High Contrast" },
+            ]}
+            value={colorFriendlyScheme}
+            onValueChange={(value) => setColorFriendlyScheme(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Use Symbols with Colors"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={useSymbolsWithColors}
+            onValueChange={(value) => setUseSymbolsWithColors(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <View className="flex flex-row gap-[12px]">
+            <ThemedButton
+              label="Update"
+              variant="primary"
+              onPress={() => handleUpdate()}
+              textStyle="text-lg"
+              containerStyle="w-1/2  p-4 rounded-lg my-6"
+            />
+            <ThemedButton
+              label="Cancel"
+              variant="outline"
+              onPress={() => handleCancel()}
+              textStyle="text-lg"
+              containerStyle="w-1/2  p-4 rounded-lg my-6"
+            />
+          </View>
+
+          <ThemedButton
+            label="Give Feedback about the app"
+            variant="primary"
+            onPress={() => handleNavigate()}
+            textStyle="text-lg"
+            containerStyle="w-full  p-4 rounded-lg my-6"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default UserPreferences;
+
+
+================================================
+File: /app/(root)/(screens)/nearByFamersData.tsx
+================================================
+import React, { useState, useEffect, useMemo } from "react";
+import { View, Text, SafeAreaView, FlatList, Modal, TouchableOpacity, Dimensions } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedButton } from "@/components/ThemedButton";
+import { router } from "expo-router";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import * as Location from "expo-location";
+import MapView, { Marker, Circle, Region } from "react-native-maps";
+import * as SecureStore from "expo-secure-store";
+import { groupBy, sumBy, maxBy } from 'lodash';
+
+// Import the API function
+import { useGetNearbyFarmers } from "@/api/rewardService"; 
+
+// Configurable geofence radius (in kilometers)
+const GEO_FENCE_RADIUS = 10; 
+
+// Interface for farmer data
+interface Farmer {
+  id: number;
+  farmer_ref: string;
+  farmer_name: string;
+  lat: number;
+  long: number;
+  vegetable_ref: string;
+  vegetable_name: string;
+  amount: number;
+  distance: number;
+}
+
+// Interface for vegetable analytics
+interface VegetableAnalytics {
+  vegetable_name: string;
+  total_amount: number;
+  farmer_count: number;
+}
+
+export default function NearByFarmersData() {
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [user, setUser] = useState<any | null>(null);
+  const [nearbyFarmers, setNearbyFarmers] = useState<Farmer[]>([]);
+  const [selectedFarmer, setSelectedFarmer] = useState<Farmer | null>(null);
+  const [mapRegion, setMapRegion] = useState<Region | null>(null);
+  
+  // Collapsible states
+  const [isAnalyticsCollapsed, setIsAnalyticsCollapsed] = useState(true);
+  const [isFarmersListCollapsed, setIsFarmersListCollapsed] = useState(true);
+  
+  // Full screen state
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      // Request location permissions
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        alert("Permission to access location was denied");
+        return;
+      }
+
+      // Get current location
+      try {
+        let loc = await Location.getCurrentPositionAsync({});
+        const currentLocation = {
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+        };
+        setLocation(currentLocation);
+
+        // Set initial map region
+        setMapRegion({
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+
+        // Fetch nearby farmers
+        const farmersResponse = await useGetNearbyFarmers(
+          currentLocation.latitude, 
+          currentLocation.longitude, 
+          GEO_FENCE_RADIUS
+        );
+
+        // Handle the API response structure
+        if (farmersResponse) {
+          setNearbyFarmers(farmersResponse);
+        } else {
+          console.error('Failed to fetch nearby farmers');
+        }
+      } catch (error) {
+        console.error("Error getting location or farmers", error);
+        alert("Could not retrieve your current location or nearby farmers");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    // Retrieve user data from secure storage
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+  }, []);
+
+  // Compute vegetable analytics
+  const vegetableAnalytics = useMemo(() => {
+    if (nearbyFarmers.length === 0) return [];
+
+    // Group farmers by vegetable
+    const groupedVegetables = groupBy(nearbyFarmers, 'vegetable_name');
+
+    // Compute analytics for each vegetable
+    return Object.entries(groupedVegetables).map(([vegetable_name, farmers ] : [any, any]) => ({
+      vegetable_name,
+      total_amount: sumBy(farmers, 'amount'),
+      farmer_count: farmers.length
+    })).sort((a, b) => b.total_amount - a.total_amount);
+  }, [nearbyFarmers]);
+
+  // Get the most planted vegetable
+  const mostPlantedVegetable = useMemo(() => {
+    return vegetableAnalytics.length > 0 ? vegetableAnalytics[0] : null;
+  }, [vegetableAnalytics]);
+
+  // Get farmer with most vegetable amount
+  const farmerWithMostVegetables = useMemo(() => {
+    return nearbyFarmers.length > 0 ? maxBy(nearbyFarmers, 'amount') : null;
+  }, [nearbyFarmers]);
+
+  const renderFarmerMarkers = () => {
+    return nearbyFarmers.map((farmer) => (
+      <Marker
+        key={farmer.id}
+        coordinate={{
+          latitude: farmer.lat,
+          longitude: farmer.long,
+        }}
+        pinColor="green"
+        title={farmer.farmer_name}
+        description={`${farmer.vegetable_name} - ${farmer.amount} kg`}
+        onPress={() => setSelectedFarmer(farmer)}
+      />
+    ));
+  };
+
+  const FarmerDetailModal = () => {
+    if (!selectedFarmer) return null;
+
+    return (
+      <Modal
+        visible={!!selectedFarmer}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setSelectedFarmer(null)}
+      >
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="bg-white p-6 rounded-lg w-11/12">
+            <Text className="text-xl font-bold mb-4">{selectedFarmer.farmer_name}</Text>
+            <Text>Vegetable: {selectedFarmer.vegetable_name}</Text>
+            <Text>Amount: {selectedFarmer.amount} kg</Text>
+            <Text>Distance: {(selectedFarmer.distance / 1000).toFixed(2)} km</Text>
+            <TouchableOpacity 
+              className="mt-4 p-2 bg-blue-500 rounded"
+              onPress={() => setSelectedFarmer(null)}
+            >
+              <Text className="text-white text-center">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const handleRegionChangeComplete = (region: Region) => {
+    // Allow the map to be manually moved without snapping back
+    setMapRegion(region);
+  };
+
+  const CollapsibleSection = ({ 
+    title, 
+    isCollapsed, 
+    setIsCollapsed, 
+    children 
+  } : {
+    title: string;
+    isCollapsed: boolean;
+    setIsCollapsed: (value: boolean) => void;
+    children: React.ReactNode;
+  }) => (
+    <View className="bg-gray-100 mb-2">
+      <TouchableOpacity 
+        className="flex-row justify-between items-center p-3 bg-gray-200"
+        onPress={() => setIsCollapsed(!isCollapsed)}
+      >
+        <ThemedText type="subtitle">{title}</ThemedText>
+        <AntDesign 
+          name={isCollapsed ? "down" : "up"} 
+          size={20} 
+          color="black" 
+        />
+      </TouchableOpacity>
+      {!isCollapsed && (
+        <View className="p-3">
+          {children}
+        </View>
+      )}
+    </View>
+  );
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-row items-center p-4">
+        <TouchableOpacity
+          className="flex-row items-center"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="flex-1">
+        <ThemedText type="title" className="px-4 mb-2">
+          Nearby Farmers Map
+        </ThemedText>
+
+        <View 
+          className="flex-1" 
+          style={{ 
+            height: isFullScreen ? Dimensions.get('window').height : 400 
+          }}
+        >
+          {location && mapRegion ? (
+            <>
+              <MapView
+                style={{ flex: 1  }}
+                region={mapRegion}
+                onRegionChangeComplete={handleRegionChangeComplete}
+                showsUserLocation={true}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                  title="Your Location"
+                  description="Your current location"
+                  pinColor="blue"
+                />
+                <Circle
+                  center={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                  radius={GEO_FENCE_RADIUS * 1000} 
+                  fillColor="rgba(0, 0, 255, 0.1)"
+                  strokeColor="rgba(0, 0, 255, 0.5)"
+                  strokeWidth={2}
+                />
+                {renderFarmerMarkers()}
+              </MapView>
+              
+              {/* Full Screen Toggle Button */}
+              {/* <TouchableOpacity
+                className="absolute bottom-4 right-4 bg-white rounded-full p-2 shadow-lg"
+                onPress={() => setIsFullScreen(!isFullScreen)}
+              >
+                <Ionicons 
+                  name={isFullScreen ? "contract" : "expand"} 
+                  size={24} 
+                  color="black" 
+                />
+              </TouchableOpacity> */}
+
+              <FarmerDetailModal />
+            </>
+          ) : (
+            <Text className="text-center">Loading map...</Text>
+          )}
+        </View>
+
+        {/* Analytics Section */}
+        <CollapsibleSection
+          title="Farmer Analytics"
+          isCollapsed={isAnalyticsCollapsed}
+          setIsCollapsed={setIsAnalyticsCollapsed}
+        >
+          {mostPlantedVegetable && (
+            <View className="mb-2">
+              <Text className="font-bold">Most Planted Vegetable</Text>
+              <Text>{mostPlantedVegetable.vegetable_name}</Text>
+              <Text>Total Amount: {mostPlantedVegetable.total_amount.toFixed(2)} kg</Text>
+              <Text>Number of Farmers: {mostPlantedVegetable.farmer_count}</Text>
+            </View>
+          )}
+
+          {farmerWithMostVegetables && (
+            <View className="mb-2">
+              <Text className="font-bold">Farmer with Most Vegetables</Text>
+              <Text>{farmerWithMostVegetables.farmer_name}</Text>
+              <Text>Vegetable: {farmerWithMostVegetables.vegetable_name}</Text>
+              <Text>Amount: {farmerWithMostVegetables.amount.toFixed(2)} kg</Text>
+            </View>
+          )}
+
+          <ThemedText type="subtitle" className="mt-2 mb-2">
+            Vegetable Breakdown
+          </ThemedText>
+          <FlatList
+            data={vegetableAnalytics}
+            keyExtractor={(item) => item.vegetable_name}
+            renderItem={({ item }) => (
+              <View className="border-b border-gray-200 p-2">
+                <Text className="font-bold">{item.vegetable_name}</Text>
+                <Text>Total Amount: {item.total_amount.toFixed(2)} kg</Text>
+                <Text>Farmers: {item.farmer_count}</Text>
+              </View>
+            )}
+          />
+        </CollapsibleSection>
+
+        {/* Nearby Farmers List */}
+        <CollapsibleSection
+          title={`Nearby Farmers (${nearbyFarmers.length})`}
+          isCollapsed={isFarmersListCollapsed}
+          setIsCollapsed={setIsFarmersListCollapsed}
+        >
+          <FlatList
+            data={nearbyFarmers}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View className="border-b border-gray-200 p-2">
+                <Text className="font-bold">{item.farmer_name}</Text>
+                <Text>Vegetable: {item.vegetable_name}</Text>
+                <Text>Amount: {item.amount} kg</Text>
+                <Text>Distance: {(item.distance / 1000).toFixed(2)} km</Text>
+              </View>
+            )}
+            ListEmptyComponent={
+              <Text className="text-center text-gray-500">
+                No nearby farmers found
+              </Text>
+            }
+          />
+        </CollapsibleSection>
+      </View>
+
+      <View className="p-4 bg-white border-t border-gray-200">
+        <ThemedButton
+          label="Go Back"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+          variant="primary"
+          textStyle="text-lg"
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+================================================
+File: /app/(root)/(screens)/selectCropForPrediction.tsx
+================================================
+import React from "react";
+import { View, ScrollView, Pressable, Text, SafeAreaView } from "react-native";
+import { ThemedInput } from "@/components/ThemedInput";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedButton } from "@/components/ThemedButton";
+import { ThemedSelect } from "@/components/ThemedSelect";
+import { router } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
+
+export default function SelectCropForPrediction() {
+  const [whereToPlant, setWhereToPlant] =
+    React.useState<string>("NUWARA ELIYA");
+  const [whenToPlant, setWhenToPlant] = React.useState<Date>(new Date());
+  const [whatToPlant, setWhatToPlant] = React.useState<string>("");
+
+  const handleGetPrediction = () => {
+
+
+    // make them required
+    if (!whereToPlant || !whenToPlant || !whatToPlant) {
+      console.log("Please fill all fields");
+      return;
+    }
+    // Format the `whenToPlant` date as ISO or another suitable format
+    const formattedDate = whenToPlant.toISOString();
+
+    router.replace({
+      pathname: "/(root)/(screens)/pricePrediction",
+      params: {
+        whereToPlant,
+        whenToPlant: formattedDate,
+        whatToPlant,
+      },
+    });
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
+        <Pressable
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </Pressable>
+
+        <View>
+          <ThemedText type="title" className="mb-4">
+            Price Prediction
+          </ThemedText>
+
+          <ThemedInput
+            label="Where Would You Like to Plant?"
+            placeholder="Enter location"
+            value={whereToPlant}
+            onChangeText={(value) => setWhereToPlant(value as string)}
+            className="mb-4"
+          />
+          <ThemedInput
+            label="When Do You Wish to Plant?"
+            placeholder="Select date"
+            type="date"
+            value={new Date(whenToPlant)}
+            onChangeText={setWhenToPlant}
+            className="mb-4"
+            dateRange="future"
+          />
+          <ThemedSelect
+            label="Select a Vegetable"
+            placeholder="Choose one"
+            options={[
+              { label: "Brinjals", value: "BRINJALS" },
+              { label: "Cabbage", value: "CABBAGE" },
+              { label: "Carrot", value: "CARROT" },
+              { label: "Pumpkin", value: "PUMPKIN" },
+              { label: "Tomatoes", value: "TOMATOES" },
+            ]}
+            value={whatToPlant}
+            onValueChange={(value) => setWhatToPlant(value as string)}
+            error=""
+            disabled={false}
+          />
+        </View>
+      </ScrollView>
+
+      <View className="p-4 bg-white border-t border-gray-200">
+        <ThemedButton
+          label="Get Prediction"
+          onPress={() => handleGetPrediction()}
+          variant="primary"
+          textStyle="text-lg"
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+
+================================================
+File: /app/(root)/(screens)/_layout.tsx
+================================================
+import { Stack } from "expo-router";
+ 
+const Layout = () => {
+  return (
+    <Stack>
+      <Stack.Screen name="user-preferences" options={{ headerShown: false }} />
+      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+      <Stack.Screen name="rewards" options={{ headerShown: false }} />
+      <Stack.Screen name="home" options={{ headerShown: false }} />
+      <Stack.Screen name="pricePrediction" options={{ headerShown: false }} />
+      <Stack.Screen name="selectCropForPrediction" options={{ headerShown: false }} />
+      <Stack.Screen name="addFarmingData" options={{ headerShown: false }} />
+      <Stack.Screen name="nearByFamersData" options={{ headerShown: false }} />
+      <Stack.Screen name="leaderboard" options={{ headerShown: false }} />
+    </Stack>
+  );
+};
+ 
+export default Layout;
+
+================================================
+File: /app/(root)/(screens)/addFarmingData.tsx
+================================================
+import React, { useState, useEffect } from "react";
+import { View, ScrollView, Pressable, Text, SafeAreaView } from "react-native";
+import { ThemedInput } from "@/components/ThemedInput";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedButton } from "@/components/ThemedButton";
+import { ThemedSelect } from "@/components/ThemedSelect";
+import { router } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
+import * as Location from "expo-location";
+import MapView, { Marker, Circle } from "react-native-maps";
+import { usePostFarmingData } from "@/api/rewardService";
+import * as SecureStore from "expo-secure-store";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
+
+// const GEO_FENCE_LATITUDE = 7.050308;
+// const GEO_FENCE_LONGITUDE = 79.937582;
+const GEO_FENCE_RADIUS = 5; // in kilometers
+
+function isLocationWithinRadius(
+  latitude: number,
+  longitude: number,
+  geoFenceLatitude: number,
+  geoFenceLongitude: number,
+  radius: number
+) {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = deg2rad(geoFenceLatitude - latitude);
+  const dLon = deg2rad(geoFenceLongitude - longitude);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(latitude)) *
+      Math.cos(deg2rad(geoFenceLatitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in km
+  return distance <= radius;
+}
+
+function deg2rad(deg: number) {
+  return deg * (Math.PI / 180);
+}
+
+export default function AddFarmData() {
+  const [whenToPlant, setWhenToPlant] = useState<Date>(new Date());
+  const [whatToPlant, setWhatToPlant] = useState<string>("");
+  const [amount, setAmount] = useState<number>(150);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [user, setUser] = useState<any | null>(null);
+  const [farmer, setFarmer] = useState<any | null>(null);
+
+  function isLocationInRadius(latitude: number, longitude: number) {
+    return isLocationWithinRadius(
+      latitude,
+      longitude,
+      farmer.lat,
+      farmer.long,
+      GEO_FENCE_RADIUS
+    );
+  }
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        alert("Permission to access location was denied");
+        return;
+      }
+
+      let loc = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+      });
+    })();
+  }, []);
+
+  const handleSubmit = async () => {
+    if (!location || !whatToPlant || !amount) {
+      alert("Please provide a location, vegetable selection, and amount.");
+      return;
+    }
+
+    if (!isLocationInRadius(location.latitude, location.longitude)) {
+      alert("The selected location is outside the allowed geo-fence radius.");
+      return;
+    }
+
+    const payload = {
+      farmer_ref: user.id,
+      farmer_name: user.email,
+      lat: location.latitude,
+      long: location.longitude,
+      vegetable_ref: "V001",
+      vegetable_name: whatToPlant,
+      amount: amount,
+      planted_at: whenToPlant.toISOString(),
+    };
+
+    try {
+      await usePostFarmingData(payload);
+      router.replace({
+        pathname: "/(root)/(screens)/home",
+        params: {},
+      });
+    } catch (error) {
+      console.error("Error submitting farming data:", error);
+      alert("An error occurred while submitting your data.");
+    }
+  };
+
+  useEffect(() => {
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    });
+
+    // get famer data
+    SecureStore.getItemAsync("farmer").then((user) => {
+      if (user) {
+        setFarmer(JSON.parse(user));
+        console.log("farmer", user);
+        setLocation({
+          latitude: JSON.parse(user).lat,
+          longitude: JSON.parse(user).long,
+        });
+      }
+    });
+  }, []);
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
+        <Pressable
+          className="flex-row items-center mb-4"
+          onPress={() => router.replace("/(root)/(screens)/rewards")}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+          <Text className="text-black ml-2 text-lg">Back</Text>
+        </Pressable>
+
+        <View>
+          <ThemedText type="title" className="mb-4">
+            Share Your Farming Data
+          </ThemedText>
+
+          <View style={{ height: 300, marginBottom: 16 }}>
+            {location ? (
+              <MapView
+                style={{ flex: 1 }}
+                initialRegion={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                onRegionChangeComplete={(region) => {
+                  setLocation({
+                    latitude: region.latitude,
+                    longitude: region.longitude,
+                  });
+                }}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                  title="Selected Location"
+                  description="You can drag the marker to pick a location"
+                  draggable
+                  onDragEnd={(e) => {
+                    const { latitude, longitude } = e.nativeEvent.coordinate;
+                    setLocation({ latitude, longitude });
+                  }}
+                />
+                {farmer && (
+                  <Circle
+                    center={{
+                      latitude: farmer.lat,
+                      longitude: farmer.long,
+                    }}
+                    radius={GEO_FENCE_RADIUS * 1000}
+                    fillColor="rgba(0, 0, 255, 0.1)"
+                    strokeColor="rgba(0, 0, 255, 0.5)"
+                    strokeWidth={2}
+                  />
+                )}
+              </MapView>
+            ) : (
+              <Text>Loading map...</Text>
+            )}
+          </View>
+
+          <ThemedInput
+            label="When Do You Wish to Plant?"
+            placeholder="Select date"
+            type="date"
+            value={new Date(whenToPlant)}
+            onChangeText={setWhenToPlant}
+            className="mb-4"
+            dateRange="past"
+          />
+          <ThemedSelect
+            label="Select a Vegetable"
+            placeholder="Choose one"
+            options={[
+              { label: "Brinjals", value: "BRINJALS" },
+              { label: "Cabbage", value: "CABBAGE" },
+              { label: "Carrot", value: "CARROT" },
+              { label: "Pumpkin", value: "PUMPKIN" },
+              { label: "Tomatoes", value: "TOMATOES" },
+            ]}
+            value={whatToPlant}
+            onValueChange={(value) => setWhatToPlant(value as string)}
+            error=""
+            disabled={false}
+          />
+
+          <ThemedInput
+            label="Amount (gram)"
+            placeholder="Enter amount"
+            keyboardType="numeric"
+            value={amount.toString()}
+            onChangeText={(value) => setAmount(parseInt(value, 10))}
+            className="mb-4"
+          />
+        </View>
+      </ScrollView>
+
+      <View className="p-4 bg-white border-t border-gray-200">
+        <UserInteractionWrapper
+          buttonId={"add-farming-submit-button"}
+          devmode={false}
+          missClickTrackingArea={5}
+          actualButton={
+            <ThemedButton
+              label="Submit"
+              onPress={handleSubmit}
+              variant="primary"
+              textStyle="text-lg"
+            />
+          }
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+
+================================================
+File: /app/(root)/(screens)/chatbot.tsx
+================================================
+import {
+    Pressable,
+    TextInput,
+    View,
+    Animated,
+    Keyboard,
+    Easing,
+    Platform,
+    Text,
+    ActivityIndicator,
+    Alert,
+  } from "react-native";
+  import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+  import { useEffect, useRef, useState } from "react";
+  import { ip } from '../../../api/ip'
+  
+  import { Feather } from "@expo/vector-icons";
+  import FontAwesome from "@expo/vector-icons/FontAwesome";
+  
+  export default function Chat() {
+    const backendUrl = `${ip}:3007/query`; 
+
+    const [chatText, setChatText] = useState("");
+    const [textInputHeight, setTextInputHeight] = useState(60);
+    const [sendingChat, setSendingChat] = useState(false);
+    const [conversation, setConversation] = useState<
+      { role: String; content: string }[]
+    >([]);
+  
+    const translateYRef = useRef(new Animated.Value(0)).current;
+  
+    // Function to send chat query to backend
+    const sendChatQuery = async () => {
+      if (!chatText.trim()) return; // Prevent empty messages
+  
+      setSendingChat(true); // Set sending state to true while awaiting response
+  
+      try {
+        // Send the request to the backend
+        const response = await fetch(backendUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: chatText }),
+        });
+  
+        // Check if response is successful
+        if (!response.ok) {
+          throw new Error("Failed to send message");
+        }
+  
+        const data = await response.json();
+  
+        // Add the user's query and backend response to the conversation state
+        setConversation((prevConversation) => [
+          ...prevConversation,
+          { role: "user", content: chatText },
+          { role: "bot", content: data.result },
+        ]);
+  
+        setChatText(""); // Clear the input field after sending the message
+      } catch (error) {
+        console.error("Error sending chat query:", error);
+        Alert.alert("Error", "There was a problem sending the message. Please try again.");
+      } finally {
+        setSendingChat(false); // Set sending state back to false
+      }
+    };
+  
+    return (
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
+        <View style={{ flex: 1, justifyContent: "flex-end", padding: 16 }}>
+          <View style={{ flex: 1 }}>
+            {/* Display the conversation */}
+            {conversation.map((message, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  marginBottom: 10,
+                  justifyContent: message.role === "user" ? "flex-end" : "flex-start",
+                }}
+              >
+                <View
+                  style={{
+                    padding: 10,
+                    backgroundColor: message.role === "user" ? "#22c55e" : "#e7e5e4",
+                    borderRadius: 10,
+                    maxWidth: "80%",
+                  }}
+                >
+                  <Text>{message.content}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+  
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              padding: 10,
+              borderTopWidth: 1,
+              borderTopColor: "#ccc",
+            }}
+          >
+            <TextInput
+              style={{
+                flex: 1,
+                height: textInputHeight,
+                borderColor: "#ccc",
+                borderWidth: 1,
+                borderRadius: 20,
+                paddingLeft: 10,
+                paddingRight: 10,
+                backgroundColor: "#fff",
+              }}
+              value={chatText}
+              onChangeText={setChatText}
+              placeholder="Type your message..."
+              multiline
+            />
+            <Pressable
+              onPress={sendChatQuery}
+              style={{
+                backgroundColor: "#22c55e",
+                padding: 10,
+                marginLeft: 10,
+                borderRadius: 10,
+              }}
+              disabled={sendingChat}
+            >
+              {sendingChat ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Feather name="send" size={24} color="#fff" />
+              )}
+            </Pressable>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
+    );
+  }
+
+================================================
+File: /app/_layout.tsx
+================================================
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
+import "../global.css";
+import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo'
+import { useColorScheme } from '@/hooks/useColorScheme';
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+  )
+}
+
+
+SplashScreen.preventAutoHideAsync();
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <ClerkProvider publishableKey={publishableKey}>
+      <ClerkLoaded>
+    
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(root)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      </ClerkLoaded>
+    </ClerkProvider>
+ 
+  );
+}
+
+
+
+
+
+================================================
+File: /app/(auth)/sign-in.tsx
+================================================
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedInput } from "@/components/ThemedInput";
+import { router } from "expo-router";
+import { ThemedButton } from "@/components/ThemedButton";
+import farmerData from "@/data";
+import { useLoginUser } from "@/api/auth";
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore
+
+const SignIn = () => {
+  const [email, setEmail] = useState("gihantestf@gmail.com");
+  const [password, setPassword] = useState("Gihan123");
+
+  async function handleLogIn(): Promise<void> {
+    try {
+      // Get token from API call
+      const data = await useLoginUser(email, password);
+      // decode and get payload and parse json it 
+
+      const token = data.token;
+
+      if (data) {
+        await SecureStore.setItemAsync('auth_token', token); 
+        const payload = token.split('.')[1];
+        const decodedPayload = atob(payload);
+        const parsedPayload = JSON.parse(decodedPayload);
+        console.log("111" , parsedPayload);
+        await SecureStore.setItemAsync('user', JSON.stringify(parsedPayload));
+        console.log("222" , data.famer);
+        await SecureStore.setItemAsync('farmer', JSON.stringify(data.famer));
+        router.replace("/(root)/(screens)/home");
+      } else {
+        Alert.alert("Invalid Credentials", "Please check your email or password.");
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      Alert.alert("Error", "An error occurred while logging in.");
+    }
+  }
+
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <View className="flex justify-center items-center mx-[40px]">
+          <View>
+            <Image
+              source={require("../../assets/images/reg-header-img.png")}
+              className="w-screen h-[191px]"
+            />
+          </View>
+          <Text className="text-[32px] text-center mt-[50px]">Log In</Text>
+          <Text className="text-[16px] text-center">You can login here</Text>
+
+          <ThemedInput
+            label="Email"
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={(value) => setEmail(value as string)}
+            className="mb-4"
+            keyboardType="email-address"
+          />
+
+          <ThemedInput
+            label="Password"
+            placeholder="Enter your password"
+            value={password}
+            onChangeText={(value) => setPassword(value as string)}
+            className="mb-4"
+            secureTextEntry
+          />
+
+          <ThemedButton
+            label="Log In"
+            variant="primary"
+            onPress={handleLogIn}
+            textStyle="text-lg"
+            containerStyle="w-full p-4 rounded-lg my-6"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default SignIn;
+
+
+================================================
+File: /app/(auth)/_layout.tsx
+================================================
+
+import { Stack } from 'expo-router';
+
+
+
+export default function Layout() {
+ 
+
+  return (
+  
+    
+      <Stack>
+        <Stack.Screen name="welcome" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+      </Stack>
+ 
+  );
+}
+
+
+
+
+================================================
+File: /app/(auth)/welcome.tsx
+================================================
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
+
+import { useState } from "react";
+
+import { trackInteraction, getUiRecommendation } from "../../api/reinforceUI";
+import { ThemedButtonWithML } from "@/components/ThemedButtonWithML";
+import { ThemedButton } from "@/components/ThemedButton";
+
+const Welcome = () => {
+  const [buttonClicks, setButtonClicks] = useState(0);
+  const [uiAction, setUiAction] = useState<string | null>(null);
+
+  const handleButtonClick = async () => {
+    setButtonClicks(buttonClicks + 1);
+    const response = await trackInteraction(buttonClicks + 1);
+
+    const recommendation = await getUiRecommendation();
+    console.log("Recommendation:", recommendation);
+    setUiAction(recommendation.action);
+
+    router.replace("/(auth)/sign-up");
+  };
+
+  const buttonStyles =
+    uiAction === "Move" ? styles.movedButton : styles.defaultButton;
+
+  return (
+    <SafeAreaView>
+      <View className="flex flex-col justify-center items-center my-auto h-full">
+        {uiAction && <Text>Recommended Action: {uiAction}</Text>}
+
+        <Text className=" text-[32px]">welocme</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            router.replace("/(root)/(screens)/home");
+          }}
+          className="w-1/2 bg-[#2F855A] p-8 rounded-lg mt-4 self-center"
+        >
+          <Text className="text-center">Debug</Text>
+        </TouchableOpacity>
+
+        <ThemedButton
+          label="Sign In"
+          onPress={() => {
+            router.replace("/(auth)/sign-in");
+          }}
+        />
+
+        <ThemedButtonWithML
+          label="Sign Up"
+          onPress={() => {
+            console.log("Sign Up Pressed");
+          }}
+          buttonId={"Sign up"}
+          missClickTrackingArea={0}
+        />
+
+        <ThemedButtonWithML
+          label="UI Demo"
+          onPress={() => {
+            router.replace("/(demo)/welcome");
+          }}
+          buttonId={"UI_demo"}
+          missClickTrackingArea={0}
+        />
+
+        <ThemedButtonWithML
+          label="test"
+          onPress={() => {
+            router.replace("/(demo)/test");
+          }}
+          buttonId={"UI_demo"}
+          missClickTrackingArea={0}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  defaultButton: {
+    width: 200,
+    height: 50,
+    backgroundColor: "blue",
+  },
+  movedButton: {
+    width: 200,
+    height: 50,
+    backgroundColor: "green",
+    marginLeft: 100, // Move the button to the right
+  },
+});
+export default Welcome;
+
+
+================================================
+File: /app/(auth)/sign-up.tsx
+================================================
+import { View, Text, ScrollView, Image } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedInput } from "@/components/ThemedInput";
+import { ThemedSelect } from "@/components/ThemedSelect";
+import { router } from "expo-router";
+import { ThemedButton } from "@/components/ThemedButton";
+
+const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [textSize, setTextSize] = useState("");
+  const [age, setAge] = useState(0);
+  const [userName, setUserName] = useState("");
+  const [visionProblems, setVisionProblems] = useState(false);
+  const [colorBlindness, setColorBlindness] = useState(false);
+  const [layout, setLayout] = useState("");
+  const [colorFriendlyScheme, setColorFriendlyScheme] = useState("");
+  const [useSymbolsWithColors, setUseSymbolsWithColors] = useState(false);
+
+  function handleRegister(): void {
+    router.replace("/(auth)/sign-in");
+  }
+
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <View className="flex justify-center items-center px-[40px]">
+          <Image
+            source={require("../../assets/images/reg-header-img.png")}
+            className="w-screen h-[191px]"
+          />
+          <Text className="text-[32px] text-center font-bold">Register</Text>
+          <Text className="text-[16px] text-center mb-6 text-gray-600">
+            Join us and personalize your experience.
+          </Text>
+
+          <ThemedInput
+            label="Name"
+            placeholder="Enter your name"
+            value={userName}
+            onChangeText={(value) => setUserName(value as string)}
+            className="mb-4"
+          />
+
+          <ThemedInput
+            label="Age"
+            placeholder="Enter your age"
+            value={age.toString()}
+            onChangeText={(value) => setAge(value as number)}
+            className="mb-4"
+            keyboardType="numeric"
+          />
+
+          <ThemedInput
+            label="Email"
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={(value) => setEmail(value as string)}
+            className="mb-4"
+            keyboardType="email-address"
+          />
+
+          <ThemedInput
+            label="Password"
+            placeholder="Enter your password"
+            value={password}
+            onChangeText={(value) => setPassword(value as string)}
+            className="mb-4"
+            secureTextEntry
+          />
+
+          <Text className="text-[20px] leading-[24px] text-[#2B9348] mb-4">
+            Let’s make the app work better for you! Answer a few quick
+            questions.
+          </Text>
+
+          <ThemedSelect
+            label="Are you having a vision problem?"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={visionProblems}
+            onValueChange={(value) => setVisionProblems(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Preferred Text Size"
+            placeholder="Choose one"
+            options={[
+              { label: "Small", value: "Small" },
+              { label: "Medium", value: "Medium" },
+              { label: "Large", value: "Large" },
+            ]}
+            value={textSize}
+            onValueChange={(value) => setTextSize(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Are you color blind?"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={colorBlindness}
+            onValueChange={(value) => setColorBlindness(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Preferred Layout"
+            placeholder="Choose one"
+            options={[
+              { label: "Simple", value: "Simple" },
+              { label: "Advanced", value: "Advanced" },
+            ]}
+            value={layout}
+            onValueChange={(value) => setLayout(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Color Scheme Preference"
+            placeholder="Choose one"
+            options={[
+              { label: "Red-Green Safe", value: "Red-Green Safe" },
+              { label: "High Contrast", value: "High Contrast" },
+            ]}
+            value={colorFriendlyScheme}
+            onValueChange={(value) => setColorFriendlyScheme(value as string)}
+            containerStyle="w-full"
+          />
+
+          <ThemedSelect
+            label="Use Symbols with Colors"
+            placeholder="Choose one"
+            options={[
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ]}
+            value={useSymbolsWithColors}
+            onValueChange={(value) => setUseSymbolsWithColors(value as boolean)}
+            containerStyle="w-full"
+          />
+
+          <ThemedButton
+            label="Log In"
+            variant="primary"
+            onPress={() => handleRegister()}
+            textStyle="text-lg"
+            containerStyle="w-full  p-4 rounded-lg my-6"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default SignUp;
+
+
+================================================
+File: /app/+html.tsx
+================================================
+import { ScrollViewStyleReset } from 'expo-router/html';
+import { type PropsWithChildren } from 'react';
+
+/**
+ * This file is web-only and used to configure the root HTML for every web page during static rendering.
+ * The contents of this function only run in Node.js environments and do not have access to the DOM or browser APIs.
+ */
+export default function Root({ children }: PropsWithChildren) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        {/*
+          Disable body scrolling on web. This makes ScrollView components work closer to how they do on native.
+          However, body scrolling is often nice to have for mobile web. If you want to enable it, remove this line.
+        */}
+        <ScrollViewStyleReset />
+
+        {/* Using raw CSS styles as an escape-hatch to ensure the background color never flickers in dark-mode. */}
+        <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
+        {/* Add any additional <head> elements that you want globally available on web... */}
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+
+const responsiveBackground = `
+body {
+  background-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000;
+  }
+}`;
+
+
+================================================
+File: /app/(demo)/home.tsx
+================================================
+// import React, { useEffect, useState } from "react";
+// import {
+//   View,
+//   Text,
+//   TouchableOpacity,
+//   Image,
+//   SafeAreaView,
+// } from "react-native";
+// import AntDesign from "@expo/vector-icons/AntDesign";
+// import { router } from "expo-router";
+// import * as SecureStore from "expo-secure-store";
+// import QRCode from "react-native-qrcode-svg"; // Import QRCode component
+// import MenuOption from "@/components/HomeOption";
+// import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
+
+// interface MenuOptionProps {
+//   icon: React.ReactNode;
+//   label: string;
+//   onPress?: () => void;
+//   buttonId?: string;
+// }
+
+// interface User {
+//   email: string;
+//   username: string;
+// }
+
+// const HomeScreen: React.FC = ({}) => {
+//   const [user, setUser] = useState<User | null>(null);
+//   const [openQR, setOpenQR] = useState<boolean>(false);
+
+//   const onQRCodePress = () => {
+//     setOpenQR(!openQR); // Toggle QR code visibility
+//   };
+
+//   const onAddFarmingPress = () => {
+//     console.log("Add Farming Data Pressed");
+//     router.replace("/(root)/(screens)/addFarmingData");
+//   };
+
+//   const onRewardPress = () => {
+//     router.replace("/(root)/(screens)/rewards");
+//   };
+
+//   const onPreferencePress = () => {
+//     router.replace("/(root)/(screens)/user-preferences");
+//   };
+
+//   const onLogoutPress = () => {
+//     router.replace("/(auth)/sign-in");
+//   };
+
+//   const menuItems: Array<MenuOptionProps> = [
+//     {
+//       icon: <AntDesign name="pluscircleo" size={55} color="white" />,
+//       label: "Add Farming Data",
+//       buttonId: "home-addFarmingDataButton",
+//       onPress: onAddFarmingPress,
+//     },
+//     {
+//       icon: <AntDesign name="gift" size={55} color="white" />,
+//       label: "Reward Program",
+//       buttonId: "home-rewardsButton",
+//       onPress: onRewardPress,
+//     },
+//     {
+//       icon: <AntDesign name="setting" size={55} color="white" />,
+//       label: "User Preference", 
+//       buttonId: "home-userPreferenceButton",
+//       onPress: onPreferencePress,
+//     },
+//     {
+//       icon: <AntDesign name="login" size={55} color="white" />,
+//       label: "Logout",
+//       buttonId: "home-logoutButton",
+//       onPress: onLogoutPress,
+//     },
+//   ];
+
+//   // get user from store
+//   useEffect(() => {
+//     SecureStore.getItemAsync("user").then((user) => {
+//       if (user) {
+//         setUser(JSON.parse(user));
+//       }
+//     });
+//   }, []);
+
+//   const userAge = 65;
+//   const colorSchema = "green";
+
+//   return (
+//     <SafeAreaView className="flex-1 gap-10">
+//       <View className="items-center pt-8 pb-4">
+//         {/* <Image
+//           source={require("../../../assets/images/app-icon.png")}
+//           className="w-[126p] h-[126px] mt-[35px]"
+//           resizeMode="contain"
+//         /> */}
+//       </View>
+
+//       <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
+//         <View className="absolute top-[-35px] left-4 transform px-6 w-full flex justify-center ">
+//           <TouchableOpacity
+//             className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
+//             onPress={onQRCodePress}
+//           >
+//             <Image
+//               source={require("@/assets/images/qr.png")}
+//               className="w-8 h-8"
+//             />
+//             <Text className="text-gray-800 font-medium">Show QR Code </Text>
+//           </TouchableOpacity>
+//         </View>
+
+//         {openQR && user ? (
+//           <View className="mt-[78px] items-center">
+//             <View className="bg-white p-4 rounded-xl  ">
+//               <QRCode value={user.email} size={220} color="green" />
+//             </View>
+//           </View>
+//         ) : (
+//           <View className="mt-[78px]">
+//             <View className="flex-row flex-wrap gap-y-[30px]">
+//               {menuItems.map((item, index) => (
+//                 <>
+//                   <UserInteractionWrapper
+      
+//                     buttonId={item.buttonId ?? `menu-item-${index}`}
+//                     devmode={true}
+//                     missClickTrackingArea={50}
+//                     actualButton={
+//                       <>
+//                         <MenuOption
+//                           key={index}
+//                           icon={item.icon}
+//                           label={item.label}
+//                           onPress={item.onPress}
+//                         />
+//                       </>
+//                     }
+//                   />
+//                 </>
+//               ))}
+//             </View>
+//           </View>
+//         )}
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default HomeScreen;
+
+
+================================================
+File: /app/(demo)/test.tsx
+================================================
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function test() {
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+
+  const handleTouch = (e: any) => {
+    const { locationX, locationY } = e.nativeEvent;
+    setCoordinates({ x: locationX, y: locationY });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>Touch coordinates:</Text>
+      <Text>X: {coordinates.x}</Text>
+      <Text>Y: {coordinates.y}</Text>
+      <View
+        style={styles.touchableArea}
+        onStartShouldSetResponder={() => true}
+        onResponderRelease={handleTouch} 
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  touchableArea: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'lightblue',
+    marginTop: 20,
+  },
+});
+
+
+================================================
+File: /app/(demo)/ageDetect.tsx
+================================================
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Platform, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+
+interface Result {
+  gender: string;
+  age: string;
+}
+
+const App: React.FC = () => {
+  
+  const [image, setImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [results, setResults] = useState<Result[]>([]);
+  const [error, setError] = useState<string>('');
+
+  // Handle image picking from the device
+  const pickImage = async (): Promise<void> => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          'Permission Needed', 
+          'Sorry, we need camera roll permissions to make this work!',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+    }
+
+    try {
+      // Launch image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images, // Only allow images
+        allowsEditing: true, // Allow cropping
+        aspect: [4, 3], // Aspect ratio of the crop
+        quality: 1, // Highest quality
+        base64: false // Don't convert to base64 to save memory
+      });
+
+      // Check if an image was selected
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        
+        setImage(result.assets[0].uri);
+        setError('');
+      }
+    } catch (err) {
+      setError('Failed to pick an image. Please try again.');
+      console.error(err);
+    }
+  };
+
+  // Rest of the component remains the same as in your original code
+  const analyzeImage = async (): Promise<void> => {
+    if (!image) {
+      setError('Please select an image.');
+      return;
+    }
+
+    setLoading(true);
+    const formData = new FormData();
+    
+    try {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      formData.append('image', blob, 'photo.jpg');
+
+      const apiResponse = await axios.post('http://localhost:3001/analyze', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      if (apiResponse.data && apiResponse.data.data) {
+        setResults(apiResponse.data.data);
+      } else {
+        setError('No faces detected or analysis failed.');
+      }
+    } catch (err: any) {
+      setError('An error occurred: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View className="flex-1 justify-center items-center p-4">
+      <Text className="text-2xl font-bold mb-6">Age and Gender Detection</Text>
+      
+      {/* Image picker */}
+      <TouchableOpacity
+        className="bg-blue-500 p-3 rounded-full mb-4"
+        onPress={pickImage}
+      >
+        <Text className="text-white">Pick an Image</Text>
+      </TouchableOpacity>
+
+      {image && <Image source={{ uri: image }} className="w-40 h-40 rounded-lg mb-4" />}
+
+      {/* Rest of the component remains the same */}
+      <TouchableOpacity
+        className={`bg-green-500 p-3 rounded-full mb-4 ${loading ? 'bg-gray-400' : ''}`}
+        onPress={analyzeImage}
+        disabled={loading}
+      >
+        <Text className="text-white">{loading ? 'Analyzing...' : 'Analyze Image'}</Text>
+      </TouchableOpacity>
+
+      {loading && <Text className="text-lg">Loading...</Text>}
+      {error && <Text className="text-red-500">{error}</Text>}
+
+      {results.length > 0 && (
+        <View className="mt-4">
+          <Text className="text-xl font-semibold mb-2">Results:</Text>
+          {results.map((result, index) => (
+            <View key={index} className="mb-4">
+              <Text className="font-bold">Gender: {result.gender}</Text>
+              <Text className="font-bold">Age: {result.age}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+};
+
+export default App;
+
+================================================
+File: /app/(demo)/welcome.tsx
+================================================
+import React, { useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedButtonWithML } from "@/components/ThemedButtonWithML";
+import { router } from "expo-router";
+import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
+
+const Welcome = () => {
+  const [events, setEvents] = useState<string[]>([]);
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+  const missClickWidthThreshold = 5;
+  const missClickHeightThreshold = 10;
+
+  const handleTouch = (e: any) => {
+    const { locationX, locationY } = e.nativeEvent;
+    setCoordinates({ x: locationX, y: locationY });
+  };
+
+  const handleActualButtonPress = () => {
+    setEvents((prevEvents) => [...prevEvents, "Actual Button Clicked"]);
+  };
+
+  const handleDemoButtonPress = () => {
+    setEvents((prevEvents) => [...prevEvents, `Click Detected`]);
+  };
+
+  const handleMissClick = () => {
+    setEvents((prevEvents) => {
+      const newEvents = [
+        ...prevEvents,
+        `Miss Click Detected ${prevEvents.length + 1}`,
+      ];
+      return newEvents;
+    });
+  };
+
+  const missClickCount = events.filter((event) =>
+    event.includes("Miss Click")
+  ).length;
+
+  // Determine dynamic container styles based on miss click count
+  const buttonContainerHeight =
+    missClickCount >= missClickHeightThreshold
+      ? "h-24" // Increase to 6rem when 10 miss clicks are detected
+      : "h-16"; // Default to 4rem
+
+  const buttonContainerWidth =
+    missClickCount >= missClickWidthThreshold ? "!w-full" : "!w-1/2";
+
+  return (
+    <SafeAreaView className="flex-1">
+      <View
+        onStartShouldSetResponder={() => true}
+        onResponderRelease={handleTouch}
+        className="flex flex-col bg-red-200 justify-center items-center my-auto h-full"
+      >
+        <View className="h-40 mb-4">
+          <Text className="text-lg font-bold mb-2">Welcome</Text>
+          <Text>Touch coordinates:</Text>
+          <Text>X: {coordinates.x}</Text>
+          <Text>Y: {coordinates.y}</Text>
+          <ScrollView>
+            {events.map((event, index) => (
+              <Text key={index} className="text-base">
+                {event}
+              </Text>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View className="w-full my-10 flex flex-col justify-center items-center">
+          <ThemedButtonWithML
+            label="Actual Button"
+            onPress={handleActualButtonPress}
+            onMissClick={handleMissClick}
+            missClickTrackingArea={20}
+            buttonId={"Sign up"}
+            containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
+            viewStyle="flex flex-col justify-center items-center"
+          />
+        </View>
+
+        <View className="w-full">
+          <ThemedButtonWithML
+            label="Demo Button"
+            onPress={handleDemoButtonPress}
+            onMissClick={handleMissClick}
+            buttonId={"Sign up"}
+            devmode={true}
+            //missContainerStyle="bg-cyan-100 opacity-50 border-2 border-cyan-600"
+            containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
+            viewStyle="flex flex-col justify-center items-center"
+            missClickTrackingArea={50}
+          />
+        </View>
+
+        <View className=" mt-[50px] flex flex-row max-w-[100px] items-center justify-center">
+          <ThemedButtonWithML
+            label="Reset"
+            onPress={() => setEvents([])}
+            buttonId={"Sign up"}
+            containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
+            viewStyle="flex flex-col justify-center items-center"
+            missClickTrackingArea={10}
+            actualButton={
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleActualButtonPress();
+                  }}
+                  className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 bg-[#2F855A]`}
+                >
+                  <Text className={`font-semibold text-base text-white`}>
+                    Actual Button
+                  </Text>
+                </TouchableOpacity>
+              </>
+            }
+          />
+
+          <UserInteractionWrapper
+            buttonId={"test-gihan-button"}
+            devmode={true}
+            missClickTrackingArea={50}
+            actualButton={
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("Actual button clicked");
+                  }}
+                  className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 bg-[#2F855A]`}
+                >
+                  <Text className={`font-semibold text-base text-white`}>
+                    Actual222222222222 Button
+                  </Text>
+                </TouchableOpacity>
+              </>
+            }
+          />
+          <ThemedButtonWithML
+            label="Log In"
+            onPress={() => router.replace("/ageDetect")}
+            buttonId={"Sign up"}
+            containerStyle={`${buttonContainerWidth} ${buttonContainerHeight}`}
+            viewStyle="flex flex-col justify-center items-center"
+          />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default Welcome;
+
+
+================================================
+File: /app.json
+================================================
+{
+  "expo": {
+    "name": "mobile",
+    "slug": "mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
+
+
+================================================
+File: /global.css
+================================================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+================================================
+File: /constants/Colors.ts
+================================================
+/**
+ * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
+ * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ */
+
+const tintColorLight = '#0a7ea4';
+const tintColorDark = '#fff';
+
+export const Colors = {
+  light: {
+    text: '#11181C',
+    background: '#fff',
+    tint: tintColorLight,
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: tintColorLight,
+  },
+  dark: {
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: tintColorDark,
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: tintColorDark,
+  },
+};
+
+
+================================================
+File: /expo-env.d.ts
+================================================
+/// <reference types="expo/types" />
+
+// NOTE: This file should not be edited and should be in your git ignore
+
+================================================
+File: /utils/ruleEngine.ts
+================================================
+// Define rules for preferences
+export const rulesEngine = {
+  text_size: {
+    Medium: 14,      
+    Large: 18,        
+    "Extra Large": 22,
+  },
+
+  color_friendly_scheme: {
+        "Red_Green_Safe": {
+        color:  "text-black ",
+        },
+        "Blue_Yellow_Safe":{
+        color:  "text-blue-600"
+        },
+        Default: "text-black",
+  },
+  layout: {
+    Simple: "leading-6",
+    Compact: "leading-5",
+  },
+
+  age: {
+    young: {
+      text_size: 14,
+      color: "white",
+    },
+    middle_aged: {
+      text_size: 18, 
+      color: "white",
+    },
+    senior: {
+      text_size: 22, 
+      color: "white",
+    },
+  },
+};
+
+// Utility function to classify age group
+export function getAgeGroup(age: number): "young" | "middle_aged" | "senior" {
+  if (age < 30) return "young";
+  if (age >= 30 && age < 60) return "middle_aged";
+  return "senior";
+}
+
+
+
+export function evaluateRules(preferences: any, rules: any) {
+  const resolvedStyles: Record<string, string> = {};
+
+  Object.keys(preferences).forEach((key) => {
+    if (key === "age") {
+      const ageGroup = getAgeGroup(preferences[key]);
+      const ageRules = rules.age[ageGroup];
+      if (ageRules) {
+        Object.assign(resolvedStyles, ageRules); // Merge age-based styles
+      }
+    } else if (rules[key] && rules[key][preferences[key]]) {
+      resolvedStyles[key] = rules[key][preferences[key]];
+    }
+  });
+
+  return resolvedStyles;
+}
+
+================================================
+File: /README.md
+================================================
+# Welcome to your Expo app 👋
+
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+
+## Get started
+
+1. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+2. Start the app
+
+   ```bash
+    npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Get a fresh project
+
+When you're ready, run:
+
+```bash
+npm run reset-project
+```
+
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+
+## Learn more
+
+To learn more about developing your project with Expo, look at the following resources:
+
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+
+## Join the community
+
+Join our community of developers creating universal apps.
+
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+================================================
+File: /components/ExternalLink.tsx
+================================================
+import { Link } from 'expo-router';
+import { openBrowserAsync } from 'expo-web-browser';
+import { type ComponentProps } from 'react';
+import { Platform } from 'react-native';
+
+type Props = Omit<ComponentProps<typeof Link>, 'href'> & { href: string };
+
+export function ExternalLink({ href, ...rest }: Props) {
+  return (
+    <Link
+      target="_blank"
+      {...rest}
+      href={href as any}
+      onPress={async (event) => {
+        if (Platform.OS !== 'web') {
+          // Prevent the default behavior of linking to the default browser on native.
+          event.preventDefault();
+          // Open the link in an in-app browser.
+          await openBrowserAsync(href);
+        }
+      }}
+    />
+  );
+}
+
+
+================================================
+File: /components/ThemedText.tsx
+================================================
+import { Text, type TextProps } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
+
+export type ThemedTextProps = TextProps & {
+  lightColor?: string;
+  darkColor?: string;
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  className?: string;
+};
+
+export function ThemedText({
+  lightColor,
+  darkColor,
+  type = 'default',
+  className,
+  ...rest
+}: ThemedTextProps) {
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+
+  const typeClasses = {
+    default: 'text-base text-black leading-6',
+    defaultSemiBold: 'text-base leading-6 font-semibold',
+    title: 'text-2xl font-bold leading-8 text-black mb-4',
+    subtitle: 'text-xl font-bold',
+    link: 'text-base leading-7 text-blue-500',
+  };
+
+  return (
+    <Text
+      className={`${typeClasses[type]} ${className}`}
+      {...rest}
+    />
+  );
+}
+
+================================================
+File: /components/HomeOption.tsx
+================================================
+import React from "react";
+import { TouchableOpacity, View, Text } from "react-native";
+
+interface MenuOptionProps {
+  icon: React.ReactNode;
+  label: string;
+  onPress?: () => void;
+}
+
+const MenuOption: React.FC<MenuOptionProps> = ({ icon, label, onPress }) => (
+  <TouchableOpacity
+    style={{ alignItems: "center", justifyContent: "center", padding: 16, }}
+    onPress={onPress}
+  >
+    <View style={{ alignItems: "center", display: "flex" }}>
+      <View style={{ width: "100%" }}>{icon}</View>
+      <Text style={{ color: "white", fontSize: 14, marginTop: 8, textAlign: "center" }}>{label}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
+export default MenuOption;
+
+
+================================================
+File: /components/ThemedTextML.tsx
+================================================
+import { Text, type TextProps } from "react-native";
+import { evaluateRules, rulesEngine } from "@/utils/ruleEngine";
+import farmerData from "@/data";
+
+
+export type ThemedTextProps = TextProps & {
+  userId?: number; 
+  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  className?: string;
+};
+
+export function ThemedTextML({
+  userId = 1, // Default user ID
+  type = "default",
+  className,
+  ...rest
+}: ThemedTextProps) {
+  // Fetch user preferences
+  const userPreferences = farmerData.find((user: { user_id: number; }) => user.user_id === userId) || {};
+
+  // Default preferences if user not found
+  const preferences = {
+    text_size: "Medium",
+    color_friendly_scheme: "Default",
+    layout: "Simple",
+    age: 25, // Default age
+    ...userPreferences,
+  };
+
+  // Evaluate rules based on preferences
+  const resolvedStyles = evaluateRules(preferences, rulesEngine);
+
+  // Merge resolved styles
+  const typeClasses = {
+    default: `${resolvedStyles.text_size || "text-base"} ${resolvedStyles.color || "text-black"} ${resolvedStyles.layout || "leading-6"}`,
+    defaultSemiBold: `${resolvedStyles.text_size || "text-base"} font-semibold ${resolvedStyles.layout || "leading-6"}`,
+    title: `${resolvedStyles.text_size || "text-2xl"} font-bold mb-4 ${resolvedStyles.color || "text-black"}`,
+    subtitle: `${resolvedStyles.text_size || "text-xl"} font-bold`,
+    link: `${resolvedStyles.text_size || "text-base"} text-blue-500`,
+  };
+
+  return (
+    <Text
+      className={`${typeClasses[type]} ${className}`}
+      {...rest}
+    />
+  );
+}
+
+
+================================================
+File: /components/ThemedView.tsx
+================================================
+import { View, type ViewProps } from 'react-native';
+
+import { useThemeColor } from '@/hooks/useThemeColor';
+
+export type ThemedViewProps = ViewProps & {
+  lightColor?: string;
+  darkColor?: string;
+};
+
+export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+
+  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+
+================================================
+File: /components/HelloWave.tsx
+================================================
+// import { StyleSheet } from 'react-native';
+// import Animated, {
+//   useSharedValue,
+//   useAnimatedStyle,
+//   withTiming,
+//   withRepeat,
+//   withSequence,
+// } from 'react-native-reanimated';
+
+// import { ThemedText } from '@/components/ThemedText';
+
+// export function HelloWave() {
+//   const rotationAnimation = useSharedValue(0);
+
+//   rotationAnimation.value = withRepeat(
+//     withSequence(withTiming(25, { duration: 150 }), withTiming(0, { duration: 150 })),
+//     4 // Run the animation 4 times
+//   );
+
+//   const animatedStyle = useAnimatedStyle(() => ({
+//     transform: [{ rotate: `${rotationAnimation.value}deg` }],
+//   }));
+
+//   return (
+//     <Animated.View style={animatedStyle}>
+//       <ThemedText style={styles.text}>👋</ThemedText>
+//     </Animated.View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   text: {
+//     fontSize: 28,
+//     lineHeight: 32,
+//     marginTop: -6,
+//   },
+// });
+
+
+================================================
+File: /components/navigation/TabBarIcon.tsx
+================================================
+// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { type IconProps } from '@expo/vector-icons/build/createIconSet';
+import { type ComponentProps } from 'react';
+
+export function TabBarIcon({ style, ...rest }: IconProps<ComponentProps<typeof Ionicons>['name']>) {
+  return <Ionicons size={28} style={[{ marginBottom: -3 }, style]} {...rest} />;
+}
+
+
+================================================
+File: /components/__tests__/ThemedText-test.tsx
+================================================
+// import * as React from 'react';
+// import renderer from 'react-test-renderer';
+
+// import { ThemedText } from '../ThemedText';
+
+// it(`renders correctly`, () => {
+//   const tree = renderer.create(<ThemedText>Snapshot test!</ThemedText>).toJSON();
+
+//   expect(tree).toMatchSnapshot();
+// });
+
+
+================================================
+File: /components/__tests__/__snapshots__/ThemedText-test.tsx.snap
+================================================
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#11181C",
+      },
+      {
+        "fontSize": 16,
+        "lineHeight": 24,
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  }
+>
+  Snapshot test!
+</Text>
+`;
+
+
+================================================
+File: /components/ParallaxScrollView.tsx
+================================================
+// import type { PropsWithChildren, ReactElement } from 'react';
+// import { StyleSheet, useColorScheme } from 'react-native';
+// import Animated, {
+//   interpolate,
+//   useAnimatedRef,
+//   useAnimatedStyle,
+//   useScrollViewOffset,
+// } from 'react-native-reanimated';
+
+// import { ThemedView } from '@/components/ThemedView';
+
+// const HEADER_HEIGHT = 250;
+
+// type Props = PropsWithChildren<{
+//   headerImage: ReactElement;
+//   headerBackgroundColor: { dark: string; light: string };
+// }>;
+
+// export default function ParallaxScrollView({
+//   children,
+//   headerImage,
+//   headerBackgroundColor,
+// }: Props) {
+//   const colorScheme = useColorScheme() ?? 'light';
+//   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+//   const scrollOffset = useScrollViewOffset(scrollRef);
+
+//   const headerAnimatedStyle = useAnimatedStyle(() => {
+//     return {
+//       transform: [
+//         {
+//           translateY: interpolate(
+//             scrollOffset.value,
+//             [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
+//             [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
+//           ),
+//         },
+//         {
+//           scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [2, 1, 1]),
+//         },
+//       ],
+//     };
+//   });
+
+//   return (
+//     <ThemedView style={styles.container}>
+//       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+//         <Animated.View
+//           style={[
+//             styles.header,
+//             { backgroundColor: headerBackgroundColor[colorScheme] },
+//             headerAnimatedStyle,
+//           ]}>
+//           {headerImage}
+//         </Animated.View>
+//         <ThemedView style={styles.content}>{children}</ThemedView>
+//       </Animated.ScrollView>
+//     </ThemedView>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   header: {
+//     height: 250,
+//     overflow: 'hidden',
+//   },
+//   content: {
+//     flex: 1,
+//     padding: 32,
+//     gap: 16,
+//     overflow: 'hidden',
+//   },
+// });
+
+
+================================================
+File: /components/ThemedInput.tsx
+================================================
+import React from "react";
+import { TextInput, View, Text, TextInputProps, Platform } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+
+export type ThemedInputProps = {
+  label: string;
+  placeholder?: string;
+  value: any;
+  onChangeText: (value: any) => void;
+  lightColor?: string;
+  darkColor?: string;
+  inputStyle?: string;
+  containerStyle?: string;
+  error?: string;
+  disabled?: boolean;
+  type?: "text" | "number" | "date";
+  dateRange?: "past" | "future" | "both"; // New prop
+} & TextInputProps;
+
+export function ThemedInput({
+  label,
+  placeholder,
+  value,
+  onChangeText,
+  lightColor,
+  darkColor,
+  inputStyle = "",
+  containerStyle = "",
+  error,
+  disabled = false,
+  type = "text",
+  dateRange = "both", // Default: allow both past & future dates
+  ...rest
+}: ThemedInputProps) {
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+  const borderColor = error ? "border-red-500" : "border-gray-300";
+
+  const [showDatePicker, setShowDatePicker] = React.useState(false);
+
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      const today = new Date();
+      if (
+        (dateRange === "past" && selectedDate > today) || 
+        (dateRange === "future" && selectedDate < today)
+      ) {
+        return; // Prevent selection if it doesn't match the allowed range
+      }
+      onChangeText(selectedDate);
+    }
+  };
+
+  return (
+    <View className={`mb-4 ${containerStyle}`} style={{ width: "100%" }}>
+      <Text className="text-base font-semibold mb-2 text-black ">
+        {label}
+      </Text>
+      {type === "date" ? (
+        <View
+          style={{
+            borderWidth: 1,
+            borderRadius: 8,
+            borderColor: error ? "red" : "#d1d5db", 
+            backgroundColor: "#f3f4f6",
+            width: "100%", 
+            padding: 8,
+          }}
+        >
+          <DateTimePicker
+            value={value as Date}
+            mode="date"
+            display="spinner"
+            onChange={handleDateChange}
+            minimumDate={dateRange === "future" ? new Date() : undefined} // Prevent past dates
+            maximumDate={dateRange === "past" ? new Date() : undefined} // Prevent future dates
+            style={{ width: "100%" }}
+            {...(Platform.OS === "ios" && { textColor: "black" })}
+          />
+        </View>
+      ) : (
+        <TextInput
+          placeholder={placeholder}
+          value={value as string}
+          onChangeText={onChangeText}
+          editable={!disabled}
+          keyboardType={type === "number" ? "numeric" : "default"}
+          className={`border rounded-lg  text-black  text-base bg-gray-100 dark:bg-gray-800 ${borderColor} ${
+            disabled ? "opacity-50" : ""
+          } ${inputStyle}`}
+          placeholderTextColor="gray"
+          style={{
+            borderWidth: 1,
+            borderRadius: 8,
+            borderColor: error ? "red" : "#d1d5db",
+            backgroundColor: "#f3f4f6",
+            width: "100%",
+            padding: 16,
+          }}
+          {...rest}
+        />
+      )}
+      {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
+    </View>
+  );
+}
+
+
+================================================
+File: /components/UserInteractionWrapper.tsx
+================================================
+import React, { useState, useRef } from "react";
+import {
+  TouchableOpacity,
+  Text,
+  GestureResponderEvent,
+  View,
+  LayoutChangeEvent,
+} from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { trackInteraction } from "@/api/trackEventService";
+import { Dimensions } from "react-native";
+
+export type UserInteractionWrapperProps = {
+  onMissClick?: () => void;
+  devmode?: boolean;
+  buttonId: string;
+  missClickTrackingArea?: number;
+  missContainerStyle?: string;
+  actualButton: React.ReactNode;
+};
+
+export function UserInteractionWrapper({
+  onMissClick,
+  buttonId,
+  devmode = false,
+  missClickTrackingArea = 50,
+  actualButton,
+}: UserInteractionWrapperProps) {
+  const containerRef = useRef<View>(null);
+  const [buttonLayout, setButtonLayout] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const [buttonContainerLayout, setButtonContainerLayout] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const { width, height } = Dimensions.get("window");
+
+  const handleButtonLayout = (event: LayoutChangeEvent) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setButtonLayout({ x, y, width, height });
+  };
+
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+
+  const handleLayout = (event: any) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setButtonContainerLayout({ x, y, width, height });
+  };
+
+  const trackButtonInteraction = async (
+    event: GestureResponderEvent,
+    isMissClick: boolean = false
+  ) => {
+    const { locationX, locationY } = event.nativeEvent;
+
+    setCoordinates({ x: locationX, y: locationY });
+
+    try {
+      // Get user ID from SecureStore
+      const user = await SecureStore.getItemAsync("user");
+      const userId = user ? JSON.parse(user).id : null;
+
+      const interactionData = {
+        userID: userId || 99,
+        buttonId: buttonId,
+        touchPoint: {
+          x: locationX,
+          y: locationY,
+        },
+        buttonBounds: {
+          x: (buttonContainerLayout?.x || 0) + (buttonLayout?.x || 0),
+          y: (buttonContainerLayout?.y || 0) + (buttonLayout?.y || 0),
+          width: buttonLayout?.width,
+          height: buttonLayout?.height,
+        },
+        isMissClick: isMissClick,
+        deviceMetrics: {
+          screenWidth: width,
+          screenHeight: height,
+          deviceOrientation: "portrait",
+        },
+        timestamp: new Date().toISOString(),
+      };
+
+      // Send interaction data to tracking service
+      await trackInteraction(interactionData);
+    } catch (error) {
+      console.error("Error tracking button interaction:", error);
+    }
+  };
+
+  return (
+    <View
+      ref={containerRef}
+      className={`relative w-full p-4 `}
+      onLayout={handleLayout}
+    >
+      {/* Invisible miss-click tracking area */}
+      <TouchableOpacity
+        className={`absolute z-0 ${
+          devmode ? "bg-cyan-100 opacity-50 border-2 border-cyan-600" : ""
+        }}`}
+        style={{
+          top: -missClickTrackingArea,
+          left: -missClickTrackingArea,
+          right: -missClickTrackingArea,
+          bottom: -missClickTrackingArea,
+        }}
+        onPress={(event) => {
+          trackButtonInteraction(event, true);
+          onMissClick && onMissClick();
+        }}
+        onLayout={handleButtonLayout}
+      />
+      {devmode && (
+        <View 
+        style={{
+          top: -missClickTrackingArea,
+          left: -missClickTrackingArea,
+
+
+        }}
+        className="absolute top-0 left-0 z-20 bg-white opacity-70 p-2 rounded-md shadow">
+            <Text style={{ fontSize: 12 }}>Touch:</Text>
+            <Text style={{ fontSize: 12 }}>X: {coordinates.x.toFixed(2)}</Text>
+            <Text style={{ fontSize: 12 }}>Y: {coordinates.y.toFixed(2)}</Text>
+            <Text style={{ fontSize: 12 }}>Id: {buttonId}</Text>
+        </View>
+      )}
+
+      {/* Actual button */}
+      {actualButton}
+    </View>
+  );
+}
+
+
+================================================
+File: /components/ThemedSelect.tsx
+================================================
+import React from "react";
+import { View, Text } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+
+export type ThemedSelectProps = {
+  label: string;
+  placeholder?: string;
+  options: { label: string; value: string | number | boolean }[];
+  value: string | number |boolean;
+  onValueChange: (value: string | number |boolean) => void;
+  containerStyle?: string;
+  inputStyle?: string;
+  error?: string;
+  disabled?: boolean;
+};
+
+export function ThemedSelect({
+  label,
+  placeholder,
+  options,
+  value,
+  onValueChange,
+  containerStyle = "",
+  inputStyle = "",
+  error,
+  disabled = false,
+}: ThemedSelectProps) {
+  return (
+    <View
+      className={`mb-4 ${containerStyle}`}
+      style={{ opacity: disabled ? 0.5 : 1 }}
+    >
+      {/* Label */}
+      <Text className="text-base font-semibold mb-2 text-black">{label}</Text>
+
+      {/* Picker Container */}
+      <View
+        className={`border rounded-lg bg-gray-100 ${
+          error ? "border-red-500" : "border-gray-300"
+        }`}
+      >
+        <Picker
+          selectedValue={value}
+          onValueChange={onValueChange}
+          enabled={!disabled}
+          style={{
+            color: "black", // This ensures the text is black
+          }}
+          className={`w-full p-2 text-black ${inputStyle}`}
+        >
+          {/* Placeholder */}
+          {placeholder && (
+            <Picker.Item
+              label={placeholder}
+              value=""
+              enabled={false}
+              style={{
+                color: "black", // Ensure placeholder text is black
+              }}
+              color="black"
+            />
+          )}
+
+          {/* Options */}
+          {options.map((option, index) => (
+            <Picker.Item
+              key={index}
+              label={option.label}
+              value={option.value}
+              style={{
+                color: "black", // Ensure options text is black
+              }}
+              color="black"
+            />
+          ))}
+        </Picker>
+      </View>
+
+      {/* Error Message */}
+      {error && <Text className="text-red-500 text-xs mt-1">{error}</Text>}
+    </View>
+  );
+}
+
+
+================================================
+File: /components/ThemedButton.tsx
+================================================
+import React, { useState } from "react";
+import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { getUiRecommendation, trackInteraction } from "@/api/reinforceUI";
+
+
+export type ThemedButtonProps = {
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+  variant?: "primary" | "secondary" | "outline";
+  containerStyle?: string;
+  textStyle?: string;
+};
+
+export function ThemedButton({
+  label,
+  onPress,
+  disabled = false,
+  loading = false,
+  variant = "primary",
+  containerStyle = "",
+  textStyle = "",
+}: ThemedButtonProps) {
+  const themeColor = useThemeColor({}, "background");
+
+  const getButtonClasses = () => {
+    switch (variant) {
+      case "primary":
+        return `bg-[#2F855A]  ${disabled ? "opacity-50" : ""}`;
+      case "secondary":
+        return `bg-green-200 border-green-300 ${disabled ? "opacity-50" : ""}`;
+      case "outline":
+        return `bg-transparent border-green-600 ${disabled ? "opacity-50" : ""}`;
+      default:
+        return "bg-[#2F855A] ";
+    }
+  };
+
+  const getTextClasses = () => {
+    switch (variant) {
+      case "primary":
+        return "text-white";
+      case "secondary":
+        return "text-green-800";
+      case "outline":
+        return "text-green-600";
+      default:
+        return "";
+    }
+  };
+
+
+  const [buttonClicks, setButtonClicks] = useState(0);
+  const [uiAction, setUiAction] = useState<string | null>(null);
+
+   // Function to simulate button clicks and track them
+   const handleButtonClick = async () => {
+    setButtonClicks(buttonClicks + 1);
+    const response = await trackInteraction(buttonClicks + 1); // Send the number of clicks to the backend
+
+    // Fetch the UI recommendation (action to adjust UI)
+    const recommendation = await getUiRecommendation();
+    setUiAction(recommendation.action); // Adjust UI based on the response
+    console.log('UI recommendation:', recommendation.action);
+  };
+
+  return (
+    <TouchableOpacity
+    onPress={() => {
+      onPress();
+      // handleButtonClick();
+    }}
+      disabled={disabled || loading}
+      className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${containerStyle}`}
+    >
+      {loading ? (
+        <ActivityIndicator size="small" color={variant === "primary" ? "#fff" : themeColor} />
+      ) : (
+        <Text className={`font-semibold text-base ${getTextClasses()} ${textStyle}`}>{label}</Text>
+      )}
+    </TouchableOpacity>
+  );
+}
+
+
+================================================
+File: /components/Collapsible.tsx
+================================================
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { PropsWithChildren, useState } from "react";
+import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
+
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
+
+export function Collapsible({
+  children,
+  title,
+}: PropsWithChildren & { title: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const theme = useColorScheme() ?? "light";
+
+  return (
+    <ThemedView>
+      <TouchableOpacity
+        style={styles.heading}
+        onPress={() => setIsOpen((value) => !value)}
+        activeOpacity={0.8}
+      >
+        <Ionicons
+          name={isOpen ? "chevron-down" : "chevron-forward-outline"}
+          size={18}
+          color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
+        />
+        <ThemedText type="defaultSemiBold">{title}</ThemedText>
+      </TouchableOpacity>
+      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  heading: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  content: {
+    marginTop: 6,
+    marginLeft: 24,
+  },
+});
+
+
+================================================
+File: /components/ThemedButtonWithML.tsx
+================================================
+import React, { useState, useRef } from "react";
+import {
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  GestureResponderEvent,
+  View,
+  LayoutChangeEvent,
+} from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { trackInteraction } from "@/api/trackEventService";
+import { Dimensions } from "react-native";
+
+export type ThemedButtonProps = {
+  label: string;
+  onPress: () => void;
+  onMissClick?: () => void;
+  devmode?: boolean;
+  buttonId: string;
+  disabled?: boolean;
+  loading?: boolean;
+  variant?: "primary" | "secondary" | "outline";
+  containerStyle?: string;
+  textStyle?: string;
+  viewStyle?: string;
+  missClickTrackingArea?: number;
+  missContainerStyle?: string;
+  actualButton?: React.ReactNode;
+};
+
+export function ThemedButtonWithML({
+  label,
+  onPress,
+  onMissClick,
+  buttonId,
+  disabled = false,
+  loading = false,
+  variant = "primary",
+  viewStyle = "",
+  devmode = false,
+  containerStyle = "",
+  textStyle = "",
+  missClickTrackingArea = 50,
+  missContainerStyle = "",
+  actualButton,
+}: ThemedButtonProps) {
+  const themeColor = useThemeColor({}, "background");
+  const containerRef = useRef<View>(null);
+  const sessionStartTime = useRef<number>(Date.now());
+  const [buttonLayout, setButtonLayout] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const [buttonContainerLayout, setButtonContainerLayout] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const { width, height } = Dimensions.get("window");
+
+  const getButtonClasses = () => {
+    switch (variant) {
+      case "primary":
+        return `bg-[#2F855A] ${disabled ? "opacity-50" : ""}`;
+      case "secondary":
+        return `bg-green-200 border-green-300 ${disabled ? "opacity-50" : ""}`;
+      case "outline":
+        return `bg-transparent border-green-600 ${
+          disabled ? "opacity-50" : ""
+        }`;
+      default:
+        return "bg-[#2F855A] ";
+    }
+  };
+
+  const getTextClasses = () => {
+    switch (variant) {
+      case "primary":
+        return "text-white";
+      case "secondary":
+        return "text-green-800";
+      case "outline":
+        return "text-green-600";
+      default:
+        return "";
+    }
+  };
+
+  const handleButtonLayout = (event: LayoutChangeEvent) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    console.log("Button layout:", { x, y, width, height });
+    setButtonLayout({ x, y, width, height });
+  };
+
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+
+  const handleLayout = (event: any) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setButtonContainerLayout({ x, y, width, height });
+  };
+
+  const trackButtonInteraction = async (
+    event: GestureResponderEvent,
+    isMissClick: boolean = false
+  ) => {
+    const { locationX, locationY } = event.nativeEvent;
+
+    setCoordinates({ x: locationX, y: locationY });
+
+    try {
+      // Get user ID from SecureStore
+      const user = await SecureStore.getItemAsync("user");
+      const userId = user ? JSON.parse(user).id : null;
+
+      const interactionData = {
+        userID: userId || 99,
+        buttonId: buttonId,
+        touchPoint: {
+          x: locationX,
+          y: locationY,
+        },
+        buttonBounds: {
+          x: (buttonContainerLayout?.x || 0) + (buttonLayout?.x || 0),
+          y: (buttonContainerLayout?.y || 0) + (buttonLayout?.y || 0),
+          width: buttonLayout?.width,
+          height: buttonLayout?.height,
+        },
+        isMissClick: isMissClick,
+        deviceMetrics: {
+          screenWidth: width,
+          screenHeight: height,
+          deviceOrientation: "portrait",
+        },
+        timestamp: new Date().toISOString(),
+      };
+
+      // Send interaction data to tracking service
+      await trackInteraction(interactionData);
+
+      // Call the original onPress handler only if it's not a miss click
+      if (!isMissClick) {
+        onPress();
+      }
+    } catch (error) {
+      console.error("Error tracking button interaction:", error);
+      // Fallback to original onPress if tracking fails
+      if (!isMissClick) {
+        onPress();
+      }
+    }
+  };
+
+  return (
+    <View
+      ref={containerRef}
+      className={`relative w-full p-4 ${viewStyle}`}
+      onLayout={handleLayout}
+    >
+      {/* Invisible miss-click tracking area */}
+      <TouchableOpacity
+        className={`absolute z-0 ${
+          devmode ? "bg-cyan-100 opacity-50 border-2 border-cyan-600" : ""
+        }}`}
+        style={{
+          top: -missClickTrackingArea,
+          left: -missClickTrackingArea,
+          right: -missClickTrackingArea,
+          bottom: -missClickTrackingArea,
+        }}
+        onPress={(event) => {
+          trackButtonInteraction(event, true);
+          onMissClick && onMissClick();
+        }}
+        onLayout={handleButtonLayout}
+      />
+      {devmode && (
+        <View className="absolute top-0 left-0 z-20 bg-white opacity-70 p-2 rounded-md shadow">
+          <Text>Touch coordinates:</Text>
+          <Text>X: {coordinates.x.toFixed(2)}</Text>
+          <Text>Y: {coordinates.y.toFixed(2)}</Text>
+        </View>
+      )}
+
+      {/* Actual button */}
+      {actualButton ? (
+        <>
+        {actualButton}
+        </>
+      ) : (
+        <>
+          <TouchableOpacity
+            onPress={(event) => {
+              trackButtonInteraction(event);
+              onPress();
+            }}
+            disabled={disabled || loading}
+            className={`flex items-center justify-center rounded-lg border px-4 py-3 my-1 ${getButtonClasses()} ${
+              devmode ? "z-10" : ""
+            } ${containerStyle}`}
+          >
+            {loading ? (
+              <ActivityIndicator
+                size="small"
+                color={variant === "primary" ? "#fff" : themeColor}
+              />
+            ) : (
+              <Text
+                className={`font-semibold text-base ${getTextClasses()} ${textStyle}`}
+              >
+                {label}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  );
+}
+
+
+================================================
+File: /nativewind-env.d.ts
+================================================
+/// <reference types="nativewind/types" />
+
+// NOTE: This file should not be edited and should be committed with your source code. It is generated by NativeWind.
+
+================================================
+File: /metro.config.js
+================================================
+const { getDefaultConfig } = require("expo/metro-config");
+const { withNativeWind } = require('nativewind/metro');
+
+const config = getDefaultConfig(__dirname)
+
+module.exports = withNativeWind(config, { input: './global.css' })
+
+================================================
+File: /babel.config.js
+================================================
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: [
+      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+      "nativewind/babel",
+    ],
+  };
+};
+
+================================================
+File: /package.json
+================================================
+{
+  "name": "mobile",
+  "main": "expo-router/entry",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest --watchAll",
+    "lint": "expo lint"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "@clerk/clerk-expo": "^2.3.10",
+    "@expo/vector-icons": "^14.0.2",
+    "@react-native-community/datetimepicker": "8.2.0",
+    "@react-native-picker/picker": "2.9.0",
+    "@react-navigation/native": "^6.1.18",
+    "axios": "^1.7.7",
+    "expo": "^52.0.37",
+    "expo-constants": "~17.0.3",
+    "expo-device": "~7.0.1",
+    "expo-font": "~13.0.1",
+    "expo-image-picker": "^16.0.3",
+    "expo-linking": "~7.0.3",
+    "expo-location": "~18.0.2",
+    "expo-router": "~4.0.9",
+    "expo-secure-store": "^14.0.0",
+    "expo-sensors": "~14.0.1",
+    "expo-splash-screen": "~0.29.13",
+    "expo-status-bar": "~2.0.0",
+    "expo-system-ui": "~4.0.4",
+    "expo-web-browser": "~14.0.1",
+    "nativewind": "^4.1.23",
+    "postcss": "^8.4.49",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.3",
+    "react-native-date-picker": "^5.0.7",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-gesture-handler": "~2.20.2",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-maps": "1.18.0",
+    "react-native-parallax-scroll-view": "^0.21.3",
+    "react-native-qrcode-svg": "^6.3.12",
+    "react-native-reanimated": "~3.16.1",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.1.0",
+    "react-native-web": "~0.19.10",
+    "tailwind-rn": "^4.2.0",
+    "tailwindcss": "^3.4.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/axios": "^0.14.4",
+    "@types/jest": "^29.5.12",
+    "@types/react": "~18.3.12",
+    "@types/react-test-renderer": "^18.0.7",
+    "jest": "^29.2.1",
+    "jest-expo": "~52.0.2",
+    "react-test-renderer": "18.2.0",
+    "typescript": "~5.3.3"
+  },
+  "private": true
+}
+
+
+================================================
+File: /hooks/useColorScheme.web.ts
+================================================
+// NOTE: The default React Native styling doesn't support server rendering.
+// Server rendered styles should not change between the first render of the HTML
+// and the first render on the client. Typically, web developers will use CSS media queries
+// to render different styles on the client and server, these aren't directly supported in React Native
+// but can be achieved using a styling library like Nativewind.
+export function useColorScheme() {
+  return 'light';
+}
+
+
+================================================
+File: /hooks/useThemeColor.ts
+================================================
+/**
+ * Learn more about light and dark modes:
+ * https://docs.expo.dev/guides/color-schemes/
+ */
+
+import { useColorScheme } from 'react-native';
+
+import { Colors } from '@/constants/Colors';
+
+export function useThemeColor(
+  props: { light?: string; dark?: string },
+  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+) {
+  const theme = useColorScheme() ?? 'light';
+  const colorFromProps = props[theme];
+
+  if (colorFromProps) {
+    return colorFromProps;
+  } else {
+    return Colors[theme][colorName];
+  }
+}
+
+
+================================================
+File: /hooks/useColorScheme.ts
+================================================
+export { useColorScheme } from 'react-native';
+
+
+================================================
+File: /scripts/reset-project.js
+================================================
+#!/usr/bin/env node
+
+/**
+ * This script is used to reset the project to a blank state.
+ * It moves the /app directory to /app-example and creates a new /app directory with an index.tsx and _layout.tsx file.
+ * You can remove the `reset-project` script from package.json and safely delete this file after running it.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const root = process.cwd();
+const oldDirPath = path.join(root, 'app');
+const newDirPath = path.join(root, 'app-example');
+const newAppDirPath = path.join(root, 'app');
+
+const indexContent = `import { Text, View } from "react-native";
+
+export default function Index() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text>Edit app/index.tsx to edit this screen.</Text>
+    </View>
+  );
+}
+`;
+
+const layoutContent = `import { Stack } from "expo-router";
+
+export default function RootLayout() {
+  return (
+    <Stack>
+      <Stack.Screen name="index" />
+    </Stack>
+  );
+}
+`;
+
+fs.rename(oldDirPath, newDirPath, (error) => {
+  if (error) {
+    return console.error(`Error renaming directory: ${error}`);
+  }
+  console.log('/app moved to /app-example.');
+
+  fs.mkdir(newAppDirPath, { recursive: true }, (error) => {
+    if (error) {
+      return console.error(`Error creating new app directory: ${error}`);
+    }
+    console.log('New /app directory created.');
+
+    const indexPath = path.join(newAppDirPath, 'index.tsx');
+    fs.writeFile(indexPath, indexContent, (error) => {
+      if (error) {
+        return console.error(`Error creating index.tsx: ${error}`);
+      }
+      console.log('app/index.tsx created.');
+
+      const layoutPath = path.join(newAppDirPath, '_layout.tsx');
+      fs.writeFile(layoutPath, layoutContent, (error) => {
+        if (error) {
+          return console.error(`Error creating _layout.tsx: ${error}`);
+        }
+        console.log('app/_layout.tsx created.');
+      });
+    });
+  });
+});
+
+
+================================================
+File: /lib/auth.ts
+================================================
+import * as SecureStore from 'expo-secure-store'
+import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo'
+
+
+// export interface TokenCache {
+//     getToken: (key: string) => Promise<string | undefined | null>
+//     saveToken: (key: string, token: string) => Promise<void>
+//     clearToken?: (key: string) => void
+//   }
+
+  export  const tokenCache = {
+    async getToken(key: string) {
+      try {
+        const item = await SecureStore.getItemAsync(key)
+        if (item) {
+          console.log(`${key} was used 🔐 \n`)
+        } else {
+          console.log('No values stored under key: ' + key)
+        }
+        return item
+      } catch (error) {
+        console.error('SecureStore get item error: ', error)
+        await SecureStore.deleteItemAsync(key)
+        return null
+      }
+    },
+    async saveToken(key: string, value: string) {
+      try {
+        return SecureStore.setItemAsync(key, value)
+      } catch (err) {
+        return
+      }
+    },
+  }
+
+================================================
+File: /api/predictionApiService.ts
+================================================
+import apiClient from './apiClient';
+import  { ApiResponse } from './apiClientPrediction';
+
+/**
+ * Fetch the predicted price for a vegetable.
+ * @param {string} whenToPlant - The planting time.
+ * @param {string} whatToPlant - The vegetable to plant.
+ * @returns {Promise<number>} - Predicted price.
+ */
+export const fetchPredictedPrice = async (
+  whenToPlant: string,
+  whatToPlant: string
+): Promise<number> => {
+  try {
+    const response: ApiResponse<{ predicted_price : number}> = await apiClient.post('/price-predict', {
+      whenToPlant,
+      whatToPlant: whatToPlant.toUpperCase(),
+    });
+
+    return response.data.predicted_price;
+  } catch (error) {
+    console.error('Error fetching predicted price:', error);
+    throw error;
+  }
+};
+
+
+================================================
+File: /api/trackEventService.ts
+================================================
+import axios from "axios";
+import apiClient from "./apiClientRein";
+
+
+
+export interface InteractionData {
+  userID: number;
+  buttonId: string;
+  touchPoint: {
+    x: number;
+    y: number;
+  };
+  isMissClick: boolean;
+  deviceMetrics: {
+    screenWidth: number;
+    screenHeight: number;
+    deviceOrientation : string;
+  };  
+  timestamp: string;
+}
+
+
+
+export const trackInteraction = async (data: InteractionData) => {
+  console.log("Tracking interaction:", data);
+  try {
+   // const response = await apiClient.post(`track_interaction`, data);
+    return { success: true, message: "Interaction tracked successfully" }; 
+  } catch (error) {
+    console.error("Error tracking interaction:", error);
+  }
+};
+
+
+
+// // Function to track interaction and send to MongoDB
+// export async function trackInteraction(data: InteractionData) {
+
+//   console.log('Tracking interaction:', data);
+//   try {
+//     // Replace with your actual MongoDB backend endpoint
+//     const response = await axios.post('http://127.0.0.1:8000', data, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         // Add any authentication headers if required
+//         // 'Authorization': `Bearer ${yourAuthToken}`
+//       }
+//     });
+
+//     // Optional: Log successful tracking
+//     if (data.is_miss_click) {
+//       console.log('Miss-click tracked', response.data);
+//     } else {
+//       console.log('Button interaction tracked', response.data);
+//     }
+
+//     return response.data;
+//   } catch (error) {
+//     // Log and handle any errors during tracking
+//     console.error('Failed to track interaction', error);
+    
+//     // Optionally, you might want to send to a backup logging service
+//     // or implement retry logic
+//     throw error;
+  
+//   }
+
+// }
+
+================================================
+File: /api/apiClientAuth.ts
+================================================
+// import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+// import { ip } from './ip';
+// import * as SecureStore from 'expo-secure-store'; // Import SecureStore to retrieve token
+
+// // Define a generic API response type
+// export interface ApiResponse<T = any> {
+//   data: T;
+//   message: string;
+//   success: boolean;
+// }
+
+// // Create an Axios instance
+// const apiClient: AxiosInstance = axios.create({
+//   baseURL: `${ip}:3000`, 
+//   timeout: 10000, 
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// // Request interceptor
+// apiClient.interceptors.request.use(
+//   async (config: any) => {
+//     // Retrieve the token from SecureStore (or other storage)
+//     const token = await SecureStore.getItemAsync('auth_token'); 
+
+//     if (token) {
+//       // Add the token to the Authorization header
+//       config.headers['Authorization'] = `Bearer ${token}`;
+//     } else {
+//       console.log("No token found");
+//     }
+
+//     console.log('Request:', config); // Log the request details
+//     return config; // Return the modified config
+//   },
+//   (error) => {
+//     console.error('Request Error:', error);
+//     return Promise.reject(error); // Pass the error to the next handler
+//   }
+// );
+
+// // Response interceptor
+// apiClient.interceptors.response.use(
+//   (response: AxiosResponse): AxiosResponse['data'] => {
+//     // Handle and return the actual data from the response
+//     console.log('Response:', response);
+//     return response.data; // Return only the data portion
+//   },
+//   (error) => {
+//     console.error('Response Error:', error.response || error.message);
+//     return Promise.reject(error); 
+//   }
+// );
+
+// export default apiClient;
+
+
+================================================
+File: /api/apiClientRein.ts
+================================================
+// import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+// import { ip } from './ip';
+
+// // Define a generic API response type
+// export interface ApiResponse<T = any> {
+//   data: T;
+//   message: string;
+//   success: boolean;
+// }
+
+// // Create an Axios instance
+// const apiClient: AxiosInstance = axios.create({
+//   baseURL: `${ip}:3004`, 
+//   timeout: 10000, 
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// // Request interceptor
+// apiClient.interceptors.request.use(
+//   (config: any) => {
+//     // Add custom logic, e.g., attach authentication tokens
+//     return config; // Must return AxiosRequestConfig
+//   },
+//   (error) => {
+//     console.error('Request Error:', error);
+//     return Promise.reject(error); // Pass the error to the next handler
+//   }
+// );
+
+// // Response interceptor
+// apiClient.interceptors.response.use(
+//   (response: AxiosResponse): AxiosResponse['data'] => {
+//     // Handle and return the actual data from the response
+
+//     return response; // Return only the data portion
+//   },
+//   (error) => {
+//     console.error('Response Error:', error.response || error.message);
+//     return Promise.reject(error); 
+//   }
+// );
+
+// export default apiClient;
+
+
+================================================
+File: /api/apiClientPrediction.ts
+================================================
+// import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+// import { ip } from './ip';
+// import * as SecureStore from 'expo-secure-store'; // Import SecureStore to retrieve token
+
+// // Define a generic API response type
+// export interface ApiResponse<T = any> {
+//   data: T;
+//   message: string;
+//   success: boolean;
+// }
+
+// // Create an Axios instance
+// const apiClient: AxiosInstance = axios.create({
+//   baseURL: `${ip}:3001`,
+//   timeout: 10000, 
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// // Request interceptor
+// apiClient.interceptors.request.use(
+//   async (config: any) => {
+//     // Retrieve the token from SecureStore (or other storage)
+//     const token = await SecureStore.getItemAsync('auth_token'); 
+
+//     if (token) {
+//       // Add the token to the Authorization header
+//       config.headers['Authorization'] = `Bearer ${token}`;
+//     } else {
+//       console.log("No token found");
+//     }
+
+//     console.log('Request:', config); // Log the request details
+//     return config; // Return the modified config
+//   },
+//   (error) => {
+//     console.error('Request Error:', error);
+//     return Promise.reject(error); // Pass the error to the next handler
+//   }
+// );
+
+// // Response interceptor
+// apiClient.interceptors.response.use(
+//   (response: AxiosResponse): AxiosResponse['data'] => {
+//     // Handle and return the actual data from the response
+//     console.log('Response:', response);
+//     return response.data; // Return only the data portion
+//   },
+//   (error) => {
+//     console.error('Response Error:', error.response || error.message);
+//     return Promise.reject(error); 
+//   }
+// );
+
+// export default apiClient;
+
+
+================================================
+File: /api/ip.ts
+================================================
+export const ip = 'https://agrisynclocal.astratech.software';
+
+================================================
+File: /api/rewardService.ts
+================================================
+import apiClient, { ApiResponse } from './apiClient';
+
+
+
+/**
+ * Get the user's reward points.
+ * @returns {Promise<number>} - The user's reward points.
+ */
+export const useGetRewardPoints = async (): Promise<number> => {
+  try {
+    const response: ApiResponse<{ points: number }> = await apiClient.get('/rewards-service/points');
+    return response.data.points;
+  } catch (error) {
+    console.error('Error fetching reward points:', error);
+    throw error;
+  }
+};
+//{{API}}/rewards-service-settings/
+/**
+ * Get the reward settings.
+ * @returns {Promise<Array<any>>} - The reward settings.
+ */
+export const useGetRewardSettings = async (): Promise<Array<any>> => {
+  try {
+    const response: ApiResponse<Array<any>> = await apiClient.get('/rewards-service-settings');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reward settings:', error);
+    throw error;
+  }
+};
+
+// {{API}}/farming-service/nearby-farmers?lat=6.994585&long=800.724331&radius=1
+
+/**
+ * Get the nearby farmers.
+ * @param {number} lat - The latitude.
+ * @param {number} long - The longitude.
+ * @param {number} radius - The radius.
+ * @returns {Promise<Array<any>>} - The nearby farmers.
+ */
+export const useGetNearbyFarmers = async (lat: number, long: number, radius: number): Promise<Array<any>> => {
+  try {
+    const response: ApiResponse<Array<any>> = await apiClient.get(`/farming-service/nearby-farmers?lat=${lat}&long=${long}&radius=${radius}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching nearby farmers:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get the user's reward activity history.
+ * @returns {Promise<Array<any>>} - The user's reward activity history.
+ */
+export const useGetRewardActivityHistory = async (): Promise<Array<any>> => {
+  try {
+    const response: ApiResponse<Array<any>> = await apiClient.get('/rewards-service/activity-history');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reward activity history:', error);
+    throw error;
+  }
+};
+
+interface FarmingData {
+  farmer_ref: string;
+  farmer_name: string;
+  lat: number;
+  long: number;
+  vegetable_ref: string;
+  vegetable_name: string;
+  amount: number;
+  planted_at: string;
+}
+
+/**
+ * Submit farming data.
+ * @param {FarmingData} farmingData - The farming data to submit.
+ * @returns {Promise<void>} - A promise indicating the submission status.
+ */
+export const usePostFarmingData = async (farmingData: FarmingData): Promise<void> => {
+  try {
+    await apiClient.post('/farming-service/farming-data', farmingData);
+    console.log('Farming data submitted successfully.');
+  } catch (error) {
+    console.error('Error submitting farming data:', error);
+    throw error;
+  }
+};
+
+
+interface RedeemRewardData {
+    rewardType: string;
+  }
+  
+  /**
+   * Redeem a reward.
+   * @param {RedeemRewardData} rewardData - The reward type to redeem.
+   * @returns {Promise<void>} - A promise indicating the submission status.
+   */
+  export const usePostRedeemReward = async (rewardData: RedeemRewardData): Promise<void> => {
+    try {
+      await apiClient.post('/rewards-service/redeem', rewardData);
+      console.log('Reward redeemed successfully.');
+    } catch (error) {
+      console.error('Error redeeming reward:', error);
+      throw error;
+    }
+  };
+
+  /**
+   * Get the farming leaderboard.
+   * @returns {Promise<Array<any>>} - The farming leaderboard.
+   * 
+   */
+
+  export const useGetFarmingLeaderboard = async (): Promise<any> => { 
+    try {
+      const response = await apiClient.get(`/farming-service/leaderboard`);
+      return response;
+    } catch (error) {
+      console.error('Error fetching farming leaderboard:', error);
+      throw error;
+    }
+  }
+  
+
+================================================
+File: /api/apiClientReward.ts
+================================================
+// import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+// import { ip } from './ip';
+// import * as SecureStore from 'expo-secure-store'; // Import SecureStore to retrieve token
+
+// // Define a generic API response type
+// export interface ApiResponse<T = any> {
+//   data: T;
+//   message: string;
+//   success: boolean;
+// }
+
+// // Create an Axios instance
+// const apiClient: AxiosInstance = axios.create({
+//   baseURL: `${ip}:3003`, 
+//   timeout: 10000, 
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// // Request interceptor
+// apiClient.interceptors.request.use(
+//   async (config: any) => {
+//     // Retrieve the token from SecureStore (or other storage)
+//     const token = await SecureStore.getItemAsync('auth_token'); 
+
+//     if (token) {
+//       // Add the token to the Authorization header
+//       config.headers['Authorization'] = `Bearer ${token}`;
+//     } else {
+//       console.log("No token found");
+//     }
+
+//     console.log('Request:', config); // Log the request details
+//     return config; // Return the modified config
+//   },
+//   (error) => {
+//     console.error('Request Error:', error);
+//     return Promise.reject(error); // Pass the error to the next handler
+//   }
+// );
+
+// // Response interceptor
+// apiClient.interceptors.response.use(
+//   (response: AxiosResponse): AxiosResponse['data'] => {
+//     // Handle and return the actual data from the response
+//     console.log('Response:', response);
+//     return response.data; // Return only the data portion
+//   },
+//   (error) => {
+//     console.error('Response Error:', error.response || error.message);
+//     return Promise.reject(error); 
+//   }
+// );
+
+// export default apiClient;
+
+
+================================================
+File: /api/reinforceUI.ts
+================================================
+import apiClient from "./apiClientRein";
+
+export const trackInteraction = async (buttonClicks: number) => {
+  try {
+    const response = await apiClient.post(`track-interaction`, {
+      buttonClicks,
+    });
+    return response.data; // Contains the action and exploration rate
+  } catch (error) {
+    console.error("Error tracking interaction:", error);
+  }
+};
+
+export const getUiRecommendation = async () => {
+  try {
+    const response = await apiClient.get(`/get-ui-recommendation`);
+    console.log("UI recommendation response:", response);
+    return response.data; // Contains the action (UI recommendation)
+  } catch (error) {
+    console.error("Error fetching UI recommendation:", error);
+  }
+};
+
+
+================================================
+File: /api/apiClient.ts
+================================================
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ip } from './ip';
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore to retrieve token
+
+// Define a generic API response type
+export interface ApiResponse<T = any> {
+  data: T;
+  message: string;
+  success: boolean;
+}
+
+// Create an Axios instance
+const apiClient: AxiosInstance = axios.create({
+  baseURL: `${ip}:3000`, 
+  timeout: 10000, 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor
+apiClient.interceptors.request.use(
+  async (config: any) => {
+    // Retrieve the token from SecureStore (or other storage)
+    const token = await SecureStore.getItemAsync('auth_token'); 
+
+    if (token) {
+      // Add the token to the Authorization header
+      config.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      console.log("No token found");
+    }
+
+    console.log('Request:', config); // Log the request details
+    return config; // Return the modified config
+  },
+  (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error); // Pass the error to the next handler
+  }
+);
+
+// Response interceptor
+apiClient.interceptors.response.use(
+  (response: AxiosResponse): AxiosResponse['data'] => {
+    // Handle and return the actual data from the response
+    console.log('Response:', response);
+    return response.data; // Return only the data portion
+  },
+  (error) => {
+    console.error('Response Error:', error.response || error.message);
+    return Promise.reject(error); 
+  }
+);
+
+export default apiClient;
+
+
+================================================
+File: /api/auth.ts
+================================================
+import apiClient, { ApiResponse } from './apiClient';
+
+/**
+ * Log in a user.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<string>} - The authentication token.
+ */
+export const useLoginUser = async (
+  email: string,
+  password: string
+): Promise<any> => {
+  try {
+    const response: ApiResponse<any> = await apiClient.post('/auth-service/login', {
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+};
+
+
+================================================
+File: /tsconfig.json
+================================================
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+, "components/HomeOptionML.tsx", "api/apiClient.ts"  ]
+}
+
+================================================
+File: /declarations.d.ts
+================================================
+declare module "*.jpeg";
+declare module "*.jpg";
+declare module "*.png";
+declare module "*.webp";
+
+================================================
+File: /data/index.ts
+================================================
+const farmerData= [
+    {
+      "user_id": 1,
+      "username": "AliceReader45",
+      "email": "alice45@mail.com",
+      "password": "readerX123!",
+      "age": 68,
+      "vision_problems": true,
+      "color_blindness": true,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Red-Green Safe",
+      "use_symbols_with_colors": false
+    },
+    {
+      "user_id": 2,
+      "username": "JohnTechFan88",
+      "email": "john88tech@mail.com",
+      "password": "johnTech123!",
+      "age": 29,
+      "vision_problems": true,
+      "color_blindness": false,
+      "text_size": "Medium",
+      "layout": "Simple",
+      "color_friendly_scheme": "Blue-Yellow Safe",
+      "use_symbols_with_colors": true
+    },
+    {
+      "user_id": 3,
+      "username": "EmmaCreative",
+      "email": "emma.creative123@mail.com",
+      "password": "EmmaCrea$45",
+      "age": 72,
+      "vision_problems": true,
+      "color_blindness": false,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Grayscale",
+      "use_symbols_with_colors": false
+    },
+    {
+      "user_id": 4,
+      "username": "MikePainter23",
+      "email": "mike.paint23@mail.com",
+      "password": "paintMike#22",
+      "age": 37,
+      "vision_problems": true,
+      "color_blindness": true,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "High Contrast",
+      "use_symbols_with_colors": true
+    },
+    {
+      "user_id": 5,
+      "username": "SophiaArtLover",
+      "email": "sophia.art99@mail.com",
+      "password": "sophiaART!",
+      "age": 80,
+      "vision_problems": true,
+      "color_blindness": false,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Blue-Yellow Safe",
+      "use_symbols_with_colors": false
+    },
+    {
+      "user_id": 6,
+      "username": "GihanFarmer2",
+      "email": "gihan@faxmer4233.com",
+      "password": "gihan1x2345",
+      "age": 40,
+      "vision_problems": true,
+      "color_blindness": false,
+      "text_size": "Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Red-Green Safe",
+      "use_symbols_with_colors": true
+    },
+    {
+      "user_id": 7,
+      "username": "TomAdventure89",
+      "email": "tom.adventure@mail.com",
+      "password": "T@dmvent89",
+      "age": 65,
+      "vision_problems": false,
+      "color_blindness": false,
+      "text_size": "Large",
+      "layout": "Compact",
+      "color_friendly_scheme": "High Contrast",
+      "use_symbols_with_colors": true
+    },
+    {
+      "user_id": 8,
+      "username": "LindaNature",
+      "email": "linda.nature88@mail.com",
+      "password": "lindaN@turE",
+      "age": 74,
+      "vision_problems": true,
+      "color_blindness": true,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Grayscale",
+      "use_symbols_with_colors": false
+    },
+    {
+      "user_id": 9,
+      "username": "SamCoder92",
+      "email": "samcoder92@mail.com",
+      "password": "SamCode123$",
+      "age": 30,
+      "vision_problems": false,
+      "color_blindness": true,
+      "text_size": "Medium",
+      "layout": "Simple",
+      "color_friendly_scheme": "Red-Green Safe",
+      "use_symbols_with_colors": true
+    },
+    {
+      "user_id": 10,
+      "username": "NinaBookLover",
+      "email": "nina.booklover@mail.com",
+      "password": "ninaBooks23#",
+      "age": 82,
+      "vision_problems": true,
+      "color_blindness": false,
+      "text_size": "Extra Large",
+      "layout": "Simple",
+      "color_friendly_scheme": "Blue-Yellow Safe",
+      "use_symbols_with_colors": false
+    }
+  ]
+  
+export default farmerData;
+

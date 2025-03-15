@@ -114,7 +114,7 @@ export default function FarmingLeaderboard() {
       {/* Production */}
       <View>
         <Text className="font-bold text-green-600">
-          {item.total_production} kg
+          {item.total_production} 
         </Text>
         {/* <Text className="text-gray-500">Percentile: {item.percentile}%</Text> */}
       </View>
