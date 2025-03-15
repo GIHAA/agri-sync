@@ -13,3 +13,11 @@ python-dotenv
 pinecone
 langchain_pinecone
 flask
+quart
+torch 
+transformers 
+datasets 
+accelerate
+sentencepiece
+protobuf
+googletrans

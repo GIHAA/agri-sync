@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 import json
 from flask import Flask, request, jsonify
 import pinecone
+import asyncio
+import re
+from translation.translator import translate_sin_to_en  # Import the translation function
 from pinecone import Pinecone, ServerlessSpec
 from langchain_community.vectorstores import Pinecone as LangchainPinecone
 from langchain.prompts import PromptTemplate
@@ -227,15 +230,27 @@ class SeedDataProcessor:
 # Initialize processor once Flask app is started
 processor = SeedDataProcessor(data_directory="documents")
 
+# ✅ Move translation logic to this function
+async def process_query(user_query):
+    if re.search("[\u0D80-\u0DFF]", user_query):  # Unicode range for Sinhala
+        print("Detected Sinhala text. Translating to English...")
+        user_query = await translate_sin_to_en(user_query)
+        print(f"Translated Query: {user_query}")
+    return user_query
+
 @app.route('/query', methods=['POST'])
-def query_seed():
+async def query_seed():
     try:
         # Get query from user input
         user_query = request.json.get('query', '')
         
         if not user_query:
             return jsonify({"error": "Query parameter is required."}), 400
-        
+
+        # ✅ Use the process_query function here
+        user_query =await process_query(user_query)
+        print(user_query)
+
         # Fetch result from SeedDataProcessor
         result = processor.query_seed_data(user_query)
         
@@ -243,6 +258,7 @@ def query_seed():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     # Run the Flask app
