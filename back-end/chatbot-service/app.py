@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 import pinecone
 import asyncio
 import re
-from translation.translator import translate_sin_to_en  # Import the translation function
+from translation.translator import translate_sin_to_en, translate_en_to_sin  # Import the translation function
 from pinecone import Pinecone, ServerlessSpec
 from langchain_community.vectorstores import Pinecone as LangchainPinecone
 from langchain.prompts import PromptTemplate
@@ -247,13 +247,26 @@ async def query_seed():
         if not user_query:
             return jsonify({"error": "Query parameter is required."}), 400
 
-        # ✅ Use the process_query function here
-        user_query =await process_query(user_query)
-        print(user_query)
+        # Check if the query is in Sinhala
+        is_sinhala_query = bool(re.search("[\u0D80-\u0DFF]", user_query))
+
+        # Translate to English if needed
+        if is_sinhala_query:
+            print("Detected Sinhala text. Translating to English...")
+            user_query = await translate_sin_to_en(user_query)
+            print(f"Translated Query: {user_query}")
 
         # Fetch result from SeedDataProcessor
         result = processor.query_seed_data(user_query)
-        
+        print(2222222222222)
+
+        # If the original query was in Sinhala, translate the response back to Sinhala
+        if is_sinhala_query:
+            print("Translating response back to Sinhala...")
+            print(1111111111111111)
+            result = await translate_en_to_sin(result)  # ✅ Await the translation
+            print(f"Translated Response: {result}")
+
         return jsonify({"query": user_query, "result": result}), 200
 
     except Exception as e:
