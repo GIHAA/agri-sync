@@ -46,10 +46,10 @@ function Router() {
         <SideMenu />
       ),
       children: [
-        {
-          path: '/',
-          element: <Dashboard />,
-        },
+        // {
+          // path: '/',
+          // element: <Dashboard />,
+        // },
         {
           path: '/qr-scanner',
           element: <Scanner />,
@@ -90,10 +90,10 @@ function Router() {
           path: 'notificationTemplates/customerNotifications',
           element: <CustomerNotify />,
         },
-        {
-          path: 'dashboard',
-          element: <Dashboard />,
-        },
+        // {
+        //   path: 'dashboard',
+        //   element: <Dashboard />,
+        // },
         {
           path: 'update-profile',
           element: <UpdateProfile />,

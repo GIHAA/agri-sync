@@ -60,7 +60,7 @@ const LoginForm = () => {
 
       // Redirect after successful login
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/reward-management';
       }, 800);
     }
 
