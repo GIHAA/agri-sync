@@ -1,4 +1,4 @@
-import apiClient from "./apiClientRein";
+import apiClient from './apiClient';
 
 export const trackInteraction = async (buttonClicks: number) => {
   try {

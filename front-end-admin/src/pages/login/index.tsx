@@ -15,7 +15,7 @@ const LoginForm = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const { mutate, isLoading, isSuccess } = useLogin();
+  const { mutate, isLoading, isSuccess, isError, error } = useLogin();
 
   // Validate inputs
   const validateInputs = () => {
@@ -41,17 +41,11 @@ const LoginForm = () => {
 
   const loginHandler = async () => {
     if (!validateInputs()) return;
-    
+
     try {
-      await mutate({ email, password });
-    } catch (error) {
-      setNotification({
-        title: 'Login Failed',
-        message: 'An error occurred during login. Please try again.',
-        icon: Icons.XCIRCLE,
-        type: NotificationTypes.ERROR,
-      });
-      Toast();
+      await mutate({ email, password }); // Send email and password to the API
+    } catch (err) {
+      console.error('Login failed:', err);
     }
   };
 
@@ -63,13 +57,23 @@ const LoginForm = () => {
         type: NotificationTypes.SUCCESS,
       });
       Toast();
-      
+
       // Redirect after successful login
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/reward-management';
       }, 800);
     }
-  }, [isSuccess, setNotification]);
+
+    if (isError) {
+      setNotification({
+        title: 'Login Failed',
+        message: error?.response?.data?.message || 'An error occurred during login.',
+        icon: Icons.XCIRCLE,
+        type: NotificationTypes.ERROR,
+      });
+      Toast();
+    }
+  }, [isSuccess, isError, error, setNotification]);
 
   return (
     <div

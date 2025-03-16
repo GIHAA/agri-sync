@@ -14,10 +14,10 @@ router.get("/users", userController.getAllUsers);
 router.post("/login", userController.login);
 
 // Register Farmer with Preferences
-router.post("/register-farmer",   userController.registerFarmer);
+router.post("/register-farmer", userController.registerFarmer);
 
 // Get User Preferences
-router.get("/preferences/:userId", protect ,  userController.getUserPreferences);
+router.get("/preferences/:userId", protect, userController.getUserPreferences);
 
 // Token Validation Route
 router.get("/validate", userController.validateToken);
@@ -26,4 +26,5 @@ router.get("/users/:userId", protect, userController.getUser);
 
 router.put("/users/:userId", protect, userController.updateUser);
 
+router.get("/farmers/:qrCodeHash", userController.getFarmerByQrCode);
 module.exports = router;

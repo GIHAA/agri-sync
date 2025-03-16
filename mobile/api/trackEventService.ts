@@ -1,19 +1,20 @@
 import axios from "axios";
-import apiClient from "./apiClientRein";
-
+import apiClient, { ApiResponse } from './apiClient';
 
 
 export interface InteractionData {
-  user_id: string;
-  button_id: string;
-  click_coordinates: {
+  userID: number;
+  buttonId: string;
+  touchPoint: {
     x: number;
     y: number;
   };
-  missed_click_distance: number;
-  is_miss_click: boolean;
-  session_duration: number;
-  device: string;
+  isMissClick: boolean;
+  deviceMetrics: {
+    screenWidth: number;
+    screenHeight: number;
+    deviceOrientation : string;
+  };  
   timestamp: string;
 }
 
@@ -22,8 +23,8 @@ export interface InteractionData {
 export const trackInteraction = async (data: InteractionData) => {
   console.log("Tracking interaction:", data);
   try {
-    const response = await apiClient.post(`track_interaction`, data);
-    return response.data; 
+   return await apiClient.post(`user-interaction-service/api/touch-interactions`, data);
+
   } catch (error) {
     console.error("Error tracking interaction:", error);
   }

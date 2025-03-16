@@ -1,8 +1,8 @@
-// repository/userRepo.js
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const FarmerDetails = require("../models/FarmerDetails");
 const AccessibilitySettings = require("../models/AccessibilitySettings");
+const db = require("../config/database");
 
 // Function to find a user by email
 const findUserByEmail = async (email) => {
@@ -10,13 +10,20 @@ const findUserByEmail = async (email) => {
 };
 
 // Function to create a new user
-const createUser = async (username, email, hashedPassword , role) => {
-  return await User.create({ username, email, password_hash: hashedPassword , role });
+const createUser = async (username, email, hashedPassword, role) => {
+  return await User.create({ username, email, password_hash: hashedPassword, role });
 };
 
 // Function to create farmer details
-const createFarmerDetails = async (userId, age, visionProblems, colorBlindness , lat , long) => {
-  return await FarmerDetails.create({ user_id: userId, age, vision_problems: visionProblems, color_blindness: colorBlindness , lat , long });
+const createFarmerDetails = async (userId, age, visionProblems, colorBlindness, lat, long) => {
+  return await FarmerDetails.create({
+    user_id: userId,
+    age,
+    vision_problems: visionProblems,
+    color_blindness: colorBlindness,
+    lat,
+    long,
+  });
 };
 
 // Function to create accessibility settings
@@ -30,50 +37,69 @@ const createAccessibilitySettings = async (userId, textSize, layout, colorScheme
   });
 };
 
+// Function to get farmer details by QR code hash (email)
+const getFarmerByQrCode = async (qrCodeHash) => {
+  const query = `
+    SELECT u.id, u.username, u.email
+    FROM "Users" u
+    WHERE u.email = :email
+  `;
+
+  try {
+    const result = await db.query(query, {
+      replacements: { email: qrCodeHash },
+      type: db.QueryTypes.SELECT,
+    });
+
+    return result[0] || null; // Return the first result or null if no match
+  } catch (error) {
+    console.error("Error in repository layer:", error.message);
+    throw new Error("Database query failed.");
+  }
+};
+
 // Function to get user preferences
 const getUserPreferences = async (userId) => {
   return await AccessibilitySettings.findOne({ where: { user_id: userId } });
 };
 
-
-// find all users
-// userRepo.js
+// Find all users with pagination
 const findAllUsers = async (page = 1, limit = 10) => {
   const offset = (page - 1) * limit;
-  
+
   const { count, rows } = await User.findAndCountAll({
     attributes: ['id', 'username', 'email', 'role'],
     limit: limit,
     offset: offset,
-    order: [['createdAt', 'DESC']] // Optional: sort by creation date
+    order: [['createdAt', 'DESC']], // Optional: sort by creation date
   });
 
   return {
     users: rows,
     totalUsers: count,
     totalPages: Math.ceil(count / limit),
-    currentPage: page
+    currentPage: page,
   };
 };
 
 // Find user by ID with associated data if FARMER
 const findUserById = async (userId) => {
   const user = await User.findByPk(userId, {
-    attributes: ['id', 'username', 'email', 'role']
+    attributes: ['id', 'username', 'email', 'role'],
   });
 
   if (user && user.role === 'FARMER') {
     const farmerDetails = await FarmerDetails.findOne({
-      where: { user_id: userId }
+      where: { user_id: userId },
     });
     const accessibilitySettings = await AccessibilitySettings.findOne({
-      where: { user_id: userId }
+      where: { user_id: userId },
     });
-    
+
     return {
       ...user.toJSON(),
       farmerDetails,
-      accessibilitySettings
+      accessibilitySettings,
     };
   }
 
@@ -94,14 +120,14 @@ const updateUser = async (userId, updateData) => {
     text_size,
     layout,
     color_friendly_scheme,
-    use_symbols_with_colors
+    use_symbols_with_colors,
   } = updateData;
 
   // Update basic user info
   if (username || email) {
     await user.update({
       username: username || user.username,
-      email: email || user.email
+      email: email || user.email,
     });
   }
 
@@ -112,7 +138,7 @@ const updateUser = async (userId, updateData) => {
         {
           age: age || undefined,
           vision_problems: vision_problems !== undefined ? vision_problems : undefined,
-          color_blindness: color_blindness !== undefined ? color_blindness : undefined
+          color_blindness: color_blindness !== undefined ? color_blindness : undefined,
         },
         { where: { user_id: userId } }
       );
@@ -124,7 +150,7 @@ const updateUser = async (userId, updateData) => {
           text_size: text_size || undefined,
           layout: layout || undefined,
           color_friendly_scheme: color_friendly_scheme || undefined,
-          use_symbols_with_colors: use_symbols_with_colors !== undefined ? use_symbols_with_colors : undefined
+          use_symbols_with_colors: use_symbols_with_colors !== undefined ? use_symbols_with_colors : undefined,
         },
         { where: { user_id: userId } }
       );
@@ -135,7 +161,7 @@ const updateUser = async (userId, updateData) => {
   return await findUserById(userId);
 };
 
-// Add to exports
+// Export all functions
 module.exports = {
   findUserByEmail,
   createUser,
@@ -144,5 +170,6 @@ module.exports = {
   getUserPreferences,
   findAllUsers,
   findUserById,
-  updateUser
+  updateUser,
+  getFarmerByQrCode,
 };

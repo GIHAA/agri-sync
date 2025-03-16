@@ -34,7 +34,7 @@ function Main() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3045/seed-transactions", {
+        const response = await fetch("http://localhost:3004/seed-transactions", {
           method: 'GET',
           headers: {
             Accept: "application/json",

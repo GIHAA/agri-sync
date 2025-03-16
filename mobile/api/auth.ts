@@ -1,4 +1,4 @@
-import apiClient, { ApiResponse } from './apiClientAuth';
+import apiClient, { ApiResponse } from './apiClient';
 
 /**
  * Log in a user.

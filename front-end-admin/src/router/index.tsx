@@ -30,6 +30,7 @@ import {
 import AdminUserManagePage from '../pages/admin-management/admin-users'
 import AdminUserRolesManagePage from '../pages/admin-management/admin-user-roles'
 import RewardManagementPage from '../pages/reward-management/reward-management'
+import UIManagementPage from '../pages/user-interaction-management/reward-management'
 
 function Router() {
   const { error } = RouteRegistry
@@ -45,10 +46,10 @@ function Router() {
         <SideMenu />
       ),
       children: [
-        {
-          path: '/',
-          element: <Dashboard />,
-        },
+        // {
+          // path: '/',
+          // element: <Dashboard />,
+        // },
         {
           path: '/qr-scanner',
           element: <Scanner />,
@@ -64,6 +65,10 @@ function Router() {
         {
           path: 'reward-management',
           element: <RewardManagementPage />,
+        },
+        {
+          path: '/user-interaction-management',
+          element: <UIManagementPage />,
         },
         {
           path: 'manage-user-roles',
@@ -85,10 +90,10 @@ function Router() {
           path: 'notificationTemplates/customerNotifications',
           element: <CustomerNotify />,
         },
-        {
-          path: 'dashboard',
-          element: <Dashboard />,
-        },
+        // {
+        //   path: 'dashboard',
+        //   element: <Dashboard />,
+        // },
         {
           path: 'update-profile',
           element: <UpdateProfile />,
