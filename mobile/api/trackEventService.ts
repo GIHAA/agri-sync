@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import apiClient, { ApiResponse } from './apiClient';
 
 
 export interface InteractionData {
@@ -23,8 +23,8 @@ export interface InteractionData {
 export const trackInteraction = async (data: InteractionData) => {
   console.log("Tracking interaction:", data);
   try {
-   // const response = await apiClient.post(`track_interaction`, data);
-    return { success: true, message: "Interaction tracked successfully" }; 
+   return await apiClient.post(`user-interaction-service/api/touch-interactions`, data);
+
   } catch (error) {
     console.error("Error tracking interaction:", error);
   }

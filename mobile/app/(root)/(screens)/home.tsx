@@ -7,96 +7,42 @@ import {
   SafeAreaView,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import Entypo from '@expo/vector-icons/Entypo';
+import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import QRCode from "react-native-qrcode-svg"; // Import QRCode component
+import QRCode from "react-native-qrcode-svg";
 import MenuOption from "@/components/HomeOption";
 import { UserInteractionWrapper } from "@/components/UserInteractionWrapper";
 
-interface MenuOptionProps {
-  icon: React.ReactNode;
-  label: string;
-  onPress?: () => void;
-  buttonId?: string;
-}
-
-interface User {
-  email: string;
-  username: string;
-}
-
-const HomeScreen: React.FC = ({}) => {
+const HomeScreen = () => {
+  interface User {
+    email: string;
+  }
   const [user, setUser] = useState<User | null>(null);
-  const [openQR, setOpenQR] = useState<boolean>(false);
+  const [openQR, setOpenQR] = useState(false);
+  const [devMode, setDevMode] = useState(false);
 
-  const onQRCodePress = () => {
-    setOpenQR(!openQR); // Toggle QR code visibility
-  };
-
-  const onAddFarmingPress = () => {
-    console.log("Add Farming Data Pressed");
-    router.replace("/(root)/(screens)/addFarmingData");
-  };
-
-  const onRewardPress = () => {
-    router.replace("/(root)/(screens)/rewards");
-  };
-
-  const onPreferencePress = () => {
-    router.replace("/(root)/(screens)/user-preferences");
-  };
-
-  const onChatbotPress = () => {
-    router.replace("/(root)/(screens)/chatbot");
-  };
-
-  const onLogoutPress = () => {
-    router.replace("/(auth)/sign-in");
-  };
-
-  
-  const menuItems: Array<MenuOptionProps> = [
-    {
-      icon: <AntDesign name="pluscircleo" size={55} color="white" />,
-      label: "Add Farming Data",
-      buttonId: "home-addFarmingDataButton",
-      onPress: onAddFarmingPress,
-    },
-    {
-      icon: <AntDesign name="gift" size={55} color="white" />,
-      label: "Reward Program",
-      buttonId: "home-rewardsButton",
-      onPress: onRewardPress,
-    },
-    {
-      icon: <AntDesign name="setting" size={55} color="white" />,
-      label: "User Preference",
-      buttonId: "home-userPreferenceButton",
-      onPress: onPreferencePress,
-    },
-    {
-      icon: <Entypo name="chat" size={55} color="white" />,
-      label: "Chat",
-      buttonId: "home-chatButton",
-      onPress: onChatbotPress,
-    },
-    {
-      icon: <AntDesign name="login" size={55} color="white" />,
-      label: "Logout",
-      buttonId: "home-logoutButton",
-      onPress: onLogoutPress,
-    },
-  ];
-
-  // get user from store
   useEffect(() => {
-    SecureStore.getItemAsync("user").then((user) => {
-      if (user) {
-        setUser(JSON.parse(user));
+    SecureStore.getItemAsync("user").then((storedUser) => {
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
     });
+
+    SecureStore.getItemAsync("devMode").then((storedDevMode) => {
+      setDevMode(storedDevMode === "true");
+    });
   }, []);
+
+  const toggleDevMode = async () => {
+    const newDevMode = !devMode;
+    setDevMode(newDevMode);
+    await SecureStore.setItemAsync("devMode", newDevMode.toString());
+  };
+
+  const onQRCodePress = () => {
+    setOpenQR(!openQR);
+  };
 
   return (
     <SafeAreaView className="flex-1 gap-10">
@@ -108,8 +54,17 @@ const HomeScreen: React.FC = ({}) => {
         />
       </View>
 
-      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8 ">
-        <View className="absolute top-[-35px] left-4 transform px-6 w-full flex justify-center ">
+      <View className="absolute top-12 right-4">
+        <TouchableOpacity
+          onPress={toggleDevMode}
+          className="bg-gray-800 p-2 opacity-35 rounded-lg"
+        >
+          <Text className="text-white font-bold">{devMode ? "Dev On" : "Dev Off"}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="flex-1 bg-green-700 rounded-t-3xl mt-4 px-4 pt-8">
+        <View className="absolute top-[-35px] left-4 transform px-6 w-full flex justify-center">
           <TouchableOpacity
             className="bg-white rounded-xl py-[20px] flex-row items-center justify-center shadow-lg gap-[11px]"
             onPress={onQRCodePress}
@@ -124,28 +79,53 @@ const HomeScreen: React.FC = ({}) => {
 
         {openQR && user ? (
           <View className="mt-[78px] items-center">
-            <View className="bg-white p-4 rounded-xl  ">
+            <View className="bg-white p-4 rounded-xl">
               <QRCode value={user.email} size={220} color="green" />
             </View>
           </View>
         ) : (
           <View className="mt-[28px]">
             <View className="flex-row flex-wrap justify-between">
-              {menuItems.map((item, index) => (
-              <View key={index} className="w-[48%] mb-[5px]">
-                <UserInteractionWrapper
-                buttonId={item.buttonId ?? `menu-item-${index}`}
-                devmode={false}
-                missClickTrackingArea={5}
-                actualButton={
-                  <MenuOption
-                  icon={item.icon}
-                  label={item.label}
-                  onPress={item.onPress}
+              {[{
+                icon: <AntDesign name="pluscircleo" size={55} color="white" />, 
+                label: "Add Farming Data",
+                buttonId: "home-addFarmingDataButton",
+                onPress: () => router.replace("/(root)/(screens)/addFarmingData"),
+              },
+              {
+                icon: <AntDesign name="gift" size={55} color="white" />, 
+                label: "Reward Program",
+                buttonId: "home-rewardsButton",
+                onPress: () => router.replace("/(root)/(screens)/rewards"),
+              },
+              {
+                icon: <AntDesign name="setting" size={55} color="white" />, 
+                label: "User Preference",
+                buttonId: "home-userPreferenceButton",
+                onPress: () => router.replace("/(root)/(screens)/user-preferences"),
+              },
+              {
+                icon: <Entypo name="chat" size={55} color="white" />, 
+                label: "Chat",
+                buttonId: "home-chatButton",
+                onPress: () => router.replace("/(root)/(screens)/chatbot"),
+              },
+              {
+                icon: <AntDesign name="login" size={55} color="white" />, 
+                label: "Logout",
+                buttonId: "home-logoutButton",
+                onPress: () => router.replace("/(auth)/sign-in"),
+              }].map((item, index) => (
+                <View key={index} className="w-[48%] mb-[5px]">
+                  <UserInteractionWrapper
+                    buttonId={item.buttonId}
+                    devmode={devMode}
+                    missClickTrackingArea={5}
+                    actualButton={
+                      <MenuOption icon={item.icon} label={item.label} onPress={item.onPress} />
+                    }
                   />
-                }
-                />
-              </View>
+                </View>
               ))}
             </View>
           </View>
