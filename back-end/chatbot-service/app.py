@@ -13,6 +13,7 @@ from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from google.cloud import storage 
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,7 +26,8 @@ class SeedDataProcessor:
                  data_directory: str = "data",
                  pinecone_api_key: str = None,
                  openai_api_key: str = None,
-                 pinecone_index_name: str = "chatbot-index"):
+                 pinecone_index_name: str = "chatbot-index",
+                 firebase_bucket_name: str = None):
         """
         Initialize the seed data processor with local JSON data and Pinecone configurations.
         """
@@ -48,9 +50,16 @@ class SeedDataProcessor:
                 "OpenAI API key is required. "
                 "Please set it in the .env file or environment variables."
             )
+
         
         # Data Directory
         self.data_directory = data_directory
+        if not os.path.exists(self.data_directory):
+            os.makedirs(self.data_directory)
+
+         # Download PDFs from Firebase Storage
+        self.download_pdfs_from_firebase(firebase_bucket_name)
+
         
         # Embedding Model
         self.embedding_model = OpenAIEmbeddings()
@@ -91,6 +100,36 @@ class SeedDataProcessor:
 
         # Set OpenAI API Key
         os.environ['OPENAI_API_KEY'] = openai_api_key
+
+    def download_pdfs_from_firebase(self, bucket_name):
+        """
+        Download all PDFs from Firebase Storage and store them locally.
+        """
+        try:
+
+            # Initialize Firebase Storage Client
+            storage_client = storage.Client()
+
+            bucket = storage_client.bucket(bucket_name)
+
+            # List all objects in the bucket
+            blobs = bucket.list_blobs()
+
+            for blob in blobs:
+                if blob.name.endswith(".pdf"):  # Download only PDFs
+                    local_path = os.path.join(self.data_directory, os.path.basename(blob.name))
+                    
+                    # Avoid re-downloading if already exists
+                    if os.path.exists(local_path):
+                        print(f"File already exists: {local_path}")
+                        continue
+
+                    # Download the file
+                    blob.download_to_filename(local_path)
+                    print(f"Downloaded: {blob.name} → {local_path}")
+
+        except Exception as e:
+            print(f"Error downloading PDFs from Firebase Storage: {e}")
 
     def read_doc(self, directory):
         """
@@ -228,7 +267,7 @@ class SeedDataProcessor:
         return qa_chain
 
 # Initialize processor once Flask app is started
-processor = SeedDataProcessor(data_directory="documents")
+processor = SeedDataProcessor(data_directory="documents", firebase_bucket_name="rp-project-7172d.firebasestorage.app")
 
 # ✅ Move translation logic to this function
 async def process_query(user_query):
