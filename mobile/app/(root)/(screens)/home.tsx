@@ -23,7 +23,7 @@ const HomeScreen = () => {
   const [openQR, setOpenQR] = useState(false);
   const [devMode, setDevMode] = useState(false);
   const [missClickCounts, setMissClickCounts] = useState(0);
-  const [buttonSizes, setButtonSizes] = useState({});
+  const [buttonSizes, setButtonSizes] = useState<Record<string, number>>({});
 
   useEffect(() => {
     SecureStore.getItemAsync("user").then((storedUser) => {
@@ -47,7 +47,7 @@ const HomeScreen = () => {
     setOpenQR(!openQR);
   };
 
-  const handleMissClick = (buttonId) => {
+  const handleMissClick = (buttonId :any) => {
     setMissClickCounts((prev) => prev + 1);
     setButtonSizes((prev) => ({
       ...prev,
