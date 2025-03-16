@@ -1,6 +1,10 @@
 import firebase_admin
 from firebase_admin import credentials, storage
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 def initialize_firebase():
     # Load Firebase storage bucket from environment variable
@@ -9,11 +13,11 @@ def initialize_firebase():
     if not storage_bucket:
         raise ValueError("FIREBASE_STORAGE_BUCKET environment variable is not set.")
 
-    # Path to the service account key
-    service_account_path = "config/serviceAccountKey.json"
-    
-    # Set GOOGLE_APPLICATION_CREDENTIALS for Google Cloud Storage
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_path
+    # Load the service account key from the environment variable
+    service_account_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+    if not service_account_path or not os.path.exists(service_account_path):
+        raise FileNotFoundError(f"Service account key not found at: {service_account_path}")
 
     # Load the service account credentials
     cred = credentials.Certificate(service_account_path)
@@ -26,3 +30,4 @@ def initialize_firebase():
 
 # Initialize Firebase
 initialize_firebase()
+

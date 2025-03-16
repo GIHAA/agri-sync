@@ -297,7 +297,6 @@ async def query_seed():
 
         # Fetch result from SeedDataProcessor
         result = processor.query_seed_data(user_query)
-        print(2222222222222)
 
         # If the original query was in Sinhala, translate the response back to Sinhala
         if is_sinhala_query:

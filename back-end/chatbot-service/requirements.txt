@@ -21,3 +21,4 @@ sentencepiece
 protobuf
 googletrans
 firebase-admin
+dotenv
