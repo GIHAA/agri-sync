@@ -1,0 +1,8 @@
+{
+  "labels":[
+    "crop_recommendation",
+    "not_crop_recommendation"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}
