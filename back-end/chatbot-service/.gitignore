@@ -20,3 +20,7 @@ build/
 # Ignore system files
 .DS_Store  # For macOS
 Thumbs.db  # For Windows
+
+
+# Ignore Firebase service account keys
+/config/serviceAccountKey.json

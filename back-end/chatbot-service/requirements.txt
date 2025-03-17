@@ -13,3 +13,14 @@ python-dotenv
 pinecone
 langchain_pinecone
 flask
+torch 
+transformers 
+datasets 
+accelerate
+sentencepiece
+protobuf
+googletrans
+firebase-admin
+dotenv
+spacy
+spacy-lookups-data
