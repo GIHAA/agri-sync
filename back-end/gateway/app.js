@@ -84,6 +84,14 @@ app.use('/user-interaction-service', authenticate, proxy('http://localhost:3005'
     proxyReqPathResolver: (req) => `${req.url}`
 }));
 
+app.use('/query', authenticate, proxy('http://localhost:3007', {
+    proxyReqPathResolver: (req) => `/query`
+}));
+
+app.use('/crop-recommend', authenticate, proxy('http://localhost:3008', {
+    proxyReqPathResolver: (req) => `/predict`
+}));
+
 const PORT = process.env.GATEWAY_PORT || 3000;
 
 app.listen(PORT, () => {
