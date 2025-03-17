@@ -12,8 +12,7 @@ python-dotenv
 # sentence-transformers
 pinecone
 langchain_pinecone
-flask
-torch 
+flask 
 transformers 
 datasets 
 accelerate
