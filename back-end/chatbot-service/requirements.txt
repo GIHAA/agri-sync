@@ -21,5 +21,3 @@ protobuf
 googletrans
 firebase-admin
 dotenv
-spacy
-spacy-lookups-data
