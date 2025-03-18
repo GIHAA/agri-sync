@@ -12,4 +12,12 @@ python-dotenv
 # sentence-transformers
 pinecone
 langchain_pinecone
-flask
+flask 
+transformers 
+datasets 
+accelerate
+sentencepiece
+protobuf
+googletrans
+firebase-admin
+dotenv
