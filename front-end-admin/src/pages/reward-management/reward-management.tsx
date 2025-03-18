@@ -73,6 +73,20 @@ const RewardManagementPage = () => {
     ],
   };
 
+  const getTextClassAndIcon = (event) => {
+    if (event === "market_insight") {
+      return { textClass: "text-red-500", icon: "Minus" };
+    }
+    if (event === "premium_prediction") {
+      return { textClass: "text-red-500", icon: "Minus" };
+    }
+    if (event === "farming_data") {
+      return { textClass: "text-green-500", icon: "Plus" };
+    }
+    return { textClass: "text-gray-700", icon: "" }; // Default class
+  };
+
+
   return (
     <div className="col-span-12 mt-6">
       <div className="intro-y mb-8 flex h-10 items-center justify-between sm:flex">
@@ -82,24 +96,32 @@ const RewardManagementPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {data
+      {data
           ?.slice()
           .sort((a, b) => a.id - b.id)
-          .map((reward) => (
-            <div key={reward.id} className="flex h-full w-full justify-between rounded-md bg-white p-4 shadow-md">
-              <div className="flex flex-col">
-                <div>{reward.event.replace("_", " ")}</div>
-                <div className="text-4xl text-gray-700">{reward.points}</div>
-              </div>
-              <div>
-                <Lucide
+          .map((reward) => {
+            const { textClass, icon } = getTextClassAndIcon(reward.event);
+            return (
+              <div key={reward.id} className="flex h-full w-full justify-between rounded-md bg-white p-4 shadow-md">
+                <div className="flex flex-col">
+                  <div className={textClass}>{reward.event.replace("_", " ")}</div>
+                  <div className="text-4xl text-gray-700">{reward.points}</div>
+                </div>
+                <div>
+                  <Lucide
+                    icon={icon}
+                    className={`h-6 w-6 ${textClass} cursor-pointer`}
+                    onClick={() => handleEditClick(reward.event, reward.points)}
+                  />
+                  <Lucide
                   icon="Edit"
                   className="h-6 w-6 text-black cursor-pointer"
                   onClick={() => handleEditClick(reward.event, reward.points)}
                 />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
       <div className="flex flex-col lg:flex-row gap-6 mt-8">
           <div className="w-full lg:w-1/2">
