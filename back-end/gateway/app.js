@@ -57,8 +57,9 @@ app.get('/health', (req, res) => {
 //     proxyReqPathResolver: (req) => `/farming${req.url}`
 // }));
 
-// Routes that don't need authentication
-app.use('/auth-service', proxy('http://localhost:3001', {
+// Routes that don't need authentication   
+// todo: update this
+app.use('/auth-service', proxy('http://user-service:3001', {
     proxyReqPathResolver: (req) => `/auth${req.url}`
 }));
 
