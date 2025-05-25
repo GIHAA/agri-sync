@@ -64,24 +64,24 @@ app.use('/auth-service', proxy('http://user-service:3001', {
 }));
 
 // Protected routes
-app.use('/rewards-service', authenticate, proxy('http://localhost:3003', {
+app.use('/rewards-service', authenticate, proxy('http://reward-service:3003', {
     proxyReqPathResolver: (req) => `/rewards${req.url}`
 }));
 
-app.use('/farming-service', authenticate, proxy('http://localhost:3003', {
+app.use('/farming-service', authenticate, proxy('http://reward-service:3003', {
     proxyReqPathResolver: (req) => `/farming${req.url}`
 }));
 
-app.use('/rewards-service-settings', authenticate, proxy('http://localhost:3003', {
+app.use('/rewards-service-settings', authenticate, proxy('http://reward-service:3003', {
     proxyReqPathResolver: (req) => `/rewards-settings${req.url}`
 }));
 
 
-app.use('/price-predict', authenticate, proxy('http://localhost:3002', {
+app.use('/price-predict', authenticate, proxy('http://price-prediction-service:3002', {
     proxyReqPathResolver: (req) => `/predict`
 }));
 
-app.use('/user-interaction-service', authenticate, proxy('http://localhost:3005', {
+app.use('/user-interaction-service', authenticate, proxy('http://user-interaction-service:3005', {
     proxyReqPathResolver: (req) => `${req.url}`
 }));
 
