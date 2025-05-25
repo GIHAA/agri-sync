@@ -4,11 +4,13 @@ FROM node:18
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package files and install dependencies with caching
 COPY package*.json ./
-RUN npm install --force
 
-# Copy rest of the project files
+# Use npm ci for clean installs, fallback to legacy-peer-deps if needed
+RUN npm ci || npm install --legacy-peer-deps
+
+# Copy the rest of the project files
 COPY . .
 
 # Build the app
