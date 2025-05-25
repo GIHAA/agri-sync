@@ -1,6 +1,21 @@
-FROM node:18-aphine as builder
-WORKDIR /srs
-COPY package.json .
-COPY package-lock.json .
+# Use Node.js base image
+FROM node:18
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install --force
+
+# Copy rest of the project files
 COPY . .
-RUN npm install
+
+# Build the app
+RUN npm run build
+
+# Expose the app port
+EXPOSE 4000
+
+# Start the app
+CMD ["npm", "start"]
