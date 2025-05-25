@@ -1,1 +1,1 @@
-export const ip = 'https://agrisynclocal.astratech.software';
+export const ip = 'http://4.157.109.242';
